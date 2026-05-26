@@ -24,7 +24,11 @@ def _headers(acc: dict[str, Any]) -> dict[str, str]:
 
 
 def _base(acc: dict[str, Any]) -> str:
-    return acc.get("base_url", "https://paper-api.alpaca.markets").rstrip("/")
+    url = acc.get("base_url", "https://paper-api.alpaca.markets").rstrip("/")
+    # Accept both ".../v2" and "..." — our request paths already include "/v2/...".
+    if url.endswith("/v2"):
+        url = url[:-3]
+    return url
 
 
 async def _get(
