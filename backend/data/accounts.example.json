@@ -1,0 +1,9 @@
+[
+  {
+    "id": "demo",
+    "label": "Demo Bot",
+    "api_key": "PUT_YOUR_PAPER_KEY_HERE",
+    "api_secret": "PUT_YOUR_PAPER_SECRET_HERE",
+    "base_url": "https://paper-api.alpaca.markets"
+  }
+]
