@@ -5,3 +5,7 @@ venv/
 data/accounts.json
 data/snapshots.db
 .env
+
+# Données régénérables / artefacts (analyse de graphiques)
+charts/data_cache/
+charts/output/

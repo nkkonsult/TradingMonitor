@@ -81,6 +81,90 @@ export type Overview = {
   positions_agregees: AggregatedPosition[];
 };
 
+// --- Analyse de graphiques (Pilier A — analyse technique) ---
+export type AnalysisMetrics = {
+  n_trades: number;
+  taux_reussite?: number;
+  rendement_moyen?: number;
+  rendement_median?: number;
+  rendement_total_cumule?: number;
+  meilleur?: number;
+  pire?: number;
+  duree_moyenne_jours?: number;
+};
+
+export type AnalysisTrade = {
+  entry_date: string;
+  exit_date: string;
+  entry_price: number;
+  exit_price: number;
+  return_pct: number;
+  holding_days: number;
+};
+
+export type BuyHold = {
+  start_date?: string;
+  end_date?: string;
+  start_price?: number;
+  end_price?: number;
+  total_return?: number;
+  equity?: (number | null)[];
+};
+
+export type OpenPosition = {
+  entry_date: string;
+  entry_price: number;
+  current_price: number;
+  unrealized_return: number;
+};
+
+export type Overlay = {
+  name: string;
+  key: string;
+  color: string;
+  data: (number | null)[];
+};
+
+// Oscillateur (RSI…) : tracé dans un panneau séparé 0-100 avec ses seuils.
+export type Oscillator = {
+  name: string;
+  data: (number | null)[];
+  lower: number;
+  upper: number;
+};
+
+export type StrategyResult = {
+  key: string;
+  label: string;
+  color: string;
+  metrics: AnalysisMetrics;
+  strategy_total_with_open: number;
+  open_position: OpenPosition | null;
+  trades: AnalysisTrade[];
+  equity: (number | null)[];
+  overlays: Overlay[];
+  oscillator: Oscillator | null;
+};
+
+export type Analysis = {
+  ticker: string;
+  short: number;
+  long: number;
+  dates: string[];
+  close: (number | null)[];
+  benchmark: BuyHold;
+  strategies: StrategyResult[];
+};
+
+export type StrategyInfo = { key: string; label: string };
+
+export type AnalysisDefaults = {
+  tickers: string[];
+  ma_short: number;
+  ma_long: number;
+  strategies: StrategyInfo[];
+};
+
 const BASE = "/api";
 
 async function j<T>(path: string, init?: RequestInit): Promise<T> {
@@ -116,4 +200,9 @@ export const api = {
       }`,
     ),
   overview: () => j<Overview>("/overview"),
+  analysisDefaults: () => j<AnalysisDefaults>("/analysis/defaults"),
+  analyze: (ticker: string, short: number, long: number) =>
+    j<Analysis>(
+      `/analysis/${encodeURIComponent(ticker)}?short=${short}&long=${long}`,
+    ),
 };
