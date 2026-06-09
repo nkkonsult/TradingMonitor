@@ -191,6 +191,35 @@ export type AnalysisDefaults = {
   cost_bps: number;
 };
 
+// --- Base de détections (transparence des données) ---
+export type CountItem = { key: string; count: number };
+export type DataSummary = {
+  total: number;
+  n_tickers: number;
+  date_min: string;
+  date_max: string;
+  params_version: string[];
+  by_strategy: CountItem[];
+  by_regime: CountItem[];
+  by_sector: CountItem[];
+};
+export type Detection = Record<string, string | number>;
+export type DetectionsPage = {
+  total: number;
+  columns: string[];
+  rows: Detection[];
+  limit: number;
+  offset: number;
+};
+export type DetectionFilters = {
+  strategy?: string;
+  regime?: string;
+  sector?: string;
+  ticker?: string;
+  limit?: number;
+  offset?: number;
+};
+
 // --- Assistant IA (chat local Ollama) ---
 export type ChatMsg = { role: "user" | "assistant"; content: string };
 export type ChatReply = { answer: string; model: string };
@@ -241,6 +270,17 @@ export const api = {
     j<Analysis>(
       `/analysis/${encodeURIComponent(ticker)}?short=${short}&long=${long}&cost_bps=${costBps}`,
     ),
+  dataSummary: () => j<DataSummary>("/data/summary"),
+  dataDetections: (f: DetectionFilters = {}) => {
+    const p = new URLSearchParams();
+    if (f.strategy) p.set("strategy", f.strategy);
+    if (f.regime) p.set("regime", f.regime);
+    if (f.sector) p.set("sector", f.sector);
+    if (f.ticker) p.set("ticker", f.ticker.toUpperCase());
+    p.set("limit", String(f.limit ?? 50));
+    p.set("offset", String(f.offset ?? 0));
+    return j<DetectionsPage>(`/data/detections?${p.toString()}`);
+  },
   chatHealth: () => j<ChatHealth>("/chat/health"),
   chat: (messages: ChatMsg[], ticker?: string) =>
     j<ChatReply>("/chat", {

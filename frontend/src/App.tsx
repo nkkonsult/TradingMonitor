@@ -5,12 +5,14 @@ import { OverviewView } from "./views/OverviewView";
 import { AccountView } from "./views/AccountView";
 import { AnalysisView } from "./views/AnalysisView";
 import { AssistantView } from "./views/AssistantView";
+import { DataView } from "./views/DataView";
 import { AddAccountModal } from "./components/AddAccountModal";
 
 type Tab =
   | { kind: "overview" }
   | { kind: "account"; id: string }
   | { kind: "analysis" }
+  | { kind: "data" }
   | { kind: "assistant" };
 
 export default function App() {
@@ -58,6 +60,12 @@ export default function App() {
               Analyse
             </TabBtn>
             <TabBtn
+              active={tab.kind === "data"}
+              onClick={() => setTab({ kind: "data" })}
+            >
+              Données
+            </TabBtn>
+            <TabBtn
               active={tab.kind === "assistant"}
               onClick={() => setTab({ kind: "assistant" })}
             >
@@ -88,6 +96,8 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 py-6">
         {tab.kind === "analysis" ? (
           <AnalysisView />
+        ) : tab.kind === "data" ? (
+          <DataView />
         ) : tab.kind === "assistant" ? (
           <AssistantView />
         ) : (
