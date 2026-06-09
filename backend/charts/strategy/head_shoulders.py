@@ -23,9 +23,11 @@ import pandas as pd
 from ..trade import Trade
 
 # Défauts (chiffrent la figure sans ambiguïté ; figer pour la reproductibilité).
-PIVOT_WINDOW = 5        # un extremum doit dominer +/- 5 jours autour de lui
+PIVOT_WINDOW = 10       # un extremum doit dominer +/- 10 jours -> vraies grandes oscillations
 SHOULDER_TOL = 0.05     # écart max de hauteur entre les deux épaules (5 % de la tête)
 MIN_PROMINENCE = 0.03   # la tête doit dépasser les épaules d'au moins 3 %
+TIME_SYMMETRY = 0.5     # symétrie temporelle : la + courte moitié >= 50 % de la + longue
+NECKLINE_LEVEL_TOL = 0.06  # ligne de cou ~horizontale : 2 points de cou à <= 6 % l'un de l'autre
 BREAK_HORIZON = 60      # jours max après l'épaule droite pour voir la cassure
 TRADE_HORIZON = 252     # jours max après la cassure pour atteindre objectif/stop
 
@@ -64,32 +66,35 @@ def _neckline(t1: int, n1: float, t2: int, n2: float):
     return lambda pos: n1 + slope * (pos - t1)
 
 
-def detect_trades(
+def _scan(
     df: pd.DataFrame,
-    *,
-    direction: str = "bullish",
-    pivot_window: int = PIVOT_WINDOW,
-    shoulder_tol: float = SHOULDER_TOL,
-    min_prominence: float = MIN_PROMINENCE,
-    break_horizon: int = BREAK_HORIZON,
-    trade_horizon: int = TRADE_HORIZON,
-    **_,
-) -> list[Trade]:
-    """Détecte les figures et renvoie les trades clôturés (objectif ou stop atteint)."""
-    close = df["Close"]
-    vals = close.to_numpy()
+    direction: str,
+    pivot_window: int,
+    shoulder_tol: float,
+    min_prominence: float,
+    break_horizon: int,
+    trade_horizon: int,
+    time_symmetry: float,
+    neckline_level_tol: float,
+) -> list[dict]:
+    """Cœur de détection : renvoie un enregistrement RICHE par figure clôturée.
+
+    Chaque dict porte le trade ET la géométrie (pivots, ligne de cou, objectif) pour
+    que detect_trades (stats) et shapes (tracé) partagent exactement la même logique.
+    """
+    vals = df["Close"].to_numpy()
     idx = df.index
     n = len(vals)
     bullish = direction == "bullish"
     d = 1 if bullish else -1
 
     piv = _pivots(vals, pivot_window)
-    # On veut la séquence extrême-cou-extrême-cou-extrême.
+    # Séquence extrême-cou-extrême-cou-extrême :
     # bearish : sommet,creux,sommet,creux,sommet (start kind = +1)
     # bullish : creux,sommet,creux,sommet,creux (start kind = -1)
     start_kind = -1 if bullish else 1
 
-    trades: list[Trade] = []
+    out: list[dict] = []
     last_exit_pos = -1
 
     for k in range(len(piv) - 4):
@@ -116,6 +121,14 @@ def detect_trades(
                 continue
             if (p_head - p_s1) / p_head < min_prominence or (p_head - p_s3) / p_head < min_prominence:
                 continue
+
+        # Symétrie temporelle : épaule gauche et droite à distance comparable de la tête.
+        left_span, right_span = head - s1, s3 - head
+        if min(left_span, right_span) < time_symmetry * max(left_span, right_span):
+            continue
+        # Ligne de cou ~horizontale : les 2 points de cou doivent être à des niveaux proches.
+        if abs(p_c2 - p_c1) / max(p_c1, p_c2) > neckline_level_tol:
+            continue
 
         neck = _neckline(c1, p_c1, c2, p_c2)
         head_height = abs(p_head - neck(head))  # amplitude tête <-> cou
@@ -146,12 +159,87 @@ def detect_trades(
         if exit_pos is None:
             continue  # ni objectif ni stop avant la fin -> figure non comptée
 
-        trades.append(
-            Trade(idx[break_pos], entry_price, idx[exit_pos], float(vals[exit_pos]), direction=d)
+        out.append(
+            {
+                "direction": d,
+                "entry_pos": break_pos,
+                "entry_price": entry_price,
+                "exit_pos": exit_pos,
+                "exit_price": float(vals[exit_pos]),
+                "target": float(target),
+                # Géométrie pour le tracé : la ligne de cou tracée de l'épaule G à la sortie.
+                "neck_left": (s1, float(neck(s1))),
+                "neck_right": (exit_pos, float(neck(exit_pos))),
+                "head": (head, float(p_head)),
+                "shoulders": [(s1, float(p_s1)), (s3, float(p_s3))],
+            }
         )
         last_exit_pos = exit_pos
 
-    return trades
+    return out
+
+
+def detect_trades(
+    df: pd.DataFrame,
+    *,
+    direction: str = "bullish",
+    pivot_window: int = PIVOT_WINDOW,
+    shoulder_tol: float = SHOULDER_TOL,
+    min_prominence: float = MIN_PROMINENCE,
+    time_symmetry: float = TIME_SYMMETRY,
+    neckline_level_tol: float = NECKLINE_LEVEL_TOL,
+    break_horizon: int = BREAK_HORIZON,
+    trade_horizon: int = TRADE_HORIZON,
+    **_,
+) -> list[Trade]:
+    """Détecte les figures et renvoie les trades clôturés (objectif ou stop atteint)."""
+    idx = df.index
+    recs = _scan(df, direction, pivot_window, shoulder_tol, min_prominence,
+                 break_horizon, trade_horizon, time_symmetry, neckline_level_tol)
+    return [
+        Trade(idx[r["entry_pos"]], r["entry_price"], idx[r["exit_pos"]], r["exit_price"], direction=r["direction"])
+        for r in recs
+    ]
+
+
+def shapes(
+    df: pd.DataFrame,
+    *,
+    direction: str = "bullish",
+    pivot_window: int = PIVOT_WINDOW,
+    shoulder_tol: float = SHOULDER_TOL,
+    min_prominence: float = MIN_PROMINENCE,
+    time_symmetry: float = TIME_SYMMETRY,
+    neckline_level_tol: float = NECKLINE_LEVEL_TOL,
+    break_horizon: int = BREAK_HORIZON,
+    trade_horizon: int = TRADE_HORIZON,
+    **_,
+) -> list[dict]:
+    """Géométrie des figures pour le tracé : ligne de cou, objectif, tête, épaules."""
+    idx = df.index
+    fmt = lambda pos: idx[pos].strftime("%Y-%m-%d")  # noqa: E731
+    recs = _scan(df, direction, pivot_window, shoulder_tol, min_prominence,
+                 break_horizon, trade_horizon, time_symmetry, neckline_level_tol)
+    out = []
+    for r in recs:
+        out.append(
+            {
+                "neckline": [
+                    {"date": fmt(r["neck_left"][0]), "price": round(r["neck_left"][1], 2)},
+                    {"date": fmt(r["neck_right"][0]), "price": round(r["neck_right"][1], 2)},
+                ],
+                "target": {
+                    "price": round(r["target"], 2),
+                    "from": fmt(r["entry_pos"]),
+                    "to": fmt(r["exit_pos"]),
+                },
+                "head": {"date": fmt(r["head"][0]), "price": round(r["head"][1], 2)},
+                "shoulders": [
+                    {"date": fmt(s[0]), "price": round(s[1], 2)} for s in r["shoulders"]
+                ],
+            }
+        )
+    return out
 
 
 def open_entry(df: pd.DataFrame, **_):

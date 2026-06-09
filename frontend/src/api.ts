@@ -113,6 +113,7 @@ export type AnalysisTrade = {
   exit_price: number;
   return_pct: number;
   holding_days: number;
+  direction: number; // +1 long, -1 short
 };
 
 export type BuyHold = {
@@ -147,6 +148,14 @@ export type Oscillator = {
   upper: number;
 };
 
+// Géométrie d'une figure chartiste (Head & Shoulders) à tracer sur le cours.
+export type PatternShape = {
+  neckline: { date: string; price: number }[];
+  target: { price: number; from: string; to: string };
+  head: { date: string; price: number };
+  shoulders: { date: string; price: number }[];
+};
+
 export type StrategyResult = {
   key: string;
   label: string;
@@ -159,6 +168,7 @@ export type StrategyResult = {
   equity: (number | null)[];
   overlays: Overlay[];
   oscillator: Oscillator | null;
+  shapes: PatternShape[] | null;
 };
 
 export type Analysis = {
@@ -179,6 +189,16 @@ export type AnalysisDefaults = {
   ma_long: number;
   strategies: StrategyInfo[];
   cost_bps: number;
+};
+
+// --- Assistant IA (chat local Ollama) ---
+export type ChatMsg = { role: "user" | "assistant"; content: string };
+export type ChatReply = { answer: string; model: string };
+export type ChatHealth = {
+  ok: boolean;
+  model: string;
+  model_present?: boolean;
+  models?: string[];
 };
 
 const BASE = "/api";
@@ -221,4 +241,10 @@ export const api = {
     j<Analysis>(
       `/analysis/${encodeURIComponent(ticker)}?short=${short}&long=${long}&cost_bps=${costBps}`,
     ),
+  chatHealth: () => j<ChatHealth>("/chat/health"),
+  chat: (messages: ChatMsg[], ticker?: string) =>
+    j<ChatReply>("/chat", {
+      method: "POST",
+      body: JSON.stringify({ messages, ticker: ticker || null }),
+    }),
 };

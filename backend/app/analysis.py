@@ -152,6 +152,8 @@ def analyze(
 
         # Oscillateur optionnel (RSI...) : panneau séparé 0-100 côté front.
         osc = strat.oscillator(df, **call_kwargs) if hasattr(strat, "oscillator") else None
+        # Géométrie optionnelle (Head & Shoulders...) : ligne de cou, objectif, pivots.
+        shp = strat.shapes(df, **call_kwargs) if hasattr(strat, "shapes") else None
 
         ind = strat.indicators(df, **call_kwargs)
         overlays = [
@@ -186,12 +188,14 @@ def analyze(
                         "return_pct": round(t.net_return(cost), 4),
                         "gross_return_pct": round(t.return_pct, 4),
                         "holding_days": t.holding_days,
+                        "direction": t.direction,
                     }
                     for t in trades
                 ],
                 "equity": equity,
                 "overlays": overlays,
                 "oscillator": osc,
+                "shapes": shp,
             }
         )
 

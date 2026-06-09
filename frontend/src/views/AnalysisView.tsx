@@ -199,8 +199,23 @@ function StrategiesSection({
         <PriceChart data={data} shown={shown} />
         <p className="text-xs text-muted mt-2">
           Glisse le curseur pour lire les valeurs ; glisse les poignées du bas
-          pour zoomer. 🟢 achat · 🔴 vente · 🟢⬛ position ouverte.
+          pour zoomer. 🟢 achat (long) · 🔴 vente · 🟢⬛ position ouverte.
+          {data.strategies.some(
+            (s) => shown.has(s.key) && s.trades.some((t) => t.direction === -1),
+          ) && <> · 🟠 entrée short (pari baissier) · 🟣 sortie short (rachat).</>}
         </p>
+        {data.strategies.some((s) => shown.has(s.key) && s.shapes?.length) && (
+          <p className="text-xs text-muted mt-1">
+            <b>Épaule-tête-épaule</b> : les pastilles de la couleur de la stratégie
+            marquent les <b>épaules</b> (petites) et la <b>tête</b> (grande). La{" "}
+            <b>ligne pleine</b> = la <b>ligne de cou</b> (le palier) : quand le cours
+            la <b>casse</b>, le signal se déclenche. ⚠️ La variante <b>classique</b> est{" "}
+            <b>baissière</b> : casser le cou vers le bas ouvre un <b>short</b> (🟠, on
+            parie sur la chute), ce n'est pas un achat. La variante <b>inversée</b> est
+            haussière (achat 🟢 à la cassure vers le haut). La <b>ligne pointillée</b> =
+            l'<b>objectif</b> théorique (hauteur tête↔cou reportée depuis la cassure).
+          </p>
+        )}
       </Card>
 
       {/* Panneau RSI : visible seulement si une stratégie à oscillateur est cochée */}
@@ -512,16 +527,48 @@ function PriceChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
             <Line key={o.key} type="monotone" dataKey={o.key} name={o.name} stroke={o.color} strokeWidth={1.5} dot={false} connectNulls isAnimationActive={false} />
           ))}
           {shownStrategies.flatMap((s) => [
+            // Couleurs selon le sens : long = achat vert / vente rouge ;
+            // short = entrée orange (vente à découvert) / sortie violette (rachat).
             ...s.trades.map((t, i) => (
-              <ReferenceDot key={`${s.key}-e${i}`} x={t.entry_date} y={t.entry_price} r={4} fill="#22c55e" stroke="none" />
+              <ReferenceDot key={`${s.key}-e${i}`} x={t.entry_date} y={t.entry_price} r={4} fill={t.direction === -1 ? "#f59e0b" : "#22c55e"} stroke="none" />
             )),
             ...s.trades.map((t, i) => (
-              <ReferenceDot key={`${s.key}-x${i}`} x={t.exit_date} y={t.exit_price} r={4} fill="#ef4444" stroke="none" />
+              <ReferenceDot key={`${s.key}-x${i}`} x={t.exit_date} y={t.exit_price} r={4} fill={t.direction === -1 ? "#a855f7" : "#ef4444"} stroke="none" />
             )),
             s.open_position ? (
               <ReferenceDot key={`${s.key}-open`} x={s.open_position.entry_date} y={s.open_position.entry_price} r={6} fill="#22c55e" stroke="#000" strokeWidth={2} />
             ) : null,
           ])}
+          {/* Figures chartistes (Head & Shoulders) : ligne de cou + objectif + tête/épaules */}
+          {shownStrategies.flatMap((s) =>
+            (s.shapes ?? []).flatMap((sh, i) => [
+              <ReferenceLine
+                key={`${s.key}-neck-${i}`}
+                segment={[
+                  { x: sh.neckline[0].date, y: sh.neckline[0].price },
+                  { x: sh.neckline[1].date, y: sh.neckline[1].price },
+                ]}
+                stroke={s.color}
+                strokeWidth={2}
+                ifOverflow="extendDomain"
+              />,
+              <ReferenceLine
+                key={`${s.key}-tgt-${i}`}
+                segment={[
+                  { x: sh.target.from, y: sh.target.price },
+                  { x: sh.target.to, y: sh.target.price },
+                ]}
+                stroke={s.color}
+                strokeWidth={1}
+                strokeDasharray="5 4"
+                ifOverflow="extendDomain"
+              />,
+              <ReferenceDot key={`${s.key}-head-${i}`} x={sh.head.date} y={sh.head.price} r={5} fill={s.color} stroke="#fff" strokeWidth={1} />,
+              ...sh.shoulders.map((so, j) => (
+                <ReferenceDot key={`${s.key}-sh-${i}-${j}`} x={so.date} y={so.price} r={3} fill={s.color} stroke="#fff" strokeWidth={1} />
+              )),
+            ]),
+          )}
           <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
         </LineChart>
       </ResponsiveContainer>
