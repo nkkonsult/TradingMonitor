@@ -162,6 +162,58 @@ def _random_band(df, trades, cost_per_side: float = 0.0, n_draws: int = 200, see
     }
 
 
+def _random_overlay_band(df, trades, open_entry_date, cost_per_side: float = 0.0, n_draws: int = 200, seed: int = 54321):
+    """Baseline « pile ou face » pour un signal de SORTIE : et si on sortait AU HASARD ?
+
+    On part investi (comme le buy & hold) et on s'écarte pendant N périodes au hasard
+    ayant les MÊMES durées que les sorties du signal. Si la courbe overlay (sorties
+    pilotées par le signal) sort de la bande vers le haut -> le timing du signal a du
+    talent (mieux que sortir au hasard). Sinon, le signal n'apporte rien vs le hasard.
+    """
+    close = df["Close"].to_numpy()
+    n = len(close)
+    if n < 3 or not trades:
+        return None
+    pos = {d: i for i, d in enumerate(df.index)}
+    direction = trades[0].direction
+    # Durées des périodes HORS marché de l'overlay (cf. _overlay_equity).
+    out_spans: list[int] = []
+    if direction == 1:  # long : trous entre vente et rachat
+        for i, t in enumerate(trades):
+            ex = pos[t.exit_date]
+            if i + 1 < len(trades):
+                nxt = pos[trades[i + 1].entry_date]
+            elif open_entry_date is not None:
+                nxt = pos[open_entry_date]
+            else:
+                nxt = n - 1
+            out_spans.append(nxt - ex)
+    else:  # short/évitement : on s'écarte pendant la fenêtre du signal
+        out_spans.extend(pos[t.exit_date] - pos[t.entry_date] for t in trades)
+    out_spans = [s for s in out_spans if 1 <= s < n - 1]
+    if not out_spans:
+        return None
+
+    daily = np.zeros(n)
+    daily[1:] = close[1:] / close[:-1] - 1.0
+    rng = np.random.default_rng(seed)
+    cost_factor = (1.0 - cost_per_side) ** (2 * len(out_spans))
+    paths = np.empty((n_draws, n))
+    for k in range(n_draws):
+        holding = np.ones(n, dtype=bool)
+        for s in out_spans:
+            start = int(rng.integers(0, n - s))
+            holding[start + 1 : start + s + 1] = False
+        growth = np.where(holding, 1.0 + daily, 1.0)
+        paths[k] = np.cumprod(growth) * cost_factor * 100.0
+
+    return {
+        "p5": [round(float(x), 2) for x in np.percentile(paths, 5, axis=0)],
+        "p50": [round(float(x), 2) for x in np.percentile(paths, 50, axis=0)],
+        "p95": [round(float(x), 2) for x in np.percentile(paths, 95, axis=0)],
+    }
+
+
 @router.get("/defaults")
 def defaults() -> dict:
     # Univers du sélecteur = S&P 500 complet (déjà en cache). Repli sur le prototype
@@ -254,9 +306,14 @@ def analyze(
         equity = _equity_curve(df, trades, cost)
         # Overlay : garder l'action mais suivre les signaux (vs B&H toujours investi).
         overlay = _overlay_equity(df, trades, oe[0] if oe else None, cost)
-        # Mode d'évaluation + baseline « hasard » (uniquement pour les signaux d'entrée).
+        # Mode d'évaluation + baseline « hasard » adaptée :
+        #  - entrée  -> entrées au hasard (comparé à la courbe de rendement) ;
+        #  - sortie  -> sorties au hasard (comparé à l'overlay).
         eval_mode = EVAL_MODE.get(key, "overlay")
-        random_band = _random_band(df, trades, cost) if eval_mode == "entry" else None
+        if eval_mode == "entry":
+            random_band = _random_band(df, trades, cost)
+        else:
+            random_band = _random_overlay_band(df, trades, oe[0] if oe else None, cost)
         # Métriques de niveau série temporelle (Sharpe, Sortino, Max DD...) sur la courbe d'equity.
         risk = stats.summarize_equity(equity)
 

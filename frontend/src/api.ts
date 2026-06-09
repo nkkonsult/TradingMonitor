@@ -153,7 +153,7 @@ export type Oscillator = {
 export type PatternShape = {
   neckline: { date: string; price: number }[];
   target: { price: number; from: string; to: string };
-  head: { date: string; price: number };
+  head: { date: string; price: number } | null; // null pour double sommet/creux
   shoulders: { date: string; price: number }[];
 };
 

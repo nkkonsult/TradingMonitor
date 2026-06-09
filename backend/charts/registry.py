@@ -9,7 +9,7 @@ détections porte cette version -> reproductibilité (on sait quels seuils l'ont
 """
 from __future__ import annotations
 
-from .strategy import head_shoulders, ma_crossover, rsi
+from .strategy import double_top_bottom, head_shoulders, ma_crossover, rsi
 
 STRATEGIES = {
     "ma_crossover": (ma_crossover, "Croisement de moyennes mobiles", {}),
@@ -18,6 +18,8 @@ STRATEGIES = {
     "rsi_trend": (rsi, "RSI 30/70 + filtre MM200", {"lower": 30, "upper": 70, "trend_ma": 200}),
     "hs_inverse": (head_shoulders, "Épaule-tête-épaule inversé (achat)", {"direction": "bullish"}),
     "hs_classic": (head_shoulders, "Épaule-tête-épaule (vente/short)", {"direction": "bearish"}),
+    "db_bottom": (double_top_bottom, "Double creux (achat)", {"direction": "bottom"}),
+    "dt_top": (double_top_bottom, "Double sommet (vente/short)", {"direction": "top"}),
 }
 
 PARAMS_VERSION = "v1"
@@ -32,4 +34,6 @@ EVAL_MODE = {
     "rsi_trend": "overlay",
     "hs_inverse": "entry",
     "hs_classic": "overlay",
+    "db_bottom": "entry",
+    "dt_top": "overlay",
 }

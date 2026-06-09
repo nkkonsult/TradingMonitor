@@ -245,14 +245,14 @@ function StrategiesSection({
         )}
         {data.strategies.some((s) => shown.has(s.key) && s.shapes?.length) && (
           <p className="text-xs text-muted mt-1">
-            <b>Épaule-tête-épaule</b> : les pastilles de la couleur de la stratégie
-            marquent les <b>épaules</b> (petites) et la <b>tête</b> (grande). La{" "}
-            <b>ligne pleine</b> = la <b>ligne de cou</b> (le palier) : quand le cours
-            la <b>casse</b>, le signal se déclenche. ⚠️ La variante <b>classique</b> est{" "}
-            <b>baissière</b> : casser le cou vers le bas ouvre un <b>short</b> (🟠, on
-            parie sur la chute), ce n'est pas un achat. La variante <b>inversée</b> est
-            haussière (achat 🟢 à la cassure vers le haut). La <b>ligne pointillée</b> =
-            l'<b>objectif</b> théorique (hauteur tête↔cou reportée depuis la cassure).
+            <b>Figures chartistes</b> : les pastilles marquent les <b>points clés</b>
+            (épaules + tête pour l'épaule-tête-épaule ; les 2 sommets/creux pour le
+            double). La <b>ligne pleine</b> = la <b>ligne de cou</b> (le palier) : quand
+            le cours la <b>casse</b>, le signal se déclenche. ⚠️ Une variante{" "}
+            <b>baissière</b> (cassure vers le bas) ouvre un <b>short</b> (🟠, pari sur la
+            chute), pas un achat ; une variante <b>haussière</b> = achat 🟢 à la cassure
+            vers le haut. La <b>ligne pointillée</b> = l'<b>objectif</b> théorique
+            (amplitude de la figure reportée depuis la cassure).
           </p>
         )}
       </Card>
@@ -611,11 +611,21 @@ function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
   // Overlay = seulement les signaux de sortie (les signaux d'entrée se jugent au hasard).
   const strats = data.strategies.filter((s) => shown.has(s.key) && s.eval_mode === "overlay");
   const bh = data.benchmark.equity;
+  // Bande « sorties au hasard » : affichée seulement si UNE seule stratégie est cochée.
+  const single = strats.length === 1 ? strats[0] : null;
+  const band = single?.random_band ?? null;
 
   const rows = useMemo(() => {
     return data.dates.map((d, i) => {
       const row: Record<string, number | string | null> = { date: d, __bh: bh?.[i] ?? null };
       for (const s of strats) row[s.key] = s.overlay_equity?.[i] ?? null;
+      if (band) {
+        const lo = band.p5[i];
+        const hi = band.p95[i];
+        row.__p5 = lo ?? null;
+        row.__band = lo != null && hi != null ? Number((hi - lo).toFixed(2)) : null;
+        row.__p50 = band.p50[i] ?? null;
+      }
       return row;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -632,7 +642,7 @@ function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
     <>
       <div className="rounded-lg p-2" style={{ width: "100%", height: 400, background: CHART_BG }}>
         <ResponsiveContainer>
-          <LineChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
+          <ComposedChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
             <CartesianGrid stroke={GRID} vertical={false} />
             <XAxis dataKey="date" minTickGap={70} tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} />
             <YAxis tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} width={52} domain={["auto", "auto"]} tickFormatter={(v) => fmtNum(v, 0)} />
@@ -642,20 +652,28 @@ function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
               formatter={(v, n) => [v == null ? "—" : fmtNum(Number(v)), n as string]}
             />
             <Legend />
+            {band && (
+              <>
+                <Area type="monotone" dataKey="__p5" stackId="ob" stroke="none" fill="none" legendType="none" isAnimationActive={false} />
+                <Area type="monotone" dataKey="__band" stackId="ob" stroke="none" fill="#94a3b8" fillOpacity={0.22} name="Sorties au hasard (5–95 %)" isAnimationActive={false} />
+                <Line type="monotone" dataKey="__p50" stroke="#94a3b8" strokeDasharray="4 4" strokeWidth={1.1} dot={false} name="Sorties au hasard (médiane)" connectNulls isAnimationActive={false} />
+              </>
+            )}
             <Line type="monotone" dataKey="__bh" name="Buy & hold (toujours investi)" stroke={BH_COLOR} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
             {strats.map((s) => (
-              <Line key={s.key} type="monotone" dataKey={s.key} name={`Overlay — ${s.label}`} stroke={s.color} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
+              <Line key={s.key} type="monotone" dataKey={s.key} name={`Overlay — ${s.label}`} stroke={s.color} strokeWidth={1.8} dot={false} connectNulls isAnimationActive={false} />
             ))}
             <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
       <p className="text-xs text-muted mt-2">
-        Tu pars <b>investi</b> (comme le buy & hold), puis tu <b>sors à chaque signal de
-        vente</b> et tu <b>rachètes au signal suivant</b>. La courbe overlay <b>colle au
-        buy & hold</b> quand tu es investi et ne s'en <b>écarte que pendant tes
-        sorties</b> : au-dessus du buy & hold = tes sorties t'ont <b>protégé</b> ; en
-        dessous = elles t'ont <b>coûté</b> (tu as manqué une hausse).
+        Tu pars <b>investi</b>, puis tu <b>sors sur le signal</b> et rachètes ensuite. La
+        courbe colle au buy & hold quand tu es investi, s'en écarte pendant tes sorties :
+        au-dessus du B&H = tes sorties t'ont <b>protégé</b>. La <b>zone grise</b> (1 seule
+        stratégie cochée) = ce que donneraient des <b>sorties au hasard</b> de mêmes
+        durées : <b>au-dessus de la zone</b> = le signal a un <b>vrai talent de timing</b>
+        ; dedans = pas mieux que sortir au pif.
       </p>
     </>
   );
@@ -833,7 +851,11 @@ function PriceChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
                 strokeDasharray="5 4"
                 ifOverflow="extendDomain"
               />,
-              <ReferenceDot key={`${s.key}-head-${i}`} x={sh.head.date} y={sh.head.price} r={5} fill={s.color} stroke="#fff" strokeWidth={1} />,
+              ...(sh.head
+                ? [
+                    <ReferenceDot key={`${s.key}-head-${i}`} x={sh.head.date} y={sh.head.price} r={5} fill={s.color} stroke="#fff" strokeWidth={1} />,
+                  ]
+                : []),
               ...sh.shoulders.map((so, j) => (
                 <ReferenceDot key={`${s.key}-sh-${i}-${j}`} x={so.date} y={so.price} r={3} fill={s.color} stroke="#fff" strokeWidth={1} />
               )),
