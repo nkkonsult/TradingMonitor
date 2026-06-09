@@ -142,6 +142,8 @@ function StrategiesSection({
   shown: Set<string>;
   toggle: (key: string) => void;
 }) {
+  const anyShown = shown.size > 0; // au moins une stratégie OU le buy & hold coché
+  const anyStrat = data.strategies.some((s) => shown.has(s.key)); // au moins une stratégie
   return (
     <>
       {/* Sélection des stratégies à afficher (+ buy & hold) */}
@@ -180,25 +182,31 @@ function StrategiesSection({
       </Card>
 
       {/* Tableau de métriques comparées (niveau trade + niveau série temporelle) */}
-      <Card title="Métriques comparées (stratégies cochées vs buy & hold)">
-        <MetricsTable data={data} shown={shown} />
-        <p className="text-xs text-muted mt-2">
-          CAGR/Max DD/VaR/réussite en %. Sharpe, Sortino, Calmar = ratios (plus
-          haut = mieux). Max DD = pire creux subi · VaR 95 % = perte quotidienne
-          dépassée 1 jour sur 20. ⚠️ La stratégie est en cash une partie du temps
-          (Sharpe « dilué ») — comparaison honnête face au buy & hold toujours investi.
-        </p>
-      </Card>
+      {anyShown && (
+        <Card title="Métriques comparées (stratégies cochées vs buy & hold)">
+          <MetricsTable data={data} shown={shown} />
+          <p className="text-xs text-muted mt-2">
+            CAGR/Max DD/VaR/réussite en %. Sharpe, Sortino, Calmar = ratios (plus
+            haut = mieux). Max DD = pire creux subi · VaR 95 % = perte quotidienne
+            dépassée 1 jour sur 20. ⚠️ La stratégie est en cash une partie du temps
+            (Sharpe « dilué ») — comparaison honnête face au buy & hold toujours investi.
+          </p>
+        </Card>
+      )}
 
       {/* Détail des trades des stratégies cochées (dates d'achat/vente) */}
-      <Card title="Détail des trades (stratégies cochées)">
-        <TradesDetail data={data} shown={shown} />
-      </Card>
+      {anyStrat && (
+        <Card title="Détail des trades (stratégies cochées)">
+          <TradesDetail data={data} shown={shown} />
+        </Card>
+      )}
 
       {/* Graphique 1 : courbes de rendement comparées */}
-      <Card title="Courbes de rendement (1$ investi, base 100)">
-        <EquityChart data={data} shown={shown} />
-      </Card>
+      {anyShown && (
+        <Card title="Courbes de rendement (1$ investi, base 100)">
+          <EquityChart data={data} shown={shown} />
+        </Card>
+      )}
 
       {/* Overlay : seulement pour les signaux de SORTIE (éviter une chute) */}
       {data.strategies.some((s) => shown.has(s.key) && s.eval_mode === "overlay") && (
@@ -217,6 +225,7 @@ function StrategiesSection({
       )}
 
       {/* Graphique 2 : cours du produit + repères des stratégies */}
+      {anyStrat && (
       <Card title={`Cours de ${data.ticker} + repères`}>
         <PriceChart data={data} shown={shown} />
         <p className="text-xs text-muted mt-2">
@@ -247,6 +256,7 @@ function StrategiesSection({
           </p>
         )}
       </Card>
+      )}
 
       {/* Panneau RSI : visible seulement si une stratégie à oscillateur est cochée */}
       <RsiPanel data={data} shown={shown} />
