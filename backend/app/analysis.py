@@ -12,7 +12,7 @@ import math
 
 from fastapi import APIRouter, HTTPException
 
-from charts import backtest, benchmark, config as ccfg, data, stats
+from charts import backtest, benchmark, config as ccfg, data, stats, universe
 from charts.strategy import head_shoulders, ma_crossover, rsi
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
@@ -85,8 +85,14 @@ def _equity_curve(df, trades, cost_per_side: float = 0.0) -> list[float]:
 
 @router.get("/defaults")
 def defaults() -> dict:
+    # Univers du sélecteur = S&P 500 complet (déjà en cache). Repli sur le prototype
+    # si la liste n'est pas récupérable.
+    try:
+        tickers = universe.load_sp500()
+    except Exception:  # noqa: BLE001
+        tickers = ccfg.TICKERS
     return {
-        "tickers": ccfg.TICKERS,
+        "tickers": tickers,
         "ma_short": ccfg.MA_SHORT,
         "ma_long": ccfg.MA_LONG,
         "strategies": [{"key": k, "label": lbl} for k, (_, lbl, _p) in STRATEGIES.items()],
