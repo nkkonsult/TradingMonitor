@@ -9,3 +9,4 @@ data/snapshots.db
 # Données régénérables / artefacts (analyse de graphiques)
 charts/data_cache/
 charts/output/
+charts/results.db

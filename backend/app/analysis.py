@@ -13,24 +13,13 @@ import math
 from fastapi import APIRouter, HTTPException
 
 from charts import backtest, benchmark, config as ccfg, data, stats, universe
-from charts.strategy import head_shoulders, ma_crossover, rsi
+from charts.registry import STRATEGIES  # registre partagé (source unique de vérité)
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
-# Registre des stratégies. Chaque module expose detect_trades / open_entry / indicators
-# avec une signature à mots-clés (+ **_ pour ignorer les params non utilisés), donc on
-# peut toutes les appeler de façon uniforme via **params.
-# Ajouter une stratégie/variante = ajouter une ligne ici (le front l'affiche tout seul).
-# Le 3e élément = params propres à la variante ; short/long (contrôle MM de l'UI) sont
-# toujours injectés en plus, les stratégies qui ne s'en servent pas les ignorent.
-STRATEGIES = {
-    "ma_crossover": (ma_crossover, "Croisement de moyennes mobiles", {}),
-    "rsi_classic": (rsi, "RSI 30/70", {"lower": 30, "upper": 70}),
-    "rsi_strict": (rsi, "RSI 20/80 (strict)", {"lower": 20, "upper": 80}),
-    "rsi_trend": (rsi, "RSI 30/70 + filtre MM200", {"lower": 30, "upper": 70, "trend_ma": 200}),
-    "hs_inverse": (head_shoulders, "Épaule-tête-épaule inversé (achat)", {"direction": "bullish"}),
-    "hs_classic": (head_shoulders, "Épaule-tête-épaule (vente/short)", {"direction": "bearish"}),
-}
+# STRATEGIES vient de charts/registry.py : mêmes définitions pour le dashboard et le
+# scan batch. Les modules exposent detect_trades / open_entry / indicators à mots-clés
+# (+ **_), appelables uniformément via **params ; short/long (UI) sont injectés en plus.
 
 # Couleur par stratégie (courbe d'equity + repères). Étendre si beaucoup de stratégies.
 _PALETTE = ["#2563eb", "#16a34a", "#db2777", "#7c3aed", "#ea580c", "#0891b2", "#ca8a04"]

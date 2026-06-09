@@ -46,3 +46,23 @@ def load_sp500(refresh: bool = False) -> list[str]:
 
     syms = df["Symbol"].astype(str).str.strip().str.replace(".", "-", regex=False)
     return sorted(s for s in syms if s and s.lower() != "nan")
+
+
+def load_sectors() -> dict[str, str]:
+    """Mappe chaque ticker -> son secteur GICS (colonne du CSV des constituants).
+
+    Sert à l'analyse PAR SECTEUR (la figure marche-t-elle mieux dans la tech, l'énergie… ?).
+    """
+    path = _cache_file()
+    if not path.exists():
+        load_sp500()  # télécharge et cache le CSV
+    df = pd.read_csv(path)
+    df["Symbol"] = df["Symbol"].astype(str).str.strip().str.replace(".", "-", regex=False)
+    # Colonne secteur selon la source : « GICS Sector » (Wikipédia/datahub) ou « Sector ».
+    sector_col = next(
+        (c for c in ("GICS Sector", "Sector", "sector") if c in df.columns),
+        None,
+    )
+    if sector_col is None:
+        return {}
+    return dict(zip(df["Symbol"], df[sector_col].astype(str)))
