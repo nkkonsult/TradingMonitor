@@ -4,12 +4,14 @@ import { api } from "./api";
 import { OverviewView } from "./views/OverviewView";
 import { AccountView } from "./views/AccountView";
 import { AnalysisView } from "./views/AnalysisView";
+import { AssistantView } from "./views/AssistantView";
 import { AddAccountModal } from "./components/AddAccountModal";
 
 type Tab =
   | { kind: "overview" }
   | { kind: "account"; id: string }
-  | { kind: "analysis" };
+  | { kind: "analysis" }
+  | { kind: "assistant" };
 
 export default function App() {
   const qc = useQueryClient();
@@ -55,6 +57,12 @@ export default function App() {
             >
               Analyse
             </TabBtn>
+            <TabBtn
+              active={tab.kind === "assistant"}
+              onClick={() => setTab({ kind: "assistant" })}
+            >
+              Assistant
+            </TabBtn>
             <AgentsDropdown
               accounts={accountsQ.data ?? []}
               activeId={tab.kind === "account" ? tab.id : null}
@@ -80,6 +88,8 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 py-6">
         {tab.kind === "analysis" ? (
           <AnalysisView />
+        ) : tab.kind === "assistant" ? (
+          <AssistantView />
         ) : (
         <>
         {accountsQ.isLoading && (

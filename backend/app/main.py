@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from . import alpaca_client as ac
-from . import analysis, scheduler, services, storage
+from . import analysis, chat, scheduler, services, storage
 
 
 class NewAccount(BaseModel):
@@ -47,6 +47,7 @@ app.add_middleware(
 )
 
 app.include_router(analysis.router)
+app.include_router(chat.router)
 
 
 @app.get("/health")
