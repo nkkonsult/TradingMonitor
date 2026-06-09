@@ -13,7 +13,7 @@ import math
 from fastapi import APIRouter, HTTPException
 
 from charts import backtest, benchmark, config as ccfg, data, stats
-from charts.strategy import ma_crossover, rsi
+from charts.strategy import head_shoulders, ma_crossover, rsi
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -28,6 +28,8 @@ STRATEGIES = {
     "rsi_classic": (rsi, "RSI 30/70", {"lower": 30, "upper": 70}),
     "rsi_strict": (rsi, "RSI 20/80 (strict)", {"lower": 20, "upper": 80}),
     "rsi_trend": (rsi, "RSI 30/70 + filtre MM200", {"lower": 30, "upper": 70, "trend_ma": 200}),
+    "hs_inverse": (head_shoulders, "Épaule-tête-épaule inversé (achat)", {"direction": "bullish"}),
+    "hs_classic": (head_shoulders, "Épaule-tête-épaule (vente/short)", {"direction": "bearish"}),
 }
 
 # Couleur par stratégie (courbe d'equity + repères). Étendre si beaucoup de stratégies.
@@ -56,22 +58,26 @@ def _equity_curve(df, trades, cost_per_side: float = 0.0) -> list[float]:
     à la VENTE (facteur (1-c) au moment de la sortie). Cohérent avec Trade.net_return.
     """
     close = df["Close"]
-    entries = {t.entry_date: t.entry_price for t in trades}
-    exits = {t.exit_date: t.entry_price for t in trades}
+    # On garde le prix d'entrée ET la direction (+1 long / -1 short) par trade.
+    entries = {t.entry_date: (t.entry_price, t.direction) for t in trades}
+    exits = {t.exit_date: (t.entry_price, t.direction) for t in trades}
     realized = 1.0
     in_trade = False
     entry_price = None
+    direction = 1
     out = []
     for d in df.index:
         if d in entries:
             in_trade = True
-            entry_price = entries[d]
-            realized *= 1.0 - cost_per_side  # coût d'achat
+            entry_price, direction = entries[d]
+            realized *= 1.0 - cost_per_side  # coût d'entrée
         c = float(close.loc[d])
-        val = realized * (c / entry_price) if in_trade else realized
+        # 1 + direction·(c/entrée − 1) : monte avec le prix en long, baisse en short.
+        val = realized * (1.0 + direction * (c / entry_price - 1.0)) if in_trade else realized
         out.append(round(val * 100.0, 2))
         if d in exits:
-            realized *= (c / entry_price) * (1.0 - cost_per_side)  # coût de vente
+            entry_price, direction = exits[d]
+            realized *= (1.0 + direction * (c / entry_price - 1.0)) * (1.0 - cost_per_side)
             in_trade = False
             entry_price = None
     return out

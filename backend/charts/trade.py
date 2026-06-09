@@ -27,12 +27,13 @@ class Trade:
     def net_return(self, cost_per_side: float = 0.0) -> float:
         """Rendement NET de coûts : on paie `cost_per_side` à l'achat ET à la vente.
 
-        Modèle multiplicatif : facteur (1 - c) appliqué à chaque transaction, donc
-        (1 - c)² sur l'aller-retour. Cohérent avec la courbe d'equity (cf. analysis).
+        Facteur = (1 + direction·(sortie/entrée − 1)) · (1 − c)². Correct dans les DEUX
+        sens : pour un long (direction=+1) ça vaut (sortie/entrée)·(1−c)² comme avant ;
+        pour un short (direction=−1) le gain vient de la baisse, et les coûts restent un
+        drag. Cohérent avec la courbe d'equity (cf. analysis._equity_curve).
         """
-        gross_factor = self.exit_price / self.entry_price
-        net_factor = gross_factor * (1.0 - cost_per_side) ** 2
-        return self.direction * (net_factor - 1.0)
+        gross_factor = 1.0 + self.direction * (self.exit_price / self.entry_price - 1.0)
+        return gross_factor * (1.0 - cost_per_side) ** 2 - 1.0
 
     @property
     def holding_days(self) -> int:
