@@ -37,10 +37,8 @@ export function AnalysisView() {
 
   const mut = useMutation<Analysis, Error>({
     mutationFn: () => api.analyze(ticker.trim().toUpperCase(), short, long, costBps),
-    onSuccess: (data) => {
-      // À chaque analyse, on affiche par défaut toutes les stratégies + le buy & hold.
-      setShown(new Set([...data.strategies.map((s) => s.key), BH_KEY]));
-    },
+    // Aucune stratégie cochée par défaut : l'utilisateur choisit ce qu'il affiche.
+    // La sélection est conservée d'une analyse à l'autre.
   });
 
   const submit = (e: React.FormEvent) => {
@@ -187,6 +185,11 @@ function StrategiesSection({
           dépassée 1 jour sur 20. ⚠️ La stratégie est en cash une partie du temps
           (Sharpe « dilué ») — comparaison honnête face au buy & hold toujours investi.
         </p>
+      </Card>
+
+      {/* Détail des trades des stratégies cochées (dates d'achat/vente) */}
+      <Card title="Détail des trades (stratégies cochées)">
+        <TradesDetail data={data} shown={shown} />
       </Card>
 
       {/* Graphique 1 : courbes de rendement comparées */}
@@ -415,6 +418,93 @@ function MetricsTable({ data, shown }: { data: Analysis; shown: Set<string> }) {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+/* ------------------------- Détail des trades ---------------------- */
+
+/** Liste chaque trade des stratégies cochées : sens, dates et prix d'entrée/sortie,
+ *  rendement net, durée. Trié par date d'entrée. */
+function TradesDetail({ data, shown }: { data: Analysis; shown: Set<string> }) {
+  const shownStrats = data.strategies.filter((s) => shown.has(s.key));
+  const rows = shownStrats
+    .flatMap((s) =>
+      s.trades.map((t) => ({ ...t, label: s.label, color: s.color })),
+    )
+    .sort((a, b) => a.entry_date.localeCompare(b.entry_date));
+
+  if (shownStrats.length === 0)
+    return (
+      <p className="text-sm text-muted">
+        Coche une stratégie ci-dessus pour voir ses trades.
+      </p>
+    );
+  if (rows.length === 0)
+    return (
+      <p className="text-sm text-muted">
+        Aucun trade clôturé pour la sélection.
+      </p>
+    );
+
+  return (
+    <div className="overflow-x-auto max-h-[420px] overflow-y-auto">
+      <table className="w-full text-sm tabular-nums">
+        <thead className="sticky top-0 bg-panel">
+          <tr className="text-muted text-xs uppercase tracking-wide text-left">
+            <th className="font-medium py-1.5 pr-3">Stratégie</th>
+            <th className="font-medium py-1.5 px-3">Sens</th>
+            <th className="font-medium py-1.5 px-3">Entrée</th>
+            <th className="font-medium py-1.5 px-3">Sortie</th>
+            <th className="font-medium py-1.5 px-3 text-right">Rendement net</th>
+            <th className="font-medium py-1.5 px-3 text-right">Durée</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((t, i) => {
+            const short = t.direction === -1;
+            return (
+              <tr key={i} className="border-t border-border">
+                <td className="py-1.5 pr-3">
+                  <span className="inline-flex items-center gap-2">
+                    <span
+                      className="inline-block w-3 h-3 rounded-sm"
+                      style={{ background: t.color }}
+                    />
+                    {t.label}
+                  </span>
+                </td>
+                <td className="py-1.5 px-3">
+                  <span className={short ? "text-amber-400" : "text-gain"}>
+                    {short ? "Vente à découvert" : "Achat (long)"}
+                  </span>
+                </td>
+                <td className="py-1.5 px-3">
+                  {t.entry_date} @ {t.entry_price}
+                </td>
+                <td className="py-1.5 px-3">
+                  {t.exit_date} @ {t.exit_price}
+                </td>
+                <td
+                  className={`py-1.5 px-3 text-right ${
+                    t.return_pct >= 0 ? "text-gain" : "text-loss"
+                  }`}
+                >
+                  {pct(t.return_pct)}
+                </td>
+                <td className="py-1.5 px-3 text-right text-muted">
+                  {t.holding_days} j
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p className="text-xs text-muted mt-2">
+        {rows.length} trade{rows.length > 1 ? "s" : ""} clôturé
+        {rows.length > 1 ? "s" : ""}. Sens : 🟢 achat (long) = on profite de la
+        hausse · 🟠 vente à découvert (short) = on profite de la baisse.
+      </p>
     </div>
   );
 }
