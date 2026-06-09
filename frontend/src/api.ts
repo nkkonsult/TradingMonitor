@@ -157,6 +157,13 @@ export type PatternShape = {
   shoulders: { date: string; price: number }[];
 };
 
+// Baseline « pile ou face » : bande 5–95 % d'entrées au hasard (signaux d'entrée).
+export type RandomBand = {
+  p5: (number | null)[];
+  p50: (number | null)[];
+  p95: (number | null)[];
+};
+
 export type StrategyResult = {
   key: string;
   label: string;
@@ -168,6 +175,8 @@ export type StrategyResult = {
   trades: AnalysisTrade[];
   equity: (number | null)[];
   overlay_equity: (number | null)[]; // garder l'action + suivre les signaux (vs B&H)
+  eval_mode: "overlay" | "entry"; // overlay = signal de sortie ; entry = signal d'entrée
+  random_band: RandomBand | null; // baseline « pile ou face » (signaux d'entrée)
   overlays: Overlay[];
   oscillator: Oscillator | null;
   shapes: PatternShape[] | null;

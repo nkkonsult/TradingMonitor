@@ -21,3 +21,15 @@ STRATEGIES = {
 }
 
 PARAMS_VERSION = "v1"
+
+# Mode d'évaluation de chaque stratégie -> détermine le graphe de comparaison pertinent :
+#  - "overlay" : signal de SORTIE (éviter une chute) -> comparer au buy & hold (tenir).
+#  - "entry"   : signal d'ENTRÉE (détecter une montée) -> comparer au HASARD (pile ou face).
+EVAL_MODE = {
+    "ma_crossover": "overlay",
+    "rsi_classic": "overlay",
+    "rsi_strict": "overlay",
+    "rsi_trend": "overlay",
+    "hs_inverse": "entry",
+    "hs_classic": "overlay",
+}

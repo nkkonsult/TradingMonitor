@@ -10,10 +10,11 @@ from __future__ import annotations
 
 import math
 
+import numpy as np
 from fastapi import APIRouter, HTTPException
 
 from charts import backtest, benchmark, config as ccfg, data, stats, universe
-from charts.registry import STRATEGIES  # registre partagé (source unique de vérité)
+from charts.registry import EVAL_MODE, STRATEGIES  # registre partagé (source unique de vérité)
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
@@ -122,6 +123,45 @@ def _overlay_equity(df, trades, open_entry_date, cost_per_side: float = 0.0) -> 
     return out
 
 
+def _random_band(df, trades, cost_per_side: float = 0.0, n_draws: int = 200, seed: int = 12345):
+    """Baseline « pile ou face » pour un signal d'ENTRÉE : et si on achetait AU HASARD ?
+
+    On rejoue ~200 jeux d'entrées aléatoires reproductibles (graine fixe) ayant la MÊME
+    exposition que le signal (même nombre de trades, mêmes durées), et on renvoie la
+    BANDE 5–95 % + la médiane de l'équité au fil du temps. Si la courbe du signal sort
+    de la bande vers le haut -> il bat le hasard. (Cash par défaut, investi pendant les
+    fenêtres, comme la courbe de rendement autonome -> comparaison à armes égales.)
+    """
+    close = df["Close"].to_numpy()
+    n = len(close)
+    if n < 3 or not trades:
+        return None
+    pos = {d: i for i, d in enumerate(df.index)}
+    spans = [pos[t.exit_date] - pos[t.entry_date] for t in trades]
+    spans = [s for s in spans if 1 <= s < n - 1]
+    if not spans:
+        return None
+
+    daily = np.zeros(n)
+    daily[1:] = close[1:] / close[:-1] - 1.0
+    rng = np.random.default_rng(seed)
+    cost_factor = (1.0 - cost_per_side) ** (2 * len(spans))  # frais ~ aller-retour par trade
+    paths = np.empty((n_draws, n))
+    for k in range(n_draws):
+        invested = np.zeros(n, dtype=bool)
+        for s in spans:
+            start = int(rng.integers(0, n - s))
+            invested[start + 1 : start + s + 1] = True
+        growth = np.where(invested, 1.0 + daily, 1.0)
+        paths[k] = np.cumprod(growth) * cost_factor * 100.0
+
+    return {
+        "p5": [round(float(x), 2) for x in np.percentile(paths, 5, axis=0)],
+        "p50": [round(float(x), 2) for x in np.percentile(paths, 50, axis=0)],
+        "p95": [round(float(x), 2) for x in np.percentile(paths, 95, axis=0)],
+    }
+
+
 @router.get("/defaults")
 def defaults() -> dict:
     # Univers du sélecteur = S&P 500 complet (déjà en cache). Repli sur le prototype
@@ -214,6 +254,9 @@ def analyze(
         equity = _equity_curve(df, trades, cost)
         # Overlay : garder l'action mais suivre les signaux (vs B&H toujours investi).
         overlay = _overlay_equity(df, trades, oe[0] if oe else None, cost)
+        # Mode d'évaluation + baseline « hasard » (uniquement pour les signaux d'entrée).
+        eval_mode = EVAL_MODE.get(key, "overlay")
+        random_band = _random_band(df, trades, cost) if eval_mode == "entry" else None
         # Métriques de niveau série temporelle (Sharpe, Sortino, Max DD...) sur la courbe d'equity.
         risk = stats.summarize_equity(equity)
 
@@ -245,6 +288,8 @@ def analyze(
                 ],
                 "equity": equity,
                 "overlay_equity": overlay,
+                "eval_mode": eval_mode,
+                "random_band": random_band,
                 "overlays": overlays,
                 "oscillator": osc,
                 "shapes": shp,
