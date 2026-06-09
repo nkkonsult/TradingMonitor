@@ -167,6 +167,7 @@ export type StrategyResult = {
   open_position: OpenPosition | null;
   trades: AnalysisTrade[];
   equity: (number | null)[];
+  overlay_equity: (number | null)[]; // garder l'action + suivre les signaux (vs B&H)
   overlays: Overlay[];
   oscillator: Oscillator | null;
   shapes: PatternShape[] | null;

@@ -72,6 +72,56 @@ def _equity_curve(df, trades, cost_per_side: float = 0.0) -> list[float]:
     return out
 
 
+def _overlay_equity(df, trades, open_entry_date, cost_per_side: float = 0.0) -> list[float]:
+    """Overlay : on part INVESTI (comme le buy & hold) et on suit les signaux.
+
+    - Stratégie LONG : on détient l'action, mais on SORT (cash) pendant les « trous »
+      (de chaque vente jusqu'au rachat suivant). On est donc investi du début à la 1re
+      vente, puis on alterne selon les signaux.
+    - Stratégie SHORT (évitement, ex. H&S baissier) : on détient par défaut et on
+      S'ÉCARTE (cash) pendant la fenêtre du signal (la chute annoncée).
+    La courbe colle au buy & hold quand on détient et ne s'en écarte que pendant les sorties.
+    """
+    close = df["Close"].to_numpy()
+    dates = df.index
+    n = len(close)
+    if n == 0:
+        return []
+    pos = {d: i for i, d in enumerate(dates)}
+    holding = [True] * n  # investi depuis le début
+
+    if trades:
+        direction = trades[0].direction
+        if direction == 1:  # long : cash dans les trous (vente -> rachat)
+            for i, t in enumerate(trades):
+                ex = pos[t.exit_date]
+                if i + 1 < len(trades):
+                    nxt = pos[trades[i + 1].entry_date]
+                elif open_entry_date is not None:
+                    nxt = pos[open_entry_date]
+                else:
+                    nxt = n - 1
+                for j in range(ex + 1, nxt + 1):
+                    holding[j] = False
+        else:  # short/évitement : on s'écarte pendant la fenêtre du signal
+            for t in trades:
+                a, b = pos[t.entry_date], pos[t.exit_date]
+                for j in range(a + 1, b + 1):
+                    holding[j] = False
+
+    eq = 1.0 - cost_per_side  # achat initial
+    out = [round(eq * 100.0, 2)]
+    prev = True
+    for i in range(1, n):
+        if holding[i] != prev:
+            eq *= 1.0 - cost_per_side  # coût à chaque vente / rachat
+            prev = holding[i]
+        if holding[i]:
+            eq *= close[i] / close[i - 1]
+        out.append(round(eq * 100.0, 2))
+    return out
+
+
 @router.get("/defaults")
 def defaults() -> dict:
     # Univers du sélecteur = S&P 500 complet (déjà en cache). Repli sur le prototype
@@ -162,6 +212,8 @@ def analyze(
         ]
 
         equity = _equity_curve(df, trades, cost)
+        # Overlay : garder l'action mais suivre les signaux (vs B&H toujours investi).
+        overlay = _overlay_equity(df, trades, oe[0] if oe else None, cost)
         # Métriques de niveau série temporelle (Sharpe, Sortino, Max DD...) sur la courbe d'equity.
         risk = stats.summarize_equity(equity)
 
@@ -192,6 +244,7 @@ def analyze(
                     for t in trades
                 ],
                 "equity": equity,
+                "overlay_equity": overlay,
                 "overlays": overlays,
                 "oscillator": osc,
                 "shapes": shp,
