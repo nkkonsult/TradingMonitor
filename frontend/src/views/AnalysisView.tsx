@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  Bar,
+  BarChart,
   Brush,
   CartesianGrid,
   Legend,
@@ -196,6 +198,11 @@ function StrategiesSection({
       {/* Graphique 1 : courbes de rendement comparées */}
       <Card title="Courbes de rendement (1$ investi, base 100)">
         <EquityChart data={data} shown={shown} />
+      </Card>
+
+      {/* Comparaison fenêtre par fenêtre : chaque trade vs buy & hold sur sa fenêtre */}
+      <Card title="Comparaison par trade : stratégie vs buy & hold (même fenêtre)">
+        <WindowComparisonChart data={data} shown={shown} />
       </Card>
 
       {/* Graphique 2 : cours du produit + repères des stratégies */}
@@ -574,6 +581,64 @@ function EquityChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
         </LineChart>
       </ResponsiveContainer>
     </div>
+  );
+}
+
+/** Pour chaque trade d'UNE stratégie : 2 barres côte à côte — ce que la stratégie a
+ *  rapporté vs ce que « ne rien faire » (buy & hold) aurait rapporté sur la MÊME fenêtre. */
+function WindowComparisonChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
+  const strats = data.strategies.filter((s) => shown.has(s.key));
+  if (strats.length !== 1)
+    return (
+      <p className="text-sm text-muted">
+        Coche <b>une seule</b> stratégie pour comparer ses trades au buy & hold,
+        fenêtre par fenêtre.
+      </p>
+    );
+  const s = strats[0];
+  if (s.trades.length === 0)
+    return <p className="text-sm text-muted">Aucun trade clôturé pour cette stratégie.</p>;
+
+  const rows = s.trades.map((t, i) => ({
+    name: `#${i + 1}`,
+    entry: t.entry_date,
+    exit: t.exit_date,
+    strat: Number((t.return_pct * 100).toFixed(2)),
+    bh: Number((t.bh_return_window * 100).toFixed(2)),
+  }));
+
+  return (
+    <>
+      <div className="rounded-lg p-2" style={{ width: "100%", height: 380, background: CHART_BG }}>
+        <ResponsiveContainer>
+          <BarChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
+            <CartesianGrid stroke={GRID} vertical={false} />
+            <XAxis dataKey="name" tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} />
+            <YAxis tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} width={48} tickFormatter={(v) => `${v}%`} />
+            <Tooltip
+              contentStyle={tooltipStyle}
+              formatter={(v, n) => [`${fmtNum(Number(v))}%`, n as string]}
+              labelFormatter={(l, p) => {
+                const r = p?.[0]?.payload as { entry: string; exit: string } | undefined;
+                return r ? `Trade ${l} : ${r.entry} → ${r.exit}` : `Trade ${l}`;
+              }}
+            />
+            <Legend />
+            <ReferenceLine y={0} stroke={AXIS_LINE} />
+            <Bar dataKey="strat" name={s.label} fill={s.color} />
+            <Bar dataKey="bh" name="Buy & hold (même fenêtre)" fill="#94a3b8" />
+            {rows.length > 25 && <Brush dataKey="name" height={22} stroke="#2563eb" fill="#f1f5f9" />}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <p className="text-xs text-muted mt-2">
+        Chaque paire de barres = un trade, sur sa fenêtre exacte. ⚠️ Pour une stratégie
+        d'<b>entrée long</b> (MM, RSI), les deux barres sont <b>quasi identiques</b> :
+        sur la fenêtre du trade, ta stratégie <i>est</i> le buy & hold (la vraie
+        différence se joue dans les périodes hors marché, pas ici). Pour le{" "}
+        <b>H&S short</b>, elles s'opposent : la stratégie gagne quand le buy & hold perd.
+      </p>
+    </>
   );
 }
 

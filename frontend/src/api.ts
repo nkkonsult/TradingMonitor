@@ -114,6 +114,7 @@ export type AnalysisTrade = {
   return_pct: number;
   holding_days: number;
   direction: number; // +1 long, -1 short
+  bh_return_window: number; // ce que le buy & hold a fait sur la même fenêtre
 };
 
 export type BuyHold = {

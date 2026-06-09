@@ -184,6 +184,10 @@ def analyze(
                         "gross_return_pct": round(t.return_pct, 4),
                         "holding_days": t.holding_days,
                         "direction": t.direction,
+                        # Ce que « ne rien faire » (buy & hold) aurait fait sur la MÊME fenêtre.
+                        "bh_return_window": round(
+                            float(df["Close"].loc[t.exit_date] / df["Close"].loc[t.entry_date] - 1.0), 4
+                        ),
                     }
                     for t in trades
                 ],
