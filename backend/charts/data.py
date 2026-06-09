@@ -44,3 +44,29 @@ def get_ohlcv(
     df.index.name = "Date"
     df.to_parquet(path)
     return df
+
+
+def ensure_cached(
+    tickers: list[str],
+    start: str = config.START,
+    end: str | None = config.END,
+    refresh: bool = False,
+    log_every: int = 25,
+) -> tuple[list[str], list[tuple[str, str]]]:
+    """Télécharge/met en cache une liste de tickers (passage au S&P 500 = job batch).
+
+    Robuste : un ticker qui échoue (délisté, indisponible) est ignoré et n'arrête pas
+    le lot. Renvoie (réussis, [(ticker, erreur), ...]).
+    """
+    ok: list[str] = []
+    failed: list[tuple[str, str]] = []
+    total = len(tickers)
+    for i, t in enumerate(tickers, 1):
+        try:
+            get_ohlcv(t, start, end, refresh=refresh)
+            ok.append(t)
+        except Exception as e:  # noqa: BLE001
+            failed.append((t, str(e)))
+        if log_every and (i % log_every == 0 or i == total):
+            print(f"[cache] {i}/{total} — ok={len(ok)} échecs={len(failed)}", flush=True)
+    return ok, failed
