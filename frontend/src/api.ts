@@ -91,6 +91,19 @@ export type AnalysisMetrics = {
   meilleur?: number;
   pire?: number;
   duree_moyenne_jours?: number;
+  profit_factor?: number | null;
+  expectancy?: number;
+};
+
+// Métriques de niveau série temporelle (calculées sur la courbe d'equity).
+export type RiskMetrics = {
+  cagr?: number | null;
+  volatilite_annuelle?: number | null;
+  sharpe?: number | null;
+  sortino?: number | null;
+  calmar?: number | null;
+  max_drawdown?: number | null;
+  var_95?: number | null;
 };
 
 export type AnalysisTrade = {
@@ -109,6 +122,7 @@ export type BuyHold = {
   end_price?: number;
   total_return?: number;
   equity?: (number | null)[];
+  risk?: RiskMetrics;
 };
 
 export type OpenPosition = {
@@ -138,6 +152,7 @@ export type StrategyResult = {
   label: string;
   color: string;
   metrics: AnalysisMetrics;
+  risk: RiskMetrics;
   strategy_total_with_open: number;
   open_position: OpenPosition | null;
   trades: AnalysisTrade[];
@@ -163,6 +178,7 @@ export type AnalysisDefaults = {
   ma_short: number;
   ma_long: number;
   strategies: StrategyInfo[];
+  cost_bps: number;
 };
 
 const BASE = "/api";
@@ -201,8 +217,8 @@ export const api = {
     ),
   overview: () => j<Overview>("/overview"),
   analysisDefaults: () => j<AnalysisDefaults>("/analysis/defaults"),
-  analyze: (ticker: string, short: number, long: number) =>
+  analyze: (ticker: string, short: number, long: number, costBps: number) =>
     j<Analysis>(
-      `/analysis/${encodeURIComponent(ticker)}?short=${short}&long=${long}`,
+      `/analysis/${encodeURIComponent(ticker)}?short=${short}&long=${long}&cost_bps=${costBps}`,
     ),
 };

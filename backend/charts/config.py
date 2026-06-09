@@ -26,3 +26,8 @@ MA_LONG = 200   # moyenne mobile longue (tendance de fond)
 
 # --- Paramètres stratégie RSI (Relative Strength Index) ---
 RSI_PERIOD = 14   # fenêtre standard de Wilder (jours)
+
+# --- Coûts de transaction ---
+# Alpaca = sans commission sur les actions -> le coût = surtout slippage/spread.
+# Exprimé en FRACTION par CÔTÉ (achat OU vente). 0.0005 = 5 bps/côté ≈ 10 bps l'aller-retour.
+COST_PER_SIDE = 0.0005

@@ -49,8 +49,12 @@ def _round(x) -> float | None:
     return round(float(x), 2)
 
 
-def _equity_curve(df, trades) -> list[float]:
-    """Croissance de 1$ (base 100), pas à pas : plat hors position, scalé pendant un trade."""
+def _equity_curve(df, trades, cost_per_side: float = 0.0) -> list[float]:
+    """Croissance de 1$ (base 100), pas à pas : plat hors position, scalé pendant un trade.
+
+    Coûts : on paie `cost_per_side` à l'ACHAT (facteur (1-c) au moment de l'entrée) et
+    à la VENTE (facteur (1-c) au moment de la sortie). Cohérent avec Trade.net_return.
+    """
     close = df["Close"]
     entries = {t.entry_date: t.entry_price for t in trades}
     exits = {t.exit_date: t.entry_price for t in trades}
@@ -62,11 +66,12 @@ def _equity_curve(df, trades) -> list[float]:
         if d in entries:
             in_trade = True
             entry_price = entries[d]
+            realized *= 1.0 - cost_per_side  # coût d'achat
         c = float(close.loc[d])
         val = realized * (c / entry_price) if in_trade else realized
         out.append(round(val * 100.0, 2))
         if d in exits:
-            realized *= c / entry_price
+            realized *= (c / entry_price) * (1.0 - cost_per_side)  # coût de vente
             in_trade = False
             entry_price = None
     return out
@@ -79,26 +84,41 @@ def defaults() -> dict:
         "ma_short": ccfg.MA_SHORT,
         "ma_long": ccfg.MA_LONG,
         "strategies": [{"key": k, "label": lbl} for k, (_, lbl, _p) in STRATEGIES.items()],
+        "cost_bps": round(ccfg.COST_PER_SIDE * 1e4, 2),
     }
 
 
 @router.get("/{ticker}")
-def analyze(ticker: str, short: int = ccfg.MA_SHORT, long: int = ccfg.MA_LONG) -> dict:
-    """Analyse complète d'un ticker : toutes les stratégies + benchmark."""
+def analyze(
+    ticker: str,
+    short: int = ccfg.MA_SHORT,
+    long: int = ccfg.MA_LONG,
+    cost_bps: float = ccfg.COST_PER_SIDE * 1e4,
+) -> dict:
+    """Analyse complète d'un ticker : toutes les stratégies + benchmark.
+
+    `cost_bps` = coût de transaction par côté, en points de base (1 bp = 0,01 %).
+    """
     ticker = ticker.upper()
     if short >= long:
         raise HTTPException(400, "La MM courte doit être plus petite que la MM longue.")
+    cost = max(0.0, cost_bps) / 1e4  # bps -> fraction par côté
 
     df = _load(ticker)
     dates = df.index.strftime("%Y-%m-%d").tolist()
     close = [_round(c) for c in df["Close"].to_numpy()]
     final_close = float(df["Close"].dropna().iloc[-1])
 
-    # Benchmark buy & hold + sa courbe d'equity (base 100).
+    # Benchmark buy & hold + sa courbe d'equity (base 100). Coût = 1 seul achat au départ
+    # (jamais revendu) -> décale le niveau de (1-c), n'affecte pas les ratios annualisés.
     bh = benchmark.buy_and_hold(df)
     first_close = float(df["Close"].dropna().iloc[0])
-    bh_equity = [_round(c / first_close * 100.0) if c is not None else None for c in close]
+    bh_equity = [_round(c / first_close * 100.0 * (1.0 - cost)) if c is not None else None for c in close]
     bh["equity"] = bh_equity
+    if bh.get("total_return") is not None:
+        bh["total_return"] = round((1.0 + bh["total_return"]) * (1.0 - cost) - 1.0, 4)
+    # Métriques de risque du benchmark (comparaison à armes égales avec les stratégies).
+    bh["risk"] = stats.summarize_equity(bh_equity)
 
     strategies_out = []
     for i, (key, (strat, label, sparams)) in enumerate(STRATEGIES.items()):
@@ -106,12 +126,13 @@ def analyze(ticker: str, short: int = ccfg.MA_SHORT, long: int = ccfg.MA_LONG) -
         # stratégie pioche ce qui la concerne et ignore le reste (via **_).
         call_kwargs = {"short": short, "long": long, **sparams}
         trades = strat.detect_trades(df, **call_kwargs)
-        metrics = stats.summarize(backtest.to_dataframe(trades))
+        metrics = stats.summarize(backtest.to_dataframe(trades, cost))
 
         oe = strat.open_entry(df, **call_kwargs)
         booked = metrics.get("rendement_total_cumule") or 0.0
         if oe is not None:
-            open_return = final_close / oe[1] - 1.0
+            # Position ouverte : coût d'achat payé, coût de vente pas encore (non clôturée).
+            open_return = (final_close / oe[1]) * (1.0 - cost) - 1.0
             total_with_open = round((1 + booked) * (1 + open_return) - 1.0, 4)
             open_position = {
                 "entry_date": oe[0].strftime("%Y-%m-%d"),
@@ -137,12 +158,17 @@ def analyze(ticker: str, short: int = ccfg.MA_SHORT, long: int = ccfg.MA_LONG) -
             for j, col in enumerate(ind.columns)
         ]
 
+        equity = _equity_curve(df, trades, cost)
+        # Métriques de niveau série temporelle (Sharpe, Sortino, Max DD...) sur la courbe d'equity.
+        risk = stats.summarize_equity(equity)
+
         strategies_out.append(
             {
                 "key": key,
                 "label": label,
                 "color": _PALETTE[i % len(_PALETTE)],
                 "metrics": metrics,
+                "risk": risk,
                 "strategy_total_with_open": total_with_open,
                 "open_position": open_position,
                 "trades": [
@@ -151,12 +177,13 @@ def analyze(ticker: str, short: int = ccfg.MA_SHORT, long: int = ccfg.MA_LONG) -
                         "exit_date": t.exit_date.strftime("%Y-%m-%d"),
                         "entry_price": round(t.entry_price, 2),
                         "exit_price": round(t.exit_price, 2),
-                        "return_pct": round(t.return_pct, 4),
+                        "return_pct": round(t.net_return(cost), 4),
+                        "gross_return_pct": round(t.return_pct, 4),
                         "holding_days": t.holding_days,
                     }
                     for t in trades
                 ],
-                "equity": _equity_curve(df, trades),
+                "equity": equity,
                 "overlays": overlays,
                 "oscillator": osc,
             }

@@ -31,11 +31,12 @@ export function AnalysisView() {
   const [ticker, setTicker] = useState("AAPL");
   const [short, setShort] = useState(50);
   const [long, setLong] = useState(200);
+  const [costBps, setCostBps] = useState(5);
   // Stratégies/benchmark affichés (indépendant du produit). Rien d'imposé en permanence.
   const [shown, setShown] = useState<Set<string>>(new Set());
 
   const mut = useMutation<Analysis, Error>({
-    mutationFn: () => api.analyze(ticker.trim().toUpperCase(), short, long),
+    mutationFn: () => api.analyze(ticker.trim().toUpperCase(), short, long, costBps),
     onSuccess: (data) => {
       // À chaque analyse, on affiche par défaut toutes les stratégies + le buy & hold.
       setShown(new Set([...data.strategies.map((s) => s.key), BH_KEY]));
@@ -86,6 +87,17 @@ export function AnalysisView() {
               className="w-24 bg-panel2 border border-border rounded px-2 py-1.5 text-sm"
             />
           </Field>
+          <Field label="Coûts (bps/côté)">
+            <input
+              type="number"
+              min={0}
+              step={0.5}
+              value={costBps}
+              onChange={(e) => setCostBps(Number(e.target.value))}
+              className="w-24 bg-panel2 border border-border rounded px-2 py-1.5 text-sm"
+              title="Coût de transaction par côté en points de base (1 bp = 0,01 %). 5 = ~10 bps l'aller-retour."
+            />
+          </Field>
           <button
             type="submit"
             disabled={mut.isPending}
@@ -95,7 +107,8 @@ export function AnalysisView() {
           </button>
         </form>
         <p className="text-xs text-muted mt-2">
-          Données journalières (yfinance), prix ajustés depuis 2010.
+          Données journalières (yfinance), prix ajustés depuis 2010. Rendements nets
+          des coûts de transaction (slippage/spread saisis ci-dessus).
         </p>
       </Card>
 
@@ -160,8 +173,19 @@ function StrategiesSection({
           />
         </div>
         <p className="text-xs text-muted mt-2">
-          Rendement des stratégies = trades clôturés (réalisés), comparable entre
-          stratégies. ⚠️ Un seul titre ne prouve rien.
+          Rendement des stratégies = trades clôturés (réalisés), <b>nets de coûts</b>,
+          comparable entre stratégies. ⚠️ Un seul titre ne prouve rien.
+        </p>
+      </Card>
+
+      {/* Tableau de métriques comparées (niveau trade + niveau série temporelle) */}
+      <Card title="Métriques comparées (stratégies cochées vs buy & hold)">
+        <MetricsTable data={data} shown={shown} />
+        <p className="text-xs text-muted mt-2">
+          CAGR/Max DD/VaR/réussite en %. Sharpe, Sortino, Calmar = ratios (plus
+          haut = mieux). Max DD = pire creux subi · VaR 95 % = perte quotidienne
+          dépassée 1 jour sur 20. ⚠️ La stratégie est en cash une partie du temps
+          (Sharpe « dilué ») — comparaison honnête face au buy & hold toujours investi.
         </p>
       </Card>
 
@@ -281,6 +305,102 @@ function Row({
         </span>
       )}
     </label>
+  );
+}
+
+/* ------------------------- Tableau de métriques ------------------- */
+
+const num = (n: number | undefined | null, d = 2) =>
+  n == null ? "—" : n.toFixed(d);
+
+/** Colonnes : niveau trade (réussite, profit factor, trades) + niveau série
+ *  temporelle (CAGR, Sharpe, Sortino, Calmar, Max DD, VaR). Le buy & hold n'a
+ *  pas de trades -> ses colonnes trade restent à «—». */
+function MetricsTable({ data, shown }: { data: Analysis; shown: Set<string> }) {
+  const rows = data.strategies
+    .filter((s) => shown.has(s.key))
+    .map((s) => ({
+      color: s.color,
+      label: s.label,
+      cagr: s.risk?.cagr,
+      sharpe: s.risk?.sharpe,
+      sortino: s.risk?.sortino,
+      calmar: s.risk?.calmar,
+      maxdd: s.risk?.max_drawdown,
+      var95: s.risk?.var_95,
+      pf: s.metrics.profit_factor,
+      win: s.metrics.taux_reussite,
+      n: s.metrics.n_trades,
+    }));
+  if (shown.has(BH_KEY)) {
+    rows.push({
+      color: BH_COLOR,
+      label: "Buy & hold",
+      cagr: data.benchmark.risk?.cagr,
+      sharpe: data.benchmark.risk?.sharpe,
+      sortino: data.benchmark.risk?.sortino,
+      calmar: data.benchmark.risk?.calmar,
+      maxdd: data.benchmark.risk?.max_drawdown,
+      var95: data.benchmark.risk?.var_95,
+      pf: null,
+      win: undefined,
+      n: undefined as unknown as number,
+    });
+  }
+
+  if (rows.length === 0)
+    return <p className="text-sm text-muted">Coche au moins une stratégie.</p>;
+
+  const cols: [string, (r: (typeof rows)[number]) => string, boolean][] = [
+    ["CAGR", (r) => pct(r.cagr), false],
+    ["Sharpe", (r) => num(r.sharpe), false],
+    ["Sortino", (r) => num(r.sortino), false],
+    ["Calmar", (r) => num(r.calmar), false],
+    ["Max DD", (r) => pct(r.maxdd), true],
+    ["VaR 95%", (r) => pct(r.var95), true],
+    ["Profit f.", (r) => num(r.pf), false],
+    ["Réussite", (r) => pct(r.win), false],
+    ["Trades", (r) => (r.n == null ? "—" : String(r.n)), false],
+  ];
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm tabular-nums">
+        <thead>
+          <tr className="text-muted text-xs uppercase tracking-wide">
+            <th className="text-left font-medium py-1.5 pr-3">Stratégie</th>
+            {cols.map(([h]) => (
+              <th key={h} className="text-right font-medium py-1.5 px-3">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr key={r.label} className="border-t border-border">
+              <td className="py-1.5 pr-3">
+                <span className="inline-flex items-center gap-2">
+                  <span
+                    className="inline-block w-3 h-3 rounded-sm"
+                    style={{ background: r.color }}
+                  />
+                  {r.label}
+                </span>
+              </td>
+              {cols.map(([h, fmt, loss]) => (
+                <td
+                  key={h}
+                  className={`text-right py-1.5 px-3 ${loss ? "text-loss" : ""}`}
+                >
+                  {fmt(r)}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
