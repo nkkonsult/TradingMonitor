@@ -10,7 +10,10 @@ const PCT_COLS = new Set([
   "return_net",
   "bh_return_window",
   "trade_drawdown",
+  "gap_bh_return",
 ]);
+// Colonnes colorées par signe = TON P&L (vert gain / rouge perte).
+const SIGN_COLS = new Set(["return_gross", "return_net", "trade_drawdown"]);
 
 const fmtCell = (col: string, v: string | number) => {
   if (v == null) return "—";
@@ -104,9 +107,20 @@ export function DataView() {
           </div>
         }
       >
-        <div className="text-xs text-muted mb-2">
-          {totalFiltered.toLocaleString("fr-FR")} trade(s) — clique un libellé ci-dessus
-          pour filtrer.
+        <div className="text-xs text-muted mb-2 space-y-1">
+          <div>
+            {totalFiltered.toLocaleString("fr-FR")} trade(s) — clique un libellé
+            ci-dessus pour filtrer.
+          </div>
+          <div>
+            <b>return_net</b> = ton rendement (frais déduits). <b>bh_return_window</b> =
+            ce que « ne rien faire » (buy & hold) aurait fait <i>pendant</i> le trade
+            (pertinent pour les signaux d'évitement). <b>gap_bh_return</b> = ce que le
+            marché a fait <i>pendant que tu étais HORS marché après ce trade</i> :{" "}
+            <b>négatif = chute évitée</b> (bon pour une stratégie d'entrée),{" "}
+            <b>positif = hausse manquée</b> (mauvais). C'est là que se joue la vraie
+            différence avec le buy & hold.
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs tabular-nums">
@@ -126,7 +140,7 @@ export function DataView() {
                     <td
                       key={c}
                       className={`py-1.5 px-2 whitespace-nowrap ${
-                        PCT_COLS.has(c) && typeof row[c] === "number"
+                        SIGN_COLS.has(c) && typeof row[c] === "number"
                           ? (row[c] as number) >= 0
                             ? "text-gain"
                             : "text-loss"

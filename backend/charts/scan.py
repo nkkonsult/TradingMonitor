@@ -44,12 +44,24 @@ def scan_ticker(
     """Toutes les stratégies sur un titre -> liste de lignes (1 par trade clôturé)."""
     df = data.get_ohlcv(ticker)
     close = df["Close"]
+    last_date = df.index[-1]
     sector = sectors.get(ticker, "?")
     rows: list[dict] = []
 
     for key, (strat, _label, params) in STRATEGIES.items():
         call = {"short": config.MA_SHORT, "long": config.MA_LONG, **params}
-        for t in strat.detect_trades(df, **call):
+        trades = strat.detect_trades(df, **call)
+        for i, t in enumerate(trades):
+            # « Trou » : période HORS MARCHÉ après ce trade (jusqu'à l'entrée suivante,
+            # ou la fin des données). Le buy & hold sur ce trou = ce que tu as
+            # manqué/évité en étant en cash. NÉGATIF = chute évitée (bon) ;
+            # POSITIF = hausse manquée (mauvais). C'est LÀ que vit la valeur d'une
+            # stratégie d'entrée (la différence avec B&H ne se joue pas dans le trade).
+            gap_end_date = trades[i + 1].entry_date if i + 1 < len(trades) else last_date
+            exit_close = float(close.loc[t.exit_date])
+            gap_end_close = float(close.loc[gap_end_date])
+            gap_bh_return = (gap_end_close / exit_close - 1.0) if exit_close else 0.0
+            gap_days = int((gap_end_date - t.exit_date).days)
             rows.append(
                 {
                     "ticker": ticker,
@@ -66,6 +78,8 @@ def scan_ticker(
                     "return_net": round(t.net_return(cost), 6),
                     "bh_return_window": round(_bh_return_window(close, t.entry_date, t.exit_date), 6),
                     "trade_drawdown": round(_trade_drawdown(close, t.entry_date, t.exit_date, t.direction), 6),
+                    "gap_bh_return": round(gap_bh_return, 6),
+                    "gap_days": gap_days,
                     "regime_entry": regime_mod.regime_at(reg, t.entry_date),
                 }
             )
