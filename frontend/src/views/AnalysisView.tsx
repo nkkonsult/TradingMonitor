@@ -144,6 +144,9 @@ function StrategiesSection({
 }) {
   const anyShown = shown.size > 0; // au moins une stratégie OU le buy & hold coché
   const anyStrat = data.strategies.some((s) => shown.has(s.key)); // au moins une stratégie
+  // Références à superposer dans la carte « Comparaison » (choix de l'utilisateur).
+  const [showBH, setShowBH] = useState(true);
+  const [showRandom, setShowRandom] = useState(true);
   return (
     <>
       {/* Sélection des stratégies à afficher (+ buy & hold) */}
@@ -208,19 +211,25 @@ function StrategiesSection({
         </Card>
       )}
 
-      {/* Overlay : seulement pour les signaux de SORTIE (éviter une chute) */}
-      {data.strategies.some((s) => shown.has(s.key) && s.eval_mode === "overlay") && (
-        <Card title="Si tu gardais l'action mais suivais les signaux (overlay vs buy & hold)">
-          <OverlayChart data={data} shown={shown} />
-        </Card>
-      )}
-
-      {/* Pile ou face : seulement pour les signaux d'ENTRÉE (détecter une montée) */}
-      {data.strategies.some(
-        (s) => shown.has(s.key) && s.eval_mode === "entry" && s.random_band,
-      ) && (
-        <Card title="Le signal bat-il le hasard ? (pile ou face : entrées au hasard, même exposition)">
-          <RandomBandChart data={data} shown={shown} />
+      {/* Comparaison unique : courbe naturelle de la stratégie + références choisies */}
+      {anyStrat && (
+        <Card
+          title="Comparaison"
+          right={
+            <div className="flex items-center gap-3 text-sm">
+              <span className="text-muted text-xs">Comparer à :</span>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" checked={showBH} onChange={(e) => setShowBH(e.target.checked)} />
+                Buy & hold
+              </label>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" checked={showRandom} onChange={(e) => setShowRandom(e.target.checked)} />
+                Hasard
+              </label>
+            </div>
+          }
+        >
+          <ComparisonChart data={data} shown={shown} showBH={showBH} showRandom={showRandom} />
         </Card>
       )}
 
@@ -607,18 +616,33 @@ function EquityChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
 /** Overlay : on part INVESTI (comme le buy & hold), puis on sort à chaque signal de
  *  vente et on rachète au signal suivant. La courbe colle au B&H quand on est investi
  *  et ne s'en écarte que pendant les sorties — c'est là qu'on gagne/perd vs B&H. */
-function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
-  // Overlay = seulement les signaux de sortie (les signaux d'entrée se jugent au hasard).
-  const strats = data.strategies.filter((s) => shown.has(s.key) && s.eval_mode === "overlay");
+/** Comparaison unique : la courbe NATURELLE de chaque stratégie cochée (overlay pour un
+ *  signal de sortie, rendement pour une entrée) + les références choisies par cases
+ *  (Buy & hold et/ou Hasard). La zone hasard n'apparaît qu'avec UNE seule stratégie. */
+function ComparisonChart({
+  data,
+  shown,
+  showBH,
+  showRandom,
+}: {
+  data: Analysis;
+  shown: Set<string>;
+  showBH: boolean;
+  showRandom: boolean;
+}) {
+  const strats = data.strategies.filter((s) => shown.has(s.key));
   const bh = data.benchmark.equity;
-  // Bande « sorties au hasard » : affichée seulement si UNE seule stratégie est cochée.
   const single = strats.length === 1 ? strats[0] : null;
-  const band = single?.random_band ?? null;
+  const band = showRandom && single?.random_band ? single.random_band : null;
+  // Courbe naturelle : overlay si signal de sortie, rendement si signal d'entrée.
+  const curve = (s: Analysis["strategies"][number]) =>
+    s.eval_mode === "overlay" ? s.overlay_equity : s.equity;
 
   const rows = useMemo(() => {
     return data.dates.map((d, i) => {
-      const row: Record<string, number | string | null> = { date: d, __bh: bh?.[i] ?? null };
-      for (const s of strats) row[s.key] = s.overlay_equity?.[i] ?? null;
+      const row: Record<string, number | string | null> = { date: d };
+      if (showBH) row.__bh = bh?.[i] ?? null;
+      for (const s of strats) row[s.key] = curve(s)[i] ?? null;
       if (band) {
         const lo = band.p5[i];
         const hi = band.p95[i];
@@ -629,14 +653,12 @@ function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
       return row;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, shown]);
+  }, [data, shown, showBH, showRandom]);
 
   if (strats.length === 0)
-    return (
-      <p className="text-sm text-muted">
-        Coche une stratégie pour voir l'overlay (garder l'action + suivre ses signaux).
-      </p>
-    );
+    return <p className="text-sm text-muted">Coche une stratégie pour la comparer.</p>;
+
+  const hasOverlayStrat = strats.some((s) => s.eval_mode === "overlay");
 
   return (
     <>
@@ -654,86 +676,33 @@ function OverlayChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
             <Legend />
             {band && (
               <>
-                <Area type="monotone" dataKey="__p5" stackId="ob" stroke="none" fill="none" legendType="none" isAnimationActive={false} />
-                <Area type="monotone" dataKey="__band" stackId="ob" stroke="none" fill="#94a3b8" fillOpacity={0.22} name="Sorties au hasard (5–95 %)" isAnimationActive={false} />
-                <Line type="monotone" dataKey="__p50" stroke="#94a3b8" strokeDasharray="4 4" strokeWidth={1.1} dot={false} name="Sorties au hasard (médiane)" connectNulls isAnimationActive={false} />
+                <Area type="monotone" dataKey="__p5" stackId="rb" stroke="none" fill="none" legendType="none" isAnimationActive={false} />
+                <Area type="monotone" dataKey="__band" stackId="rb" stroke="none" fill="#94a3b8" fillOpacity={0.22} name="Hasard (zone 5–95 %)" isAnimationActive={false} />
+                <Line type="monotone" dataKey="__p50" stroke="#94a3b8" strokeDasharray="4 4" strokeWidth={1.1} dot={false} name="Hasard (médiane)" connectNulls isAnimationActive={false} />
               </>
             )}
-            <Line type="monotone" dataKey="__bh" name="Buy & hold (toujours investi)" stroke={BH_COLOR} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
+            {showBH && (
+              <Line type="monotone" dataKey="__bh" name="Buy & hold" stroke={BH_COLOR} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
+            )}
             {strats.map((s) => (
-              <Line key={s.key} type="monotone" dataKey={s.key} name={`Overlay — ${s.label}`} stroke={s.color} strokeWidth={1.8} dot={false} connectNulls isAnimationActive={false} />
+              <Line key={s.key} type="monotone" dataKey={s.key} name={(s.eval_mode === "overlay" ? "Overlay — " : "") + s.label} stroke={s.color} strokeWidth={1.8} dot={false} connectNulls isAnimationActive={false} />
             ))}
             <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>
       <p className="text-xs text-muted mt-2">
-        Tu pars <b>investi</b>, puis tu <b>sors sur le signal</b> et rachètes ensuite. La
-        courbe colle au buy & hold quand tu es investi, s'en écarte pendant tes sorties :
-        au-dessus du B&H = tes sorties t'ont <b>protégé</b>. La <b>zone grise</b> (1 seule
-        stratégie cochée) = ce que donneraient des <b>sorties au hasard</b> de mêmes
-        durées : <b>au-dessus de la zone</b> = le signal a un <b>vrai talent de timing</b>
-        ; dedans = pas mieux que sortir au pif.
-      </p>
-    </>
-  );
-}
-
-/** Pile ou face : la courbe du signal d'ENTRÉE vs une BANDE 5–95 % d'entrées au hasard
- *  (même nombre de trades + mêmes durées). Au-dessus de la bande = le signal bat le hasard. */
-function RandomBandChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
-  const entries = data.strategies.filter(
-    (s) => shown.has(s.key) && s.eval_mode === "entry" && s.random_band,
-  );
-  if (entries.length === 0)
-    return <p className="text-sm text-muted">Coche un signal d'entrée (ex. H&S inversé).</p>;
-  const s = entries[0];
-  const b = s.random_band!;
-
-  const rows = useMemo(() => {
-    return data.dates.map((d, i) => {
-      const lo = b.p5[i];
-      const hi = b.p95[i];
-      return {
-        date: d,
-        p5: lo ?? null, // base transparente
-        band: lo != null && hi != null ? Number((hi - lo).toFixed(2)) : null, // hauteur p5->p95
-        p50: b.p50[i] ?? null,
-        signal: s.equity[i] ?? null,
-      };
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, shown]);
-
-  return (
-    <>
-      <div className="rounded-lg p-2" style={{ width: "100%", height: 400, background: CHART_BG }}>
-        <ResponsiveContainer>
-          <ComposedChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
-            <CartesianGrid stroke={GRID} vertical={false} />
-            <XAxis dataKey="date" minTickGap={70} tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} />
-            <YAxis tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} width={52} domain={["auto", "auto"]} tickFormatter={(v) => fmtNum(v, 0)} />
-            <Tooltip
-              contentStyle={tooltipStyle}
-              labelFormatter={(l) => `Date : ${l}`}
-              formatter={(v, n) => [v == null ? "—" : fmtNum(Number(v)), n as string]}
-            />
-            <Legend />
-            {/* Bande 5–95 % : base p5 transparente + hauteur empilée */}
-            <Area type="monotone" dataKey="p5" stackId="band" stroke="none" fill="none" legendType="none" isAnimationActive={false} />
-            <Area type="monotone" dataKey="band" stackId="band" stroke="none" fill="#94a3b8" fillOpacity={0.25} name="Hasard (zone 5–95 %)" isAnimationActive={false} />
-            <Line type="monotone" dataKey="p50" stroke="#64748b" strokeDasharray="4 4" strokeWidth={1.2} dot={false} name="Hasard (médiane)" connectNulls isAnimationActive={false} />
-            <Line type="monotone" dataKey="signal" stroke={s.color} strokeWidth={1.9} dot={false} name={s.label} connectNulls isAnimationActive={false} />
-            <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
-          </ComposedChart>
-        </ResponsiveContainer>
-      </div>
-      <p className="text-xs text-muted mt-2">
-        Courbe colorée = le signal (cash par défaut, investi pendant ses trades). Zone
-        grise = ce que donnerait l'achat <b>au hasard</b> avec la même exposition (même
-        nombre de trades, mêmes durées), sur 200 tirages. <b>Au-dessus de la zone</b> = le
-        signal <b>bat le hasard</b> ; <b>dedans</b> = indiscernable du hasard ; en dessous
-        = pire que le hasard. (Verdict définitif → à l'échelle des 503 titres.)
+        Courbe de chaque stratégie dans sa forme naturelle :{" "}
+        {hasOverlayStrat && (
+          <>
+            <b>overlay</b> pour un signal de sortie (tu tiens l'action et tu sors sur le
+            signal){" "}
+          </>
+        )}
+        <b>rendement</b> pour un signal d'entrée (cash par défaut, investi sur le signal).
+        Coche les <b>références</b> ci-dessus : au-dessus du <b>buy & hold</b> = utile vs
+        ne rien faire ; au-dessus de la <b>zone hasard</b> = vrai talent (mieux que le
+        pile ou face). La zone hasard n'apparaît qu'avec <b>une seule</b> stratégie cochée.
       </p>
     </>
   );
