@@ -6,6 +6,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ReferenceArea,
   ReferenceDot,
   ReferenceLine,
   ResponsiveContainer,
@@ -207,6 +208,14 @@ function StrategiesSection({
             (s) => shown.has(s.key) && s.trades.some((t) => t.direction === -1),
           ) && <> · 🟠 entrée short (pari baissier) · 🟣 sortie short (rachat).</>}
         </p>
+        {data.strategies.filter((s) => shown.has(s.key)).length === 1 && (
+          <p className="text-xs text-muted mt-1">
+            ⬜ <b>Zones grisées = hors marché</b> (en cash) : regarde le cours
+            pendant ces zones — s'il <b>monte</b>, tu as manqué une hausse ; s'il{" "}
+            <b>baisse</b>, tu as évité une chute. C'est là que la stratégie diffère du
+            buy & hold. <i>(Coche une seule stratégie pour voir ses trous.)</i>
+          </p>
+        )}
         {data.strategies.some((s) => shown.has(s.key) && s.shapes?.length) && (
           <p className="text-xs text-muted mt-1">
             <b>Épaule-tête-épaule</b> : les pastilles de la couleur de la stratégie
@@ -596,6 +605,22 @@ function PriceChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, shown]);
 
+  // Périodes HORS MARCHÉ (en cash) — affichées seulement si UNE seule stratégie est
+  // cochée (sinon illisible). Ce sont les "trous" : avant le 1er trade, entre les
+  // trades, après le dernier. C'est là que la stratégie diffère du buy & hold.
+  const single = shownStrategies.length === 1 ? shownStrategies[0] : null;
+  const gaps: { from: string; to: string }[] = [];
+  if (single && single.trades.length && data.dates.length) {
+    const ts = [...single.trades].sort((a, b) => a.entry_date.localeCompare(b.entry_date));
+    const first = data.dates[0];
+    const last = data.dates[data.dates.length - 1];
+    if (ts[0].entry_date > first) gaps.push({ from: first, to: ts[0].entry_date });
+    for (let i = 0; i < ts.length - 1; i++)
+      gaps.push({ from: ts[i].exit_date, to: ts[i + 1].entry_date });
+    const lastExit = ts[ts.length - 1].exit_date;
+    if (lastExit < last) gaps.push({ from: lastExit, to: last });
+  }
+
   return (
     <div
       className="rounded-lg p-2"
@@ -604,6 +629,17 @@ function PriceChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
       <ResponsiveContainer>
         <LineChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
           <CartesianGrid stroke={GRID} vertical={false} />
+          {/* Zones grisées = périodes hors marché (en cash) de la stratégie cochée. */}
+          {gaps.map((g, i) => (
+            <ReferenceArea
+              key={`gap-${i}`}
+              x1={g.from}
+              x2={g.to}
+              fill="#94a3b8"
+              fillOpacity={0.16}
+              ifOverflow="extendDomain"
+            />
+          ))}
           <XAxis dataKey="date" minTickGap={70} tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} />
           <YAxis tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} width={52} domain={["auto", "auto"]} tickFormatter={(v) => fmtNum(v, 0)} />
           <Tooltip
