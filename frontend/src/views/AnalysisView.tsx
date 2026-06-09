@@ -224,9 +224,9 @@ function StrategiesSection({
         </Card>
       )}
 
-      {/* Graphique 2 : cours du produit + repères des stratégies */}
-      {anyStrat && (
-      <Card title={`Cours de ${data.ticker} + repères`}>
+      {/* Graphique du cours : TOUJOURS visible (la valeur de l'action), repères ajoutés
+          uniquement quand des stratégies sont cochées. */}
+      <Card title={`Cours de ${data.ticker}`}>
         <PriceChart data={data} shown={shown} />
         <p className="text-xs text-muted mt-2">
           Glisse le curseur pour lire les valeurs ; glisse les poignées du bas
@@ -256,7 +256,6 @@ function StrategiesSection({
           </p>
         )}
       </Card>
-      )}
 
       {/* Panneau RSI : visible seulement si une stratégie à oscillateur est cochée */}
       <RsiPanel data={data} shown={shown} />
