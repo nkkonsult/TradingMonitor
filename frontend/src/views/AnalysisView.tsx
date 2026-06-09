@@ -198,6 +198,18 @@ function StrategiesSection({
         <EquityChart data={data} shown={shown} />
       </Card>
 
+      {/* Surperformance vs buy & hold : isole l'effet des périodes hors marché */}
+      <Card title="Surperformance vs buy & hold (base 100 · >100 = tu bats le B&H)">
+        <OutperformanceChart data={data} shown={shown} />
+        <p className="text-xs text-muted mt-2">
+          Stratégie ÷ buy & hold. Au-dessus de <b>100</b> = la stratégie bat le buy &
+          hold ; en-dessous = elle perd. La courbe est <b>plate quand tu es investi</b>
+          (tu suis le marché) et ne bouge que pendant tes <b>périodes hors marché</b> :
+          elle <b>monte</b> si un trou t'a évité une baisse, <b>descend</b> s'il t'a fait
+          manquer une hausse. C'est là que se joue toute la différence.
+        </p>
+      </Card>
+
       {/* Graphique 2 : cours du produit + repères des stratégies */}
       <Card title={`Cours de ${data.ticker} + repères`}>
         <PriceChart data={data} shown={shown} />
@@ -570,6 +582,53 @@ function EquityChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
                 <Line key={s.key} type="monotone" dataKey={s.key} name={s.label} stroke={s.color} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
               ),
           )}
+          <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+/** Surperformance = équité stratégie ÷ équité buy & hold (base 100). Plate quand on est
+ *  investi (on suit le marché), bouge uniquement pendant les périodes hors marché. */
+function OutperformanceChart({ data, shown }: { data: Analysis; shown: Set<string> }) {
+  const strats = data.strategies.filter((s) => shown.has(s.key));
+  const bh = data.benchmark.equity;
+
+  const rows = useMemo(() => {
+    return data.dates.map((d, i) => {
+      const row: Record<string, number | string | null> = { date: d };
+      const b = bh?.[i];
+      for (const s of strats) {
+        const e = s.equity[i];
+        row[s.key] =
+          e != null && b != null && b !== 0 ? Number(((e / b) * 100).toFixed(2)) : null;
+      }
+      return row;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, shown]);
+
+  if (strats.length === 0)
+    return <p className="text-sm text-muted">Coche une stratégie pour la comparer au buy & hold.</p>;
+
+  return (
+    <div className="rounded-lg p-2" style={{ width: "100%", height: 360, background: CHART_BG }}>
+      <ResponsiveContainer>
+        <LineChart data={rows} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
+          <CartesianGrid stroke={GRID} vertical={false} />
+          <XAxis dataKey="date" minTickGap={70} tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} />
+          <YAxis tick={{ fontSize: 11, fill: AXIS }} stroke={AXIS_LINE} width={52} domain={["auto", "auto"]} tickFormatter={(v) => fmtNum(v, 0)} />
+          <Tooltip
+            contentStyle={tooltipStyle}
+            labelFormatter={(l) => `Date : ${l}`}
+            formatter={(v, n) => [v == null ? "—" : fmtNum(Number(v)), n as string]}
+          />
+          <Legend />
+          <ReferenceLine y={100} stroke="#64748b" strokeDasharray="5 4" label={{ value: "buy & hold", position: "right", fontSize: 11, fill: AXIS }} />
+          {strats.map((s) => (
+            <Line key={s.key} type="monotone" dataKey={s.key} name={s.label} stroke={s.color} strokeWidth={1.6} dot={false} connectNulls isAnimationActive={false} />
+          ))}
           <Brush dataKey="date" height={26} stroke="#2563eb" fill="#f1f5f9" travellerWidth={8} tickFormatter={() => ""} />
         </LineChart>
       </ResponsiveContainer>
