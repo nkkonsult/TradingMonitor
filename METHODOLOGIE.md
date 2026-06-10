@@ -59,7 +59,7 @@ C'est une vraie question scientifique, débattue depuis longtemps (référence a
 - **Univers :** les **503 sociétés du S&P 500** (les plus grandes entreprises américaines cotées). On a d'abord prototypé sur 10 valeurs, puis basculé sur les 503 pour avoir **beaucoup de données** (= puissance statistique).
 - **Cache :** les données sont **enregistrées sur le disque** après le premier téléchargement, pour ne pas re-télécharger à chaque fois.
 
-> ⚠️ **Biais du survivant (à signaler) :** on prend les sociétés **actuellement** dans le S&P 500. Celles qui en sont sorties (faillites, rachats) manquent → l'échantillon penche vers les « survivantes » (plutôt des gagnantes). On l'assume et on le mentionne, car corriger cela demanderait l'historique complet des compositions de l'indice.
+> ⚠️ **Biais du survivant / de sélection (à signaler) — QUANTIFIÉ :** on prend les sociétés **actuellement** dans le S&P 500. Mesure faite : **97,4 % de ces titres ont MONTÉ** sur la période (médiane **+635 %**), seulement 2,6 % ont baissé. C'est un univers **massivement biaisé vers les gagnantes** : les sociétés sorties de l'indice (faillites, rachats) manquent. Conséquence : le Buy & Hold paraît « imbattable » par **artefact de sélection** (pas par génie), et les stratégies qui « achètent les creux » (RSI) sont **avantagées** par cette dérive haussière. **Nos résultats positifs sont donc à lire comme conditionnels à cet univers.** Le contournement principal = l'**analyse par régime** (les périodes baissières testent les signaux *sans* l'aide de la dérive). Un univers vraiment non-biaisé exigerait des données payantes (CRSP) incluant les titres délistés.
 
 ---
 
