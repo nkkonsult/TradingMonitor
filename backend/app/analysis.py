@@ -123,6 +123,37 @@ def _overlay_equity(df, trades, open_entry_date, cost_per_side: float = 0.0) -> 
     return out
 
 
+def _random_windows(n: int, spans: list[int], rng) -> "np.ndarray":
+    """Place len(spans) fenêtres des longueurs `spans` SANS chevauchement, au hasard.
+
+    Renvoie un masque booléen (True dans les fenêtres). L'exposition totale vaut
+    EXACTEMENT sum(spans) -> même temps investi que le signal (corrige le biais des
+    chevauchements). Méthode : on répartit l'espace libre (n - sum) en k+1 trous
+    aléatoires (avant / entre / après les fenêtres), placées dans un ordre aléatoire.
+    """
+    total = int(sum(spans))
+    mask = np.zeros(n, dtype=bool)
+    free = n - total
+    if free <= 0:  # ne tient pas sans chevauchement (cas rare) -> repli indépendant
+        for s in spans:
+            start = int(rng.integers(0, max(1, n - s)))
+            mask[start : start + s] = True
+        return mask
+    k = len(spans)
+    order = rng.permutation(k)
+    cuts = np.sort(rng.integers(0, free + 1, size=k))  # k bornes -> k+1 trous
+    gaps = np.empty(k + 1, dtype=int)
+    gaps[0] = cuts[0]
+    gaps[1:k] = np.diff(cuts)
+    gaps[k] = free - cuts[-1]
+    pos = int(gaps[0])
+    for j in range(k):
+        s = int(spans[order[j]])
+        mask[pos : pos + s] = True
+        pos += s + int(gaps[j + 1])
+    return mask
+
+
 def _random_band(df, trades, cost_per_side: float = 0.0, n_draws: int = 200, seed: int = 12345):
     """Baseline « pile ou face » pour un signal d'ENTRÉE : et si on achetait AU HASARD ?
 
@@ -148,10 +179,7 @@ def _random_band(df, trades, cost_per_side: float = 0.0, n_draws: int = 200, see
     cost_factor = (1.0 - cost_per_side) ** (2 * len(spans))  # frais ~ aller-retour par trade
     paths = np.empty((n_draws, n))
     for k in range(n_draws):
-        invested = np.zeros(n, dtype=bool)
-        for s in spans:
-            start = int(rng.integers(0, n - s))
-            invested[start + 1 : start + s + 1] = True
+        invested = _random_windows(n, spans, rng)  # entrées au hasard, SANS chevauchement
         growth = np.where(invested, 1.0 + daily, 1.0)
         paths[k] = np.cumprod(growth) * cost_factor * 100.0
 
@@ -200,11 +228,8 @@ def _random_overlay_band(df, trades, open_entry_date, cost_per_side: float = 0.0
     cost_factor = (1.0 - cost_per_side) ** (2 * len(out_spans))
     paths = np.empty((n_draws, n))
     for k in range(n_draws):
-        holding = np.ones(n, dtype=bool)
-        for s in out_spans:
-            start = int(rng.integers(0, n - s))
-            holding[start + 1 : start + s + 1] = False
-        growth = np.where(holding, 1.0 + daily, 1.0)
+        out_mask = _random_windows(n, out_spans, rng)  # sorties au hasard, SANS chevauchement
+        growth = np.where(~out_mask, 1.0 + daily, 1.0)
         paths[k] = np.cumprod(growth) * cost_factor * 100.0
 
     return {
