@@ -20,8 +20,8 @@ STRATEGIES = {
     "hs_classic": (head_shoulders, "Épaule-tête-épaule (vente/short)", {"direction": "bearish"}),
     "db_bottom": (double_top_bottom, "Double creux (achat)", {"direction": "bottom"}),
     "dt_top": (double_top_bottom, "Double sommet (vente/short)", {"direction": "top"}),
-    "sr_breakout": (support_resistance, "Cassure de résistance (tendance)", {"variant": "breakout"}),
-    "sr_bounce": (support_resistance, "Rebond sur support (retour moyenne)", {"variant": "bounce"}),
+    "sr_breakout": (support_resistance, "Cassure de résistance → hausse (achat)", {"variant": "breakout"}),
+    "sr_breakdown": (support_resistance, "Cassure de support → baisse (short)", {"variant": "breakdown"}),
 }
 
 PARAMS_VERSION = "v1"
@@ -39,5 +39,5 @@ EVAL_MODE = {
     "db_bottom": "entry",
     "dt_top": "overlay",
     "sr_breakout": "entry",
-    "sr_bounce": "entry",
+    "sr_breakdown": "entry",
 }

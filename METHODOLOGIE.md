@@ -111,10 +111,11 @@ Pour chaque stratégie : *l'idée*, *la règle exacte*, *les paramètres* (les �
 ### 5.5 Support / résistance HORIZONTAUX (droites, par touches répétées)
 - **L'idée du trader :** une **résistance** est une **droite horizontale** = un **niveau de prix** que le cours a atteint **plusieurs fois** sans le franchir (les vendeurs y reviennent). Un **support** = pareil par le bas (les acheteurs y reviennent). Plus le niveau est **touché de fois**, plus il est crédible.
 - **Comment on le détecte (de façon chiffrée) :** on repère les **sommets** et les **creux** locaux, puis on **regroupe ceux qui tombent au même prix** (à une tolérance près, **2 %**). Un groupe d'au moins **3 touches** définit une **droite horizontale** (le niveau = le prix moyen du groupe). **Condition de validité :** entre ces touches, le cours **ne doit pas franchir la droite** (sinon le niveau a déjà été cassé → il n'est plus valide). *(C'est différent — et plus fidèle — qu'un « canal glissant » qui donnerait une courbe ondulée.)*
-- **Deux usages OPPOSÉS de la même droite :**
-  - **Cassure (breakout)** : on achète quand le cours **franchit** une résistance → *« le marché a pris sa décision »*. **Suiveur de tendance** (on achète *après* le mouvement, donc « haut »).
-  - **Rebond (bounce)** : on achète quand le cours **touche le support et repart** ; objectif = la résistance. **Retour à la moyenne** (acheter « bas »).
-- **Paramètres :** fenêtre de pivot ±10 jours, tolérance « même prix » = **2 %**, **2 touches** minimum, **tampon de confirmation = 0,5 %**, objectif = +10 %.
+- **Le SIGNAL = la CASSURE du niveau confirmé**, dans le sens du franchissement (*« le marché a pris sa décision »*) :
+  - cassure **au-dessus d'une résistance** → la hausse est décidée → **achat (long)** ;
+  - cassure **en dessous d'un support** → la baisse est décidée → **vente à découvert (short)**.
+  Les **touches** servent à **valider** la droite ; la **cassure** **déclenche** le trade. *(On ne « rachète pas le rebond » : tant que le cours respecte le niveau, il n'y a pas de décision.)*
+- **Paramètres :** fenêtre de pivot ±10 jours, tolérance « même prix » = **2 %**, **3 touches** minimum (paramètre à balayer 2/3), **tampon de confirmation = 0,5 %**, objectif = ±10 %.
 - **Le tampon de confirmation (anti « chasse au stop ») :** comme tout le monde connaît ces niveaux, de gros acteurs poussent parfois le prix **juste au-delà** pour déclencher les stop-loss groupés, puis le marché repart à l'envers (« fausse cassure »). On exige donc que la clôture dépasse le niveau **d'un tampon**, et ce **des deux côtés** (support ET résistance).
 - **Intérêt pour le rapport :** la stratégie teste DIRECTEMENT l'opposition **tendance (cassure) vs retour à la moyenne (rebond)** sur les mêmes droites. *(Extension v2 : supports/résistances **obliques** = lignes de tendance inclinées, plus subjectives à détecter.)*
 

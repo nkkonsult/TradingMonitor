@@ -73,40 +73,39 @@ def _scan(df, variant, pivot_window, tol, min_touches, buffer, target, break_hor
     vals = df["Close"].to_numpy()
     n = len(vals)
     highs, lows = _pivots(vals, pivot_window)
-    is_break = variant == "breakout"
-    levels = _levels(vals, highs if is_break else lows, tol, min_touches, 1 if is_break else -1)
+    up = variant == "breakout"     # résistance -> cassure vers le HAUT -> hausse (long)
+    d = 1 if up else -1            # breakdown : support -> cassure vers le BAS -> baisse (short)
+    levels = _levels(vals, highs if up else lows, tol, min_touches, 1 if up else -1)
     levels.sort(key=lambda L: L["activate"])
 
     recs, last_exit = [], -1
     for L in levels:
         price, act = L["price"], L["activate"]
-        # signal d'entrée après validation du niveau
+        # signal = CASSURE du niveau confirmé (dans le sens du franchissement)
         entry = None
         for i in range(max(act + 1, last_exit + 1), min(act + 1 + break_horizon, n)):
-            if is_break:
-                if vals[i] > price * (1 + buffer):       # cassure de la résistance
-                    entry = i
-                    break
-            else:
-                if i > 0 and vals[i - 1] <= price * (1 + buffer) and vals[i] > vals[i - 1]:  # rebond sur support
-                    entry = i
-                    break
+            broke = vals[i] > price * (1 + buffer) if up else vals[i] < price * (1 - buffer)
+            if broke:
+                entry = i
+                break
         if entry is None:
             continue
         ep = float(vals[entry])
-        tgt = ep * (1 + target)
-        stop = price * (1 - buffer) if not is_break else price  # sous le support / retour sous la résistance
+        tgt = ep * (1 + d * target)   # long : objectif au-dessus ; short : objectif en dessous
+        stop = price                  # retour du mauvais côté du niveau cassé = échec
         exit_i = None
         for i in range(entry + 1, min(entry + 1 + trade_horizon, n)):
-            if vals[i] >= tgt or vals[i] <= stop:
+            hit_tgt = vals[i] >= tgt if up else vals[i] <= tgt
+            hit_stop = vals[i] <= stop if up else vals[i] >= stop
+            if hit_tgt or hit_stop:
                 exit_i = i
                 break
         if exit_i is None:
             continue
         recs.append({
+            "direction": d,
             "entry_pos": entry, "entry_price": ep, "exit_pos": exit_i, "exit_price": float(vals[exit_i]),
-            "level": price, "target": tgt,
-            "touches": L["touches"], "act": act,
+            "level": price, "target": tgt, "touches": L["touches"], "act": act,
         })
         last_exit = exit_i
     return recs
@@ -127,7 +126,7 @@ def detect_trades(
 ) -> list[Trade]:
     idx = df.index
     recs = _scan(df, variant, pivot_window, tol, min_touches, buffer, target, break_horizon, trade_horizon)
-    return [Trade(idx[r["entry_pos"]], r["entry_price"], idx[r["exit_pos"]], r["exit_price"], 1) for r in recs]
+    return [Trade(idx[r["entry_pos"]], r["entry_price"], idx[r["exit_pos"]], r["exit_price"], r["direction"]) for r in recs]
 
 
 def shapes(
