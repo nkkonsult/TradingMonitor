@@ -22,7 +22,7 @@ from ..trade import Trade
 
 PIVOT_WINDOW = 10     # un sommet/creux doit dominer +/- 10 jours
 LEVEL_TOL = 0.02      # 2 % : deux touches « au même prix » si à <= 2 % l'une de l'autre
-MIN_TOUCHES = 2       # nombre de touches pour valider un niveau
+MIN_TOUCHES = 3       # nombre de touches pour valider un niveau (>= 3 = niveau crédible)
 BUFFER = 0.005        # tampon de confirmation (anti chasse-au-stop), des 2 côtés
 TARGET = 0.10         # objectif de sortie (+/- 10 %)
 BREAK_HORIZON = 120   # jours max après validation du niveau pour le signal
@@ -41,8 +41,13 @@ def _pivots(vals, w):
     return highs, lows
 
 
-def _levels(vals, positions, tol, min_touches):
-    """Regroupe des pivots de MÊME prix (à `tol` près) en niveaux horizontaux."""
+def _levels(vals, positions, tol, min_touches, kind):
+    """Regroupe des pivots de MÊME prix (à `tol` près) en niveaux horizontaux.
+
+    `kind` = +1 (résistance, sommets) / -1 (support, creux). Condition supplémentaire :
+    entre les touches qui valident le niveau, le cours ne doit PAS traverser la droite
+    (sinon le niveau a déjà été cassé → invalide).
+    """
     pts = sorted(positions, key=lambda p: vals[p])  # tri par prix
     out, i = [], 0
     while i < len(pts):
@@ -54,11 +59,12 @@ def _levels(vals, positions, tol, min_touches):
             j += 1
         if len(group) >= min_touches:
             touches = sorted(group)  # chronologique
-            out.append({
-                "price": float(np.mean([vals[p] for p in group])),
-                "activate": touches[min_touches - 1],  # validé à la N-ième touche
-                "touches": touches,
-            })
+            conf = touches[:min_touches]               # les touches qui valident
+            price = float(np.mean([vals[p] for p in group]))
+            span = vals[conf[0] : conf[-1] + 1]        # entre 1re et N-ième touche
+            no_cross = span.max() <= price * (1 + tol) if kind == 1 else span.min() >= price * (1 - tol)
+            if no_cross:
+                out.append({"price": price, "activate": conf[-1], "touches": touches})
         i = j
     return out
 
@@ -68,7 +74,7 @@ def _scan(df, variant, pivot_window, tol, min_touches, buffer, target, break_hor
     n = len(vals)
     highs, lows = _pivots(vals, pivot_window)
     is_break = variant == "breakout"
-    levels = _levels(vals, highs if is_break else lows, tol, min_touches)
+    levels = _levels(vals, highs if is_break else lows, tol, min_touches, 1 if is_break else -1)
     levels.sort(key=lambda L: L["activate"])
 
     recs, last_exit = [], -1
