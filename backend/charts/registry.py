@@ -9,7 +9,7 @@ détections porte cette version -> reproductibilité (on sait quels seuils l'ont
 """
 from __future__ import annotations
 
-from .strategy import donchian, double_top_bottom, head_shoulders, ma_crossover, rsi
+from .strategy import double_top_bottom, head_shoulders, ma_crossover, rsi, support_resistance
 
 STRATEGIES = {
     "ma_crossover": (ma_crossover, "Croisement de moyennes mobiles", {}),
@@ -20,8 +20,8 @@ STRATEGIES = {
     "hs_classic": (head_shoulders, "Épaule-tête-épaule (vente/short)", {"direction": "bearish"}),
     "db_bottom": (double_top_bottom, "Double creux (achat)", {"direction": "bottom"}),
     "dt_top": (double_top_bottom, "Double sommet (vente/short)", {"direction": "top"}),
-    "don_breakout": (donchian, "Cassure de canal (Donchian, tendance)", {"variant": "breakout"}),
-    "don_bounce": (donchian, "Rebond sur support (Donchian, retour moyenne)", {"variant": "bounce"}),
+    "sr_breakout": (support_resistance, "Cassure de résistance (tendance)", {"variant": "breakout"}),
+    "sr_bounce": (support_resistance, "Rebond sur support (retour moyenne)", {"variant": "bounce"}),
 }
 
 PARAMS_VERSION = "v1"
@@ -38,6 +38,6 @@ EVAL_MODE = {
     "hs_classic": "overlay",
     "db_bottom": "entry",
     "dt_top": "overlay",
-    "don_breakout": "entry",
-    "don_bounce": "entry",
+    "sr_breakout": "entry",
+    "sr_bounce": "entry",
 }
