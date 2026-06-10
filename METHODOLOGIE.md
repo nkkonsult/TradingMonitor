@@ -108,7 +108,16 @@ Pour chaque stratégie : *l'idée*, *la règle exacte*, *les paramètres* (les �
 - **Paramètres :** fenêtre de pivot ±10 jours, écart entre les deux extrêmes ≤ **4 %**, profondeur du pivot central ≥ **4 %**.
 - **Variantes :** double creux → **achat (long)**, double sommet → **vente (short)**.
 
-> **Pourquoi ce choix de stratégies ?** Elles couvrent un **gradient** : des règles d'indicateurs simples (MM, RSI) jusqu'aux **figures visuelles complexes** que les traders « lisent » à l'œil (épaule-tête-épaule, doubles). L'angle du rapport : *« les figures compliquées battent-elles une simple règle d'indicateur — ou même le hasard ? »*.
+### 5.5 Support / résistance — canaux de Donchian (cassure et rebond)
+- **Support** = niveau **sous** lequel le cours a du mal à descendre (les acheteurs reviennent → ça rebondit) ; **Résistance** = niveau **au-dessus** duquel il a du mal à monter (les vendeurs reviennent → ça rebondit). On les rend chiffrés par les **canaux de Donchian** : résistance = **plus-haut des N derniers jours**, support = **plus-bas des N derniers jours**.
+- **Deux usages OPPOSÉS de la même figure :**
+  - **Cassure (breakout)** : on achète quand le cours **franchit** la résistance → *« le marché a pris sa décision »*. C'est un **suiveur de tendance** (on achète *après* le mouvement, donc « haut »).
+  - **Rebond (bounce)** : on achète quand le cours **touche le support et repart** ; on vend à la résistance. C'est un **retour à la moyenne** (acheter « bas »).
+- **Paramètres :** fenêtre **N = 20 jours**, **tampon de confirmation = 0,5 %**, fenêtre de sortie = 10 jours.
+- **Le tampon de confirmation (anti « chasse au stop ») :** comme tout le monde connaît ces niveaux, de gros acteurs poussent parfois le prix **juste au-delà** pour déclencher les stop-loss groupés, puis le marché repart à l'envers (« fausse cassure »). On exige donc que la clôture dépasse le niveau **d'un tampon** (pas une simple mèche), et ce **des deux côtés** (support ET résistance).
+- **Intérêt pour le rapport :** la stratégie teste DIRECTEMENT l'opposition **tendance (cassure) vs retour à la moyenne (rebond)** sur une même figure. *(Extension v2 : supports/résistances **obliques** = lignes de tendance, plus subjectives à détecter.)*
+
+> **Pourquoi ce choix de stratégies ?** Elles couvrent un **gradient** : des règles d'indicateurs simples (MM, RSI) jusqu'aux **figures visuelles complexes** que les traders « lisent » à l'œil (épaule-tête-épaule, doubles, support/résistance). L'angle du rapport : *« les figures compliquées battent-elles une simple règle d'indicateur — ou même le hasard ? »*.
 
 ---
 
