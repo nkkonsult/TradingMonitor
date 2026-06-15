@@ -1,0 +1,41 @@
+==========================================================================
+ETAPE 5 - AFC : strategie x tranche de rendement
+Entree: trades.csv (38035 trades)
+==========================================================================
+
+Tableau de contingence (effectifs) :
+tranche       perte  gain_modere  gain_fort
+strategy                                   
+db_bottom      2803         3446       2220
+dt_top         4395         1576       1360
+hs_classic      803           18        231
+hs_inverse      627           93        484
+ma_crossover   2799          720       1892
+rsi_classic    1448         2401       3234
+rsi_strict      100           73        800
+rsi_trend       579         1062       1136
+sr_breakdown   1150           16        204
+sr_breakout    1826           64        475
+
+Inertie expliquee : axe1 = 75.8 %, axe2 = 24.2 % (cumul 100.0 %)
+
+Coordonnees (axe1, axe2) :
+  -- strategies (lignes) --
+    db_bottom      (-0.252, +0.266)
+    dt_top         (+0.313, +0.153)
+    hs_classic     (+0.691, -0.130)
+    hs_inverse     (+0.226, -0.328)
+    ma_crossover   (+0.197, -0.185)
+    rsi_classic    (-0.454, -0.100)
+    rsi_strict     (-0.532, -0.949)
+    rsi_trend      (-0.465, +0.021)
+    sr_breakdown   (+0.831, -0.033)
+    sr_breakout    (+0.703, -0.091)
+  -- tranches de rendement (colonnes) --
+    perte          (+0.465, +0.040)
+    gain_modere    (-0.452, +0.315)
+    gain_fort      (-0.284, -0.303)
+
+Lecture : une strategie PROCHE d'une tranche y est sur-representee.
+          Ex. une strategie pres de 'gain_fort' produit relativement plus
+          de gros gains que la moyenne ; pres de 'perte' = l'inverse.

@@ -11,6 +11,8 @@
 | `etape2_anova.py` | ANOVA 1 & 2 facteurs + Tukey HSD | Les stratégies diffèrent-elles ? selon le régime ? | `etape2_anova.txt` |
 | `etape3_chi2.py` | Khi-deux d'indépendance (+ V de Cramer) | Gagner dépend-il du contexte ? | `etape3_chi2.txt` |
 | `etape4_acp.py` | ACP (composantes principales) | Le contexte d'entrée sépare-t-il gagnants/perdants ? | `etape4_acp.txt` (+ `.png`) |
+| `etape5_afc.py` | AFC (correspondances) | Quelle stratégie va avec quel type de rendement ? | `etape5_afc.txt` (+ `.png`) |
+| `etape6_acm.py` | ACM (correspondances multiples) | Quelles modalités vont avec « gagnant » ? | `etape6_acm.txt` (+ `.png`) |
 
 ---
 
@@ -82,6 +84,35 @@ perdants occupent des zones différentes.
 > teste donc honnêtement si, *avant de connaître l'issue*, le contexte sépare déjà les trades.
 > Un d de Cohen proche de 0 = le contexte d'entrée seul **ne prédit pas** l'issue (résultat
 > instructif : ça motive l'apport d'autres signaux — c'est tout l'enjeu des blocs suivants).
+
+---
+
+## `etape5_afc.py` — quelle stratégie va avec quel résultat ? (variables qualitatives)
+**Ce que ça fait.** L'**AFC** (analyse factorielle des correspondances) est la **carte** du
+test du χ² : sur un tableau de contingence **stratégie × tranche de rendement** (perte /
+gain modéré / gain fort), elle place lignes et colonnes sur un même plan. **Proximité =
+association.** Codée en numpy (moteur d'analyse des correspondances : centrage par rapport à
+l'indépendance, normalisation par les masses, SVD).
+
+**Résultat obtenu.** L'axe 1 (**76 %** d'inertie) sépare clairement **gains** (à gauche) et
+**pertes** (à droite). Les stratégies **RSI** sont du côté des gains (`rsi_strict` pointe vers
+`gain_fort`) ; `sr_breakout`, `sr_breakdown`, `hs_classic` sont du côté de la **perte**. La
+carte confirme visuellement le verdict des tests.
+
+---
+
+## `etape6_acm.py` — quelles modalités vont avec « gagnant » ? (plusieurs variables)
+**Ce que ça fait.** L'**ACM** (analyse des correspondances multiples) généralise l'AFC à
+**plusieurs** variables qualitatives : `strategy + regime + secteur + issue` (gagnant/perdant).
+Construit le **tableau disjonctif complet** (une colonne 0/1 par modalité) puis lui applique
+l'analyse des correspondances. Toutes les modalités sont placées sur une carte ; proximité =
+co-occurrence.
+
+**Résultat obtenu.** « **gagnant** » voisine `rsi_classic`, `rsi_trend`, `db_bottom` et le
+secteur *Information Technology* ; « **perdant** » voisine `ma_crossover`, `sr_breakout`,
+`hs_inverse`. Les **secteurs restent groupés au centre** (association faible — cohérent avec
+l'indépendance gain×secteur trouvée au χ²). *Note : en ACM, les % d'inertie par axe sont
+mécaniquement faibles (propriété connue de la méthode) ; on lit les proximités, pas les %.*
 
 ---
 

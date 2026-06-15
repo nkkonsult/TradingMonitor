@@ -34,6 +34,8 @@ résultat obtenu) — sans avoir à lire le code.
 - `etape2_anova.py` — les stratégies diffèrent-elles ? (ANOVA 1 & 2 facteurs + Tukey)
 - `etape3_chi2.py`  — gagner dépend-il du contexte ? (khi-deux + V de Cramer)
 - `etape4_acp.py`   — le contexte d'entrée sépare-t-il gagnants/perdants ? (ACP, numpy)
+- `etape5_afc.py`   — quelle stratégie va avec quel rendement ? (AFC, numpy)
+- `etape6_acm.py`   — quelles modalités vont avec « gagnant » ? (ACM, numpy)
 
 ### 03_resultats/ — CE QUI SORT (les verdicts)
 Tableaux et graphiques produits par les méthodes. C'est ce que tu mets dans le rapport.

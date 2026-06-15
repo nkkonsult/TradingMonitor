@@ -1,0 +1,46 @@
+==========================================================================
+ETAPE 6 - ACM : strategie + regime + secteur + issue
+Entree: trades.csv (38035 trades, 26 modalites)
+Variables : strategy, regime_entry, sector, issue
+==========================================================================
+
+Inertie expliquee : axe1 = 6.5 %, axe2 = 5.5 % (cumul 12.0 %)
+
+Coordonnees des modalites (axe1, axe2) :
+    strategy = db_bottom               (+0.350, -0.676)
+    strategy = dt_top                  (-0.575, +0.650)
+    strategy = hs_classic              (-1.200, +0.816)
+    strategy = hs_inverse              (-0.385, -0.137)
+    strategy = ma_crossover            (-0.480, -0.634)
+    strategy = rsi_classic             (+1.012, +0.298)
+    strategy = rsi_strict              (+1.817, +2.462)
+    strategy = rsi_trend               (+0.726, -0.824)
+    strategy = sr_breakdown            (-1.428, +1.869)
+    strategy = sr_breakout             (-1.448, -0.459)
+    regime_entry = baissier            (+0.325, +1.367)
+    regime_entry = haussier            (-0.136, -0.400)
+    regime_entry = indetermine         (+1.295, +1.249)
+    sector = Communication Services    (+0.090, +0.123)
+    sector = Consumer Discretionary    (+0.012, -0.201)
+    sector = Consumer Staples          (-0.093, -0.044)
+    sector = Energy                    (+0.086, +0.173)
+    sector = Financials                (-0.015, +0.058)
+    sector = Health Care               (+0.012, +0.127)
+    sector = Industrials               (+0.038, +0.007)
+    sector = Information Technology    (+0.095, -0.154)
+    sector = Materials                 (-0.050, -0.089)
+    sector = Real Estate               (-0.060, +0.127)
+    sector = Utilities                 (-0.190, +0.027)
+    issue = gagnant                    (+0.710, -0.156)
+    issue = perdant                    (-0.924, +0.203)
+
+Modalites les plus PROCHES de 'gagnant' (hors issue) :
+    strategy = rsi_classic              distance 0.545
+    sector = Information Technology     distance 0.615
+    strategy = db_bottom                distance 0.632
+    strategy = rsi_trend                distance 0.668
+    sector = Communication Services     distance 0.680
+    sector = Industrials                distance 0.692
+
+Lecture : proximite = co-occurrence. Les modalites listees apparaissent
+          relativement plus souvent avec les trades gagnants.
