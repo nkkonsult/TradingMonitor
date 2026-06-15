@@ -1,0 +1,37 @@
+==============================================================================
+ETAPE 2 - LES STRATEGIES DIFFERENT-ELLES ?  (ANOVA + Tukey)
+Entree: trades.csv (38035 trades)
+==============================================================================
+
+[1] ANOVA 1 facteur  H0: toutes les strategies ont le meme edge moyen
+    F = 47.44    p = 7.68e-86  ->  les strategies DIFFERENT
+
+[2] Tukey HSD (paires significatives apres correction)
+    18 paires sur 45 different significativement. Detail des paires sign. :
+      db_bottom     vs ma_crossover   ecart= -0.0213  p=0.0
+      db_bottom     vs rsi_classic    ecart= +0.0156  p=0.0007
+      db_bottom     vs rsi_strict     ecart= +0.1337  p=0.0
+      dt_top        vs ma_crossover   ecart= -0.0169  p=0.0012
+      dt_top        vs rsi_classic    ecart= +0.0200  p=0.0
+      dt_top        vs rsi_strict     ecart= +0.1381  p=0.0
+      hs_classic    vs rsi_strict     ecart= +0.1358  p=0.0
+      hs_inverse    vs rsi_strict     ecart= +0.1355  p=0.0
+      ma_crossover  vs rsi_classic    ecart= +0.0369  p=0.0
+      ma_crossover  vs rsi_strict     ecart= +0.1550  p=0.0
+      ma_crossover  vs rsi_trend      ecart= +0.0269  p=0.0
+      ma_crossover  vs sr_breakdown   ecart= +0.0242  p=0.0133
+      ma_crossover  vs sr_breakout    ecart= +0.0192  p=0.0185
+      rsi_classic   vs rsi_strict     ecart= +0.1181  p=0.0
+      rsi_classic   vs sr_breakout    ecart= -0.0176  p=0.0319
+      rsi_strict    vs rsi_trend      ecart= -0.1281  p=0.0
+      rsi_strict    vs sr_breakdown   ecart= -0.1307  p=0.0
+      rsi_strict    vs sr_breakout    ecart= -0.1358  p=0.0
+
+[3] ANOVA 2 facteurs : edge ~ strategie * regime
+                                sum_sq       df        F  PR(>F)
+C(strategy)                    23.4211      9.0  52.1498     0.0
+C(regime_entry)                 7.0217      2.0  70.3552     0.0
+C(strategy):C(regime_entry)    20.8972     18.0  23.2650     0.0
+Residual                     1896.6046  38007.0      NaN     NaN
+
+    Interaction strategie x regime : p = 5.44e-69  ->  le classement DEPEND du regime (effet phare !)

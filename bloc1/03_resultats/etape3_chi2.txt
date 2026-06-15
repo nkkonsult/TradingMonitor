@@ -1,0 +1,35 @@
+==============================================================================
+ETAPE 3 - GAGNER DEPEND-IL DU CONTEXTE ?  (khi-deux d'independance)
+Entree: trades.csv (38035 trades)
+==============================================================================
+
+[regime_entry]  'gagner' depend-il de : regime_entry ?
+    tableau de contingence (lignes = win 0/1) :
+regime_entry  baissier  haussier  indetermine
+win                                          
+0                 3051     13107          372
+1                 4441     16245          819
+    khi2 = 112.3   ddl = 2   p = 4.07e-25   V de Cramer = 0.054
+    -> LIEN significatif (lien faible)
+
+[sector]  'gagner' depend-il de : sector ?
+    tableau de contingence (lignes = win 0/1) :
+sector  Communication Services  Consumer Discretionary  Consumer Staples  Energy  Financials  Health Care  Industrials  Information Technology  Materials  Real Estate  Utilities
+win                                                                                                                                                                              
+0                          728                    1538              1310     660        2484         2008         2524                    2140        896         1114       1128
+1                          935                    2065              1614     833        3331         2600         3365                    2935       1103         1375       1349
+    khi2 = 16.6   ddl = 10   p = 0.0827   V de Cramer = 0.021
+    -> independance (pas de lien) (lien faible)
+
+[strategy]  'gagner' depend-il de : strategy ?
+    tableau de contingence (lignes = win 0/1) :
+strategy  db_bottom  dt_top  hs_classic  hs_inverse  ma_crossover  rsi_classic  rsi_strict  rsi_trend  sr_breakdown  sr_breakout
+win                                                                                                                             
+0              2803    4395         803         627          2799         1448         100        579          1150         1826
+1              5666    2936         249         577          2612         5635         873       2198           220          539
+    khi2 = 6381.7   ddl = 9   p = 0   V de Cramer = 0.410
+    -> LIEN significatif (lien fort)
+
+Lecture : un LIEN significatif ne dit pas que c'est rentable, seulement que
+          la frequence de gain n'est pas la meme selon le contexte. Le V de
+          Cramer dit si ce lien est faible (anecdotique) ou fort (important).

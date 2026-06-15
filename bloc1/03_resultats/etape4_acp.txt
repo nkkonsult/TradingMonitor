@@ -1,0 +1,27 @@
+==============================================================================
+ETAPE 4 - ACP : gagnants vs perdants dans l'espace du contexte d'entree
+Entree: trades.csv (36657 trades, 4 variables)
+Variables : vol_entry, rsi_entry, dist_ma200, holding_days
+==============================================================================
+
+[1] Variance expliquee par composante :
+    PC1 :  40.2 %   (cumul  40.2 %)
+    PC2 :  25.9 %   (cumul  66.2 %)
+    PC3 :  22.4 %   (cumul  88.5 %)
+    PC4 :  11.5 %   (cumul 100.0 %)
+
+[2] Loadings (poids de chaque variable dans PC1 et PC2) :
+    variable            PC1      PC2
+    vol_entry        -0.318    0.485
+    rsi_entry         0.659    0.225
+    dist_ma200        0.674    0.131
+    holding_days     -0.098    0.835
+
+[3] Position moyenne dans le plan (PC1, PC2) :
+    groupe      PC1_moy  PC2_moy
+    gagnants     -0.064    0.149
+    perdants      0.082   -0.191
+
+    Separation sur PC1 (d de Cohen) = -0.116
+    -> |d|<0.2 : separation negligeable ; les gagnants ne se distinguent PAS
+       nettement des perdants par le seul contexte d'entree (resultat instructif).

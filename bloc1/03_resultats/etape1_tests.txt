@@ -1,0 +1,22 @@
+======================================================================================
+ETAPE 1 - LA STRATEGIE BAT-ELLE LE HASARD ?  (H0: edge moyen = 0  /  H1: > 0)
+Entree: trades.csv (38035 trades exploitables)
+Seuil Bonferroni (10 strategies): 0.0050
+======================================================================================
+strategie            n   edge_moy   p_shapiro   p_student    p_wilcox verdict
+--------------------------------------------------------------------------------------
+db_bottom         8469    -0.0029     3.3e-47        0.99        0.92     non
+dt_top            7331    -0.0073     2.9e-39           1        0.99     non
+hs_classic        1052    -0.0049     2.1e-27        0.88           1     non
+hs_inverse        1204    -0.0047     2.3e-17        0.91        0.65     non
+ma_crossover      5411    -0.0241     1.5e-80           1           1     non
+rsi_classic       7083     0.0127     6.4e-55     3.9e-09     5.8e-68     OUI
+rsi_strict         973     0.1308       9e-38       8e-10     4.8e-24     OUI
+rsi_trend         2777     0.0027     8.2e-42        0.19     1.7e-15     non
+sr_breakdown      1370     0.0001     4.2e-40        0.48           1     non
+sr_breakout       2365    -0.0049     2.8e-42           1           1     non
+--------------------------------------------------------------------------------------
+Lecture : 'verdict=OUI' = edge significativement > 0 APRES Bonferroni
+          => la strategie bat le hasard (talent reel, pas du bruit d'echantillon).
+Note    : p_shapiro quasi nul partout = non-normalite -> on s'appuie sur le TCL
+          pour Student ; Wilcoxon confirme (meme conclusion) = resultat robuste.
