@@ -188,7 +188,11 @@ Un **edge > 0** = le trade a fait mieux que le hasard. On agrège ensuite ces ed
 
 ## 10. La base de données
 
-Chaque trade simulé devient **une ligne** dans une table (`detections`) avec : l'action, le secteur, la stratégie, le sens, les dates, le rendement net, le régime de marché à l'entrée, etc. **Pourquoi ?** Parce qu'on ne fait pas de statistiques sur un calcul éphémère : il faut un **tableau figé** de **34 300 trades** qu'on peut charger, filtrer et tester. C'est le pont entre « simuler » et « analyser ».
+Chaque trade simulé devient **une ligne** dans une table avec : l'action, le secteur, la stratégie, le sens, les dates, le rendement net, le régime de marché à l'entrée, etc. **Pourquoi ?** Parce qu'on ne fait pas de statistiques sur un calcul éphémère : il faut un **tableau figé** qu'on peut charger, filtrer et tester. C'est le pont entre « simuler » et « analyser ».
+
+Deux tables : `detections` (toutes les colonnes brutes des trades) et `eval` (1 ligne/trade orientée analyse : `edge` vs hasard, `win`, régime, secteur + **3 variables de contexte d'entrée** ajoutées pour l'ACP : volatilité, niveau de RSI, distance à la MM200). État actuel : **38 035 trades, 10 stratégies**. La table `eval` est **exportée en CSV** (`bloc1/01_donnees/trades.csv`) pour être lisible et analysable hors du code.
+
+> **Architecture en blocs.** Le projet est découpé en **blocs dissociables**, chacun avec ses données et ses méthodes (voir `ARCHITECTURE.md`). **Bloc 1** = stratégies graphiques (ce document) ; **Bloc 2** = signaux d'information ; **Bloc 3** = relations inter-actions ; **Bloc final** = la régression, sur les signaux validés par chaque bloc. Le dossier `bloc1/` matérialise le Bloc 1 en trois étages : `01_donnees` (la matière première + son dictionnaire), `02_methodes` (une page Python par méthode + explications), `03_resultats` (les verdicts). Synthèse complète : `bloc1/SYNTHESE.md`.
 
 ---
 
@@ -208,14 +212,26 @@ Chaque trade simulé devient **une ligne** dans une table (`detections`) avec : 
 - **Le problème :** si on teste **beaucoup** de stratégies, certaines passeront le seuil de 5 % **par pur hasard** (tester 20 choses inutiles → en moyenne 1 « significative » par chance).
 - **La correction :** on **durcit** le seuil en le divisant par le nombre de tests (ex. 8 stratégies → seuil = 0,05 / 8 ≈ 0,006). Un résultat n'est retenu que s'il passe ce seuil plus strict.
 
-### 11.3 L'ANOVA (à venir, étape « par régime »)
+### 11.3 L'ANOVA + Tukey (fait)
 - **Ce qu'elle fait :** comparer les moyennes de **plus de deux groupes** d'un coup, et tester un **effet d'interaction** (ex. *l'avantage d'une stratégie dépend-il du régime de marché ?*).
-- **Notre usage prévu :** ANOVA **stratégie × régime** (haussier / baissier) — *le classement des stratégies s'inverse-t-il selon que le marché monte ou baisse ?*
+- **Notre usage :** ANOVA à 1 facteur (`edge ~ stratégie`) — les 10 stratégies diffèrent-elles ? — puis **Tukey HSD** pour dire **quelles paires** diffèrent. Enfin ANOVA à 2 facteurs (`edge ~ stratégie × régime`) dont le terme d'**interaction** teste si *le classement des stratégies s'inverse selon que le marché monte ou baisse*.
 
-### 11.4 La régression (à venir)
+### 11.4 Le khi-deux d'indépendance (fait)
+- **Ce qu'il fait :** sur un **tableau de contingence** (effectifs croisés de deux variables qualitatives), tester si elles sont **indépendantes**. Le **V de Cramer** donne la **force** du lien (0 = nul, 1 = total).
+- **Notre usage :** l'issue **gagnant/perdant** est-elle indépendante du **régime** ? du **secteur** ? de la **stratégie** ?
+
+### 11.5 L'ACP — analyse en composantes principales (fait)
+- **Ce qu'elle fait :** résumer plusieurs variables **numériques** corrélées en quelques **axes** (composantes) qui concentrent l'information, pour **visualiser** et voir si des groupes se séparent.
+- **Notre usage :** décrire chaque trade par son **contexte d'entrée** (volatilité, RSI, distance MM200, durée), projeter sur 2 axes et regarder si **gagnants et perdants** occupent des zones différentes.
+
+### 11.6 L'AFC et l'ACM — analyse des correspondances (fait)
+- **AFC** (factorielle des correspondances) : la **carte** du khi-deux. Place les modalités de **deux** variables qualitatives sur un plan ; proximité = association. Usage : **stratégie × tranche de rendement**.
+- **ACM** (correspondances multiples) : même principe sur **plusieurs** variables qualitatives à la fois (stratégie + régime + secteur + issue). Usage : *« gagnant » est-il proche de certaines stratégies / régimes ?*
+
+### 11.7 La régression (à venir — c'est le BLOC FINAL)
 - **Régression linéaire multiple** : expliquer une quantité (le rendement) par plusieurs facteurs en même temps (régime, secteur, durée…), repérer les facteurs importants (sélection de modèle, critère **AIC**), vérifier qu'ils ne se répètent pas (**VIF**).
 - **Régression logistique** : prédire une issue **binaire** (le trade est-il **gagnant** oui/non ?) et exprimer l'effet de chaque facteur en **odds ratios** (« en marché baissier, les chances que le signal marche sont ×N »).
-- **Pourquoi :** si chaque signal pris seul est faible, les **combiner** peut révéler une valeur. C'est aussi l'équation qui pourrait, à terme, piloter un agent automatique.
+- **Pourquoi :** si chaque signal pris seul est faible, les **combiner** peut révéler une valeur. C'est aussi l'équation qui pourrait, à terme, piloter un agent automatique. *(Voir l'architecture en blocs : la régression ne vient qu'**à la fin**, sur les signaux validés par chaque bloc.)*
 
 ---
 
@@ -260,14 +276,24 @@ Chaque trade simulé devient **une ligne** dans une table (`detections`) avec : 
 ### Nuance honnête sur le RSI
 Son avantage vient en grande partie d'un effet **structurel** : il **entre dans les creux** (survente), alors que le hasard entre à un prix moyen. Sur des actions qui **dérivent vers le haut**, acheter les creux capte mieux le rebond. À confirmer **hors-échantillon** (étape suivante) — c'est le seul résultat positif, il doit être validé.
 
+### Bloc 1 — les cinq analyses convergent (synthèse, détail dans `bloc1/SYNTHESE.md`)
+Cinq méthodes de cours appliquées à la base des 38 035 trades, par des chemins indépendants, donnent **le même verdict** :
+1. **Tests d'hypothèse** (Shapiro/Student/Wilcoxon/Bonferroni) : seul le **RSI** bat le hasard ; aucune figure.
+2. **ANOVA + Tukey** : les stratégies diffèrent (F = 47) et **leur classement dépend du régime** (interaction p ≈ 10⁻⁶⁹).
+3. **Khi-deux** : gagner est **indépendant du secteur**, faiblement lié au régime, fortement lié à la stratégie.
+4. **ACP** : le contexte d'entrée **ne sépare pas** gagnants et perdants (d de Cohen = −0,12).
+5. **AFC / ACM** : sur les cartes, les **RSI voisinent les gains**, les **figures voisinent les pertes** ; « gagnant » est proche du RSI.
+> **Conclusion du bloc :** *le RSI se détache, les figures chartistes ne battent pas le hasard.* La convergence de cinq angles différents renforce la fiabilité du résultat.
+
 ---
 
 ## 15. Les prochaines étapes
-1. **Valider le RSI hors-échantillon** (confirmer le seul signal positif).
-2. **Analyse par régime** (ANOVA) : l'avantage tient-il en marché baissier ?
-3. **Analyse par secteur**.
-4. **Régression** (logistique puis linéaire) : qu'est-ce qui fait gagner un trade ?
-5. **Onglet « Statistiques »** dans le dashboard pour tout visualiser.
+
+**Bloc 1 : terminé** (tests, ANOVA/Tukey, χ², ACP, AFC, ACM — synthèse dans `bloc1/SYNTHESE.md`). La suite est organisée **par blocs** (cf. `ARCHITECTURE.md`) :
+1. **Bloc 3 — relations inter-actions** : sur les séries de prix (déjà en cache), corrélations, **causalité de Granger** (une action en précède-t-elle une autre ?), ACP sur les rendements, **ARIMA**.
+2. **Bloc 2 — signaux d'information** : contrats publics, transactions du Congrès, lois, actualités (via les agents n8n, APIs gratuites) ; *event studies* et tests.
+3. **Bloc final — régression** : régression linéaire et **logistique** sur **tous les signaux validés** par les blocs → l'équation prédictive. *(Ne vient qu'à la fin.)*
+4. **Onglet « Statistiques »** dans le dashboard pour visualiser les résultats des blocs.
 
 ---
 
