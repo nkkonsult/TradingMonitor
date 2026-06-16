@@ -1,0 +1,47 @@
+============================================================================
+ETAPE 1 (Bloc 3) - CORRELATIONS ENTRE SECTEURS
+Entree: rendements_secteurs.csv (4132 jours, 11 secteurs)
+============================================================================
+
+Matrice de correlation (arrondie) :
+                        Communication Services  Consumer Discretionary  Consumer Staples  Energy  Financials  Health Care  Industrials  Information Technology  Materials  Real Estate  Utilities
+Communication Services                    1.00                    0.83              0.63    0.59        0.81         0.76         0.82                    0.81       0.76         0.69       0.51
+Consumer Discretionary                    0.83                    1.00              0.65    0.61        0.84         0.76         0.88                    0.83       0.81         0.74       0.51
+Consumer Staples                          0.63                    0.65              1.00    0.46        0.67         0.71         0.69                    0.55       0.67         0.69       0.69
+Energy                                    0.59                    0.61              0.46    1.00        0.68         0.53         0.68                    0.57       0.72         0.55       0.43
+Financials                                0.81                    0.84              0.67    0.68        1.00         0.78         0.90                    0.79       0.84         0.76       0.58
+Health Care                               0.76                    0.76              0.71    0.53        0.78         1.00         0.80                    0.77       0.75         0.70       0.57
+Industrials                               0.82                    0.88              0.69    0.68        0.90         0.80         1.00                    0.84       0.89         0.76       0.58
+Information Technology                    0.81                    0.83              0.55    0.57        0.79         0.77         0.84                    1.00       0.77         0.64       0.45
+Materials                                 0.76                    0.81              0.67    0.72        0.84         0.75         0.89                    0.77       1.00         0.72       0.56
+Real Estate                               0.69                    0.74              0.69    0.55        0.76         0.70         0.76                    0.64       0.72         1.00       0.73
+Utilities                                 0.51                    0.51              0.69    0.43        0.58         0.57         0.58                    0.45       0.56         0.73       1.00
+
+Correlation moyenne entre secteurs (hors diagonale) : 0.70
+  -> proche de 1 = le marche bouge 'd'un bloc' (risque systematique dominant).
+
+Paires les MOINS correlees (les plus 'diversifiantes') :
+    Energy                   Utilities                 r=0.43
+    Information Technology   Utilities                 r=0.45
+    Consumer Staples         Energy                    r=0.46
+Paires les PLUS correlees :
+    Consumer Discretionary   Industrials               r=0.88
+    Industrials              Materials                 r=0.89
+    Financials               Industrials               r=0.90
+
+Correlation de chaque secteur avec le MARCHE (exposition systematique) :
+    Industrials               0.96
+    Financials                0.94
+    Consumer Discretionary    0.92
+    Materials                 0.90
+    Information Technology    0.89
+    Communication Services    0.88
+    Health Care               0.87
+    Real Estate               0.83
+    Consumer Staples          0.75
+    Energy                    0.71
+    Utilities                 0.66
+
+Lecture : des correlations elevees signifient qu'il est difficile de 'diversifier'
+          le risque ; les secteurs defensifs (Utilities, Staples) sont en general
+          moins correles au marche que les cycliques (Tech, Conso discretionnaire).

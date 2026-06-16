@@ -1,0 +1,51 @@
+============================================================================
+ETAPE 2 (Bloc 3) - CAUSALITE DE GRANGER ENTRE SECTEURS (lead-lag)
+Entree: rendements_secteurs.csv (4132 jours)  retard max = 3 jours
+Paires ordonnees testees : 110   seuil Bonferroni : 0.00045
+============================================================================
+
+48 paires 'A precede B' significatives (apres Bonferroni) sur 110 testees :
+
+    A (precede)              B (suit)                    p-value
+    ------------------------------------------------------------
+    Financials               Consumer Discretionary      2.4e-13
+    Energy                   Utilities                   4.6e-13
+    Consumer Staples         Consumer Discretionary      1.6e-10
+    Consumer Discretionary   Utilities                   2.9e-10
+    Financials               Industrials                 9.8e-10
+    Consumer Discretionary   Financials                    2e-09
+    Financials               Consumer Staples              5e-09
+    Utilities                Energy                      1.4e-08
+    Financials               Utilities                   3.3e-08
+    Consumer Staples         Industrials                 5.6e-08
+    Energy                   Consumer Staples            1.3e-07
+    Industrials              Financials                  1.6e-07
+    Consumer Staples         Energy                      2.5e-07
+    Consumer Staples         Materials                   2.6e-07
+    Utilities                Consumer Discretionary      4.6e-07
+    Health Care              Consumer Discretionary        5e-07
+    Financials               Real Estate                 1.2e-06
+    Utilities                Industrials                   3e-06
+    Real Estate              Energy                      4.5e-06
+    Consumer Staples         Communication Services      4.8e-06
+    Information Technology   Utilities                     6e-06
+    Financials               Materials                   8.5e-06
+    Utilities                Materials                   9.1e-06
+    Health Care              Industrials                 9.3e-06
+    Financials               Health Care                 1.1e-05
+    ... (23 autres)
+
+Secteurs 'meneurs' (precedent le plus d'autres secteurs) :
+    Financials               precede 10 secteurs
+    Consumer Staples         precede 8 secteurs
+    Utilities                precede 6 secteurs
+    Consumer Discretionary   precede 4 secteurs
+    Industrials              precede 4 secteurs
+
+Lecture : 'A precede B' = le passe recent de A ameliore la prevision de B.
+          48 paires sur 110 sont significatives : il EXISTE une structure de lead-lag
+          (Financials et Consumer Staples 'menent' souvent ; couple Energy<->Utilities).
+          MAIS l'echantillon est enorme (4132 jours) => le test a une TRES grande
+          puissance : 'significatif' n'est pas 'exploitable'. Retards courts (1-3 j),
+          gains de prevision faibles. A confirmer en EFFET DE TAILLE et hors-echantillon
+          avant d'en faire un signal de trading.

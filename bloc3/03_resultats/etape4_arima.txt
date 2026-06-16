@@ -1,0 +1,26 @@
+========================================================================
+ETAPE 4 (Bloc 3) - ARIMA SUR LE RENDEMENT DU MARCHE
+Entree: rendements_secteurs.csv colonne MARCHE (4132 jours)
+========================================================================
+
+[1] Test de Dickey-Fuller augmente (ADF) :
+    PRIX     : p = 0.999  -> NON stationnaire (marche aleatoire)
+    RENDEMENT: p = 3.9e-26  -> stationnaire
+    => on modelise le RENDEMENT (le prix doit etre differencie une fois : d=1).
+
+[2] Autocorrelations du rendement (ACF, retards 1..10) :
+    -0.08  +0.07  -0.04  -0.05  +0.00  -0.08  +0.09  -0.06  +0.06  -0.00
+    -> proches de 0 = tres peu de memoire d'un jour sur l'autre.
+
+[3] ARIMA(1,0,1) sur le rendement :
+    AIC = -25329
+    const        coef=+0.0007  (p=2.6e-05)
+    ar.L1        coef=-0.7674  (p=2.7e-180)
+    ma.L1        coef=+0.6953  (p=2.3e-126)
+    sigma2       coef=+0.0001  (p=0)
+
+[4] Conclusion :
+    Le prix est une marche aleatoire (ADF non significatif), le rendement est
+    stationnaire mais quasi sans autocorrelation : sa propre histoire ne permet
+    guere de prevoir le lendemain. C'est l'EFFICIENCE FAIBLE du marche -> il faudra
+    des signaux EXTERNES (blocs 1 et 2) pour esperer predire, pas la serie seule.

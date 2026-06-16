@@ -42,7 +42,7 @@
 - **Ordre de travail :** Bloc 1 → (Bloc 2, Bloc 3) → Bloc final. On **ne commence pas la régression** tant que les blocs ne sont pas faits.
 
 ## État actuel
-- **Bloc 1** : données prêtes (trades des 10 stratégies, base `eval`). À faire : appliquer les méthodes statistiques (tests, ANOVA, χ², ACP).
+- **Bloc 1** : ✅ **fait** (dossier `bloc1/`). 38 035 trades ; 5 méthodes (tests, ANOVA+Tukey, χ², ACP, AFC/ACM) ; verdict : seul le RSI bat le hasard. Synthèse : `bloc1/SYNTHESE.md`.
 - **Bloc 2** : agents n8n existants (contrats, Congress, lois, news) — à brancher plus tard.
-- **Bloc 3** : séries de prix déjà en cache (503 titres) — méthodes à appliquer plus tard.
+- **Bloc 3** : ✅ **fait** (dossier `bloc3/`). Rendements sectoriels (4132 j) ; 4 méthodes (corrélation, Granger, ACP, ARIMA) ; verdict : marché très couplé (facteur marché 73 %) et peu prévisible par lui-même. Synthèse : `bloc3/SYNTHESE.md`.
 - **Bloc final** : **plus tard**, une fois les blocs validés.
