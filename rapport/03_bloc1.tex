@@ -1,0 +1,215 @@
+% ---------------------------------------------------------------------
+%  Chapitre 3 — BLOC 1 (chapitre développé)
+%  Suit les 5 points des consignes pour CHAQUE méthode :
+%   théorie -> conditions d'application -> résultats -> limites
+% ---------------------------------------------------------------------
+\chapter{Bloc 1 --- valeur des stratégies techniques}
+\label{chap:bloc1}
+
+Ce chapitre traite la question~: \emph{parmi dix stratégies d'analyse
+technique, lesquelles produisent un avantage (\edgevar) significativement
+positif~?} L'analyse procède en six étapes, des tests univariés aux
+analyses factorielles.
+
+% =====================================================================
+\section{Étape 1 --- chaque stratégie bat-elle le hasard ?}
+\label{sec:b1-etape1}
+
+On teste, stratégie par stratégie, l'hypothèse
+\(\Hzero : \mu_{\edgevar} = 0\) contre \(\Hun : \mu_{\edgevar} > 0\).
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER]
+\paragraph{Test de normalité de Shapiro--Wilk.}
+La statistique \(W = b^2 / \mathrm{SCE}\) compare une estimation de la
+variance fondée sur les statistiques d'ordre à l'estimation classique~;
+\(W\) proche de 1 indique la normalité~\cite{shapiro1965}. % détailler b et SCE
+
+\paragraph{Test \(t\) de Student à un échantillon.}
+\[
+  t = \frac{\bar e}{s/\sqrt{n}} \sim t_{n-1} \quad\text{sous } \Hzero .
+\]
+Justifier le recours au \textbf{théorème central limite} lorsque la
+normalité est rejetée mais \(n\) grand~\cite{student1908}.
+
+\paragraph{Correction de Bonferroni.}
+Dix stratégies testées \(\Rightarrow\) seuil individuel
+\(\alpha' = 0{,}05/10 = 0{,}005\), afin de contrôler le risque global
+de première espèce (inégalité de Boole).
+
+\begin{conditions}
+Indépendance des trades~; normalité \emph{de la moyenne} assurée par le
+TCL ($n$ compris entre 973 et 8\,469 selon la stratégie). La normalité
+des observations individuelles est rejetée (Shapiro, $p<10^{-15}$
+partout)~: ce point est discuté ci-dessous.
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres RÉELS extraits de bloc1/03_resultats/etape1_tests.txt
+\begin{table}[H]
+\centering
+\caption{Test de l'avantage moyen par stratégie (seuil Bonferroni $=0{,}005$).}
+\label{tab:b1-etape1}
+\small
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
+\midrule
+\texttt{rsi\_classic} & 7\,083 & $+0{,}0127$ & $3{,}9\times10^{-9}$  & \textbf{bat le hasard} \\
+\texttt{rsi\_strict}  &   973  & $+0{,}1308$ & $8\times10^{-10}$     & \textbf{bat le hasard} \\
+\texttt{rsi\_trend}   & 2\,777 & $+0{,}0027$ & $0{,}19$             & non \\
+\texttt{db\_bottom}   & 8\,469 & $-0{,}0029$ & $0{,}99$             & non \\
+\texttt{ma\_crossover}& 5\,411 & $-0{,}0241$ & $\approx 1$          & non \\
+\multicolumn{5}{c}{\footnotesize (autres stratégies~: $p>0{,}45$, non significatives)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
+correction de Bonferroni.
+
+\begin{limites}
+Shapiro rejette la normalité partout, ce qui est attendu pour des
+rendements financiers (queues épaisses) et sur de grands échantillons~;
+la validité du Student repose alors sur le TCL, non sur la normalité des
+données brutes. % point à défendre à l'oral
+\end{limites}
+
+% =====================================================================
+\section{Étape 2 --- les stratégies diffèrent-elles entre elles ?}
+\label{sec:b1-etape2}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] ANOVA à 1 facteur : décomposition SCE_inter / SCE_intra,
+% statistique F ~ Fisher(k-1, n-k). Puis Tukey HSD (range studentisé).
+% Puis ANOVA à 2 facteurs (strategy x regime) avec terme d'interaction.
+\paragraph{ANOVA à un facteur.}
+\[
+  F = \frac{\mathrm{SCE}_{\text{inter}}/(k-1)}
+           {\mathrm{SCE}_{\text{intra}}/(n-k)} \sim F_{k-1,\,n-k}.
+\]
+La décomposition de la variance et le test \(F\) suivent le cadre
+classique de l'analyse de la variance~\cite{scheffe1959}.
+
+\paragraph{Comparaisons multiples (Tukey HSD).}
+Fondées sur la loi du \emph{range studentisé}, elles corrigent
+automatiquement le risque lié aux $k(k-1)/2$ paires.
+
+\paragraph{ANOVA à deux facteurs avec interaction.}
+Modèle \(\edgevar = \mu + \alpha_i + \beta_j + \gamma_{ij} + \varepsilon\)~;
+le terme d'interaction \(\gamma_{ij}\) teste si l'effet de la stratégie
+\emph{dépend du régime de marché}.
+
+\begin{conditions}
+Indépendance~; normalité des résidus (TCL)~; \textbf{homoscédasticité}
+vérifiée par les tests de \textbf{Bartlett} et de \textbf{Levene}. En cas
+de variances inégales, bascule possible vers l'ANOVA de Welch.
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres réels : F ~ 47, p ~ 1e-85 (1 facteur) ; interaction p ~ 5e-69
+L'ANOVA à un facteur rejette massivement l'égalité des moyennes
+(\(F\approx 47\), \(p\approx 10^{-85}\)). Le test de Tukey identifie
+18~paires significatives sur 45, \texttt{rsi\_strict} se détachant du
+reste. L'interaction stratégie~$\times$~régime est très significative
+(\(p\approx 5\times10^{-69}\))~: \emph{la valeur d'une stratégie dépend
+du régime de marché}.
+
+% =====================================================================
+\section{Étape 3 --- gagner dépend-il du contexte ?}
+\label{sec:b1-etape3}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] Test du khi-deux d'indépendance sur tableau de
+% contingence : effectifs attendus E_ij = (N_i. N_.j)/N ;
+% chi2 = somme (N_ij - E_ij)^2 / E_ij ~ chi2 à (r-1)(c-1) ddl.
+\[
+  \chi^2 = \sum_{i,j}\frac{(N_{ij}-E_{ij})^2}{E_{ij}},
+  \qquad E_{ij}=\frac{N_{i\cdot}N_{\cdot j}}{N},
+  \qquad \chi^2 \sim \chi^2_{(r-1)(c-1)}.
+\]
+
+\begin{conditions}
+Effectifs théoriques \(E_{ij}\ge 5\) (règle de Cochran). Sur tableaux
+\(2\times2\) ou à faibles effectifs, recours possible à la correction de
+\textbf{Yates}, au \textbf{test exact de Fisher} ou au \textbf{G-test}.
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres réels de etape3_chi2.txt
+\begin{table}[H]
+\centering
+\caption{Dépendance de \texttt{win} au contexte (khi-deux d'indépendance).}
+\label{tab:b1-etape3}
+\small
+\begin{tabular}{@{}lrrc@{}}
+\toprule
+Croisement & $\chi^2$ & ddl & Verdict \\
+\midrule
+\texttt{win} $\times$ \texttt{regime\_entry} & $112{,}3$   & 2  & lien significatif \\
+\texttt{win} $\times$ \texttt{sector}        & $16{,}6$    & 10 & indépendance ($p=0{,}08$) \\
+\texttt{win} $\times$ \texttt{strategy}      & $6\,381{,}7$& 9  & lien très fort \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le taux de gain dépend fortement de la \emph{stratégie}, faiblement du
+\emph{régime}, et pas du \emph{secteur}.
+
+\begin{limites}
+À très grand \(n\), le \(\chi^2\) devient significatif même pour des
+liens négligeables~; la \emph{significativité} ne dit rien de la
+\emph{force} du lien. % justifie la prudence d'interprétation
+\end{limites}
+
+% =====================================================================
+\section{Étape 4 --- ACP du contexte d'entrée}
+\label{sec:b1-etape4}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] ACP normée (Périnel) : centrage-réduction,
+% diagonalisation de la matrice de corrélation R, valeurs propres
+% lambda_k = inertie, cercle des corrélations, cos^2, CTR.
+% Critères Kaiser / Cattell pour le nombre d'axes. Variables
+% illustratives (régime, secteur, win) projetées a posteriori (V.test).
+On réalise une \textbf{ACP normée}~\cite{saporta2006,lebart2006} sur les
+variables quantitatives de contexte (\texttt{vol\_entry},
+\texttt{rsi\_entry}, \texttt{dist\_ma200},
+\texttt{holding\_days})~; le nombre d'axes est justifié par les critères
+de \textbf{Kaiser} et de \textbf{Cattell}. Les variables qualitatives
+(\texttt{regime}, \texttt{secteur}, \texttt{win}) sont projetées en
+\textbf{illustratives} (valeur-test).
+
+\begin{conditions}
+Variables quantitatives~; standardisation obligatoire (unités
+hétérogènes)~; l'ACP ne capture que des relations \emph{linéaires}.
+\end{conditions}
+
+\subsection{Résultats}
+% [À COMPLÉTER avec etape4_acp.txt / etape4_acp.png]
+\emph{[Insérer la figure \texttt{etape4\_acp.png}, l'inertie des axes et
+la lecture du plan factoriel.]}
+
+% =====================================================================
+\section{Étapes 5 et 6 --- AFC et ACM}
+\label{sec:b1-etape56}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] AFC sur tableau de contingence strategy x tranche de
+% résultat (profils lignes/colonnes, distance du chi-deux, résidus de
+% Haberman). ACM sur plusieurs variables qualitatives (correction de
+% Benzécri, rapport de corrélation eta^2).
+L'\textbf{AFC} analyse le tableau de contingence croisant stratégie et
+tranche de résultat~; l'\textbf{ACM} étend l'analyse à plusieurs
+variables qualitatives simultanément.
+
+\subsection{Résultats}
+% [À COMPLÉTER avec etape5_afc.* et etape6_acm.*]
+\emph{[Insérer les plans factoriels AFC et ACM et leur interprétation.]}
+
+% =====================================================================
+\section{Synthèse du Bloc 1}
+\label{sec:b1-synthese}
+Sur dix stratégies, seules les deux variantes RSI (hors filtre de
+tendance) démontrent un avantage réel~; cet avantage dépend du régime de
+marché. Le secteur n'influe pas sur la probabilité de gain.

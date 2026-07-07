@@ -1,0 +1,92 @@
+% ======================================================================
+%  Préambule commun — mémoire M1 Statistique
+%  (chargé par main.tex)
+% ======================================================================
+
+% --- Encodage & langue -----------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+
+% --- Mise en page ----------------------------------------------------
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{parskip}
+\usepackage{microtype}
+
+% --- Mathématiques ---------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+
+% --- Tableaux & figures ----------------------------------------------
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\graphicspath{{figures/}{../bloc1/03_resultats/}{../bloc3/03_resultats/}}
+\usepackage{float}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+
+% --- Couleurs & encadrés ---------------------------------------------
+\usepackage{xcolor}
+\definecolor{bleuunistra}{RGB}{0,61,110}
+\definecolor{grisclair}{RGB}{242,242,242}
+\usepackage[most]{tcolorbox}
+
+% Encadré « conditions d'application » (consigne : vérifier les
+% conditions d'application des méthodes)
+\newtcolorbox{conditions}[1][]{
+  colback=grisclair, colframe=bleuunistra, boxrule=0.5pt,
+  fonttitle=\bfseries, title=Conditions d'application, #1}
+
+% Encadré « limites de validité »
+\newtcolorbox{limites}[1][]{
+  colback=white, colframe=black!55, boxrule=0.5pt,
+  fonttitle=\bfseries\itshape, title=Limites de validité, #1}
+
+% --- Code (lignes principales seulement, cf. consignes) --------------
+\usepackage{listings}
+\lstset{
+  inputencoding=utf8,
+  extendedchars=true,
+  literate=%
+    {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1 {ë}{{\"e}}1
+    {à}{{\`a}}1 {â}{{\^a}}1 {î}{{\^i}}1 {ï}{{\"i}}1
+    {ô}{{\^o}}1 {û}{{\^u}}1 {ù}{{\`u}}1 {ç}{{\c c}}1
+    {É}{{\'E}}1 {È}{{\`E}}1 {À}{{\`A}}1 {²}{{\textsuperscript{2}}}1,
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{grisclair},
+  language=Python,
+  keywordstyle=\color{bleuunistra}\bfseries,
+  showstringspaces=false,
+  captionpos=b
+}
+
+% --- Liens & biblio --------------------------------------------------
+\usepackage[hidelinks]{hyperref}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  sorting=nyt
+]{biblatex}
+\addbibresource{biblio.bib}
+
+% --- En-têtes --------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\leftmark}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- Raccourcis maison -----------------------------------------------
+\newcommand{\edgevar}{\textit{edge}}
+\newcommand{\Hzero}{\ensuremath{H_0}}
+\newcommand{\Hun}{\ensuremath{H_1}}
+\DeclareMathOperator{\Var}{Var}

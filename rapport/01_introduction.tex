@@ -1,0 +1,62 @@
+% ---------------------------------------------------------------------
+%  Chapitre 1 — Introduction : but + planification de l'expérience
+%  (couvre les points « but du stage » et « planification » des consignes)
+% ---------------------------------------------------------------------
+\chapter{Introduction}
+\label{chap:intro}
+
+\section{But du mémoire}
+\label{sec:but}
+
+% [À DÉVELOPPER] Formuler la question centrale en une phrase, puis la
+% décliner. Idée directrice : parmi les nombreux « signaux » que l'on
+% peut extraire des marchés (signaux techniques, signaux d'information,
+% relations entre actifs), lesquels ont une valeur statistiquement
+% démontrable, c'est-à-dire lesquels battent le hasard ?
+
+Ce mémoire cherche à déterminer, par des méthodes statistiques
+rigoureuses, \emph{quels signaux issus des marchés financiers possèdent
+une valeur démontrable}, en distinguant systématiquement un effet réel
+d'un artefact de la hausse générale du marché ou du hasard
+d'échantillonnage.
+
+\paragraph{Le problème du biais de marché.} % argument central à défendre à l'oral
+Sur la période étudiée, la très grande majorité des titres du S\&P~500
+progressent : un rendement positif ne prouve donc rien en soi. La
+variable d'intérêt n'est pas le rendement brut mais l'\emph{avantage}
+(\edgevar{}) d'une stratégie sur un tirage aléatoire de mêmes
+caractéristiques (même titre, même durée, même sens). Tester cet
+avantage revient à tester un \emph{talent} de décision, une fois retirée
+la dérive haussière du marché.
+
+\section{Planification de l'expérience}
+\label{sec:planification}
+
+% [À DÉVELOPPER] Décrire l'architecture en blocs dissociables : chaque
+% bloc a ses propres données, ses propres méthodes, sa propre conclusion,
+% et n'est validé qu'ensuite. Un bloc final de régression ne combine QUE
+% les signaux déjà validés.
+
+L'étude est organisée en \textbf{blocs indépendants}, chacun disposant
+de ses propres données et de ses propres méthodes, validé isolément
+avant tout regroupement~:
+
+\begin{description}
+  \item[Bloc~1 --- Stratégies techniques.] Les trades produits par dix
+    stratégies d'analyse technique. Question~: quels signaux graphiques
+    battent le hasard~? \textit{(chapitre~\ref{chap:bloc1})}
+  \item[Bloc~2 --- Signaux d'information.] Événements exogènes (contrats
+    publics, transactions parlementaires, réglementation, actualités).
+    \textit{(chapitre~\ref{chap:bloc2})}
+  \item[Bloc~3 --- Relations inter-actifs.] Séries de rendements
+    sectoriels~: couplage, avance/retard, prévisibilité.
+    \textit{(chapitre~\ref{chap:bloc3})}
+  \item[Bloc final --- Régression.] Combinaison des seuls signaux
+    validés en une équation prédictive. \textit{(chapitre~\ref{chap:blocfinal})}
+\end{description}
+
+\begin{limites}
+Ce mémoire présente en détail le Bloc~1, méthodologiquement le plus
+abouti ; les Blocs~2, 3 et final sont présentés dans leur état
+d'avancement. % [à ajuster selon l'état réel au moment du rendu]
+\end{limites}

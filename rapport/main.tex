@@ -1,0 +1,61 @@
+% ======================================================================
+%  Mémoire M1 — Master Mathématiques et applications, parcours Statistique
+%  Université de Strasbourg — UFR de mathématique et d'informatique
+%
+%  Compilation :  pdflatex main  ->  biber main  ->  pdflatex main x2
+%
+%  CONTRAINTES CONSIGNES (Consignes_M1_25_26.pdf) :
+%   - 40 pages max (hors garde, remerciements, sommaire, biblio)
+%   - 10 pages d'annexes max
+%   - LaTeX obligatoire ; rendu PDF + source pour le 3 août 2026
+%   - PAS de programme complet dans le corps ni en annexe (lignes
+%     principales seulement) ; le code est référencé sur une page web
+%   - Toute référence citée <-> présente en biblio, et inversement
+% ======================================================================
+\documentclass[11pt,a4paper]{report}
+\input{preambule}
+
+% --- Métadonnées ------------------------------------------------------
+\newcommand{\titrememoire}{Évaluation statistique de signaux de trading :\\
+  des stratégies techniques aux relations inter-sectorielles}
+\newcommand{\auteur}{Prénom NOM}          % <-- à compléter
+\newcommand{\encadrant}{Nicolas Poulin}    % encadrant unique (consignes §2)
+\newcommand{\anneeuniv}{2025--2026}
+
+\begin{document}
+
+% ======================================================================
+%  PAGES LIMINAIRES (hors décompte des 40 pages)
+% ======================================================================
+\input{00_pagedegarde}
+
+\pagenumbering{roman}
+\input{00_remerciements}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+
+% ======================================================================
+%  CORPS DU RAPPORT
+% ======================================================================
+\input{01_introduction}   % but du mémoire + planification de l'expérience
+\input{02_donnees}        % présentation des données par bloc
+\input{03_bloc1}          % Bloc 1 — DÉVELOPPÉ (théorie, conditions, résultats, limites)
+\input{04_bloc2}          % Bloc 2 — esquissé
+\input{05_bloc3}          % Bloc 3 — esquissé
+\input{06_blocfinal}      % Bloc final — esquissé
+\input{07_conclusion}     % bilan + limites globales + perspectives
+
+% ======================================================================
+%  BIBLIOGRAPHIE (hors décompte)
+% ======================================================================
+\cleardoublepage
+\printbibliography[heading=bibintoc]
+
+% ======================================================================
+%  ANNEXES (10 pages max — PAS de code complet)
+% ======================================================================
+\appendix
+\input{08_annexes}
+
+\end{document}

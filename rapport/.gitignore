@@ -1,0 +1,17 @@
+# Fichiers auxiliaires LaTeX (régénérés à la compilation)
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.bcf
+*.blg
+*.run.xml
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# PDF compilé (se régénère depuis les sources)
+main.pdf

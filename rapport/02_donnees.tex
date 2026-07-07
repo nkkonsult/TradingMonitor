@@ -1,0 +1,63 @@
+% ---------------------------------------------------------------------
+%  Chapitre 2 — Données
+% ---------------------------------------------------------------------
+\chapter{Données}
+\label{chap:donnees}
+
+\section{Bloc 1 --- la base des trades}
+\label{sec:donnees-bloc1}
+
+% [À DÉVELOPPER] 1 ligne = 1 trade. 38 035 trades exploitables issus de
+% 10 stratégies sur les titres du S&P 500. Décrire la construction de la
+% référence aléatoire (rand_return) et de la variable edge.
+
+La base du Bloc~1 comporte \textbf{38\,035 trades} exploitables~; chaque
+ligne correspond à une position ouverte puis fermée par l'une des
+dix stratégies sur un titre du S\&P~500.
+
+\begin{table}[H]
+\centering
+\caption{Principales variables de \texttt{trades.csv}.}
+\label{tab:dico-bloc1}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Variable & Nature & Rôle \\
+\midrule
+\texttt{strategy}     & qualitative (10 mod.) & facteur principal \\
+\texttt{sector}       & qualitative (11 mod.) & contexte \\
+\texttt{regime\_entry}& qualitative           & régime de marché à l'entrée \\
+\texttt{vol\_entry}   & quantitative          & volatilité à l'entrée \\
+\texttt{rsi\_entry}   & quantitative          & niveau de RSI à l'entrée \\
+\texttt{dist\_ma200}  & quantitative          & distance à la MM200 \\
+\texttt{return\_net}  & quantitative          & rendement net du trade \\
+\texttt{rand\_return} & quantitative          & rendement d'un trade aléatoire équivalent \\
+\texttt{edge}         & quantitative          & \textbf{avantage} $=$ \texttt{return\_net} $-$ \texttt{rand\_return} \\
+\texttt{win}          & binaire               & trade gagnant (1) ou non (0) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Construction de la référence aléatoire.}
+% argument à savoir défendre à l'oral
+Pour chaque trade réel, on simule 200 trades fictifs de même titre,
+durée et sens, mais à dates de départ tirées au sort~; la moyenne de
+leurs rendements donne \texttt{rand\_return}. L'\edgevar{} mesure alors
+l'écart entre le rendement réel et ce que l'on aurait obtenu « sans
+talent de timing ».
+
+\section{Bloc 3 --- les rendements sectoriels}
+\label{sec:donnees-bloc3}
+
+% [À DÉVELOPPER] 11 séries de rendements sectoriels + un indice MARCHE,
+% ~4 132 jours de cotation.
+Le Bloc~3 s'appuie sur \textbf{11 séries de rendements sectoriels}
+(plus un indice de marché agrégé) observées sur environ 4\,132 jours de
+cotation.
+
+\section{Bloc 2 --- signaux d'information}
+\label{sec:donnees-bloc2}
+% [À DÉVELOPPER] Sources événementielles collectées via agents n8n :
+% contrats publics, transactions du Congrès, réglementation, actualités.
+% Décrire le schéma de données (cf. modélisation MCD/MLD prévue).
+\emph{[Section à compléter : sources, périmètre, schéma de données.]}

@@ -34,6 +34,8 @@
 | 4a | R for Data Science (intro / transform / visualize / tidy / relational) | Hadley Wickham | ⏳ à lire (~5 PDFs) | _à venir si pertinent_ |
 | 5 | Bases de données (Merise / MCD / MLD / SQL / DF / Normalisation) | E. Claeys | ✅ fait (5 PDFs principaux lus) | [12_bases_de_donnees.md](12_bases_de_donnees.md) |
 | 6 | Théorie des sondages (Horvitz-Thompson, SAS, stratifié) | S. Maistre | ✅ fait partiel (~40 pages) — peu pertinent projet | [13_theorie_sondages.md](13_theorie_sondages.md) |
+| 7 | Statistique avec SAS (DATA step, UNIVARIATE, TTEST, ANOVA/GLM, REG, GENMOD, FREQ) | N. Poulin / L. Gardes | ✅ fait (6 PDF ~240 pages) | [14_statistique_avec_SAS.md](14_statistique_avec_SAS.md) |
+| 8 | Statistique avec Python (base, pandas/numpy, scipy.stats, statsmodels) | N. Poulin | ✅ fait (6 PDF ~270 pages + code) | [15_statistique_avec_python.md](15_statistique_avec_python.md) |
 
 ---
 
@@ -43,11 +45,14 @@
 
 | Outil | Cours | Usage |
 |---|---|---|
-| **R** | tous (sauf BDD) | Langage de stats principal |
+| **R** | Analyses des données, apprentissage, séries temp | Langage de stats principal |
 | **FactoMineR** | Analyses des données | ACP, AFC, ACM |
 | **ggplot2, ggtext** | Analyses des données | Visualisations |
 | **SQL** | Bases de données | Requêtes, jointures, sous-requêtes |
-| _(à compléter au fil des lectures)_ | | |
+| **SAS** (University Edition) | Statistique avec SAS ([[14-statistique-avec-SAS]]) | DATA step, PROC UNIVARIATE/TTEST/ANOVA/GLM/REG/GENMOD/FREQ |
+| **Python** (pandas, numpy, scipy.stats, statsmodels) | Statistique avec Python ([[15-statistique-avec-python]]) | Tests, ANOVA, χ², descriptif — **langage du projet TradingMonitor** |
+
+➡️ **Argument fort pour le rapport** : le projet TradingMonitor est codé en **Python** avec exactement les librairies vues en cours (`scipy.stats`, `statsmodels`). Les mêmes analyses sont **reproductibles en SAS et en R** (cours suivis) — triple couverture logicielle.
 
 ---
 
@@ -58,20 +63,25 @@
 ### Tests d'hypothèse
 | Méthode | Statut | Cours référence | Utilisée dans projet |
 |---|---|---|---|
-| Test de Student 1 échantillon | 🆕 (mais lien fort avec Welch) | _à confirmer dans cours tests_ | Bloc 1 étape 1 |
-| Test de Student 2 échantillons (Welch) | ✅ | (mentionné par l'utilisateur) | — |
-| Test de Wilcoxon (rangs signés) | 🆕 | — | Bloc 1 étape 1 |
-| Shapiro-Wilk | 🆕 | — | Bloc 1 étape 1 |
-| Correction de Bonferroni | 🆕 (mais lien avec Tukey) | — | Bloc 1 étape 1 |
-| Test du χ² d'indépendance | ✅ | _à confirmer_ | Bloc 1 étape 3 |
-| V de Cramer | 🆕 (extension du χ²) | — | Bloc 1 étape 3 |
+| Test de Student 1 échantillon | ✅ (2 éch. + apparié vus ; 1 éch. = cas particulier) | SAS `PROC TTEST` / Python `ttest_ind`,`ttest_rel` ([[14-statistique-avec-SAS]], [[15-statistique-avec-python]]) | Bloc 1 étape 1 |
+| Test de Student 2 échantillons (Welch) | ✅ | SAS `PROC TTEST` (Fisher variances auto) / Python `ttest_ind(equal_var=False)` | — |
+| Test de Wilcoxon (rangs signés) | ✅ R / 🆕 SAS-Python | `wilcox.test()` (R) — **non vu** en SAS/Python | Bloc 1 étape 1 |
+| Shapiro-Wilk | ✅ **confirmé** | SAS `PROC UNIVARIATE NORMAL` / Python `stats.shapiro` — cœur des cours normalité | Bloc 1 étape 1 |
+| Correction de Bonferroni | ✅ **confirmé** (post-hoc) | SAS (cité) / Python `allpairtest(method="bonf")` | Bloc 1 étape 1 |
+| Test du χ² d'indépendance | ✅ **confirmé** | SAS `PROC FREQ / CHISQ` / Python `chi2_contingency` | Bloc 1 étape 3 |
+| V de Cramer | 🆕 (extension du χ²) | **NON couvert** en SAS ni Python (ni R) | Bloc 1 étape 3 |
+| Correction de Yates | ✅ (bonus) | SAS auto (2×2) / Python `correction=True` | non utilisée |
+| Test exact de Fisher | ✅ (bonus) | SAS `EXACT Fisher` | non utilisé |
+| K-S / Anderson-Darling / Cramér-von Mises (normalité) | ✅ (bonus) | SAS `PROC UNIVARIATE NORMAL` | non utilisés |
 
 ### ANOVA
 | Méthode | Statut | Cours référence | Utilisée dans projet |
 |---|---|---|---|
-| ANOVA 1 facteur | ✅ | _à confirmer_ | Bloc 1 étape 2 |
-| Tukey HSD | ✅ | _à confirmer_ | Bloc 1 étape 2 |
-| ANOVA 2 facteurs + interaction | 🆕 (extension naturelle) | — | Bloc 1 étape 2 |
+| ANOVA 1 facteur | ✅ **confirmé** | SAS `PROC ANOVA`/`GLM` / Python `ols`+`anova_lm(typ=2)` | Bloc 1 étape 2 |
+| Tukey HSD | ✅ **confirmé** | SAS `means / TUKEY` / Python `MultiComparison().tukeyhsd()` | Bloc 1 étape 2 |
+| ANOVA 2 facteurs + interaction | ✅ **confirmé** | SAS `model Y=A B A*B; lsmeans` ([[14-statistique-avec-SAS]]) | Bloc 1 étape 2 |
+| Homoscédasticité (Bartlett / Levene) | ✅ | Bartlett (SAS+Python), Levene (Python) | conditions ANOVA |
+| Dunnett (post-hoc vs référence) | ✅ (bonus) | SAS `means / DUNNETT` | non utilisé |
 
 ### Analyse multivariée
 | Méthode | Statut | Cours référence | Utilisée dans projet |
@@ -100,6 +110,16 @@
 | UMAP | ✅ | Apprentissage stat | non |
 | Décomposition de Fourier, B-spline | ✅ | Apprentissage stat | non |
 | **Régression linéaire pénalisée (Lasso, Ridge)** | ✅ | Apprentissage stat — `LineairePenalise.pdf` | **prévue Bloc final (option B+)** |
+
+### Régression classique & GLM (cours SAS/Python)
+| Méthode | Statut | Cours référence | Utilisée dans projet |
+|---|---|---|---|
+| Régression linéaire simple/multiple | ✅ | SAS `PROC REG` ([[14-statistique-avec-SAS]]) | **Bloc final** |
+| VIF (multicolinéarité) | ✅ | SAS `PROC REG / VIF` (seuil 3) | utilisable Bloc final |
+| Sélection backward/stepwise + AIC/BIC/LRT | ✅ | SAS `selection=backward` | alternative au Lasso (rapport) |
+| **GLM généralisé — régression logistique** | 🆕✅ | SAS `PROC GENMOD dist=binomial link=logit` | **utilisable Bloc final** (modéliser `win` 0/1) |
+| **GLM — régression de Poisson** | 🆕✅ | SAS `PROC GENMOD dist=poisson link=log` | utilisable (comptage d'événements Bloc 2) |
+| Sur-dispersion (quasi-Poisson/Binomiale) | ✅ | SAS `pscale`/`dscale` | — |
 
 ### Séries temporelles
 | Méthode | Statut | Cours référence | Utilisée dans projet |

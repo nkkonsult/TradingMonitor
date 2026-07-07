@@ -1,0 +1,33 @@
+% ---------------------------------------------------------------------
+%  Chapitre 6 — BLOC FINAL (esquissé)
+% ---------------------------------------------------------------------
+\chapter{Bloc final --- régression sur les signaux validés}
+\label{chap:blocfinal}
+
+% [À DÉVELOPPER] Principe : ne combiner QUE les signaux validés par leur
+% bloc. Méthodes vues en cours mobilisables : régression multiple,
+% régression logistique (cible win 0/1), sélection de variables (AIC,
+% VIF, stepwise), validation respectant l'ordre temporel.
+
+\section{Principe}
+La régression finale ne combine que les signaux \emph{déjà validés} par
+leur bloc respectif, afin de n'introduire aucun bruit dans le modèle
+prédictif.
+
+\section{Méthodes envisagées}
+\begin{itemize}
+  \item \textbf{Régression logistique} si la cible retenue est
+        \texttt{win} (binaire)~: coefficients interprétables en
+        \emph{log-odds}, sélection par AIC et contrôle de la colinéarité
+        (VIF).
+  \item \textbf{Régression pénalisée} (Lasso) pour la sélection de
+        variables en présence de nombreux prédicteurs corrélés.
+\end{itemize}
+
+\begin{conditions}
+En contexte temporel, la validation croisée doit \textbf{respecter
+l'ordre chronologique} (pas de fuite d'information du futur).
+\end{conditions}
+
+\section{Résultats}
+\emph{[À compléter une fois les blocs amont finalisés.]}

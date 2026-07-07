@@ -27,8 +27,12 @@ metadata:
 | 11 | Statistique avec R (Chevallier) | 20 slides | [11_statistique_avec_R.md](11_statistique_avec_R.md) |
 | 12 | Bases de données (Claeys) | 5 PDFs | [12_bases_de_donnees.md](12_bases_de_donnees.md) |
 | 13 | Théorie des sondages (Maistre) | ~40 / 150 | [13_theorie_sondages.md](13_theorie_sondages.md) |
+| 14 | **Statistique avec SAS** (Poulin/Gardes) | 6 PDF ~240 | [14_statistique_avec_SAS.md](14_statistique_avec_SAS.md) |
+| 15 | **Statistique avec Python** (Poulin) | 6 PDF ~270 + code | [15_statistique_avec_python.md](15_statistique_avec_python.md) |
 
-**Total** : **~660 pages** lues et synthétisées.
+**Total** : **~1170 pages** lues et synthétisées (15 cours).
+
+> 🆕 **Ajout SAS + Python (2026-07-01)** : ces 2 cours **confirment comme "vues en cours"** la quasi-totalité des méthodes du Bloc 1 (Shapiro, Student/Welch, ANOVA 1 & 2 facteurs + interaction, Tukey, Bonferroni, χ²) — elles ne sont donc plus "à introduire". Nouveauté exploitable : **GLM généralisé / régression logistique** (`PROC GENMOD`) pour le Bloc final.
 
 ---
 
@@ -39,20 +43,24 @@ metadata:
 #### Étape 1 : Tests de significativité par stratégie
 | Méthode | Statut cours | Notes |
 |---|---|---|
-| Test t Welch (1 et 2 échantillons) | ✅ | `t.test()` en R ([[11-statistique-avec-R]]) |
-| **Test de Wilcoxon** (rang signé) | ✅ Cours stat R | `wilcox.test()` |
-| **Shapiro-Wilk** (normalité) | ✅ Cours stat R | `shapiro.test()` |
-| **Bonferroni** | ⚠️ pas explicite, mais lien Tukey | Multiplier α par k tests |
+| Test t Welch (1 et 2 échantillons) | ✅ **triple** | `PROC TTEST` (SAS) / `ttest_ind` (Python) / `t.test()` (R) |
+| **Test de Wilcoxon** (rang signé) | ✅ R uniquement | `wilcox.test()` — **non vu** en SAS/Python |
+| **Shapiro-Wilk** (normalité) | ✅ **confirmé SAS+Python+R** | `PROC UNIVARIATE NORMAL` / `stats.shapiro` / `shapiro.test()` — **cœur des cours normalité** |
+| **Bonferroni** | ✅ **confirmé** | enseigné comme post-hoc (SAS + Python `method="bonf"`) |
 | **Edge = return − rand_return** | ⭐ analogie estimateur de régression ([[13-theorie-sondages]]) | Neutralise biais marché haussier |
 
+> ⭐ **3 tests de normalité bonus vus en SAS** (`PROC UNIVARIATE NORMAL`) : Kolmogorov-Smirnov, Anderson-Darling, Cramér-von Mises — à citer si besoin de robustesse.
+
 #### Étape 2 : ANOVA + Tukey
-- ✅ ANOVA 1 facteur (cours stats utilisateur)
-- ✅ Tukey HSD pour comparaisons multiples
-- 🆕 ANOVA 2 facteurs avec interaction (extension)
+- ✅ ANOVA 1 facteur — **confirmé SAS (`PROC ANOVA`/`GLM`) + Python (`ols`+`anova_lm(typ=2)`)**
+- ✅ Tukey HSD — `means / TUKEY` (SAS), `MultiComparison().tukeyhsd()` (Python)
+- ✅ **ANOVA 2 facteurs avec interaction — CONFIRMÉE vue en cours** (`model Y=A B A*B` en SAS) — n'est plus une "extension à introduire"
+- ✅ Conditions : homoscédasticité Bartlett (SAS+Python) / Levene (Python) ; normalité des résidus (`model.resid` / `output r=residus`)
 
 #### Étape 3 : χ² + V de Cramer
-- ✅ χ² d'indépendance (`chisq.test()`)
-- 🆕 V de Cramer (extension du χ²)
+- ✅ χ² d'indépendance — **confirmé SAS (`PROC FREQ / CHISQ`) + Python (`chi2_contingency`)**
+- 🆕 V de Cramer — **reste "à introduire" : NON couvert en SAS, Python NI R** (bien vérifié dans les 3 cours logiciels)
+- ✅ bonus vus : correction de Yates, test exact de Fisher, G-test (SAS)
 
 #### Étape 4 : ACP des trades
 - ✅ ACP normée ([[01-acp]])
@@ -98,12 +106,14 @@ metadata:
 - Validation par **TimeSeriesSplit** (cf [[05-apprentissage-introduction]])
 
 #### Choix de la méthode de régression
-| Critère | Lasso | RF | SVM-RBF | Gradient Boosting |
-|---|---|---|---|---|
-| Interprétable | ✅✅ | ✅ (importance) | ❌ | ⚠️ |
-| Non-linéaire | ❌ (sauf interactions) | ✅ | ✅✅ | ✅✅ |
-| Sur-apprentissage maîtrisé | ✅ (λ) | ✅ (bagging) | ⚠️ (C, γ) | ⚠️ (T, ν) |
-| Recommandation projet | ⭐ Bloc final principal | Alternative non-linéaire (rapport) | Mention | Mention (XGBoost industrie) |
+| Critère | Lasso | RF | SVM-RBF | Gradient Boosting | **GLM logistique** |
+|---|---|---|---|---|---|
+| Interprétable | ✅✅ | ✅ (importance) | ❌ | ⚠️ | ✅✅ (odds-ratios) |
+| Non-linéaire | ❌ (sauf interactions) | ✅ | ✅✅ | ✅✅ | ❌ |
+| Sur-apprentissage maîtrisé | ✅ (λ) | ✅ (bagging) | ⚠️ (C, γ) | ⚠️ (T, ν) | ✅ (VIF, sélection) |
+| Recommandation projet | ⭐ Bloc final principal | Alternative non-linéaire (rapport) | Mention | Mention (XGBoost industrie) | **⭐ si cible = `win` 0/1** |
+
+> 🆕 **Nouvelle carte (cours SAS `PROC GENMOD`)** : la **régression logistique** ([[14-statistique-avec-SAS]]) est directement pertinente si le Bloc final modélise **`win` (gagnant/perdant, binaire)** plutôt que `edge` (continu). Méthode paramétrique **interprétable** (coefficients = log-odds), avec sélection par **VIF + AIC/LRT** vue en cours. La **régression de Poisson** couvre le comptage d'événements (Bloc 2).
 
 ---
 
@@ -271,11 +281,13 @@ metadata:
 
 ## 🏁 Conclusion
 
-Le projet TradingMonitor mobilise les compétences vues en **6 cours de M1 Statistique/DUAS** :
+Le projet TradingMonitor mobilise les compétences vues en **8 cours de M1 Statistique/DUAS** :
 - Analyses factorielles (ACP, AFC, ACM) → exploration des trades
 - Apprentissage statistique (Linéaire pénalisé, RF, importance) → Bloc final
 - Séries temporelles (ARIMA) → Bloc 3
 - Stat avec R (tests, lm, clustering) → analyses
+- **Statistique avec SAS** (UNIVARIATE, TTEST, ANOVA/GLM, REG, GENMOD, FREQ) → **valide tout le Bloc 1** + GLM logistique Bloc final
+- **Statistique avec Python** (scipy.stats, statsmodels) → **langage exact du projet**, tests du Bloc 1 reproduits à l'identique
 - Bases de données (Merise, SQL) → architecture
 - Sondages (Horvitz-Thompson, estimateurs) → légitime le concept d'edge
 
