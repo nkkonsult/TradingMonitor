@@ -1,0 +1,4 @@
+# Caches et artefacts (regenerables)
+__pycache__/
+*.pyc
+01_donnees/data_cache_prix/

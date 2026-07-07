@@ -1,0 +1,2879 @@
+signal,ticker,date,sens,secteur,intensite
+contrat,HII,2010-06-30,attribution,Industrials,2704759379.0
+contrat,LMT,2010-07-06,attribution,Industrials,4993929468.3
+contrat,BA,2010-08-19,attribution,Industrials,3127786036.39
+contrat,LMT,2010-12-29,attribution,Industrials,4980508595.15
+contrat,LMT,2011-01-05,attribution,Industrials,1589570893.76
+contrat,BA,2011-02-24,attribution,Industrials,31972918249.03
+contrat,HUM,2011-03-03,attribution,Health Care,20451127096.53
+contrat,NOC,2011-03-07,attribution,Industrials,1510737189.71
+contrat,LMT,2011-03-14,attribution,Industrials,4410630126.34
+contrat,NUE,2011-04-29,attribution,Materials,3900788934.07
+contrat,BA,2011-05-13,attribution,Industrials,1655050154.0
+contrat,LMT,2011-08-08,attribution,Industrials,7186135705.16
+contrat,BA,2011-10-01,attribution,Industrials,3679519282.56
+contrat,LMT,2011-12-02,attribution,Industrials,1504761364.98
+contrat,LDOS,2011-12-23,attribution,Industrials,3088721029.93
+contrat,BA,2011-12-29,attribution,Industrials,7337457221.95
+contrat,BA,2011-12-30,attribution,Industrials,6466627868.26
+contrat,NOC,2012-02-17,attribution,Industrials,1603584166.83
+contrat,BA,2012-03-08,attribution,Industrials,11204226412.65
+contrat,UNH,2012-03-20,attribution,Health Care,13145560374.49
+contrat,LMT,2012-05-15,attribution,Industrials,2011989206.93
+contrat,LMT,2012-06-15,attribution,Industrials,5597451611.0
+contrat,BA,2012-06-22,attribution,Industrials,2806532949.46
+contrat,LMT,2012-07-06,attribution,Industrials,1676646362.0
+contrat,BA,2012-08-31,attribution,Industrials,5544117634.23
+contrat,LMT,2012-09-28,attribution,Industrials,2881255653.08
+contrat,BA,2012-10-01,attribution,Industrials,2285494120.08
+contrat,LMT,2013-02-19,attribution,Industrials,2491233025.25
+contrat,LMT,2013-02-28,attribution,Industrials,6035358369.47
+contrat,LMT,2013-03-04,attribution,Industrials,1812244593.06
+contrat,LMT,2013-03-15,attribution,Industrials,2194921223.67
+contrat,HII,2013-03-29,attribution,Industrials,2676691465.0
+contrat,TXT,2013-04-01,attribution,Industrials,1782171428.98
+contrat,HII,2013-04-30,attribution,Industrials,1654352379.0
+contrat,LMT,2013-05-17,attribution,Industrials,1415941922.87
+contrat,NOC,2013-05-20,attribution,Industrials,5375141527.12
+contrat,HII,2013-06-03,attribution,Industrials,3345822881.0
+contrat,BA,2013-06-10,attribution,Industrials,4864238445.89
+contrat,NOC,2013-08-30,attribution,Industrials,1490942764.8
+contrat,GE,2013-10-01,attribution,Industrials,4288177894.35
+contrat,LMT,2013-12-09,attribution,Industrials,5934097111.63
+contrat,LMT,2013-12-31,attribution,Industrials,4241697570.25
+contrat,LMT,2014-03-26,attribution,Industrials,6998362070.51
+contrat,MRK,2014-03-27,attribution,Health Care,1480605083.86
+contrat,BA,2014-04-24,attribution,Industrials,1491571063.47
+contrat,RTX,2014-05-02,attribution,Industrials,1540870365.89
+contrat,BA,2014-06-30,attribution,Industrials,3154449062.9
+contrat,BA,2014-08-14,attribution,Industrials,18111838529.78
+contrat,LMT,2014-10-28,attribution,Industrials,1764499475.16
+contrat,ACN,2015-03-05,attribution,Information Technology,1507684723.07
+contrat,RTX,2015-04-30,attribution,Industrials,2213245788.81
+contrat,LMT,2015-06-04,attribution,Industrials,10550927664.07
+contrat,HII,2015-06-05,attribution,Industrials,4504997386.12
+contrat,LMT,2015-07-07,attribution,Industrials,1533695409.0
+contrat,HON,2015-07-09,attribution,Industrials,17488650862.28
+contrat,HII,2015-08-14,attribution,Industrials,1514555869.0
+contrat,LMT,2015-08-31,attribution,Industrials,1621042892.68
+contrat,NOC,2015-09-03,attribution,Industrials,1614792955.3
+contrat,LMT,2015-09-15,attribution,Industrials,1841506960.81
+contrat,BA,2015-10-30,attribution,Industrials,1397282803.14
+contrat,HII,2015-12-04,attribution,Industrials,2997306665.94
+contrat,LMT,2015-12-22,attribution,Industrials,12269145508.23
+contrat,BA,2016-01-29,attribution,Industrials,4018013174.81
+contrat,BA,2016-03-21,attribution,Industrials,7465915207.31
+contrat,HII,2016-05-23,attribution,Industrials,12721654557.85
+contrat,HII,2016-06-30,attribution,Industrials,3319287897.4
+contrat,RTX,2016-06-30,attribution,Industrials,1651199673.57
+contrat,HUM,2016-07-29,attribution,Health Care,51269205263.03
+contrat,HII,2016-08-30,attribution,Industrials,1460701662.72
+contrat,RTX,2016-11-08,attribution,Industrials,2682738779.93
+contrat,RTX,2016-11-30,attribution,Industrials,1838656695.12
+contrat,LMT,2016-12-22,attribution,Industrials,2853603995.4
+contrat,BA,2016-12-28,attribution,Industrials,6597245392.74
+contrat,BA,2017-02-27,attribution,Industrials,2444992704.44
+contrat,LMT,2017-02-28,attribution,Industrials,1443726578.57
+contrat,LMT,2017-03-27,attribution,Industrials,9080516982.62
+contrat,MRK,2017-03-30,attribution,Health Care,1453663189.8
+contrat,LMT,2017-04-28,attribution,Industrials,35135514910.2
+contrat,NOC,2017-05-31,attribution,Industrials,1730517759.3
+contrat,HII,2017-09-01,attribution,Industrials,3038709104.53
+contrat,LMT,2017-10-06,attribution,Industrials,1629900048.52
+contrat,LMT,2017-12-21,attribution,Industrials,3667251155.64
+contrat,BA,2017-12-22,attribution,Industrials,6979382395.76
+contrat,NOC,2018-02-22,attribution,Industrials,8478019987.67
+contrat,LMT,2018-03-02,attribution,Industrials,3358164279.83
+contrat,RTX,2018-03-23,attribution,Industrials,8688654906.89
+contrat,LMT,2018-04-27,attribution,Industrials,3058790659.63
+contrat,LMT,2018-04-30,attribution,Industrials,1914366871.75
+contrat,BA,2018-05-08,attribution,Industrials,5496533530.53
+contrat,ORCL,2018-05-17,attribution,Information Technology,1496628663.21
+contrat,LMT,2018-05-24,attribution,Industrials,2097972895.35
+contrat,NOC,2018-06-25,attribution,Industrials,3443980501.13
+contrat,BA,2018-06-27,attribution,Industrials,1518660771.0
+contrat,LMT,2018-07-18,attribution,Industrials,1949541131.1
+contrat,LMT,2018-07-19,attribution,Industrials,3809704361.36
+contrat,HII,2018-08-02,attribution,Industrials,4722995757.0
+contrat,LMT,2018-08-14,attribution,Industrials,7442421586.72
+contrat,BA,2018-08-30,attribution,Industrials,1806623532.79
+contrat,GD,2018-09-05,attribution,Industrials,1585600444.54
+contrat,BA,2018-09-24,attribution,Industrials,1391899887.04
+contrat,LMT,2018-09-26,attribution,Industrials,4094453903.35
+contrat,HII,2018-09-27,attribution,Industrials,6890109591.74
+contrat,LMT,2018-09-29,attribution,Industrials,3158372223.06
+contrat,GE,2018-10-01,attribution,Industrials,8435320333.07
+contrat,LMT,2018-11-14,attribution,Industrials,2356006918.46
+contrat,LMT,2018-11-15,attribution,Industrials,4329669752.97
+contrat,LMT,2018-12-20,attribution,Industrials,4008737351.62
+contrat,LMT,2018-12-21,attribution,Industrials,4583057418.88
+contrat,LMT,2018-12-27,attribution,Industrials,1940842446.62
+contrat,BA,2019-03-18,attribution,Industrials,4442838457.3
+contrat,NOC,2019-05-29,attribution,Industrials,1811548807.37
+contrat,NOC,2019-06-07,attribution,Industrials,1511353721.66
+contrat,LMT,2019-09-12,attribution,Industrials,1694838191.74
+contrat,BA,2019-10-16,attribution,Industrials,2593215439.0
+contrat,LMT,2019-11-26,attribution,Industrials,30140182630.06
+contrat,RTX,2019-12-18,attribution,Industrials,1573148446.22
+contrat,LMT,2019-12-30,attribution,Industrials,1857559785.7
+contrat,RTX,2020-03-23,attribution,Industrials,7498605067.74
+contrat,MRNA,2020-04-03,attribution,Health Care,1754345480.45
+contrat,LMT,2020-04-30,attribution,Industrials,10478694385.9
+contrat,HII,2020-04-30,attribution,Industrials,3155693794.0
+contrat,BA,2020-05-13,attribution,Industrials,2058655011.17
+contrat,LMT,2020-07-17,attribution,Industrials,1904520982.28
+contrat,MRNA,2020-08-11,attribution,Health Care,8204906278.12
+contrat,LMT,2020-08-14,attribution,Industrials,5212953429.32
+contrat,LDOS,2020-08-31,attribution,Industrials,1775380496.13
+contrat,NOC,2020-09-08,attribution,Industrials,13396478923.19
+contrat,NOC,2020-09-30,attribution,Industrials,1409895949.82
+contrat,LMT,2020-10-02,attribution,Industrials,1453527651.73
+contrat,LMT,2020-10-30,attribution,Industrials,1401875693.1
+contrat,RTX,2020-11-30,attribution,Industrials,4865962075.84
+contrat,PFE,2020-12-22,attribution,Health Care,11110134065.68
+contrat,LMT,2020-12-28,attribution,Industrials,7953264130.5
+contrat,REGN,2021-01-12,attribution,Health Care,5565000000.0
+contrat,HII,2021-02-19,attribution,Industrials,3746462276.67
+contrat,LMT,2021-03-24,attribution,Industrials,5087761430.18
+contrat,NOC,2021-03-24,attribution,Industrials,2395436919.18
+contrat,LMT,2021-06-04,attribution,Industrials,1424651424.09
+contrat,MRK,2021-06-07,attribution,Health Care,2205000834.0
+contrat,BA,2021-06-18,attribution,Industrials,3473342446.55
+contrat,LHX,2021-07-01,attribution,Industrials,2099573343.09
+contrat,PFE,2021-07-30,attribution,Health Care,4150835100.0
+contrat,LMT,2021-11-10,attribution,Industrials,2512869709.63
+contrat,PFE,2021-11-17,attribution,Health Care,12549999847.5
+contrat,BA,2022-03-02,attribution,Industrials,1553797869.15
+contrat,LMT,2022-05-17,attribution,Industrials,1805581836.44
+contrat,PFE,2022-06-29,attribution,Health Care,4038717531.97
+contrat,MRNA,2022-07-29,attribution,Health Care,1788399999.0
+contrat,LMT,2022-08-16,attribution,Industrials,1865607013.0
+contrat,ORCL,2022-09-28,attribution,Information Technology,1424879474.43
+contrat,BA,2022-09-29,attribution,Industrials,2039776433.36
+contrat,LMT,2022-10-21,attribution,Industrials,1611793487.23
+contrat,LMT,2022-10-31,attribution,Industrials,2489288587.67
+contrat,TXT,2022-12-05,attribution,Industrials,3967917594.64
+contrat,LMT,2022-12-16,attribution,Industrials,2198479923.74
+contrat,LMT,2022-12-21,attribution,Industrials,3150012905.32
+contrat,HUM,2022-12-22,attribution,Health Care,8302380861.43
+contrat,LMT,2022-12-23,attribution,Industrials,24500661983.0
+contrat,BA,2023-02-28,attribution,Industrials,2733467927.0
+contrat,LMT,2023-03-30,attribution,Industrials,2213842633.09
+contrat,HII,2023-08-01,attribution,Industrials,6988080141.83
+contrat,TXT,2023-08-04,attribution,Industrials,1436316386.0
+contrat,BA,2023-09-28,attribution,Industrials,3933015048.3
+contrat,RTX,2023-09-28,attribution,Industrials,2802401490.66
+contrat,LMT,2023-12-21,attribution,Industrials,1564462687.0
+contrat,BA,2024-02-29,attribution,Industrials,2739718834.0
+contrat,LMT,2024-06-27,attribution,Industrials,7379699098.0
+contrat,LMT,2024-06-28,attribution,Industrials,9852834751.99
+contrat,LMT,2024-07-01,attribution,Industrials,2801151369.39
+contrat,LMT,2024-09-12,attribution,Industrials,2876623988.0
+contrat,HII,2024-09-24,attribution,Industrials,2067000000.0
+contrat,LMT,2024-09-27,attribution,Industrials,7202488023.22
+contrat,LMT,2024-11-22,attribution,Industrials,4144374176.0
+contrat,LMT,2025-06-23,attribution,Industrials,1448823842.98
+contrat,MCK,2025-11-01,attribution,Health Care,1406868182.35
+contrat,BA,2025-11-25,attribution,Industrials,2295831204.0
+contrat,BA,2026-02-27,attribution,Industrials,1484114000.0
+contrat,MCK,2026-05-01,attribution,Health Care,1398025092.11
+regulation,AAPL,2024-05-03,significant,Information Technology,2.0
+regulation,MSFT,2024-05-03,significant,Information Technology,2.0
+regulation,NVDA,2024-05-03,significant,Information Technology,2.0
+regulation,AVGO,2024-05-03,significant,Information Technology,2.0
+regulation,AMD,2024-05-03,significant,Information Technology,2.0
+regulation,AAPL,2024-05-06,standard,Information Technology,1.0
+regulation,MSFT,2024-05-06,standard,Information Technology,1.0
+regulation,NVDA,2024-05-06,standard,Information Technology,1.0
+regulation,AVGO,2024-05-06,standard,Information Technology,1.0
+regulation,AMD,2024-05-06,standard,Information Technology,1.0
+regulation,AAPL,2024-05-07,significant,Information Technology,2.0
+regulation,MSFT,2024-05-07,significant,Information Technology,2.0
+regulation,NVDA,2024-05-07,significant,Information Technology,2.0
+regulation,AVGO,2024-05-07,significant,Information Technology,2.0
+regulation,AMD,2024-05-07,significant,Information Technology,2.0
+regulation,AAPL,2024-05-09,standard,Information Technology,1.0
+regulation,MSFT,2024-05-09,standard,Information Technology,1.0
+regulation,NVDA,2024-05-09,standard,Information Technology,1.0
+regulation,AVGO,2024-05-09,standard,Information Technology,1.0
+regulation,AMD,2024-05-09,standard,Information Technology,1.0
+regulation,AAPL,2024-05-14,standard,Information Technology,1.0
+regulation,MSFT,2024-05-14,standard,Information Technology,1.0
+regulation,NVDA,2024-05-14,standard,Information Technology,1.0
+regulation,AVGO,2024-05-14,standard,Information Technology,1.0
+regulation,AMD,2024-05-14,standard,Information Technology,1.0
+regulation,AAPL,2024-05-15,significant,Information Technology,2.0
+regulation,MSFT,2024-05-15,significant,Information Technology,2.0
+regulation,NVDA,2024-05-15,significant,Information Technology,2.0
+regulation,AVGO,2024-05-15,significant,Information Technology,2.0
+regulation,AMD,2024-05-15,significant,Information Technology,2.0
+regulation,AAPL,2024-05-20,standard,Information Technology,1.0
+regulation,MSFT,2024-05-20,standard,Information Technology,1.0
+regulation,NVDA,2024-05-20,standard,Information Technology,1.0
+regulation,AVGO,2024-05-20,standard,Information Technology,1.0
+regulation,AMD,2024-05-20,standard,Information Technology,1.0
+regulation,AAPL,2024-05-29,standard,Information Technology,1.0
+regulation,MSFT,2024-05-29,standard,Information Technology,1.0
+regulation,NVDA,2024-05-29,standard,Information Technology,1.0
+regulation,AVGO,2024-05-29,standard,Information Technology,1.0
+regulation,AMD,2024-05-29,standard,Information Technology,1.0
+regulation,AAPL,2024-06-11,standard,Information Technology,1.0
+regulation,MSFT,2024-06-11,standard,Information Technology,1.0
+regulation,NVDA,2024-06-11,standard,Information Technology,1.0
+regulation,AVGO,2024-06-11,standard,Information Technology,1.0
+regulation,AMD,2024-06-11,standard,Information Technology,1.0
+regulation,AAPL,2024-06-12,standard,Information Technology,1.0
+regulation,MSFT,2024-06-12,standard,Information Technology,1.0
+regulation,NVDA,2024-06-12,standard,Information Technology,1.0
+regulation,AVGO,2024-06-12,standard,Information Technology,1.0
+regulation,AMD,2024-06-12,standard,Information Technology,1.0
+regulation,AAPL,2024-06-14,significant,Information Technology,2.0
+regulation,MSFT,2024-06-14,significant,Information Technology,2.0
+regulation,NVDA,2024-06-14,significant,Information Technology,2.0
+regulation,AVGO,2024-06-14,significant,Information Technology,2.0
+regulation,AMD,2024-06-14,significant,Information Technology,2.0
+regulation,AAPL,2024-06-26,significant,Information Technology,2.0
+regulation,MSFT,2024-06-26,significant,Information Technology,2.0
+regulation,NVDA,2024-06-26,significant,Information Technology,2.0
+regulation,AVGO,2024-06-26,significant,Information Technology,2.0
+regulation,AMD,2024-06-26,significant,Information Technology,2.0
+regulation,AAPL,2024-07-05,standard,Information Technology,1.0
+regulation,MSFT,2024-07-05,standard,Information Technology,1.0
+regulation,NVDA,2024-07-05,standard,Information Technology,1.0
+regulation,AVGO,2024-07-05,standard,Information Technology,1.0
+regulation,AMD,2024-07-05,standard,Information Technology,1.0
+regulation,AAPL,2024-07-05,significant,Information Technology,2.0
+regulation,MSFT,2024-07-05,significant,Information Technology,2.0
+regulation,NVDA,2024-07-05,significant,Information Technology,2.0
+regulation,AVGO,2024-07-05,significant,Information Technology,2.0
+regulation,AMD,2024-07-05,significant,Information Technology,2.0
+regulation,AAPL,2024-07-22,standard,Information Technology,1.0
+regulation,MSFT,2024-07-22,standard,Information Technology,1.0
+regulation,NVDA,2024-07-22,standard,Information Technology,1.0
+regulation,AVGO,2024-07-22,standard,Information Technology,1.0
+regulation,AMD,2024-07-22,standard,Information Technology,1.0
+regulation,AAPL,2024-08-20,standard,Information Technology,1.0
+regulation,MSFT,2024-08-20,standard,Information Technology,1.0
+regulation,NVDA,2024-08-20,standard,Information Technology,1.0
+regulation,AVGO,2024-08-20,standard,Information Technology,1.0
+regulation,AMD,2024-08-20,standard,Information Technology,1.0
+regulation,AAPL,2024-08-27,standard,Information Technology,1.0
+regulation,MSFT,2024-08-27,standard,Information Technology,1.0
+regulation,NVDA,2024-08-27,standard,Information Technology,1.0
+regulation,AVGO,2024-08-27,standard,Information Technology,1.0
+regulation,AMD,2024-08-27,standard,Information Technology,1.0
+regulation,AAPL,2024-08-30,significant,Information Technology,2.0
+regulation,MSFT,2024-08-30,significant,Information Technology,2.0
+regulation,NVDA,2024-08-30,significant,Information Technology,2.0
+regulation,AVGO,2024-08-30,significant,Information Technology,2.0
+regulation,AMD,2024-08-30,significant,Information Technology,2.0
+regulation,AAPL,2024-09-06,standard,Information Technology,1.0
+regulation,MSFT,2024-09-06,standard,Information Technology,1.0
+regulation,NVDA,2024-09-06,standard,Information Technology,1.0
+regulation,AVGO,2024-09-06,standard,Information Technology,1.0
+regulation,AMD,2024-09-06,standard,Information Technology,1.0
+regulation,AAPL,2024-09-06,significant,Information Technology,2.0
+regulation,MSFT,2024-09-06,significant,Information Technology,2.0
+regulation,NVDA,2024-09-06,significant,Information Technology,2.0
+regulation,AVGO,2024-09-06,significant,Information Technology,2.0
+regulation,AMD,2024-09-06,significant,Information Technology,2.0
+regulation,AAPL,2024-09-11,significant,Information Technology,2.0
+regulation,MSFT,2024-09-11,significant,Information Technology,2.0
+regulation,NVDA,2024-09-11,significant,Information Technology,2.0
+regulation,AVGO,2024-09-11,significant,Information Technology,2.0
+regulation,AMD,2024-09-11,significant,Information Technology,2.0
+regulation,AAPL,2024-09-16,significant,Information Technology,2.0
+regulation,MSFT,2024-09-16,significant,Information Technology,2.0
+regulation,NVDA,2024-09-16,significant,Information Technology,2.0
+regulation,AVGO,2024-09-16,significant,Information Technology,2.0
+regulation,AMD,2024-09-16,significant,Information Technology,2.0
+regulation,AAPL,2024-09-24,standard,Information Technology,1.0
+regulation,MSFT,2024-09-24,standard,Information Technology,1.0
+regulation,NVDA,2024-09-24,standard,Information Technology,1.0
+regulation,AVGO,2024-09-24,standard,Information Technology,1.0
+regulation,AMD,2024-09-24,standard,Information Technology,1.0
+regulation,AAPL,2024-09-25,standard,Information Technology,1.0
+regulation,MSFT,2024-09-25,standard,Information Technology,1.0
+regulation,NVDA,2024-09-25,standard,Information Technology,1.0
+regulation,AVGO,2024-09-25,standard,Information Technology,1.0
+regulation,AMD,2024-09-25,standard,Information Technology,1.0
+regulation,AAPL,2024-09-27,significant,Information Technology,2.0
+regulation,MSFT,2024-09-27,significant,Information Technology,2.0
+regulation,NVDA,2024-09-27,significant,Information Technology,2.0
+regulation,AVGO,2024-09-27,significant,Information Technology,2.0
+regulation,AMD,2024-09-27,significant,Information Technology,2.0
+regulation,AAPL,2024-10-02,standard,Information Technology,1.0
+regulation,MSFT,2024-10-02,standard,Information Technology,1.0
+regulation,NVDA,2024-10-02,standard,Information Technology,1.0
+regulation,AVGO,2024-10-02,standard,Information Technology,1.0
+regulation,AMD,2024-10-02,standard,Information Technology,1.0
+regulation,AAPL,2024-10-11,significant,Information Technology,2.0
+regulation,MSFT,2024-10-11,significant,Information Technology,2.0
+regulation,NVDA,2024-10-11,significant,Information Technology,2.0
+regulation,AVGO,2024-10-11,significant,Information Technology,2.0
+regulation,AMD,2024-10-11,significant,Information Technology,2.0
+regulation,AAPL,2024-10-18,standard,Information Technology,1.0
+regulation,MSFT,2024-10-18,standard,Information Technology,1.0
+regulation,NVDA,2024-10-18,standard,Information Technology,1.0
+regulation,AVGO,2024-10-18,standard,Information Technology,1.0
+regulation,AMD,2024-10-18,standard,Information Technology,1.0
+regulation,AAPL,2024-10-23,standard,Information Technology,1.0
+regulation,MSFT,2024-10-23,standard,Information Technology,1.0
+regulation,NVDA,2024-10-23,standard,Information Technology,1.0
+regulation,AVGO,2024-10-23,standard,Information Technology,1.0
+regulation,AMD,2024-10-23,standard,Information Technology,1.0
+regulation,AAPL,2024-10-28,standard,Information Technology,1.0
+regulation,MSFT,2024-10-28,standard,Information Technology,1.0
+regulation,NVDA,2024-10-28,standard,Information Technology,1.0
+regulation,AVGO,2024-10-28,standard,Information Technology,1.0
+regulation,AMD,2024-10-28,standard,Information Technology,1.0
+regulation,AAPL,2024-10-29,standard,Information Technology,1.0
+regulation,MSFT,2024-10-29,standard,Information Technology,1.0
+regulation,NVDA,2024-10-29,standard,Information Technology,1.0
+regulation,AVGO,2024-10-29,standard,Information Technology,1.0
+regulation,AMD,2024-10-29,standard,Information Technology,1.0
+regulation,AAPL,2024-11-01,standard,Information Technology,1.0
+regulation,MSFT,2024-11-01,standard,Information Technology,1.0
+regulation,NVDA,2024-11-01,standard,Information Technology,1.0
+regulation,AVGO,2024-11-01,standard,Information Technology,1.0
+regulation,AMD,2024-11-01,standard,Information Technology,1.0
+regulation,AAPL,2024-11-12,standard,Information Technology,1.0
+regulation,MSFT,2024-11-12,standard,Information Technology,1.0
+regulation,NVDA,2024-11-12,standard,Information Technology,1.0
+regulation,AVGO,2024-11-12,standard,Information Technology,1.0
+regulation,AMD,2024-11-12,standard,Information Technology,1.0
+regulation,AAPL,2024-11-15,significant,Information Technology,2.0
+regulation,MSFT,2024-11-15,significant,Information Technology,2.0
+regulation,NVDA,2024-11-15,significant,Information Technology,2.0
+regulation,AVGO,2024-11-15,significant,Information Technology,2.0
+regulation,AMD,2024-11-15,significant,Information Technology,2.0
+regulation,AAPL,2024-11-19,standard,Information Technology,1.0
+regulation,MSFT,2024-11-19,standard,Information Technology,1.0
+regulation,NVDA,2024-11-19,standard,Information Technology,1.0
+regulation,AVGO,2024-11-19,standard,Information Technology,1.0
+regulation,AMD,2024-11-19,standard,Information Technology,1.0
+regulation,AAPL,2024-11-20,standard,Information Technology,1.0
+regulation,MSFT,2024-11-20,standard,Information Technology,1.0
+regulation,NVDA,2024-11-20,standard,Information Technology,1.0
+regulation,AVGO,2024-11-20,standard,Information Technology,1.0
+regulation,AMD,2024-11-20,standard,Information Technology,1.0
+regulation,AAPL,2024-11-25,standard,Information Technology,1.0
+regulation,MSFT,2024-11-25,standard,Information Technology,1.0
+regulation,NVDA,2024-11-25,standard,Information Technology,1.0
+regulation,AVGO,2024-11-25,standard,Information Technology,1.0
+regulation,AMD,2024-11-25,standard,Information Technology,1.0
+regulation,AAPL,2024-12-02,standard,Information Technology,1.0
+regulation,MSFT,2024-12-02,standard,Information Technology,1.0
+regulation,NVDA,2024-12-02,standard,Information Technology,1.0
+regulation,AVGO,2024-12-02,standard,Information Technology,1.0
+regulation,AMD,2024-12-02,standard,Information Technology,1.0
+regulation,AAPL,2024-12-04,standard,Information Technology,1.0
+regulation,MSFT,2024-12-04,standard,Information Technology,1.0
+regulation,NVDA,2024-12-04,standard,Information Technology,1.0
+regulation,AVGO,2024-12-04,standard,Information Technology,1.0
+regulation,AMD,2024-12-04,standard,Information Technology,1.0
+regulation,AAPL,2024-12-05,standard,Information Technology,1.0
+regulation,MSFT,2024-12-05,standard,Information Technology,1.0
+regulation,NVDA,2024-12-05,standard,Information Technology,1.0
+regulation,AVGO,2024-12-05,standard,Information Technology,1.0
+regulation,AMD,2024-12-05,standard,Information Technology,1.0
+regulation,AAPL,2024-12-06,standard,Information Technology,1.0
+regulation,MSFT,2024-12-06,standard,Information Technology,1.0
+regulation,NVDA,2024-12-06,standard,Information Technology,1.0
+regulation,AVGO,2024-12-06,standard,Information Technology,1.0
+regulation,AMD,2024-12-06,standard,Information Technology,1.0
+regulation,AAPL,2024-12-17,standard,Information Technology,1.0
+regulation,MSFT,2024-12-17,standard,Information Technology,1.0
+regulation,NVDA,2024-12-17,standard,Information Technology,1.0
+regulation,AVGO,2024-12-17,standard,Information Technology,1.0
+regulation,AMD,2024-12-17,standard,Information Technology,1.0
+regulation,AAPL,2024-12-17,significant,Information Technology,2.0
+regulation,MSFT,2024-12-17,significant,Information Technology,2.0
+regulation,NVDA,2024-12-17,significant,Information Technology,2.0
+regulation,AVGO,2024-12-17,significant,Information Technology,2.0
+regulation,AMD,2024-12-17,significant,Information Technology,2.0
+regulation,AAPL,2024-12-18,standard,Information Technology,1.0
+regulation,MSFT,2024-12-18,standard,Information Technology,1.0
+regulation,NVDA,2024-12-18,standard,Information Technology,1.0
+regulation,AVGO,2024-12-18,standard,Information Technology,1.0
+regulation,AMD,2024-12-18,standard,Information Technology,1.0
+regulation,AAPL,2024-12-18,significant,Information Technology,2.0
+regulation,MSFT,2024-12-18,significant,Information Technology,2.0
+regulation,NVDA,2024-12-18,significant,Information Technology,2.0
+regulation,AVGO,2024-12-18,significant,Information Technology,2.0
+regulation,AMD,2024-12-18,significant,Information Technology,2.0
+regulation,AAPL,2025-01-03,standard,Information Technology,1.0
+regulation,MSFT,2025-01-03,standard,Information Technology,1.0
+regulation,NVDA,2025-01-03,standard,Information Technology,1.0
+regulation,AVGO,2025-01-03,standard,Information Technology,1.0
+regulation,AMD,2025-01-03,standard,Information Technology,1.0
+regulation,AAPL,2025-01-08,standard,Information Technology,1.0
+regulation,MSFT,2025-01-08,standard,Information Technology,1.0
+regulation,NVDA,2025-01-08,standard,Information Technology,1.0
+regulation,AVGO,2025-01-08,standard,Information Technology,1.0
+regulation,AMD,2025-01-08,standard,Information Technology,1.0
+regulation,AAPL,2025-01-15,significant,Information Technology,2.0
+regulation,MSFT,2025-01-15,significant,Information Technology,2.0
+regulation,NVDA,2025-01-15,significant,Information Technology,2.0
+regulation,AVGO,2025-01-15,significant,Information Technology,2.0
+regulation,AMD,2025-01-15,significant,Information Technology,2.0
+regulation,AAPL,2025-01-16,standard,Information Technology,1.0
+regulation,MSFT,2025-01-16,standard,Information Technology,1.0
+regulation,NVDA,2025-01-16,standard,Information Technology,1.0
+regulation,AVGO,2025-01-16,standard,Information Technology,1.0
+regulation,AMD,2025-01-16,standard,Information Technology,1.0
+regulation,AAPL,2025-01-16,significant,Information Technology,2.0
+regulation,MSFT,2025-01-16,significant,Information Technology,2.0
+regulation,NVDA,2025-01-16,significant,Information Technology,2.0
+regulation,AVGO,2025-01-16,significant,Information Technology,2.0
+regulation,AMD,2025-01-16,significant,Information Technology,2.0
+regulation,AAPL,2025-01-21,standard,Information Technology,1.0
+regulation,MSFT,2025-01-21,standard,Information Technology,1.0
+regulation,NVDA,2025-01-21,standard,Information Technology,1.0
+regulation,AVGO,2025-01-21,standard,Information Technology,1.0
+regulation,AMD,2025-01-21,standard,Information Technology,1.0
+regulation,AAPL,2025-03-20,standard,Information Technology,1.0
+regulation,MSFT,2025-03-20,standard,Information Technology,1.0
+regulation,NVDA,2025-03-20,standard,Information Technology,1.0
+regulation,AVGO,2025-03-20,standard,Information Technology,1.0
+regulation,AMD,2025-03-20,standard,Information Technology,1.0
+regulation,AAPL,2025-04-04,standard,Information Technology,1.0
+regulation,MSFT,2025-04-04,standard,Information Technology,1.0
+regulation,NVDA,2025-04-04,standard,Information Technology,1.0
+regulation,AVGO,2025-04-04,standard,Information Technology,1.0
+regulation,AMD,2025-04-04,standard,Information Technology,1.0
+regulation,AAPL,2025-05-07,standard,Information Technology,1.0
+regulation,MSFT,2025-05-07,standard,Information Technology,1.0
+regulation,NVDA,2025-05-07,standard,Information Technology,1.0
+regulation,AVGO,2025-05-07,standard,Information Technology,1.0
+regulation,AMD,2025-05-07,standard,Information Technology,1.0
+regulation,AAPL,2025-06-04,standard,Information Technology,1.0
+regulation,MSFT,2025-06-04,standard,Information Technology,1.0
+regulation,NVDA,2025-06-04,standard,Information Technology,1.0
+regulation,AVGO,2025-06-04,standard,Information Technology,1.0
+regulation,AMD,2025-06-04,standard,Information Technology,1.0
+regulation,AAPL,2025-06-13,standard,Information Technology,1.0
+regulation,MSFT,2025-06-13,standard,Information Technology,1.0
+regulation,NVDA,2025-06-13,standard,Information Technology,1.0
+regulation,AVGO,2025-06-13,standard,Information Technology,1.0
+regulation,AMD,2025-06-13,standard,Information Technology,1.0
+regulation,AAPL,2025-06-20,standard,Information Technology,1.0
+regulation,MSFT,2025-06-20,standard,Information Technology,1.0
+regulation,NVDA,2025-06-20,standard,Information Technology,1.0
+regulation,AVGO,2025-06-20,standard,Information Technology,1.0
+regulation,AMD,2025-06-20,standard,Information Technology,1.0
+regulation,AAPL,2025-06-23,standard,Information Technology,1.0
+regulation,MSFT,2025-06-23,standard,Information Technology,1.0
+regulation,NVDA,2025-06-23,standard,Information Technology,1.0
+regulation,AVGO,2025-06-23,standard,Information Technology,1.0
+regulation,AMD,2025-06-23,standard,Information Technology,1.0
+regulation,AMZN,2025-07-03,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-07-03,significant,Consumer Discretionary,2.0
+regulation,HD,2025-07-03,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-07-03,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-07-03,significant,Consumer Discretionary,2.0
+regulation,AAPL,2025-07-07,standard,Information Technology,1.0
+regulation,MSFT,2025-07-07,standard,Information Technology,1.0
+regulation,NVDA,2025-07-07,standard,Information Technology,1.0
+regulation,AVGO,2025-07-07,standard,Information Technology,1.0
+regulation,AMD,2025-07-07,standard,Information Technology,1.0
+regulation,AAPL,2025-07-08,standard,Information Technology,1.0
+regulation,MSFT,2025-07-08,standard,Information Technology,1.0
+regulation,NVDA,2025-07-08,standard,Information Technology,1.0
+regulation,AVGO,2025-07-08,standard,Information Technology,1.0
+regulation,AMD,2025-07-08,standard,Information Technology,1.0
+regulation,AMZN,2025-07-16,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-07-16,standard,Consumer Discretionary,1.0
+regulation,HD,2025-07-16,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-07-16,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-07-16,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-07-17,standard,Information Technology,1.0
+regulation,MSFT,2025-07-17,standard,Information Technology,1.0
+regulation,NVDA,2025-07-17,standard,Information Technology,1.0
+regulation,AVGO,2025-07-17,standard,Information Technology,1.0
+regulation,AMD,2025-07-17,standard,Information Technology,1.0
+regulation,AAPL,2025-07-17,significant,Information Technology,2.0
+regulation,MSFT,2025-07-17,significant,Information Technology,2.0
+regulation,NVDA,2025-07-17,significant,Information Technology,2.0
+regulation,AVGO,2025-07-17,significant,Information Technology,2.0
+regulation,AMD,2025-07-17,significant,Information Technology,2.0
+regulation,AAPL,2025-07-21,standard,Information Technology,1.0
+regulation,MSFT,2025-07-21,standard,Information Technology,1.0
+regulation,NVDA,2025-07-21,standard,Information Technology,1.0
+regulation,AVGO,2025-07-21,standard,Information Technology,1.0
+regulation,AMD,2025-07-21,standard,Information Technology,1.0
+regulation,AMZN,2025-07-24,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-07-24,standard,Consumer Discretionary,1.0
+regulation,HD,2025-07-24,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-07-24,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-07-24,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-07-29,standard,Information Technology,1.0
+regulation,MSFT,2025-07-29,standard,Information Technology,1.0
+regulation,NVDA,2025-07-29,standard,Information Technology,1.0
+regulation,AVGO,2025-07-29,standard,Information Technology,1.0
+regulation,AMD,2025-07-29,standard,Information Technology,1.0
+regulation,AMZN,2025-07-31,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-07-31,standard,Consumer Discretionary,1.0
+regulation,HD,2025-07-31,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-07-31,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-07-31,standard,Consumer Discretionary,1.0
+regulation,AMZN,2025-08-01,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-08-01,significant,Consumer Discretionary,2.0
+regulation,HD,2025-08-01,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-08-01,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-08-01,significant,Consumer Discretionary,2.0
+regulation,AMZN,2025-08-04,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-08-04,standard,Consumer Discretionary,1.0
+regulation,HD,2025-08-04,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-08-04,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-08-04,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-08-07,standard,Information Technology,1.0
+regulation,MSFT,2025-08-07,standard,Information Technology,1.0
+regulation,NVDA,2025-08-07,standard,Information Technology,1.0
+regulation,AVGO,2025-08-07,standard,Information Technology,1.0
+regulation,AMD,2025-08-07,standard,Information Technology,1.0
+regulation,BA,2025-08-07,significant,Industrials,2.0
+regulation,CAT,2025-08-07,significant,Industrials,2.0
+regulation,GE,2025-08-07,significant,Industrials,2.0
+regulation,LMT,2025-08-07,significant,Industrials,2.0
+regulation,RTX,2025-08-07,significant,Industrials,2.0
+regulation,AMZN,2025-08-07,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-08-07,significant,Consumer Discretionary,2.0
+regulation,HD,2025-08-07,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-08-07,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-08-07,significant,Consumer Discretionary,2.0
+regulation,BA,2025-08-13,standard,Industrials,1.0
+regulation,CAT,2025-08-13,standard,Industrials,1.0
+regulation,GE,2025-08-13,standard,Industrials,1.0
+regulation,LMT,2025-08-13,standard,Industrials,1.0
+regulation,RTX,2025-08-13,standard,Industrials,1.0
+regulation,UNH,2025-08-14,standard,Health Care,1.0
+regulation,JNJ,2025-08-14,standard,Health Care,1.0
+regulation,LLY,2025-08-14,standard,Health Care,1.0
+regulation,PFE,2025-08-14,standard,Health Care,1.0
+regulation,MRK,2025-08-14,standard,Health Care,1.0
+regulation,BA,2025-08-14,standard,Industrials,1.0
+regulation,CAT,2025-08-14,standard,Industrials,1.0
+regulation,GE,2025-08-14,standard,Industrials,1.0
+regulation,LMT,2025-08-14,standard,Industrials,1.0
+regulation,RTX,2025-08-14,standard,Industrials,1.0
+regulation,UNH,2025-08-15,standard,Health Care,1.0
+regulation,JNJ,2025-08-15,standard,Health Care,1.0
+regulation,LLY,2025-08-15,standard,Health Care,1.0
+regulation,PFE,2025-08-15,standard,Health Care,1.0
+regulation,MRK,2025-08-15,standard,Health Care,1.0
+regulation,BA,2025-08-18,standard,Industrials,1.0
+regulation,CAT,2025-08-18,standard,Industrials,1.0
+regulation,GE,2025-08-18,standard,Industrials,1.0
+regulation,LMT,2025-08-18,standard,Industrials,1.0
+regulation,RTX,2025-08-18,standard,Industrials,1.0
+regulation,BA,2025-08-19,standard,Industrials,1.0
+regulation,CAT,2025-08-19,standard,Industrials,1.0
+regulation,GE,2025-08-19,standard,Industrials,1.0
+regulation,LMT,2025-08-19,standard,Industrials,1.0
+regulation,RTX,2025-08-19,standard,Industrials,1.0
+regulation,AMZN,2025-08-19,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-08-19,standard,Consumer Discretionary,1.0
+regulation,HD,2025-08-19,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-08-19,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-08-19,standard,Consumer Discretionary,1.0
+regulation,UNH,2025-08-21,standard,Health Care,1.0
+regulation,JNJ,2025-08-21,standard,Health Care,1.0
+regulation,LLY,2025-08-21,standard,Health Care,1.0
+regulation,PFE,2025-08-21,standard,Health Care,1.0
+regulation,MRK,2025-08-21,standard,Health Care,1.0
+regulation,AMZN,2025-08-21,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-08-21,standard,Consumer Discretionary,1.0
+regulation,HD,2025-08-21,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-08-21,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-08-21,standard,Consumer Discretionary,1.0
+regulation,UNH,2025-08-22,standard,Health Care,1.0
+regulation,JNJ,2025-08-22,standard,Health Care,1.0
+regulation,LLY,2025-08-22,standard,Health Care,1.0
+regulation,PFE,2025-08-22,standard,Health Care,1.0
+regulation,MRK,2025-08-22,standard,Health Care,1.0
+regulation,AAPL,2025-08-26,significant,Information Technology,2.0
+regulation,MSFT,2025-08-26,significant,Information Technology,2.0
+regulation,NVDA,2025-08-26,significant,Information Technology,2.0
+regulation,AVGO,2025-08-26,significant,Information Technology,2.0
+regulation,AMD,2025-08-26,significant,Information Technology,2.0
+regulation,UNH,2025-08-26,significant,Health Care,2.0
+regulation,JNJ,2025-08-26,significant,Health Care,2.0
+regulation,LLY,2025-08-26,significant,Health Care,2.0
+regulation,PFE,2025-08-26,significant,Health Care,2.0
+regulation,MRK,2025-08-26,significant,Health Care,2.0
+regulation,AMZN,2025-08-27,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-08-27,significant,Consumer Discretionary,2.0
+regulation,HD,2025-08-27,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-08-27,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-08-27,significant,Consumer Discretionary,2.0
+regulation,UNH,2025-08-28,standard,Health Care,1.0
+regulation,JNJ,2025-08-28,standard,Health Care,1.0
+regulation,LLY,2025-08-28,standard,Health Care,1.0
+regulation,PFE,2025-08-28,standard,Health Care,1.0
+regulation,MRK,2025-08-28,standard,Health Care,1.0
+regulation,AMZN,2025-08-28,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-08-28,standard,Consumer Discretionary,1.0
+regulation,HD,2025-08-28,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-08-28,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-08-28,standard,Consumer Discretionary,1.0
+regulation,AMZN,2025-08-29,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-08-29,standard,Consumer Discretionary,1.0
+regulation,HD,2025-08-29,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-08-29,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-08-29,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-09-02,standard,Information Technology,1.0
+regulation,MSFT,2025-09-02,standard,Information Technology,1.0
+regulation,NVDA,2025-09-02,standard,Information Technology,1.0
+regulation,AVGO,2025-09-02,standard,Information Technology,1.0
+regulation,AMD,2025-09-02,standard,Information Technology,1.0
+regulation,UNH,2025-09-02,standard,Health Care,1.0
+regulation,JNJ,2025-09-02,standard,Health Care,1.0
+regulation,LLY,2025-09-02,standard,Health Care,1.0
+regulation,PFE,2025-09-02,standard,Health Care,1.0
+regulation,MRK,2025-09-02,standard,Health Care,1.0
+regulation,BA,2025-09-03,standard,Industrials,1.0
+regulation,CAT,2025-09-03,standard,Industrials,1.0
+regulation,GE,2025-09-03,standard,Industrials,1.0
+regulation,LMT,2025-09-03,standard,Industrials,1.0
+regulation,RTX,2025-09-03,standard,Industrials,1.0
+regulation,UNH,2025-09-05,standard,Health Care,1.0
+regulation,JNJ,2025-09-05,standard,Health Care,1.0
+regulation,LLY,2025-09-05,standard,Health Care,1.0
+regulation,PFE,2025-09-05,standard,Health Care,1.0
+regulation,MRK,2025-09-05,standard,Health Care,1.0
+regulation,BA,2025-09-05,standard,Industrials,1.0
+regulation,CAT,2025-09-05,standard,Industrials,1.0
+regulation,GE,2025-09-05,standard,Industrials,1.0
+regulation,LMT,2025-09-05,standard,Industrials,1.0
+regulation,RTX,2025-09-05,standard,Industrials,1.0
+regulation,AMZN,2025-09-05,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-09-05,standard,Consumer Discretionary,1.0
+regulation,HD,2025-09-05,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-09-05,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-09-05,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-09-16,standard,Information Technology,1.0
+regulation,MSFT,2025-09-16,standard,Information Technology,1.0
+regulation,NVDA,2025-09-16,standard,Information Technology,1.0
+regulation,AVGO,2025-09-16,standard,Information Technology,1.0
+regulation,AMD,2025-09-16,standard,Information Technology,1.0
+regulation,AMZN,2025-09-16,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-09-16,standard,Consumer Discretionary,1.0
+regulation,HD,2025-09-16,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-09-16,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-09-16,standard,Consumer Discretionary,1.0
+regulation,BA,2025-09-17,standard,Industrials,1.0
+regulation,CAT,2025-09-17,standard,Industrials,1.0
+regulation,GE,2025-09-17,standard,Industrials,1.0
+regulation,LMT,2025-09-17,standard,Industrials,1.0
+regulation,RTX,2025-09-17,standard,Industrials,1.0
+regulation,BA,2025-09-22,standard,Industrials,1.0
+regulation,CAT,2025-09-22,standard,Industrials,1.0
+regulation,GE,2025-09-22,standard,Industrials,1.0
+regulation,LMT,2025-09-22,standard,Industrials,1.0
+regulation,RTX,2025-09-22,standard,Industrials,1.0
+regulation,AMZN,2025-09-22,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-09-22,standard,Consumer Discretionary,1.0
+regulation,HD,2025-09-22,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-09-22,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-09-22,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-09-24,significant,Information Technology,2.0
+regulation,MSFT,2025-09-24,significant,Information Technology,2.0
+regulation,NVDA,2025-09-24,significant,Information Technology,2.0
+regulation,AVGO,2025-09-24,significant,Information Technology,2.0
+regulation,AMD,2025-09-24,significant,Information Technology,2.0
+regulation,BA,2025-09-25,significant,Industrials,2.0
+regulation,CAT,2025-09-25,significant,Industrials,2.0
+regulation,GE,2025-09-25,significant,Industrials,2.0
+regulation,LMT,2025-09-25,significant,Industrials,2.0
+regulation,RTX,2025-09-25,significant,Industrials,2.0
+regulation,UNH,2025-09-26,standard,Health Care,1.0
+regulation,JNJ,2025-09-26,standard,Health Care,1.0
+regulation,LLY,2025-09-26,standard,Health Care,1.0
+regulation,PFE,2025-09-26,standard,Health Care,1.0
+regulation,MRK,2025-09-26,standard,Health Care,1.0
+regulation,UNH,2025-09-29,standard,Health Care,1.0
+regulation,JNJ,2025-09-29,standard,Health Care,1.0
+regulation,LLY,2025-09-29,standard,Health Care,1.0
+regulation,PFE,2025-09-29,standard,Health Care,1.0
+regulation,MRK,2025-09-29,standard,Health Care,1.0
+regulation,BA,2025-09-30,significant,Industrials,2.0
+regulation,CAT,2025-09-30,significant,Industrials,2.0
+regulation,GE,2025-09-30,significant,Industrials,2.0
+regulation,LMT,2025-09-30,significant,Industrials,2.0
+regulation,RTX,2025-09-30,significant,Industrials,2.0
+regulation,AMZN,2025-10-01,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-10-01,standard,Consumer Discretionary,1.0
+regulation,HD,2025-10-01,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-10-01,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-10-01,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-10-02,standard,Information Technology,1.0
+regulation,MSFT,2025-10-02,standard,Information Technology,1.0
+regulation,NVDA,2025-10-02,standard,Information Technology,1.0
+regulation,AVGO,2025-10-02,standard,Information Technology,1.0
+regulation,AMD,2025-10-02,standard,Information Technology,1.0
+regulation,UNH,2025-10-02,standard,Health Care,1.0
+regulation,JNJ,2025-10-02,standard,Health Care,1.0
+regulation,LLY,2025-10-02,standard,Health Care,1.0
+regulation,PFE,2025-10-02,standard,Health Care,1.0
+regulation,MRK,2025-10-02,standard,Health Care,1.0
+regulation,BA,2025-10-02,standard,Industrials,1.0
+regulation,CAT,2025-10-02,standard,Industrials,1.0
+regulation,GE,2025-10-02,standard,Industrials,1.0
+regulation,LMT,2025-10-02,standard,Industrials,1.0
+regulation,RTX,2025-10-02,standard,Industrials,1.0
+regulation,BA,2025-10-02,significant,Industrials,2.0
+regulation,CAT,2025-10-02,significant,Industrials,2.0
+regulation,GE,2025-10-02,significant,Industrials,2.0
+regulation,LMT,2025-10-02,significant,Industrials,2.0
+regulation,RTX,2025-10-02,significant,Industrials,2.0
+regulation,AMZN,2025-10-02,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-10-02,standard,Consumer Discretionary,1.0
+regulation,HD,2025-10-02,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-10-02,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-10-02,standard,Consumer Discretionary,1.0
+regulation,AAPL,2025-10-03,significant,Information Technology,2.0
+regulation,MSFT,2025-10-03,significant,Information Technology,2.0
+regulation,NVDA,2025-10-03,significant,Information Technology,2.0
+regulation,AVGO,2025-10-03,significant,Information Technology,2.0
+regulation,AMD,2025-10-03,significant,Information Technology,2.0
+regulation,UNH,2025-10-03,significant,Health Care,2.0
+regulation,JNJ,2025-10-03,significant,Health Care,2.0
+regulation,LLY,2025-10-03,significant,Health Care,2.0
+regulation,PFE,2025-10-03,significant,Health Care,2.0
+regulation,MRK,2025-10-03,significant,Health Care,2.0
+regulation,AMZN,2025-10-03,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-10-03,significant,Consumer Discretionary,2.0
+regulation,HD,2025-10-03,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-10-03,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-10-03,significant,Consumer Discretionary,2.0
+regulation,UNH,2025-10-15,standard,Health Care,1.0
+regulation,JNJ,2025-10-15,standard,Health Care,1.0
+regulation,LLY,2025-10-15,standard,Health Care,1.0
+regulation,PFE,2025-10-15,standard,Health Care,1.0
+regulation,MRK,2025-10-15,standard,Health Care,1.0
+regulation,BA,2025-10-27,significant,Industrials,2.0
+regulation,CAT,2025-10-27,significant,Industrials,2.0
+regulation,GE,2025-10-27,significant,Industrials,2.0
+regulation,LMT,2025-10-27,significant,Industrials,2.0
+regulation,RTX,2025-10-27,significant,Industrials,2.0
+regulation,BA,2025-10-28,standard,Industrials,1.0
+regulation,CAT,2025-10-28,standard,Industrials,1.0
+regulation,GE,2025-10-28,standard,Industrials,1.0
+regulation,LMT,2025-10-28,standard,Industrials,1.0
+regulation,RTX,2025-10-28,standard,Industrials,1.0
+regulation,BA,2025-10-30,standard,Industrials,1.0
+regulation,CAT,2025-10-30,standard,Industrials,1.0
+regulation,GE,2025-10-30,standard,Industrials,1.0
+regulation,LMT,2025-10-30,standard,Industrials,1.0
+regulation,RTX,2025-10-30,standard,Industrials,1.0
+regulation,AAPL,2025-11-03,standard,Information Technology,1.0
+regulation,MSFT,2025-11-03,standard,Information Technology,1.0
+regulation,NVDA,2025-11-03,standard,Information Technology,1.0
+regulation,AVGO,2025-11-03,standard,Information Technology,1.0
+regulation,AMD,2025-11-03,standard,Information Technology,1.0
+regulation,AAPL,2025-11-04,standard,Information Technology,1.0
+regulation,MSFT,2025-11-04,standard,Information Technology,1.0
+regulation,NVDA,2025-11-04,standard,Information Technology,1.0
+regulation,AVGO,2025-11-04,standard,Information Technology,1.0
+regulation,AMD,2025-11-04,standard,Information Technology,1.0
+regulation,UNH,2025-11-05,significant,Health Care,2.0
+regulation,JNJ,2025-11-05,significant,Health Care,2.0
+regulation,LLY,2025-11-05,significant,Health Care,2.0
+regulation,PFE,2025-11-05,significant,Health Care,2.0
+regulation,MRK,2025-11-05,significant,Health Care,2.0
+regulation,AMZN,2025-11-10,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-11-10,significant,Consumer Discretionary,2.0
+regulation,HD,2025-11-10,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-11-10,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-11-10,significant,Consumer Discretionary,2.0
+regulation,AMZN,2025-11-10,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-10,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-10,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-10,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-10,standard,Consumer Discretionary,1.0
+regulation,AMZN,2025-11-13,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-11-13,significant,Consumer Discretionary,2.0
+regulation,HD,2025-11-13,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-11-13,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-11-13,significant,Consumer Discretionary,2.0
+regulation,AMZN,2025-11-14,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-14,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-14,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-14,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-14,standard,Consumer Discretionary,1.0
+regulation,BA,2025-11-17,significant,Industrials,2.0
+regulation,CAT,2025-11-17,significant,Industrials,2.0
+regulation,GE,2025-11-17,significant,Industrials,2.0
+regulation,LMT,2025-11-17,significant,Industrials,2.0
+regulation,RTX,2025-11-17,significant,Industrials,2.0
+regulation,AMZN,2025-11-18,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-18,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-18,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-18,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-18,standard,Consumer Discretionary,1.0
+regulation,UNH,2025-11-19,standard,Health Care,1.0
+regulation,JNJ,2025-11-19,standard,Health Care,1.0
+regulation,LLY,2025-11-19,standard,Health Care,1.0
+regulation,PFE,2025-11-19,standard,Health Care,1.0
+regulation,MRK,2025-11-19,standard,Health Care,1.0
+regulation,AMZN,2025-11-19,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-19,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-19,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-19,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-19,standard,Consumer Discretionary,1.0
+regulation,AMZN,2025-11-20,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-20,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-20,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-20,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-20,standard,Consumer Discretionary,1.0
+regulation,BA,2025-11-21,significant,Industrials,2.0
+regulation,CAT,2025-11-21,significant,Industrials,2.0
+regulation,GE,2025-11-21,significant,Industrials,2.0
+regulation,LMT,2025-11-21,significant,Industrials,2.0
+regulation,RTX,2025-11-21,significant,Industrials,2.0
+regulation,AMZN,2025-11-21,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-11-21,standard,Consumer Discretionary,1.0
+regulation,HD,2025-11-21,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-11-21,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-11-21,standard,Consumer Discretionary,1.0
+regulation,UNH,2025-11-24,significant,Health Care,2.0
+regulation,JNJ,2025-11-24,significant,Health Care,2.0
+regulation,LLY,2025-11-24,significant,Health Care,2.0
+regulation,PFE,2025-11-24,significant,Health Care,2.0
+regulation,MRK,2025-11-24,significant,Health Care,2.0
+regulation,UNH,2025-11-25,significant,Health Care,2.0
+regulation,JNJ,2025-11-25,significant,Health Care,2.0
+regulation,LLY,2025-11-25,significant,Health Care,2.0
+regulation,PFE,2025-11-25,significant,Health Care,2.0
+regulation,MRK,2025-11-25,significant,Health Care,2.0
+regulation,BA,2025-11-25,standard,Industrials,1.0
+regulation,CAT,2025-11-25,standard,Industrials,1.0
+regulation,GE,2025-11-25,standard,Industrials,1.0
+regulation,LMT,2025-11-25,standard,Industrials,1.0
+regulation,RTX,2025-11-25,standard,Industrials,1.0
+regulation,UNH,2025-11-28,significant,Health Care,2.0
+regulation,JNJ,2025-11-28,significant,Health Care,2.0
+regulation,LLY,2025-11-28,significant,Health Care,2.0
+regulation,PFE,2025-11-28,significant,Health Care,2.0
+regulation,MRK,2025-11-28,significant,Health Care,2.0
+regulation,BA,2025-11-28,standard,Industrials,1.0
+regulation,CAT,2025-11-28,standard,Industrials,1.0
+regulation,GE,2025-11-28,standard,Industrials,1.0
+regulation,LMT,2025-11-28,standard,Industrials,1.0
+regulation,RTX,2025-11-28,standard,Industrials,1.0
+regulation,AMZN,2025-12-02,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-12-02,significant,Consumer Discretionary,2.0
+regulation,HD,2025-12-02,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-12-02,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-12-02,significant,Consumer Discretionary,2.0
+regulation,AAPL,2025-12-04,standard,Information Technology,1.0
+regulation,MSFT,2025-12-04,standard,Information Technology,1.0
+regulation,NVDA,2025-12-04,standard,Information Technology,1.0
+regulation,AVGO,2025-12-04,standard,Information Technology,1.0
+regulation,AMD,2025-12-04,standard,Information Technology,1.0
+regulation,BA,2025-12-04,significant,Industrials,2.0
+regulation,CAT,2025-12-04,significant,Industrials,2.0
+regulation,GE,2025-12-04,significant,Industrials,2.0
+regulation,LMT,2025-12-04,significant,Industrials,2.0
+regulation,RTX,2025-12-04,significant,Industrials,2.0
+regulation,BA,2025-12-05,significant,Industrials,2.0
+regulation,CAT,2025-12-05,significant,Industrials,2.0
+regulation,GE,2025-12-05,significant,Industrials,2.0
+regulation,LMT,2025-12-05,significant,Industrials,2.0
+regulation,RTX,2025-12-05,significant,Industrials,2.0
+regulation,BA,2025-12-05,standard,Industrials,1.0
+regulation,CAT,2025-12-05,standard,Industrials,1.0
+regulation,GE,2025-12-05,standard,Industrials,1.0
+regulation,LMT,2025-12-05,standard,Industrials,1.0
+regulation,RTX,2025-12-05,standard,Industrials,1.0
+regulation,AMZN,2025-12-05,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-12-05,significant,Consumer Discretionary,2.0
+regulation,HD,2025-12-05,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-12-05,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-12-05,significant,Consumer Discretionary,2.0
+regulation,AMZN,2025-12-05,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-12-05,standard,Consumer Discretionary,1.0
+regulation,HD,2025-12-05,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-12-05,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-12-05,standard,Consumer Discretionary,1.0
+regulation,BA,2025-12-08,significant,Industrials,2.0
+regulation,CAT,2025-12-08,significant,Industrials,2.0
+regulation,GE,2025-12-08,significant,Industrials,2.0
+regulation,LMT,2025-12-08,significant,Industrials,2.0
+regulation,RTX,2025-12-08,significant,Industrials,2.0
+regulation,BA,2025-12-08,standard,Industrials,1.0
+regulation,CAT,2025-12-08,standard,Industrials,1.0
+regulation,GE,2025-12-08,standard,Industrials,1.0
+regulation,LMT,2025-12-08,standard,Industrials,1.0
+regulation,RTX,2025-12-08,standard,Industrials,1.0
+regulation,BA,2025-12-09,standard,Industrials,1.0
+regulation,CAT,2025-12-09,standard,Industrials,1.0
+regulation,GE,2025-12-09,standard,Industrials,1.0
+regulation,LMT,2025-12-09,standard,Industrials,1.0
+regulation,RTX,2025-12-09,standard,Industrials,1.0
+regulation,BA,2025-12-10,standard,Industrials,1.0
+regulation,CAT,2025-12-10,standard,Industrials,1.0
+regulation,GE,2025-12-10,standard,Industrials,1.0
+regulation,LMT,2025-12-10,standard,Industrials,1.0
+regulation,RTX,2025-12-10,standard,Industrials,1.0
+regulation,UNH,2025-12-11,standard,Health Care,1.0
+regulation,JNJ,2025-12-11,standard,Health Care,1.0
+regulation,LLY,2025-12-11,standard,Health Care,1.0
+regulation,PFE,2025-12-11,standard,Health Care,1.0
+regulation,MRK,2025-12-11,standard,Health Care,1.0
+regulation,BA,2025-12-12,standard,Industrials,1.0
+regulation,CAT,2025-12-12,standard,Industrials,1.0
+regulation,GE,2025-12-12,standard,Industrials,1.0
+regulation,LMT,2025-12-12,standard,Industrials,1.0
+regulation,RTX,2025-12-12,standard,Industrials,1.0
+regulation,AMZN,2025-12-12,significant,Consumer Discretionary,2.0
+regulation,TSLA,2025-12-12,significant,Consumer Discretionary,2.0
+regulation,HD,2025-12-12,significant,Consumer Discretionary,2.0
+regulation,MCD,2025-12-12,significant,Consumer Discretionary,2.0
+regulation,NKE,2025-12-12,significant,Consumer Discretionary,2.0
+regulation,UNH,2025-12-16,standard,Health Care,1.0
+regulation,JNJ,2025-12-16,standard,Health Care,1.0
+regulation,LLY,2025-12-16,standard,Health Care,1.0
+regulation,PFE,2025-12-16,standard,Health Care,1.0
+regulation,MRK,2025-12-16,standard,Health Care,1.0
+regulation,AAPL,2025-12-18,standard,Information Technology,1.0
+regulation,MSFT,2025-12-18,standard,Information Technology,1.0
+regulation,NVDA,2025-12-18,standard,Information Technology,1.0
+regulation,AVGO,2025-12-18,standard,Information Technology,1.0
+regulation,AMD,2025-12-18,standard,Information Technology,1.0
+regulation,UNH,2025-12-18,standard,Health Care,1.0
+regulation,JNJ,2025-12-18,standard,Health Care,1.0
+regulation,LLY,2025-12-18,standard,Health Care,1.0
+regulation,PFE,2025-12-18,standard,Health Care,1.0
+regulation,MRK,2025-12-18,standard,Health Care,1.0
+regulation,UNH,2025-12-19,standard,Health Care,1.0
+regulation,JNJ,2025-12-19,standard,Health Care,1.0
+regulation,LLY,2025-12-19,standard,Health Care,1.0
+regulation,PFE,2025-12-19,standard,Health Care,1.0
+regulation,MRK,2025-12-19,standard,Health Care,1.0
+regulation,UNH,2025-12-23,standard,Health Care,1.0
+regulation,JNJ,2025-12-23,standard,Health Care,1.0
+regulation,LLY,2025-12-23,standard,Health Care,1.0
+regulation,PFE,2025-12-23,standard,Health Care,1.0
+regulation,MRK,2025-12-23,standard,Health Care,1.0
+regulation,UNH,2025-12-23,significant,Health Care,2.0
+regulation,JNJ,2025-12-23,significant,Health Care,2.0
+regulation,LLY,2025-12-23,significant,Health Care,2.0
+regulation,PFE,2025-12-23,significant,Health Care,2.0
+regulation,MRK,2025-12-23,significant,Health Care,2.0
+regulation,AAPL,2025-12-29,significant,Information Technology,2.0
+regulation,MSFT,2025-12-29,significant,Information Technology,2.0
+regulation,NVDA,2025-12-29,significant,Information Technology,2.0
+regulation,AVGO,2025-12-29,significant,Information Technology,2.0
+regulation,AMD,2025-12-29,significant,Information Technology,2.0
+regulation,BA,2025-12-30,standard,Industrials,1.0
+regulation,CAT,2025-12-30,standard,Industrials,1.0
+regulation,GE,2025-12-30,standard,Industrials,1.0
+regulation,LMT,2025-12-30,standard,Industrials,1.0
+regulation,RTX,2025-12-30,standard,Industrials,1.0
+regulation,AAPL,2025-12-31,standard,Information Technology,1.0
+regulation,MSFT,2025-12-31,standard,Information Technology,1.0
+regulation,NVDA,2025-12-31,standard,Information Technology,1.0
+regulation,AVGO,2025-12-31,standard,Information Technology,1.0
+regulation,AMD,2025-12-31,standard,Information Technology,1.0
+regulation,BA,2025-12-31,standard,Industrials,1.0
+regulation,CAT,2025-12-31,standard,Industrials,1.0
+regulation,GE,2025-12-31,standard,Industrials,1.0
+regulation,LMT,2025-12-31,standard,Industrials,1.0
+regulation,RTX,2025-12-31,standard,Industrials,1.0
+regulation,AMZN,2025-12-31,standard,Consumer Discretionary,1.0
+regulation,TSLA,2025-12-31,standard,Consumer Discretionary,1.0
+regulation,HD,2025-12-31,standard,Consumer Discretionary,1.0
+regulation,MCD,2025-12-31,standard,Consumer Discretionary,1.0
+regulation,NKE,2025-12-31,standard,Consumer Discretionary,1.0
+regulation,AAPL,2026-01-02,standard,Information Technology,1.0
+regulation,MSFT,2026-01-02,standard,Information Technology,1.0
+regulation,NVDA,2026-01-02,standard,Information Technology,1.0
+regulation,AVGO,2026-01-02,standard,Information Technology,1.0
+regulation,AMD,2026-01-02,standard,Information Technology,1.0
+regulation,UNH,2026-01-02,standard,Health Care,1.0
+regulation,JNJ,2026-01-02,standard,Health Care,1.0
+regulation,LLY,2026-01-02,standard,Health Care,1.0
+regulation,PFE,2026-01-02,standard,Health Care,1.0
+regulation,MRK,2026-01-02,standard,Health Care,1.0
+regulation,BA,2026-01-07,standard,Industrials,1.0
+regulation,CAT,2026-01-07,standard,Industrials,1.0
+regulation,GE,2026-01-07,standard,Industrials,1.0
+regulation,LMT,2026-01-07,standard,Industrials,1.0
+regulation,RTX,2026-01-07,standard,Industrials,1.0
+regulation,UNH,2026-01-08,significant,Health Care,2.0
+regulation,JNJ,2026-01-08,significant,Health Care,2.0
+regulation,LLY,2026-01-08,significant,Health Care,2.0
+regulation,PFE,2026-01-08,significant,Health Care,2.0
+regulation,MRK,2026-01-08,significant,Health Care,2.0
+regulation,BA,2026-01-08,standard,Industrials,1.0
+regulation,CAT,2026-01-08,standard,Industrials,1.0
+regulation,GE,2026-01-08,standard,Industrials,1.0
+regulation,LMT,2026-01-08,standard,Industrials,1.0
+regulation,RTX,2026-01-08,standard,Industrials,1.0
+regulation,AMZN,2026-01-08,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-01-08,significant,Consumer Discretionary,2.0
+regulation,HD,2026-01-08,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-01-08,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-01-08,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-01-12,standard,Health Care,1.0
+regulation,JNJ,2026-01-12,standard,Health Care,1.0
+regulation,LLY,2026-01-12,standard,Health Care,1.0
+regulation,PFE,2026-01-12,standard,Health Care,1.0
+regulation,MRK,2026-01-12,standard,Health Care,1.0
+regulation,BA,2026-01-12,standard,Industrials,1.0
+regulation,CAT,2026-01-12,standard,Industrials,1.0
+regulation,GE,2026-01-12,standard,Industrials,1.0
+regulation,LMT,2026-01-12,standard,Industrials,1.0
+regulation,RTX,2026-01-12,standard,Industrials,1.0
+regulation,AMZN,2026-01-14,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-01-14,significant,Consumer Discretionary,2.0
+regulation,HD,2026-01-14,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-01-14,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-01-14,significant,Consumer Discretionary,2.0
+regulation,AAPL,2026-01-15,standard,Information Technology,1.0
+regulation,MSFT,2026-01-15,standard,Information Technology,1.0
+regulation,NVDA,2026-01-15,standard,Information Technology,1.0
+regulation,AVGO,2026-01-15,standard,Information Technology,1.0
+regulation,AMD,2026-01-15,standard,Information Technology,1.0
+regulation,AMZN,2026-01-15,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-01-15,standard,Consumer Discretionary,1.0
+regulation,HD,2026-01-15,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-01-15,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-01-15,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-01-15,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-01-15,significant,Consumer Discretionary,2.0
+regulation,HD,2026-01-15,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-01-15,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-01-15,significant,Consumer Discretionary,2.0
+regulation,BA,2026-01-16,standard,Industrials,1.0
+regulation,CAT,2026-01-16,standard,Industrials,1.0
+regulation,GE,2026-01-16,standard,Industrials,1.0
+regulation,LMT,2026-01-16,standard,Industrials,1.0
+regulation,RTX,2026-01-16,standard,Industrials,1.0
+regulation,UNH,2026-01-20,standard,Health Care,1.0
+regulation,JNJ,2026-01-20,standard,Health Care,1.0
+regulation,LLY,2026-01-20,standard,Health Care,1.0
+regulation,PFE,2026-01-20,standard,Health Care,1.0
+regulation,MRK,2026-01-20,standard,Health Care,1.0
+regulation,BA,2026-01-21,standard,Industrials,1.0
+regulation,CAT,2026-01-21,standard,Industrials,1.0
+regulation,GE,2026-01-21,standard,Industrials,1.0
+regulation,LMT,2026-01-21,standard,Industrials,1.0
+regulation,RTX,2026-01-21,standard,Industrials,1.0
+regulation,BA,2026-01-22,standard,Industrials,1.0
+regulation,CAT,2026-01-22,standard,Industrials,1.0
+regulation,GE,2026-01-22,standard,Industrials,1.0
+regulation,LMT,2026-01-22,standard,Industrials,1.0
+regulation,RTX,2026-01-22,standard,Industrials,1.0
+regulation,BA,2026-01-23,standard,Industrials,1.0
+regulation,CAT,2026-01-23,standard,Industrials,1.0
+regulation,GE,2026-01-23,standard,Industrials,1.0
+regulation,LMT,2026-01-23,standard,Industrials,1.0
+regulation,RTX,2026-01-23,standard,Industrials,1.0
+regulation,AMZN,2026-01-26,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-01-26,standard,Consumer Discretionary,1.0
+regulation,HD,2026-01-26,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-01-26,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-01-26,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-01-27,standard,Health Care,1.0
+regulation,JNJ,2026-01-27,standard,Health Care,1.0
+regulation,LLY,2026-01-27,standard,Health Care,1.0
+regulation,PFE,2026-01-27,standard,Health Care,1.0
+regulation,MRK,2026-01-27,standard,Health Care,1.0
+regulation,UNH,2026-01-28,standard,Health Care,1.0
+regulation,JNJ,2026-01-28,standard,Health Care,1.0
+regulation,LLY,2026-01-28,standard,Health Care,1.0
+regulation,PFE,2026-01-28,standard,Health Care,1.0
+regulation,MRK,2026-01-28,standard,Health Care,1.0
+regulation,UNH,2026-01-29,standard,Health Care,1.0
+regulation,JNJ,2026-01-29,standard,Health Care,1.0
+regulation,LLY,2026-01-29,standard,Health Care,1.0
+regulation,PFE,2026-01-29,standard,Health Care,1.0
+regulation,MRK,2026-01-29,standard,Health Care,1.0
+regulation,UNH,2026-01-29,significant,Health Care,2.0
+regulation,JNJ,2026-01-29,significant,Health Care,2.0
+regulation,LLY,2026-01-29,significant,Health Care,2.0
+regulation,PFE,2026-01-29,significant,Health Care,2.0
+regulation,MRK,2026-01-29,significant,Health Care,2.0
+regulation,UNH,2026-01-30,significant,Health Care,2.0
+regulation,JNJ,2026-01-30,significant,Health Care,2.0
+regulation,LLY,2026-01-30,significant,Health Care,2.0
+regulation,PFE,2026-01-30,significant,Health Care,2.0
+regulation,MRK,2026-01-30,significant,Health Care,2.0
+regulation,BA,2026-01-30,standard,Industrials,1.0
+regulation,CAT,2026-01-30,standard,Industrials,1.0
+regulation,GE,2026-01-30,standard,Industrials,1.0
+regulation,LMT,2026-01-30,standard,Industrials,1.0
+regulation,RTX,2026-01-30,standard,Industrials,1.0
+regulation,BA,2026-01-30,significant,Industrials,2.0
+regulation,CAT,2026-01-30,significant,Industrials,2.0
+regulation,GE,2026-01-30,significant,Industrials,2.0
+regulation,LMT,2026-01-30,significant,Industrials,2.0
+regulation,RTX,2026-01-30,significant,Industrials,2.0
+regulation,AMZN,2026-01-30,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-01-30,significant,Consumer Discretionary,2.0
+regulation,HD,2026-01-30,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-01-30,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-01-30,significant,Consumer Discretionary,2.0
+regulation,BA,2026-02-02,standard,Industrials,1.0
+regulation,CAT,2026-02-02,standard,Industrials,1.0
+regulation,GE,2026-02-02,standard,Industrials,1.0
+regulation,LMT,2026-02-02,standard,Industrials,1.0
+regulation,RTX,2026-02-02,standard,Industrials,1.0
+regulation,UNH,2026-02-05,significant,Health Care,2.0
+regulation,JNJ,2026-02-05,significant,Health Care,2.0
+regulation,LLY,2026-02-05,significant,Health Care,2.0
+regulation,PFE,2026-02-05,significant,Health Care,2.0
+regulation,MRK,2026-02-05,significant,Health Care,2.0
+regulation,UNH,2026-02-06,significant,Health Care,2.0
+regulation,JNJ,2026-02-06,significant,Health Care,2.0
+regulation,LLY,2026-02-06,significant,Health Care,2.0
+regulation,PFE,2026-02-06,significant,Health Care,2.0
+regulation,MRK,2026-02-06,significant,Health Care,2.0
+regulation,UNH,2026-02-06,standard,Health Care,1.0
+regulation,JNJ,2026-02-06,standard,Health Care,1.0
+regulation,LLY,2026-02-06,standard,Health Care,1.0
+regulation,PFE,2026-02-06,standard,Health Care,1.0
+regulation,MRK,2026-02-06,standard,Health Care,1.0
+regulation,AMZN,2026-02-06,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-06,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-06,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-06,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-06,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-02-09,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-09,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-09,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-09,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-09,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-02-10,standard,Health Care,1.0
+regulation,JNJ,2026-02-10,standard,Health Care,1.0
+regulation,LLY,2026-02-10,standard,Health Care,1.0
+regulation,PFE,2026-02-10,standard,Health Care,1.0
+regulation,MRK,2026-02-10,standard,Health Care,1.0
+regulation,AMZN,2026-02-10,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-10,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-10,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-10,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-10,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-02-12,standard,Health Care,1.0
+regulation,JNJ,2026-02-12,standard,Health Care,1.0
+regulation,LLY,2026-02-12,standard,Health Care,1.0
+regulation,PFE,2026-02-12,standard,Health Care,1.0
+regulation,MRK,2026-02-12,standard,Health Care,1.0
+regulation,AMZN,2026-02-12,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-12,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-12,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-12,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-12,standard,Consumer Discretionary,1.0
+regulation,AAPL,2026-02-17,significant,Information Technology,2.0
+regulation,MSFT,2026-02-17,significant,Information Technology,2.0
+regulation,NVDA,2026-02-17,significant,Information Technology,2.0
+regulation,AVGO,2026-02-17,significant,Information Technology,2.0
+regulation,AMD,2026-02-17,significant,Information Technology,2.0
+regulation,AMZN,2026-02-17,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-17,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-17,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-17,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-17,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-02-18,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-02-18,significant,Consumer Discretionary,2.0
+regulation,HD,2026-02-18,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-02-18,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-02-18,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-02-19,standard,Health Care,1.0
+regulation,JNJ,2026-02-19,standard,Health Care,1.0
+regulation,LLY,2026-02-19,standard,Health Care,1.0
+regulation,PFE,2026-02-19,standard,Health Care,1.0
+regulation,MRK,2026-02-19,standard,Health Care,1.0
+regulation,AMZN,2026-02-19,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-02-19,significant,Consumer Discretionary,2.0
+regulation,HD,2026-02-19,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-02-19,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-02-19,significant,Consumer Discretionary,2.0
+regulation,AMZN,2026-02-20,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-02-20,significant,Consumer Discretionary,2.0
+regulation,HD,2026-02-20,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-02-20,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-02-20,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-02-24,significant,Health Care,2.0
+regulation,JNJ,2026-02-24,significant,Health Care,2.0
+regulation,LLY,2026-02-24,significant,Health Care,2.0
+regulation,PFE,2026-02-24,significant,Health Care,2.0
+regulation,MRK,2026-02-24,significant,Health Care,2.0
+regulation,XOM,2026-02-24,standard,Energy,1.0
+regulation,CVX,2026-02-24,standard,Energy,1.0
+regulation,COP,2026-02-24,standard,Energy,1.0
+regulation,SLB,2026-02-24,standard,Energy,1.0
+regulation,EOG,2026-02-24,standard,Energy,1.0
+regulation,XOM,2026-02-24,significant,Energy,2.0
+regulation,CVX,2026-02-24,significant,Energy,2.0
+regulation,COP,2026-02-24,significant,Energy,2.0
+regulation,SLB,2026-02-24,significant,Energy,2.0
+regulation,EOG,2026-02-24,significant,Energy,2.0
+regulation,AMZN,2026-02-24,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-24,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-24,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-24,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-24,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-02-24,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-02-24,significant,Consumer Discretionary,2.0
+regulation,HD,2026-02-24,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-02-24,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-02-24,significant,Consumer Discretionary,2.0
+regulation,AMZN,2026-02-25,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-25,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-25,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-25,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-25,standard,Consumer Discretionary,1.0
+regulation,XOM,2026-02-26,standard,Energy,1.0
+regulation,CVX,2026-02-26,standard,Energy,1.0
+regulation,COP,2026-02-26,standard,Energy,1.0
+regulation,SLB,2026-02-26,standard,Energy,1.0
+regulation,EOG,2026-02-26,standard,Energy,1.0
+regulation,AAPL,2026-02-27,standard,Information Technology,1.0
+regulation,MSFT,2026-02-27,standard,Information Technology,1.0
+regulation,NVDA,2026-02-27,standard,Information Technology,1.0
+regulation,AVGO,2026-02-27,standard,Information Technology,1.0
+regulation,AMD,2026-02-27,standard,Information Technology,1.0
+regulation,XOM,2026-02-27,standard,Energy,1.0
+regulation,CVX,2026-02-27,standard,Energy,1.0
+regulation,COP,2026-02-27,standard,Energy,1.0
+regulation,SLB,2026-02-27,standard,Energy,1.0
+regulation,EOG,2026-02-27,standard,Energy,1.0
+regulation,AMZN,2026-02-27,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-02-27,standard,Consumer Discretionary,1.0
+regulation,HD,2026-02-27,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-02-27,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-02-27,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-03-02,significant,Health Care,2.0
+regulation,JNJ,2026-03-02,significant,Health Care,2.0
+regulation,LLY,2026-03-02,significant,Health Care,2.0
+regulation,PFE,2026-03-02,significant,Health Care,2.0
+regulation,MRK,2026-03-02,significant,Health Care,2.0
+regulation,XOM,2026-03-02,standard,Energy,1.0
+regulation,CVX,2026-03-02,standard,Energy,1.0
+regulation,COP,2026-03-02,standard,Energy,1.0
+regulation,SLB,2026-03-02,standard,Energy,1.0
+regulation,EOG,2026-03-02,standard,Energy,1.0
+regulation,BA,2026-03-02,standard,Industrials,1.0
+regulation,CAT,2026-03-02,standard,Industrials,1.0
+regulation,GE,2026-03-02,standard,Industrials,1.0
+regulation,LMT,2026-03-02,standard,Industrials,1.0
+regulation,RTX,2026-03-02,standard,Industrials,1.0
+regulation,AMZN,2026-03-02,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-03-02,standard,Consumer Discretionary,1.0
+regulation,HD,2026-03-02,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-03-02,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-03-02,standard,Consumer Discretionary,1.0
+regulation,XOM,2026-03-04,standard,Energy,1.0
+regulation,CVX,2026-03-04,standard,Energy,1.0
+regulation,COP,2026-03-04,standard,Energy,1.0
+regulation,SLB,2026-03-04,standard,Energy,1.0
+regulation,EOG,2026-03-04,standard,Energy,1.0
+regulation,UNH,2026-03-05,standard,Health Care,1.0
+regulation,JNJ,2026-03-05,standard,Health Care,1.0
+regulation,LLY,2026-03-05,standard,Health Care,1.0
+regulation,PFE,2026-03-05,standard,Health Care,1.0
+regulation,MRK,2026-03-05,standard,Health Care,1.0
+regulation,XOM,2026-03-05,standard,Energy,1.0
+regulation,CVX,2026-03-05,standard,Energy,1.0
+regulation,COP,2026-03-05,standard,Energy,1.0
+regulation,SLB,2026-03-05,standard,Energy,1.0
+regulation,EOG,2026-03-05,standard,Energy,1.0
+regulation,BA,2026-03-06,standard,Industrials,1.0
+regulation,CAT,2026-03-06,standard,Industrials,1.0
+regulation,GE,2026-03-06,standard,Industrials,1.0
+regulation,LMT,2026-03-06,standard,Industrials,1.0
+regulation,RTX,2026-03-06,standard,Industrials,1.0
+regulation,XOM,2026-03-09,standard,Energy,1.0
+regulation,CVX,2026-03-09,standard,Energy,1.0
+regulation,COP,2026-03-09,standard,Energy,1.0
+regulation,SLB,2026-03-09,standard,Energy,1.0
+regulation,EOG,2026-03-09,standard,Energy,1.0
+regulation,XOM,2026-03-09,significant,Energy,2.0
+regulation,CVX,2026-03-09,significant,Energy,2.0
+regulation,COP,2026-03-09,significant,Energy,2.0
+regulation,SLB,2026-03-09,significant,Energy,2.0
+regulation,EOG,2026-03-09,significant,Energy,2.0
+regulation,UNH,2026-03-10,standard,Health Care,1.0
+regulation,JNJ,2026-03-10,standard,Health Care,1.0
+regulation,LLY,2026-03-10,standard,Health Care,1.0
+regulation,PFE,2026-03-10,standard,Health Care,1.0
+regulation,MRK,2026-03-10,standard,Health Care,1.0
+regulation,XOM,2026-03-10,standard,Energy,1.0
+regulation,CVX,2026-03-10,standard,Energy,1.0
+regulation,COP,2026-03-10,standard,Energy,1.0
+regulation,SLB,2026-03-10,standard,Energy,1.0
+regulation,EOG,2026-03-10,standard,Energy,1.0
+regulation,XOM,2026-03-10,significant,Energy,2.0
+regulation,CVX,2026-03-10,significant,Energy,2.0
+regulation,COP,2026-03-10,significant,Energy,2.0
+regulation,SLB,2026-03-10,significant,Energy,2.0
+regulation,EOG,2026-03-10,significant,Energy,2.0
+regulation,BA,2026-03-10,significant,Industrials,2.0
+regulation,CAT,2026-03-10,significant,Industrials,2.0
+regulation,GE,2026-03-10,significant,Industrials,2.0
+regulation,LMT,2026-03-10,significant,Industrials,2.0
+regulation,RTX,2026-03-10,significant,Industrials,2.0
+regulation,AMZN,2026-03-10,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-03-10,standard,Consumer Discretionary,1.0
+regulation,HD,2026-03-10,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-03-10,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-03-10,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-03-10,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-03-10,significant,Consumer Discretionary,2.0
+regulation,HD,2026-03-10,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-03-10,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-03-10,significant,Consumer Discretionary,2.0
+regulation,BA,2026-03-11,significant,Industrials,2.0
+regulation,CAT,2026-03-11,significant,Industrials,2.0
+regulation,GE,2026-03-11,significant,Industrials,2.0
+regulation,LMT,2026-03-11,significant,Industrials,2.0
+regulation,RTX,2026-03-11,significant,Industrials,2.0
+regulation,BA,2026-03-12,standard,Industrials,1.0
+regulation,CAT,2026-03-12,standard,Industrials,1.0
+regulation,GE,2026-03-12,standard,Industrials,1.0
+regulation,LMT,2026-03-12,standard,Industrials,1.0
+regulation,RTX,2026-03-12,standard,Industrials,1.0
+regulation,XOM,2026-03-13,standard,Energy,1.0
+regulation,CVX,2026-03-13,standard,Energy,1.0
+regulation,COP,2026-03-13,standard,Energy,1.0
+regulation,SLB,2026-03-13,standard,Energy,1.0
+regulation,EOG,2026-03-13,standard,Energy,1.0
+regulation,BA,2026-03-16,standard,Industrials,1.0
+regulation,CAT,2026-03-16,standard,Industrials,1.0
+regulation,GE,2026-03-16,standard,Industrials,1.0
+regulation,LMT,2026-03-16,standard,Industrials,1.0
+regulation,RTX,2026-03-16,standard,Industrials,1.0
+regulation,XOM,2026-03-17,significant,Energy,2.0
+regulation,CVX,2026-03-17,significant,Energy,2.0
+regulation,COP,2026-03-17,significant,Energy,2.0
+regulation,SLB,2026-03-17,significant,Energy,2.0
+regulation,EOG,2026-03-17,significant,Energy,2.0
+regulation,AMZN,2026-03-17,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-03-17,significant,Consumer Discretionary,2.0
+regulation,HD,2026-03-17,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-03-17,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-03-17,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-03-18,standard,Health Care,1.0
+regulation,JNJ,2026-03-18,standard,Health Care,1.0
+regulation,LLY,2026-03-18,standard,Health Care,1.0
+regulation,PFE,2026-03-18,standard,Health Care,1.0
+regulation,MRK,2026-03-18,standard,Health Care,1.0
+regulation,XOM,2026-03-18,standard,Energy,1.0
+regulation,CVX,2026-03-18,standard,Energy,1.0
+regulation,COP,2026-03-18,standard,Energy,1.0
+regulation,SLB,2026-03-18,standard,Energy,1.0
+regulation,EOG,2026-03-18,standard,Energy,1.0
+regulation,UNH,2026-03-19,standard,Health Care,1.0
+regulation,JNJ,2026-03-19,standard,Health Care,1.0
+regulation,LLY,2026-03-19,standard,Health Care,1.0
+regulation,PFE,2026-03-19,standard,Health Care,1.0
+regulation,MRK,2026-03-19,standard,Health Care,1.0
+regulation,XOM,2026-03-19,standard,Energy,1.0
+regulation,CVX,2026-03-19,standard,Energy,1.0
+regulation,COP,2026-03-19,standard,Energy,1.0
+regulation,SLB,2026-03-19,standard,Energy,1.0
+regulation,EOG,2026-03-19,standard,Energy,1.0
+regulation,UNH,2026-03-23,standard,Health Care,1.0
+regulation,JNJ,2026-03-23,standard,Health Care,1.0
+regulation,LLY,2026-03-23,standard,Health Care,1.0
+regulation,PFE,2026-03-23,standard,Health Care,1.0
+regulation,MRK,2026-03-23,standard,Health Care,1.0
+regulation,XOM,2026-03-23,standard,Energy,1.0
+regulation,CVX,2026-03-23,standard,Energy,1.0
+regulation,COP,2026-03-23,standard,Energy,1.0
+regulation,SLB,2026-03-23,standard,Energy,1.0
+regulation,EOG,2026-03-23,standard,Energy,1.0
+regulation,AMZN,2026-03-23,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-03-23,standard,Consumer Discretionary,1.0
+regulation,HD,2026-03-23,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-03-23,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-03-23,standard,Consumer Discretionary,1.0
+regulation,XOM,2026-03-26,standard,Energy,1.0
+regulation,CVX,2026-03-26,standard,Energy,1.0
+regulation,COP,2026-03-26,standard,Energy,1.0
+regulation,SLB,2026-03-26,standard,Energy,1.0
+regulation,EOG,2026-03-26,standard,Energy,1.0
+regulation,XOM,2026-03-27,standard,Energy,1.0
+regulation,CVX,2026-03-27,standard,Energy,1.0
+regulation,COP,2026-03-27,standard,Energy,1.0
+regulation,SLB,2026-03-27,standard,Energy,1.0
+regulation,EOG,2026-03-27,standard,Energy,1.0
+regulation,XOM,2026-03-27,significant,Energy,2.0
+regulation,CVX,2026-03-27,significant,Energy,2.0
+regulation,COP,2026-03-27,significant,Energy,2.0
+regulation,SLB,2026-03-27,significant,Energy,2.0
+regulation,EOG,2026-03-27,significant,Energy,2.0
+regulation,XOM,2026-03-30,significant,Energy,2.0
+regulation,CVX,2026-03-30,significant,Energy,2.0
+regulation,COP,2026-03-30,significant,Energy,2.0
+regulation,SLB,2026-03-30,significant,Energy,2.0
+regulation,EOG,2026-03-30,significant,Energy,2.0
+regulation,AMZN,2026-03-30,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-03-30,significant,Consumer Discretionary,2.0
+regulation,HD,2026-03-30,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-03-30,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-03-30,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-03-31,standard,Health Care,1.0
+regulation,JNJ,2026-03-31,standard,Health Care,1.0
+regulation,LLY,2026-03-31,standard,Health Care,1.0
+regulation,PFE,2026-03-31,standard,Health Care,1.0
+regulation,MRK,2026-03-31,standard,Health Care,1.0
+regulation,AAPL,2026-04-01,standard,Information Technology,1.0
+regulation,MSFT,2026-04-01,standard,Information Technology,1.0
+regulation,NVDA,2026-04-01,standard,Information Technology,1.0
+regulation,AVGO,2026-04-01,standard,Information Technology,1.0
+regulation,AMD,2026-04-01,standard,Information Technology,1.0
+regulation,UNH,2026-04-01,standard,Health Care,1.0
+regulation,JNJ,2026-04-01,standard,Health Care,1.0
+regulation,LLY,2026-04-01,standard,Health Care,1.0
+regulation,PFE,2026-04-01,standard,Health Care,1.0
+regulation,MRK,2026-04-01,standard,Health Care,1.0
+regulation,XOM,2026-04-01,standard,Energy,1.0
+regulation,CVX,2026-04-01,standard,Energy,1.0
+regulation,COP,2026-04-01,standard,Energy,1.0
+regulation,SLB,2026-04-01,standard,Energy,1.0
+regulation,EOG,2026-04-01,standard,Energy,1.0
+regulation,XOM,2026-04-01,significant,Energy,2.0
+regulation,CVX,2026-04-01,significant,Energy,2.0
+regulation,COP,2026-04-01,significant,Energy,2.0
+regulation,SLB,2026-04-01,significant,Energy,2.0
+regulation,EOG,2026-04-01,significant,Energy,2.0
+regulation,AMZN,2026-04-01,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-04-01,significant,Consumer Discretionary,2.0
+regulation,HD,2026-04-01,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-04-01,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-04-01,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-04-02,standard,Health Care,1.0
+regulation,JNJ,2026-04-02,standard,Health Care,1.0
+regulation,LLY,2026-04-02,standard,Health Care,1.0
+regulation,PFE,2026-04-02,standard,Health Care,1.0
+regulation,MRK,2026-04-02,standard,Health Care,1.0
+regulation,AMZN,2026-04-02,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-02,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-02,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-02,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-02,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-04-03,standard,Health Care,1.0
+regulation,JNJ,2026-04-03,standard,Health Care,1.0
+regulation,LLY,2026-04-03,standard,Health Care,1.0
+regulation,PFE,2026-04-03,standard,Health Care,1.0
+regulation,MRK,2026-04-03,standard,Health Care,1.0
+regulation,XOM,2026-04-03,significant,Energy,2.0
+regulation,CVX,2026-04-03,significant,Energy,2.0
+regulation,COP,2026-04-03,significant,Energy,2.0
+regulation,SLB,2026-04-03,significant,Energy,2.0
+regulation,EOG,2026-04-03,significant,Energy,2.0
+regulation,AMZN,2026-04-03,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-04-03,significant,Consumer Discretionary,2.0
+regulation,HD,2026-04-03,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-04-03,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-04-03,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-04-06,standard,Health Care,1.0
+regulation,JNJ,2026-04-06,standard,Health Care,1.0
+regulation,LLY,2026-04-06,standard,Health Care,1.0
+regulation,PFE,2026-04-06,standard,Health Care,1.0
+regulation,MRK,2026-04-06,standard,Health Care,1.0
+regulation,UNH,2026-04-06,significant,Health Care,2.0
+regulation,JNJ,2026-04-06,significant,Health Care,2.0
+regulation,LLY,2026-04-06,significant,Health Care,2.0
+regulation,PFE,2026-04-06,significant,Health Care,2.0
+regulation,MRK,2026-04-06,significant,Health Care,2.0
+regulation,XOM,2026-04-06,significant,Energy,2.0
+regulation,CVX,2026-04-06,significant,Energy,2.0
+regulation,COP,2026-04-06,significant,Energy,2.0
+regulation,SLB,2026-04-06,significant,Energy,2.0
+regulation,EOG,2026-04-06,significant,Energy,2.0
+regulation,AMZN,2026-04-06,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-06,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-06,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-06,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-06,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-04-09,standard,Health Care,1.0
+regulation,JNJ,2026-04-09,standard,Health Care,1.0
+regulation,LLY,2026-04-09,standard,Health Care,1.0
+regulation,PFE,2026-04-09,standard,Health Care,1.0
+regulation,MRK,2026-04-09,standard,Health Care,1.0
+regulation,XOM,2026-04-09,standard,Energy,1.0
+regulation,CVX,2026-04-09,standard,Energy,1.0
+regulation,COP,2026-04-09,standard,Energy,1.0
+regulation,SLB,2026-04-09,standard,Energy,1.0
+regulation,EOG,2026-04-09,standard,Energy,1.0
+regulation,XOM,2026-04-09,significant,Energy,2.0
+regulation,CVX,2026-04-09,significant,Energy,2.0
+regulation,COP,2026-04-09,significant,Energy,2.0
+regulation,SLB,2026-04-09,significant,Energy,2.0
+regulation,EOG,2026-04-09,significant,Energy,2.0
+regulation,XOM,2026-04-10,standard,Energy,1.0
+regulation,CVX,2026-04-10,standard,Energy,1.0
+regulation,COP,2026-04-10,standard,Energy,1.0
+regulation,SLB,2026-04-10,standard,Energy,1.0
+regulation,EOG,2026-04-10,standard,Energy,1.0
+regulation,AMZN,2026-04-10,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-10,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-10,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-10,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-10,standard,Consumer Discretionary,1.0
+regulation,XOM,2026-04-13,standard,Energy,1.0
+regulation,CVX,2026-04-13,standard,Energy,1.0
+regulation,COP,2026-04-13,standard,Energy,1.0
+regulation,SLB,2026-04-13,standard,Energy,1.0
+regulation,EOG,2026-04-13,standard,Energy,1.0
+regulation,BA,2026-04-13,standard,Industrials,1.0
+regulation,CAT,2026-04-13,standard,Industrials,1.0
+regulation,GE,2026-04-13,standard,Industrials,1.0
+regulation,LMT,2026-04-13,standard,Industrials,1.0
+regulation,RTX,2026-04-13,standard,Industrials,1.0
+regulation,AMZN,2026-04-13,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-13,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-13,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-13,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-13,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-04-13,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-04-13,significant,Consumer Discretionary,2.0
+regulation,HD,2026-04-13,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-04-13,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-04-13,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-04-14,significant,Health Care,2.0
+regulation,JNJ,2026-04-14,significant,Health Care,2.0
+regulation,LLY,2026-04-14,significant,Health Care,2.0
+regulation,PFE,2026-04-14,significant,Health Care,2.0
+regulation,MRK,2026-04-14,significant,Health Care,2.0
+regulation,UNH,2026-04-14,standard,Health Care,1.0
+regulation,JNJ,2026-04-14,standard,Health Care,1.0
+regulation,LLY,2026-04-14,standard,Health Care,1.0
+regulation,PFE,2026-04-14,standard,Health Care,1.0
+regulation,MRK,2026-04-14,standard,Health Care,1.0
+regulation,XOM,2026-04-15,standard,Energy,1.0
+regulation,CVX,2026-04-15,standard,Energy,1.0
+regulation,COP,2026-04-15,standard,Energy,1.0
+regulation,SLB,2026-04-15,standard,Energy,1.0
+regulation,EOG,2026-04-15,standard,Energy,1.0
+regulation,UNH,2026-04-16,standard,Health Care,1.0
+regulation,JNJ,2026-04-16,standard,Health Care,1.0
+regulation,LLY,2026-04-16,standard,Health Care,1.0
+regulation,PFE,2026-04-16,standard,Health Care,1.0
+regulation,MRK,2026-04-16,standard,Health Care,1.0
+regulation,BA,2026-04-16,standard,Industrials,1.0
+regulation,CAT,2026-04-16,standard,Industrials,1.0
+regulation,GE,2026-04-16,standard,Industrials,1.0
+regulation,LMT,2026-04-16,standard,Industrials,1.0
+regulation,RTX,2026-04-16,standard,Industrials,1.0
+regulation,XOM,2026-04-17,standard,Energy,1.0
+regulation,CVX,2026-04-17,standard,Energy,1.0
+regulation,COP,2026-04-17,standard,Energy,1.0
+regulation,SLB,2026-04-17,standard,Energy,1.0
+regulation,EOG,2026-04-17,standard,Energy,1.0
+regulation,BA,2026-04-20,standard,Industrials,1.0
+regulation,CAT,2026-04-20,standard,Industrials,1.0
+regulation,GE,2026-04-20,standard,Industrials,1.0
+regulation,LMT,2026-04-20,standard,Industrials,1.0
+regulation,RTX,2026-04-20,standard,Industrials,1.0
+regulation,JPM,2026-04-21,standard,Financials,1.0
+regulation,BAC,2026-04-21,standard,Financials,1.0
+regulation,WFC,2026-04-21,standard,Financials,1.0
+regulation,GS,2026-04-21,standard,Financials,1.0
+regulation,MS,2026-04-21,standard,Financials,1.0
+regulation,JPM,2026-04-22,standard,Financials,1.0
+regulation,BAC,2026-04-22,standard,Financials,1.0
+regulation,WFC,2026-04-22,standard,Financials,1.0
+regulation,GS,2026-04-22,standard,Financials,1.0
+regulation,MS,2026-04-22,standard,Financials,1.0
+regulation,JPM,2026-04-22,significant,Financials,2.0
+regulation,BAC,2026-04-22,significant,Financials,2.0
+regulation,WFC,2026-04-22,significant,Financials,2.0
+regulation,GS,2026-04-22,significant,Financials,2.0
+regulation,MS,2026-04-22,significant,Financials,2.0
+regulation,XOM,2026-04-22,standard,Energy,1.0
+regulation,CVX,2026-04-22,standard,Energy,1.0
+regulation,COP,2026-04-22,standard,Energy,1.0
+regulation,SLB,2026-04-22,standard,Energy,1.0
+regulation,EOG,2026-04-22,standard,Energy,1.0
+regulation,AMZN,2026-04-22,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-22,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-22,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-22,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-22,standard,Consumer Discretionary,1.0
+regulation,JPM,2026-04-23,standard,Financials,1.0
+regulation,BAC,2026-04-23,standard,Financials,1.0
+regulation,WFC,2026-04-23,standard,Financials,1.0
+regulation,GS,2026-04-23,standard,Financials,1.0
+regulation,MS,2026-04-23,standard,Financials,1.0
+regulation,XOM,2026-04-23,significant,Energy,2.0
+regulation,CVX,2026-04-23,significant,Energy,2.0
+regulation,COP,2026-04-23,significant,Energy,2.0
+regulation,SLB,2026-04-23,significant,Energy,2.0
+regulation,EOG,2026-04-23,significant,Energy,2.0
+regulation,BA,2026-04-23,significant,Industrials,2.0
+regulation,CAT,2026-04-23,significant,Industrials,2.0
+regulation,GE,2026-04-23,significant,Industrials,2.0
+regulation,LMT,2026-04-23,significant,Industrials,2.0
+regulation,RTX,2026-04-23,significant,Industrials,2.0
+regulation,JPM,2026-04-24,standard,Financials,1.0
+regulation,BAC,2026-04-24,standard,Financials,1.0
+regulation,WFC,2026-04-24,standard,Financials,1.0
+regulation,GS,2026-04-24,standard,Financials,1.0
+regulation,MS,2026-04-24,standard,Financials,1.0
+regulation,XOM,2026-04-24,standard,Energy,1.0
+regulation,CVX,2026-04-24,standard,Energy,1.0
+regulation,COP,2026-04-24,standard,Energy,1.0
+regulation,SLB,2026-04-24,standard,Energy,1.0
+regulation,EOG,2026-04-24,standard,Energy,1.0
+regulation,BA,2026-04-24,standard,Industrials,1.0
+regulation,CAT,2026-04-24,standard,Industrials,1.0
+regulation,GE,2026-04-24,standard,Industrials,1.0
+regulation,LMT,2026-04-24,standard,Industrials,1.0
+regulation,RTX,2026-04-24,standard,Industrials,1.0
+regulation,AMZN,2026-04-24,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-04-24,significant,Consumer Discretionary,2.0
+regulation,HD,2026-04-24,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-04-24,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-04-24,significant,Consumer Discretionary,2.0
+regulation,JPM,2026-04-27,standard,Financials,1.0
+regulation,BAC,2026-04-27,standard,Financials,1.0
+regulation,WFC,2026-04-27,standard,Financials,1.0
+regulation,GS,2026-04-27,standard,Financials,1.0
+regulation,MS,2026-04-27,standard,Financials,1.0
+regulation,JPM,2026-04-27,significant,Financials,2.0
+regulation,BAC,2026-04-27,significant,Financials,2.0
+regulation,WFC,2026-04-27,significant,Financials,2.0
+regulation,GS,2026-04-27,significant,Financials,2.0
+regulation,MS,2026-04-27,significant,Financials,2.0
+regulation,BA,2026-04-27,significant,Industrials,2.0
+regulation,CAT,2026-04-27,significant,Industrials,2.0
+regulation,GE,2026-04-27,significant,Industrials,2.0
+regulation,LMT,2026-04-27,significant,Industrials,2.0
+regulation,RTX,2026-04-27,significant,Industrials,2.0
+regulation,AMZN,2026-04-27,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-27,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-27,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-27,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-27,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-04-28,standard,Health Care,1.0
+regulation,JNJ,2026-04-28,standard,Health Care,1.0
+regulation,LLY,2026-04-28,standard,Health Care,1.0
+regulation,PFE,2026-04-28,standard,Health Care,1.0
+regulation,MRK,2026-04-28,standard,Health Care,1.0
+regulation,XOM,2026-04-28,standard,Energy,1.0
+regulation,CVX,2026-04-28,standard,Energy,1.0
+regulation,COP,2026-04-28,standard,Energy,1.0
+regulation,SLB,2026-04-28,standard,Energy,1.0
+regulation,EOG,2026-04-28,standard,Energy,1.0
+regulation,BA,2026-04-28,standard,Industrials,1.0
+regulation,CAT,2026-04-28,standard,Industrials,1.0
+regulation,GE,2026-04-28,standard,Industrials,1.0
+regulation,LMT,2026-04-28,standard,Industrials,1.0
+regulation,RTX,2026-04-28,standard,Industrials,1.0
+regulation,AMZN,2026-04-28,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-04-28,standard,Consumer Discretionary,1.0
+regulation,HD,2026-04-28,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-04-28,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-04-28,standard,Consumer Discretionary,1.0
+regulation,JPM,2026-04-29,standard,Financials,1.0
+regulation,BAC,2026-04-29,standard,Financials,1.0
+regulation,WFC,2026-04-29,standard,Financials,1.0
+regulation,GS,2026-04-29,standard,Financials,1.0
+regulation,MS,2026-04-29,standard,Financials,1.0
+regulation,XOM,2026-04-29,standard,Energy,1.0
+regulation,CVX,2026-04-29,standard,Energy,1.0
+regulation,COP,2026-04-29,standard,Energy,1.0
+regulation,SLB,2026-04-29,standard,Energy,1.0
+regulation,EOG,2026-04-29,standard,Energy,1.0
+regulation,BA,2026-04-29,standard,Industrials,1.0
+regulation,CAT,2026-04-29,standard,Industrials,1.0
+regulation,GE,2026-04-29,standard,Industrials,1.0
+regulation,LMT,2026-04-29,standard,Industrials,1.0
+regulation,RTX,2026-04-29,standard,Industrials,1.0
+regulation,JPM,2026-04-30,standard,Financials,1.0
+regulation,BAC,2026-04-30,standard,Financials,1.0
+regulation,WFC,2026-04-30,standard,Financials,1.0
+regulation,GS,2026-04-30,standard,Financials,1.0
+regulation,MS,2026-04-30,standard,Financials,1.0
+regulation,JPM,2026-05-01,standard,Financials,1.0
+regulation,BAC,2026-05-01,standard,Financials,1.0
+regulation,WFC,2026-05-01,standard,Financials,1.0
+regulation,GS,2026-05-01,standard,Financials,1.0
+regulation,MS,2026-05-01,standard,Financials,1.0
+regulation,JPM,2026-05-01,significant,Financials,2.0
+regulation,BAC,2026-05-01,significant,Financials,2.0
+regulation,WFC,2026-05-01,significant,Financials,2.0
+regulation,GS,2026-05-01,significant,Financials,2.0
+regulation,MS,2026-05-01,significant,Financials,2.0
+regulation,XOM,2026-05-01,standard,Energy,1.0
+regulation,CVX,2026-05-01,standard,Energy,1.0
+regulation,COP,2026-05-01,standard,Energy,1.0
+regulation,SLB,2026-05-01,standard,Energy,1.0
+regulation,EOG,2026-05-01,standard,Energy,1.0
+regulation,BA,2026-05-01,standard,Industrials,1.0
+regulation,CAT,2026-05-01,standard,Industrials,1.0
+regulation,GE,2026-05-01,standard,Industrials,1.0
+regulation,LMT,2026-05-01,standard,Industrials,1.0
+regulation,RTX,2026-05-01,standard,Industrials,1.0
+regulation,AMZN,2026-05-01,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-05-01,standard,Consumer Discretionary,1.0
+regulation,HD,2026-05-01,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-05-01,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-05-01,standard,Consumer Discretionary,1.0
+regulation,XOM,2026-05-04,standard,Energy,1.0
+regulation,CVX,2026-05-04,standard,Energy,1.0
+regulation,COP,2026-05-04,standard,Energy,1.0
+regulation,SLB,2026-05-04,standard,Energy,1.0
+regulation,EOG,2026-05-04,standard,Energy,1.0
+regulation,JPM,2026-05-05,standard,Financials,1.0
+regulation,BAC,2026-05-05,standard,Financials,1.0
+regulation,WFC,2026-05-05,standard,Financials,1.0
+regulation,GS,2026-05-05,standard,Financials,1.0
+regulation,MS,2026-05-05,standard,Financials,1.0
+regulation,UNH,2026-05-06,significant,Health Care,2.0
+regulation,JNJ,2026-05-06,significant,Health Care,2.0
+regulation,LLY,2026-05-06,significant,Health Care,2.0
+regulation,PFE,2026-05-06,significant,Health Care,2.0
+regulation,MRK,2026-05-06,significant,Health Care,2.0
+regulation,JPM,2026-05-06,standard,Financials,1.0
+regulation,BAC,2026-05-06,standard,Financials,1.0
+regulation,WFC,2026-05-06,standard,Financials,1.0
+regulation,GS,2026-05-06,standard,Financials,1.0
+regulation,MS,2026-05-06,standard,Financials,1.0
+regulation,JPM,2026-05-06,significant,Financials,2.0
+regulation,BAC,2026-05-06,significant,Financials,2.0
+regulation,WFC,2026-05-06,significant,Financials,2.0
+regulation,GS,2026-05-06,significant,Financials,2.0
+regulation,MS,2026-05-06,significant,Financials,2.0
+regulation,XOM,2026-05-06,significant,Energy,2.0
+regulation,CVX,2026-05-06,significant,Energy,2.0
+regulation,COP,2026-05-06,significant,Energy,2.0
+regulation,SLB,2026-05-06,significant,Energy,2.0
+regulation,EOG,2026-05-06,significant,Energy,2.0
+regulation,BA,2026-05-06,significant,Industrials,2.0
+regulation,CAT,2026-05-06,significant,Industrials,2.0
+regulation,GE,2026-05-06,significant,Industrials,2.0
+regulation,LMT,2026-05-06,significant,Industrials,2.0
+regulation,RTX,2026-05-06,significant,Industrials,2.0
+regulation,BA,2026-05-06,standard,Industrials,1.0
+regulation,CAT,2026-05-06,standard,Industrials,1.0
+regulation,GE,2026-05-06,standard,Industrials,1.0
+regulation,LMT,2026-05-06,standard,Industrials,1.0
+regulation,RTX,2026-05-06,standard,Industrials,1.0
+regulation,GOOGL,2026-05-06,significant,Communication Services,2.0
+regulation,META,2026-05-06,significant,Communication Services,2.0
+regulation,NFLX,2026-05-06,significant,Communication Services,2.0
+regulation,T,2026-05-06,significant,Communication Services,2.0
+regulation,VZ,2026-05-06,significant,Communication Services,2.0
+regulation,AMZN,2026-05-06,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-05-06,significant,Consumer Discretionary,2.0
+regulation,HD,2026-05-06,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-05-06,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-05-06,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-05-07,standard,Health Care,1.0
+regulation,JNJ,2026-05-07,standard,Health Care,1.0
+regulation,LLY,2026-05-07,standard,Health Care,1.0
+regulation,PFE,2026-05-07,standard,Health Care,1.0
+regulation,MRK,2026-05-07,standard,Health Care,1.0
+regulation,JPM,2026-05-07,standard,Financials,1.0
+regulation,BAC,2026-05-07,standard,Financials,1.0
+regulation,WFC,2026-05-07,standard,Financials,1.0
+regulation,GS,2026-05-07,standard,Financials,1.0
+regulation,MS,2026-05-07,standard,Financials,1.0
+regulation,XOM,2026-05-07,standard,Energy,1.0
+regulation,CVX,2026-05-07,standard,Energy,1.0
+regulation,COP,2026-05-07,standard,Energy,1.0
+regulation,SLB,2026-05-07,standard,Energy,1.0
+regulation,EOG,2026-05-07,standard,Energy,1.0
+regulation,GOOGL,2026-05-07,standard,Communication Services,1.0
+regulation,META,2026-05-07,standard,Communication Services,1.0
+regulation,NFLX,2026-05-07,standard,Communication Services,1.0
+regulation,T,2026-05-07,standard,Communication Services,1.0
+regulation,VZ,2026-05-07,standard,Communication Services,1.0
+regulation,JPM,2026-05-08,standard,Financials,1.0
+regulation,BAC,2026-05-08,standard,Financials,1.0
+regulation,WFC,2026-05-08,standard,Financials,1.0
+regulation,GS,2026-05-08,standard,Financials,1.0
+regulation,MS,2026-05-08,standard,Financials,1.0
+regulation,JPM,2026-05-08,significant,Financials,2.0
+regulation,BAC,2026-05-08,significant,Financials,2.0
+regulation,WFC,2026-05-08,significant,Financials,2.0
+regulation,GS,2026-05-08,significant,Financials,2.0
+regulation,MS,2026-05-08,significant,Financials,2.0
+regulation,XOM,2026-05-08,significant,Energy,2.0
+regulation,CVX,2026-05-08,significant,Energy,2.0
+regulation,COP,2026-05-08,significant,Energy,2.0
+regulation,SLB,2026-05-08,significant,Energy,2.0
+regulation,EOG,2026-05-08,significant,Energy,2.0
+regulation,XOM,2026-05-08,standard,Energy,1.0
+regulation,CVX,2026-05-08,standard,Energy,1.0
+regulation,COP,2026-05-08,standard,Energy,1.0
+regulation,SLB,2026-05-08,standard,Energy,1.0
+regulation,EOG,2026-05-08,standard,Energy,1.0
+regulation,BA,2026-05-08,standard,Industrials,1.0
+regulation,CAT,2026-05-08,standard,Industrials,1.0
+regulation,GE,2026-05-08,standard,Industrials,1.0
+regulation,LMT,2026-05-08,standard,Industrials,1.0
+regulation,RTX,2026-05-08,standard,Industrials,1.0
+regulation,GOOGL,2026-05-08,significant,Communication Services,2.0
+regulation,META,2026-05-08,significant,Communication Services,2.0
+regulation,NFLX,2026-05-08,significant,Communication Services,2.0
+regulation,T,2026-05-08,significant,Communication Services,2.0
+regulation,VZ,2026-05-08,significant,Communication Services,2.0
+regulation,GOOGL,2026-05-08,standard,Communication Services,1.0
+regulation,META,2026-05-08,standard,Communication Services,1.0
+regulation,NFLX,2026-05-08,standard,Communication Services,1.0
+regulation,T,2026-05-08,standard,Communication Services,1.0
+regulation,VZ,2026-05-08,standard,Communication Services,1.0
+regulation,AMZN,2026-05-08,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-05-08,standard,Consumer Discretionary,1.0
+regulation,HD,2026-05-08,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-05-08,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-05-08,standard,Consumer Discretionary,1.0
+regulation,BA,2026-05-11,standard,Industrials,1.0
+regulation,CAT,2026-05-11,standard,Industrials,1.0
+regulation,GE,2026-05-11,standard,Industrials,1.0
+regulation,LMT,2026-05-11,standard,Industrials,1.0
+regulation,RTX,2026-05-11,standard,Industrials,1.0
+regulation,JPM,2026-05-12,standard,Financials,1.0
+regulation,BAC,2026-05-12,standard,Financials,1.0
+regulation,WFC,2026-05-12,standard,Financials,1.0
+regulation,GS,2026-05-12,standard,Financials,1.0
+regulation,MS,2026-05-12,standard,Financials,1.0
+regulation,JPM,2026-05-12,significant,Financials,2.0
+regulation,BAC,2026-05-12,significant,Financials,2.0
+regulation,WFC,2026-05-12,significant,Financials,2.0
+regulation,GS,2026-05-12,significant,Financials,2.0
+regulation,MS,2026-05-12,significant,Financials,2.0
+regulation,GOOGL,2026-05-12,significant,Communication Services,2.0
+regulation,META,2026-05-12,significant,Communication Services,2.0
+regulation,NFLX,2026-05-12,significant,Communication Services,2.0
+regulation,T,2026-05-12,significant,Communication Services,2.0
+regulation,VZ,2026-05-12,significant,Communication Services,2.0
+regulation,AAPL,2026-05-13,significant,Information Technology,2.0
+regulation,MSFT,2026-05-13,significant,Information Technology,2.0
+regulation,NVDA,2026-05-13,significant,Information Technology,2.0
+regulation,AVGO,2026-05-13,significant,Information Technology,2.0
+regulation,AMD,2026-05-13,significant,Information Technology,2.0
+regulation,XOM,2026-05-13,standard,Energy,1.0
+regulation,CVX,2026-05-13,standard,Energy,1.0
+regulation,COP,2026-05-13,standard,Energy,1.0
+regulation,SLB,2026-05-13,standard,Energy,1.0
+regulation,EOG,2026-05-13,standard,Energy,1.0
+regulation,XOM,2026-05-13,significant,Energy,2.0
+regulation,CVX,2026-05-13,significant,Energy,2.0
+regulation,COP,2026-05-13,significant,Energy,2.0
+regulation,SLB,2026-05-13,significant,Energy,2.0
+regulation,EOG,2026-05-13,significant,Energy,2.0
+regulation,BA,2026-05-13,standard,Industrials,1.0
+regulation,CAT,2026-05-13,standard,Industrials,1.0
+regulation,GE,2026-05-13,standard,Industrials,1.0
+regulation,LMT,2026-05-13,standard,Industrials,1.0
+regulation,RTX,2026-05-13,standard,Industrials,1.0
+regulation,GOOGL,2026-05-13,standard,Communication Services,1.0
+regulation,META,2026-05-13,standard,Communication Services,1.0
+regulation,NFLX,2026-05-13,standard,Communication Services,1.0
+regulation,T,2026-05-13,standard,Communication Services,1.0
+regulation,VZ,2026-05-13,standard,Communication Services,1.0
+regulation,GOOGL,2026-05-13,significant,Communication Services,2.0
+regulation,META,2026-05-13,significant,Communication Services,2.0
+regulation,NFLX,2026-05-13,significant,Communication Services,2.0
+regulation,T,2026-05-13,significant,Communication Services,2.0
+regulation,VZ,2026-05-13,significant,Communication Services,2.0
+regulation,JPM,2026-05-14,standard,Financials,1.0
+regulation,BAC,2026-05-14,standard,Financials,1.0
+regulation,WFC,2026-05-14,standard,Financials,1.0
+regulation,GS,2026-05-14,standard,Financials,1.0
+regulation,MS,2026-05-14,standard,Financials,1.0
+regulation,XOM,2026-05-14,standard,Energy,1.0
+regulation,CVX,2026-05-14,standard,Energy,1.0
+regulation,COP,2026-05-14,standard,Energy,1.0
+regulation,SLB,2026-05-14,standard,Energy,1.0
+regulation,EOG,2026-05-14,standard,Energy,1.0
+regulation,GOOGL,2026-05-15,standard,Communication Services,1.0
+regulation,META,2026-05-15,standard,Communication Services,1.0
+regulation,NFLX,2026-05-15,standard,Communication Services,1.0
+regulation,T,2026-05-15,standard,Communication Services,1.0
+regulation,VZ,2026-05-15,standard,Communication Services,1.0
+regulation,UNH,2026-05-18,standard,Health Care,1.0
+regulation,JNJ,2026-05-18,standard,Health Care,1.0
+regulation,LLY,2026-05-18,standard,Health Care,1.0
+regulation,PFE,2026-05-18,standard,Health Care,1.0
+regulation,MRK,2026-05-18,standard,Health Care,1.0
+regulation,JPM,2026-05-18,standard,Financials,1.0
+regulation,BAC,2026-05-18,standard,Financials,1.0
+regulation,WFC,2026-05-18,standard,Financials,1.0
+regulation,GS,2026-05-18,standard,Financials,1.0
+regulation,MS,2026-05-18,standard,Financials,1.0
+regulation,XOM,2026-05-18,significant,Energy,2.0
+regulation,CVX,2026-05-18,significant,Energy,2.0
+regulation,COP,2026-05-18,significant,Energy,2.0
+regulation,SLB,2026-05-18,significant,Energy,2.0
+regulation,EOG,2026-05-18,significant,Energy,2.0
+regulation,XOM,2026-05-18,standard,Energy,1.0
+regulation,CVX,2026-05-18,standard,Energy,1.0
+regulation,COP,2026-05-18,standard,Energy,1.0
+regulation,SLB,2026-05-18,standard,Energy,1.0
+regulation,EOG,2026-05-18,standard,Energy,1.0
+regulation,GOOGL,2026-05-18,standard,Communication Services,1.0
+regulation,META,2026-05-18,standard,Communication Services,1.0
+regulation,NFLX,2026-05-18,standard,Communication Services,1.0
+regulation,T,2026-05-18,standard,Communication Services,1.0
+regulation,VZ,2026-05-18,standard,Communication Services,1.0
+regulation,AMZN,2026-05-18,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-05-18,standard,Consumer Discretionary,1.0
+regulation,HD,2026-05-18,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-05-18,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-05-18,standard,Consumer Discretionary,1.0
+regulation,AMZN,2026-05-18,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-05-18,significant,Consumer Discretionary,2.0
+regulation,HD,2026-05-18,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-05-18,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-05-18,significant,Consumer Discretionary,2.0
+regulation,JPM,2026-05-19,standard,Financials,1.0
+regulation,BAC,2026-05-19,standard,Financials,1.0
+regulation,WFC,2026-05-19,standard,Financials,1.0
+regulation,GS,2026-05-19,standard,Financials,1.0
+regulation,MS,2026-05-19,standard,Financials,1.0
+regulation,XOM,2026-05-19,standard,Energy,1.0
+regulation,CVX,2026-05-19,standard,Energy,1.0
+regulation,COP,2026-05-19,standard,Energy,1.0
+regulation,SLB,2026-05-19,standard,Energy,1.0
+regulation,EOG,2026-05-19,standard,Energy,1.0
+regulation,GOOGL,2026-05-19,standard,Communication Services,1.0
+regulation,META,2026-05-19,standard,Communication Services,1.0
+regulation,NFLX,2026-05-19,standard,Communication Services,1.0
+regulation,T,2026-05-19,standard,Communication Services,1.0
+regulation,VZ,2026-05-19,standard,Communication Services,1.0
+regulation,UNH,2026-05-20,significant,Health Care,2.0
+regulation,JNJ,2026-05-20,significant,Health Care,2.0
+regulation,LLY,2026-05-20,significant,Health Care,2.0
+regulation,PFE,2026-05-20,significant,Health Care,2.0
+regulation,MRK,2026-05-20,significant,Health Care,2.0
+regulation,JPM,2026-05-20,standard,Financials,1.0
+regulation,BAC,2026-05-20,standard,Financials,1.0
+regulation,WFC,2026-05-20,standard,Financials,1.0
+regulation,GS,2026-05-20,standard,Financials,1.0
+regulation,MS,2026-05-20,standard,Financials,1.0
+regulation,JPM,2026-05-20,significant,Financials,2.0
+regulation,BAC,2026-05-20,significant,Financials,2.0
+regulation,WFC,2026-05-20,significant,Financials,2.0
+regulation,GS,2026-05-20,significant,Financials,2.0
+regulation,MS,2026-05-20,significant,Financials,2.0
+regulation,AAPL,2026-05-21,standard,Information Technology,1.0
+regulation,MSFT,2026-05-21,standard,Information Technology,1.0
+regulation,NVDA,2026-05-21,standard,Information Technology,1.0
+regulation,AVGO,2026-05-21,standard,Information Technology,1.0
+regulation,AMD,2026-05-21,standard,Information Technology,1.0
+regulation,JPM,2026-05-21,significant,Financials,2.0
+regulation,BAC,2026-05-21,significant,Financials,2.0
+regulation,WFC,2026-05-21,significant,Financials,2.0
+regulation,GS,2026-05-21,significant,Financials,2.0
+regulation,MS,2026-05-21,significant,Financials,2.0
+regulation,XOM,2026-05-21,significant,Energy,2.0
+regulation,CVX,2026-05-21,significant,Energy,2.0
+regulation,COP,2026-05-21,significant,Energy,2.0
+regulation,SLB,2026-05-21,significant,Energy,2.0
+regulation,EOG,2026-05-21,significant,Energy,2.0
+regulation,XOM,2026-05-21,standard,Energy,1.0
+regulation,CVX,2026-05-21,standard,Energy,1.0
+regulation,COP,2026-05-21,standard,Energy,1.0
+regulation,SLB,2026-05-21,standard,Energy,1.0
+regulation,EOG,2026-05-21,standard,Energy,1.0
+regulation,GOOGL,2026-05-21,standard,Communication Services,1.0
+regulation,META,2026-05-21,standard,Communication Services,1.0
+regulation,NFLX,2026-05-21,standard,Communication Services,1.0
+regulation,T,2026-05-21,standard,Communication Services,1.0
+regulation,VZ,2026-05-21,standard,Communication Services,1.0
+regulation,GOOGL,2026-05-21,significant,Communication Services,2.0
+regulation,META,2026-05-21,significant,Communication Services,2.0
+regulation,NFLX,2026-05-21,significant,Communication Services,2.0
+regulation,T,2026-05-21,significant,Communication Services,2.0
+regulation,VZ,2026-05-21,significant,Communication Services,2.0
+regulation,AAPL,2026-05-22,standard,Information Technology,1.0
+regulation,MSFT,2026-05-22,standard,Information Technology,1.0
+regulation,NVDA,2026-05-22,standard,Information Technology,1.0
+regulation,AVGO,2026-05-22,standard,Information Technology,1.0
+regulation,AMD,2026-05-22,standard,Information Technology,1.0
+regulation,UNH,2026-05-22,standard,Health Care,1.0
+regulation,JNJ,2026-05-22,standard,Health Care,1.0
+regulation,LLY,2026-05-22,standard,Health Care,1.0
+regulation,PFE,2026-05-22,standard,Health Care,1.0
+regulation,MRK,2026-05-22,standard,Health Care,1.0
+regulation,UNH,2026-05-22,significant,Health Care,2.0
+regulation,JNJ,2026-05-22,significant,Health Care,2.0
+regulation,LLY,2026-05-22,significant,Health Care,2.0
+regulation,PFE,2026-05-22,significant,Health Care,2.0
+regulation,MRK,2026-05-22,significant,Health Care,2.0
+regulation,XOM,2026-05-22,standard,Energy,1.0
+regulation,CVX,2026-05-22,standard,Energy,1.0
+regulation,COP,2026-05-22,standard,Energy,1.0
+regulation,SLB,2026-05-22,standard,Energy,1.0
+regulation,EOG,2026-05-22,standard,Energy,1.0
+regulation,BA,2026-05-22,standard,Industrials,1.0
+regulation,CAT,2026-05-22,standard,Industrials,1.0
+regulation,GE,2026-05-22,standard,Industrials,1.0
+regulation,LMT,2026-05-22,standard,Industrials,1.0
+regulation,RTX,2026-05-22,standard,Industrials,1.0
+regulation,GOOGL,2026-05-22,standard,Communication Services,1.0
+regulation,META,2026-05-22,standard,Communication Services,1.0
+regulation,NFLX,2026-05-22,standard,Communication Services,1.0
+regulation,T,2026-05-22,standard,Communication Services,1.0
+regulation,VZ,2026-05-22,standard,Communication Services,1.0
+regulation,AAPL,2026-05-26,significant,Information Technology,2.0
+regulation,MSFT,2026-05-26,significant,Information Technology,2.0
+regulation,NVDA,2026-05-26,significant,Information Technology,2.0
+regulation,AVGO,2026-05-26,significant,Information Technology,2.0
+regulation,AMD,2026-05-26,significant,Information Technology,2.0
+regulation,UNH,2026-05-26,standard,Health Care,1.0
+regulation,JNJ,2026-05-26,standard,Health Care,1.0
+regulation,LLY,2026-05-26,standard,Health Care,1.0
+regulation,PFE,2026-05-26,standard,Health Care,1.0
+regulation,MRK,2026-05-26,standard,Health Care,1.0
+regulation,UNH,2026-05-26,significant,Health Care,2.0
+regulation,JNJ,2026-05-26,significant,Health Care,2.0
+regulation,LLY,2026-05-26,significant,Health Care,2.0
+regulation,PFE,2026-05-26,significant,Health Care,2.0
+regulation,MRK,2026-05-26,significant,Health Care,2.0
+regulation,JPM,2026-05-26,standard,Financials,1.0
+regulation,BAC,2026-05-26,standard,Financials,1.0
+regulation,WFC,2026-05-26,standard,Financials,1.0
+regulation,GS,2026-05-26,standard,Financials,1.0
+regulation,MS,2026-05-26,standard,Financials,1.0
+regulation,JPM,2026-05-26,significant,Financials,2.0
+regulation,BAC,2026-05-26,significant,Financials,2.0
+regulation,WFC,2026-05-26,significant,Financials,2.0
+regulation,GS,2026-05-26,significant,Financials,2.0
+regulation,MS,2026-05-26,significant,Financials,2.0
+regulation,XOM,2026-05-26,significant,Energy,2.0
+regulation,CVX,2026-05-26,significant,Energy,2.0
+regulation,COP,2026-05-26,significant,Energy,2.0
+regulation,SLB,2026-05-26,significant,Energy,2.0
+regulation,EOG,2026-05-26,significant,Energy,2.0
+regulation,XOM,2026-05-26,standard,Energy,1.0
+regulation,CVX,2026-05-26,standard,Energy,1.0
+regulation,COP,2026-05-26,standard,Energy,1.0
+regulation,SLB,2026-05-26,standard,Energy,1.0
+regulation,EOG,2026-05-26,standard,Energy,1.0
+regulation,GOOGL,2026-05-26,standard,Communication Services,1.0
+regulation,META,2026-05-26,standard,Communication Services,1.0
+regulation,NFLX,2026-05-26,standard,Communication Services,1.0
+regulation,T,2026-05-26,standard,Communication Services,1.0
+regulation,VZ,2026-05-26,standard,Communication Services,1.0
+regulation,GOOGL,2026-05-26,significant,Communication Services,2.0
+regulation,META,2026-05-26,significant,Communication Services,2.0
+regulation,NFLX,2026-05-26,significant,Communication Services,2.0
+regulation,T,2026-05-26,significant,Communication Services,2.0
+regulation,VZ,2026-05-26,significant,Communication Services,2.0
+regulation,AMZN,2026-05-26,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-05-26,significant,Consumer Discretionary,2.0
+regulation,HD,2026-05-26,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-05-26,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-05-26,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-05-27,standard,Health Care,1.0
+regulation,JNJ,2026-05-27,standard,Health Care,1.0
+regulation,LLY,2026-05-27,standard,Health Care,1.0
+regulation,PFE,2026-05-27,standard,Health Care,1.0
+regulation,MRK,2026-05-27,standard,Health Care,1.0
+regulation,JPM,2026-05-27,standard,Financials,1.0
+regulation,BAC,2026-05-27,standard,Financials,1.0
+regulation,WFC,2026-05-27,standard,Financials,1.0
+regulation,GS,2026-05-27,standard,Financials,1.0
+regulation,MS,2026-05-27,standard,Financials,1.0
+regulation,XOM,2026-05-27,standard,Energy,1.0
+regulation,CVX,2026-05-27,standard,Energy,1.0
+regulation,COP,2026-05-27,standard,Energy,1.0
+regulation,SLB,2026-05-27,standard,Energy,1.0
+regulation,EOG,2026-05-27,standard,Energy,1.0
+regulation,BA,2026-05-27,standard,Industrials,1.0
+regulation,CAT,2026-05-27,standard,Industrials,1.0
+regulation,GE,2026-05-27,standard,Industrials,1.0
+regulation,LMT,2026-05-27,standard,Industrials,1.0
+regulation,RTX,2026-05-27,standard,Industrials,1.0
+regulation,GOOGL,2026-05-27,standard,Communication Services,1.0
+regulation,META,2026-05-27,standard,Communication Services,1.0
+regulation,NFLX,2026-05-27,standard,Communication Services,1.0
+regulation,T,2026-05-27,standard,Communication Services,1.0
+regulation,VZ,2026-05-27,standard,Communication Services,1.0
+regulation,AMZN,2026-05-27,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-05-27,standard,Consumer Discretionary,1.0
+regulation,HD,2026-05-27,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-05-27,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-05-27,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-05-28,standard,Health Care,1.0
+regulation,JNJ,2026-05-28,standard,Health Care,1.0
+regulation,LLY,2026-05-28,standard,Health Care,1.0
+regulation,PFE,2026-05-28,standard,Health Care,1.0
+regulation,MRK,2026-05-28,standard,Health Care,1.0
+regulation,JPM,2026-05-28,standard,Financials,1.0
+regulation,BAC,2026-05-28,standard,Financials,1.0
+regulation,WFC,2026-05-28,standard,Financials,1.0
+regulation,GS,2026-05-28,standard,Financials,1.0
+regulation,MS,2026-05-28,standard,Financials,1.0
+regulation,XOM,2026-05-28,standard,Energy,1.0
+regulation,CVX,2026-05-28,standard,Energy,1.0
+regulation,COP,2026-05-28,standard,Energy,1.0
+regulation,SLB,2026-05-28,standard,Energy,1.0
+regulation,EOG,2026-05-28,standard,Energy,1.0
+regulation,GOOGL,2026-05-28,standard,Communication Services,1.0
+regulation,META,2026-05-28,standard,Communication Services,1.0
+regulation,NFLX,2026-05-28,standard,Communication Services,1.0
+regulation,T,2026-05-28,standard,Communication Services,1.0
+regulation,VZ,2026-05-28,standard,Communication Services,1.0
+regulation,AAPL,2026-05-29,standard,Information Technology,1.0
+regulation,MSFT,2026-05-29,standard,Information Technology,1.0
+regulation,NVDA,2026-05-29,standard,Information Technology,1.0
+regulation,AVGO,2026-05-29,standard,Information Technology,1.0
+regulation,AMD,2026-05-29,standard,Information Technology,1.0
+regulation,UNH,2026-05-29,standard,Health Care,1.0
+regulation,JNJ,2026-05-29,standard,Health Care,1.0
+regulation,LLY,2026-05-29,standard,Health Care,1.0
+regulation,PFE,2026-05-29,standard,Health Care,1.0
+regulation,MRK,2026-05-29,standard,Health Care,1.0
+regulation,UNH,2026-05-29,significant,Health Care,2.0
+regulation,JNJ,2026-05-29,significant,Health Care,2.0
+regulation,LLY,2026-05-29,significant,Health Care,2.0
+regulation,PFE,2026-05-29,significant,Health Care,2.0
+regulation,MRK,2026-05-29,significant,Health Care,2.0
+regulation,JPM,2026-05-29,standard,Financials,1.0
+regulation,BAC,2026-05-29,standard,Financials,1.0
+regulation,WFC,2026-05-29,standard,Financials,1.0
+regulation,GS,2026-05-29,standard,Financials,1.0
+regulation,MS,2026-05-29,standard,Financials,1.0
+regulation,XOM,2026-05-29,standard,Energy,1.0
+regulation,CVX,2026-05-29,standard,Energy,1.0
+regulation,COP,2026-05-29,standard,Energy,1.0
+regulation,SLB,2026-05-29,standard,Energy,1.0
+regulation,EOG,2026-05-29,standard,Energy,1.0
+regulation,BA,2026-05-29,standard,Industrials,1.0
+regulation,CAT,2026-05-29,standard,Industrials,1.0
+regulation,GE,2026-05-29,standard,Industrials,1.0
+regulation,LMT,2026-05-29,standard,Industrials,1.0
+regulation,RTX,2026-05-29,standard,Industrials,1.0
+regulation,GOOGL,2026-05-29,standard,Communication Services,1.0
+regulation,META,2026-05-29,standard,Communication Services,1.0
+regulation,NFLX,2026-05-29,standard,Communication Services,1.0
+regulation,T,2026-05-29,standard,Communication Services,1.0
+regulation,VZ,2026-05-29,standard,Communication Services,1.0
+regulation,GOOGL,2026-05-29,significant,Communication Services,2.0
+regulation,META,2026-05-29,significant,Communication Services,2.0
+regulation,NFLX,2026-05-29,significant,Communication Services,2.0
+regulation,T,2026-05-29,significant,Communication Services,2.0
+regulation,VZ,2026-05-29,significant,Communication Services,2.0
+regulation,UNH,2026-06-01,standard,Health Care,1.0
+regulation,JNJ,2026-06-01,standard,Health Care,1.0
+regulation,LLY,2026-06-01,standard,Health Care,1.0
+regulation,PFE,2026-06-01,standard,Health Care,1.0
+regulation,MRK,2026-06-01,standard,Health Care,1.0
+regulation,JPM,2026-06-01,significant,Financials,2.0
+regulation,BAC,2026-06-01,significant,Financials,2.0
+regulation,WFC,2026-06-01,significant,Financials,2.0
+regulation,GS,2026-06-01,significant,Financials,2.0
+regulation,MS,2026-06-01,significant,Financials,2.0
+regulation,XOM,2026-06-01,significant,Energy,2.0
+regulation,CVX,2026-06-01,significant,Energy,2.0
+regulation,COP,2026-06-01,significant,Energy,2.0
+regulation,SLB,2026-06-01,significant,Energy,2.0
+regulation,EOG,2026-06-01,significant,Energy,2.0
+regulation,XOM,2026-06-01,standard,Energy,1.0
+regulation,CVX,2026-06-01,standard,Energy,1.0
+regulation,COP,2026-06-01,standard,Energy,1.0
+regulation,SLB,2026-06-01,standard,Energy,1.0
+regulation,EOG,2026-06-01,standard,Energy,1.0
+regulation,BA,2026-06-01,standard,Industrials,1.0
+regulation,CAT,2026-06-01,standard,Industrials,1.0
+regulation,GE,2026-06-01,standard,Industrials,1.0
+regulation,LMT,2026-06-01,standard,Industrials,1.0
+regulation,RTX,2026-06-01,standard,Industrials,1.0
+regulation,BA,2026-06-01,significant,Industrials,2.0
+regulation,CAT,2026-06-01,significant,Industrials,2.0
+regulation,GE,2026-06-01,significant,Industrials,2.0
+regulation,LMT,2026-06-01,significant,Industrials,2.0
+regulation,RTX,2026-06-01,significant,Industrials,2.0
+regulation,GOOGL,2026-06-01,standard,Communication Services,1.0
+regulation,META,2026-06-01,standard,Communication Services,1.0
+regulation,NFLX,2026-06-01,standard,Communication Services,1.0
+regulation,T,2026-06-01,standard,Communication Services,1.0
+regulation,VZ,2026-06-01,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-01,significant,Communication Services,2.0
+regulation,META,2026-06-01,significant,Communication Services,2.0
+regulation,NFLX,2026-06-01,significant,Communication Services,2.0
+regulation,T,2026-06-01,significant,Communication Services,2.0
+regulation,VZ,2026-06-01,significant,Communication Services,2.0
+regulation,AMZN,2026-06-01,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-06-01,significant,Consumer Discretionary,2.0
+regulation,HD,2026-06-01,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-06-01,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-06-01,significant,Consumer Discretionary,2.0
+regulation,GOOGL,2026-06-02,standard,Communication Services,1.0
+regulation,META,2026-06-02,standard,Communication Services,1.0
+regulation,NFLX,2026-06-02,standard,Communication Services,1.0
+regulation,T,2026-06-02,standard,Communication Services,1.0
+regulation,VZ,2026-06-02,standard,Communication Services,1.0
+regulation,UNH,2026-06-03,standard,Health Care,1.0
+regulation,JNJ,2026-06-03,standard,Health Care,1.0
+regulation,LLY,2026-06-03,standard,Health Care,1.0
+regulation,PFE,2026-06-03,standard,Health Care,1.0
+regulation,MRK,2026-06-03,standard,Health Care,1.0
+regulation,JPM,2026-06-03,standard,Financials,1.0
+regulation,BAC,2026-06-03,standard,Financials,1.0
+regulation,WFC,2026-06-03,standard,Financials,1.0
+regulation,GS,2026-06-03,standard,Financials,1.0
+regulation,MS,2026-06-03,standard,Financials,1.0
+regulation,XOM,2026-06-03,standard,Energy,1.0
+regulation,CVX,2026-06-03,standard,Energy,1.0
+regulation,COP,2026-06-03,standard,Energy,1.0
+regulation,SLB,2026-06-03,standard,Energy,1.0
+regulation,EOG,2026-06-03,standard,Energy,1.0
+regulation,XOM,2026-06-03,significant,Energy,2.0
+regulation,CVX,2026-06-03,significant,Energy,2.0
+regulation,COP,2026-06-03,significant,Energy,2.0
+regulation,SLB,2026-06-03,significant,Energy,2.0
+regulation,EOG,2026-06-03,significant,Energy,2.0
+regulation,GOOGL,2026-06-03,significant,Communication Services,2.0
+regulation,META,2026-06-03,significant,Communication Services,2.0
+regulation,NFLX,2026-06-03,significant,Communication Services,2.0
+regulation,T,2026-06-03,significant,Communication Services,2.0
+regulation,VZ,2026-06-03,significant,Communication Services,2.0
+regulation,AMZN,2026-06-03,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-06-03,significant,Consumer Discretionary,2.0
+regulation,HD,2026-06-03,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-06-03,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-06-03,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-06-04,significant,Health Care,2.0
+regulation,JNJ,2026-06-04,significant,Health Care,2.0
+regulation,LLY,2026-06-04,significant,Health Care,2.0
+regulation,PFE,2026-06-04,significant,Health Care,2.0
+regulation,MRK,2026-06-04,significant,Health Care,2.0
+regulation,JPM,2026-06-04,significant,Financials,2.0
+regulation,BAC,2026-06-04,significant,Financials,2.0
+regulation,WFC,2026-06-04,significant,Financials,2.0
+regulation,GS,2026-06-04,significant,Financials,2.0
+regulation,MS,2026-06-04,significant,Financials,2.0
+regulation,XOM,2026-06-04,standard,Energy,1.0
+regulation,CVX,2026-06-04,standard,Energy,1.0
+regulation,COP,2026-06-04,standard,Energy,1.0
+regulation,SLB,2026-06-04,standard,Energy,1.0
+regulation,EOG,2026-06-04,standard,Energy,1.0
+regulation,BA,2026-06-04,standard,Industrials,1.0
+regulation,CAT,2026-06-04,standard,Industrials,1.0
+regulation,GE,2026-06-04,standard,Industrials,1.0
+regulation,LMT,2026-06-04,standard,Industrials,1.0
+regulation,RTX,2026-06-04,standard,Industrials,1.0
+regulation,GOOGL,2026-06-04,standard,Communication Services,1.0
+regulation,META,2026-06-04,standard,Communication Services,1.0
+regulation,NFLX,2026-06-04,standard,Communication Services,1.0
+regulation,T,2026-06-04,standard,Communication Services,1.0
+regulation,VZ,2026-06-04,standard,Communication Services,1.0
+regulation,AMZN,2026-06-04,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-04,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-04,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-04,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-04,standard,Consumer Discretionary,1.0
+regulation,AAPL,2026-06-05,standard,Information Technology,1.0
+regulation,MSFT,2026-06-05,standard,Information Technology,1.0
+regulation,NVDA,2026-06-05,standard,Information Technology,1.0
+regulation,AVGO,2026-06-05,standard,Information Technology,1.0
+regulation,AMD,2026-06-05,standard,Information Technology,1.0
+regulation,UNH,2026-06-05,standard,Health Care,1.0
+regulation,JNJ,2026-06-05,standard,Health Care,1.0
+regulation,LLY,2026-06-05,standard,Health Care,1.0
+regulation,PFE,2026-06-05,standard,Health Care,1.0
+regulation,MRK,2026-06-05,standard,Health Care,1.0
+regulation,UNH,2026-06-05,significant,Health Care,2.0
+regulation,JNJ,2026-06-05,significant,Health Care,2.0
+regulation,LLY,2026-06-05,significant,Health Care,2.0
+regulation,PFE,2026-06-05,significant,Health Care,2.0
+regulation,MRK,2026-06-05,significant,Health Care,2.0
+regulation,JPM,2026-06-05,standard,Financials,1.0
+regulation,BAC,2026-06-05,standard,Financials,1.0
+regulation,WFC,2026-06-05,standard,Financials,1.0
+regulation,GS,2026-06-05,standard,Financials,1.0
+regulation,MS,2026-06-05,standard,Financials,1.0
+regulation,JPM,2026-06-05,significant,Financials,2.0
+regulation,BAC,2026-06-05,significant,Financials,2.0
+regulation,WFC,2026-06-05,significant,Financials,2.0
+regulation,GS,2026-06-05,significant,Financials,2.0
+regulation,MS,2026-06-05,significant,Financials,2.0
+regulation,XOM,2026-06-05,standard,Energy,1.0
+regulation,CVX,2026-06-05,standard,Energy,1.0
+regulation,COP,2026-06-05,standard,Energy,1.0
+regulation,SLB,2026-06-05,standard,Energy,1.0
+regulation,EOG,2026-06-05,standard,Energy,1.0
+regulation,GOOGL,2026-06-05,standard,Communication Services,1.0
+regulation,META,2026-06-05,standard,Communication Services,1.0
+regulation,NFLX,2026-06-05,standard,Communication Services,1.0
+regulation,T,2026-06-05,standard,Communication Services,1.0
+regulation,VZ,2026-06-05,standard,Communication Services,1.0
+regulation,JPM,2026-06-08,standard,Financials,1.0
+regulation,BAC,2026-06-08,standard,Financials,1.0
+regulation,WFC,2026-06-08,standard,Financials,1.0
+regulation,GS,2026-06-08,standard,Financials,1.0
+regulation,MS,2026-06-08,standard,Financials,1.0
+regulation,XOM,2026-06-08,standard,Energy,1.0
+regulation,CVX,2026-06-08,standard,Energy,1.0
+regulation,COP,2026-06-08,standard,Energy,1.0
+regulation,SLB,2026-06-08,standard,Energy,1.0
+regulation,EOG,2026-06-08,standard,Energy,1.0
+regulation,GOOGL,2026-06-08,standard,Communication Services,1.0
+regulation,META,2026-06-08,standard,Communication Services,1.0
+regulation,NFLX,2026-06-08,standard,Communication Services,1.0
+regulation,T,2026-06-08,standard,Communication Services,1.0
+regulation,VZ,2026-06-08,standard,Communication Services,1.0
+regulation,UNH,2026-06-09,standard,Health Care,1.0
+regulation,JNJ,2026-06-09,standard,Health Care,1.0
+regulation,LLY,2026-06-09,standard,Health Care,1.0
+regulation,PFE,2026-06-09,standard,Health Care,1.0
+regulation,MRK,2026-06-09,standard,Health Care,1.0
+regulation,UNH,2026-06-09,significant,Health Care,2.0
+regulation,JNJ,2026-06-09,significant,Health Care,2.0
+regulation,LLY,2026-06-09,significant,Health Care,2.0
+regulation,PFE,2026-06-09,significant,Health Care,2.0
+regulation,MRK,2026-06-09,significant,Health Care,2.0
+regulation,JPM,2026-06-09,standard,Financials,1.0
+regulation,BAC,2026-06-09,standard,Financials,1.0
+regulation,WFC,2026-06-09,standard,Financials,1.0
+regulation,GS,2026-06-09,standard,Financials,1.0
+regulation,MS,2026-06-09,standard,Financials,1.0
+regulation,BA,2026-06-09,standard,Industrials,1.0
+regulation,CAT,2026-06-09,standard,Industrials,1.0
+regulation,GE,2026-06-09,standard,Industrials,1.0
+regulation,LMT,2026-06-09,standard,Industrials,1.0
+regulation,RTX,2026-06-09,standard,Industrials,1.0
+regulation,GOOGL,2026-06-09,standard,Communication Services,1.0
+regulation,META,2026-06-09,standard,Communication Services,1.0
+regulation,NFLX,2026-06-09,standard,Communication Services,1.0
+regulation,T,2026-06-09,standard,Communication Services,1.0
+regulation,VZ,2026-06-09,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-09,significant,Communication Services,2.0
+regulation,META,2026-06-09,significant,Communication Services,2.0
+regulation,NFLX,2026-06-09,significant,Communication Services,2.0
+regulation,T,2026-06-09,significant,Communication Services,2.0
+regulation,VZ,2026-06-09,significant,Communication Services,2.0
+regulation,AAPL,2026-06-10,standard,Information Technology,1.0
+regulation,MSFT,2026-06-10,standard,Information Technology,1.0
+regulation,NVDA,2026-06-10,standard,Information Technology,1.0
+regulation,AVGO,2026-06-10,standard,Information Technology,1.0
+regulation,AMD,2026-06-10,standard,Information Technology,1.0
+regulation,UNH,2026-06-10,standard,Health Care,1.0
+regulation,JNJ,2026-06-10,standard,Health Care,1.0
+regulation,LLY,2026-06-10,standard,Health Care,1.0
+regulation,PFE,2026-06-10,standard,Health Care,1.0
+regulation,MRK,2026-06-10,standard,Health Care,1.0
+regulation,XOM,2026-06-10,standard,Energy,1.0
+regulation,CVX,2026-06-10,standard,Energy,1.0
+regulation,COP,2026-06-10,standard,Energy,1.0
+regulation,SLB,2026-06-10,standard,Energy,1.0
+regulation,EOG,2026-06-10,standard,Energy,1.0
+regulation,GOOGL,2026-06-10,standard,Communication Services,1.0
+regulation,META,2026-06-10,standard,Communication Services,1.0
+regulation,NFLX,2026-06-10,standard,Communication Services,1.0
+regulation,T,2026-06-10,standard,Communication Services,1.0
+regulation,VZ,2026-06-10,standard,Communication Services,1.0
+regulation,AMZN,2026-06-10,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-10,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-10,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-10,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-10,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-06-11,standard,Health Care,1.0
+regulation,JNJ,2026-06-11,standard,Health Care,1.0
+regulation,LLY,2026-06-11,standard,Health Care,1.0
+regulation,PFE,2026-06-11,standard,Health Care,1.0
+regulation,MRK,2026-06-11,standard,Health Care,1.0
+regulation,JPM,2026-06-11,standard,Financials,1.0
+regulation,BAC,2026-06-11,standard,Financials,1.0
+regulation,WFC,2026-06-11,standard,Financials,1.0
+regulation,GS,2026-06-11,standard,Financials,1.0
+regulation,MS,2026-06-11,standard,Financials,1.0
+regulation,XOM,2026-06-11,standard,Energy,1.0
+regulation,CVX,2026-06-11,standard,Energy,1.0
+regulation,COP,2026-06-11,standard,Energy,1.0
+regulation,SLB,2026-06-11,standard,Energy,1.0
+regulation,EOG,2026-06-11,standard,Energy,1.0
+regulation,GOOGL,2026-06-11,standard,Communication Services,1.0
+regulation,META,2026-06-11,standard,Communication Services,1.0
+regulation,NFLX,2026-06-11,standard,Communication Services,1.0
+regulation,T,2026-06-11,standard,Communication Services,1.0
+regulation,VZ,2026-06-11,standard,Communication Services,1.0
+regulation,UNH,2026-06-12,standard,Health Care,1.0
+regulation,JNJ,2026-06-12,standard,Health Care,1.0
+regulation,LLY,2026-06-12,standard,Health Care,1.0
+regulation,PFE,2026-06-12,standard,Health Care,1.0
+regulation,MRK,2026-06-12,standard,Health Care,1.0
+regulation,XOM,2026-06-12,standard,Energy,1.0
+regulation,CVX,2026-06-12,standard,Energy,1.0
+regulation,COP,2026-06-12,standard,Energy,1.0
+regulation,SLB,2026-06-12,standard,Energy,1.0
+regulation,EOG,2026-06-12,standard,Energy,1.0
+regulation,GOOGL,2026-06-12,standard,Communication Services,1.0
+regulation,META,2026-06-12,standard,Communication Services,1.0
+regulation,NFLX,2026-06-12,standard,Communication Services,1.0
+regulation,T,2026-06-12,standard,Communication Services,1.0
+regulation,VZ,2026-06-12,standard,Communication Services,1.0
+regulation,UNH,2026-06-15,significant,Health Care,2.0
+regulation,JNJ,2026-06-15,significant,Health Care,2.0
+regulation,LLY,2026-06-15,significant,Health Care,2.0
+regulation,PFE,2026-06-15,significant,Health Care,2.0
+regulation,MRK,2026-06-15,significant,Health Care,2.0
+regulation,UNH,2026-06-15,standard,Health Care,1.0
+regulation,JNJ,2026-06-15,standard,Health Care,1.0
+regulation,LLY,2026-06-15,standard,Health Care,1.0
+regulation,PFE,2026-06-15,standard,Health Care,1.0
+regulation,MRK,2026-06-15,standard,Health Care,1.0
+regulation,JPM,2026-06-15,standard,Financials,1.0
+regulation,BAC,2026-06-15,standard,Financials,1.0
+regulation,WFC,2026-06-15,standard,Financials,1.0
+regulation,GS,2026-06-15,standard,Financials,1.0
+regulation,MS,2026-06-15,standard,Financials,1.0
+regulation,XOM,2026-06-15,significant,Energy,2.0
+regulation,CVX,2026-06-15,significant,Energy,2.0
+regulation,COP,2026-06-15,significant,Energy,2.0
+regulation,SLB,2026-06-15,significant,Energy,2.0
+regulation,EOG,2026-06-15,significant,Energy,2.0
+regulation,BA,2026-06-15,standard,Industrials,1.0
+regulation,CAT,2026-06-15,standard,Industrials,1.0
+regulation,GE,2026-06-15,standard,Industrials,1.0
+regulation,LMT,2026-06-15,standard,Industrials,1.0
+regulation,RTX,2026-06-15,standard,Industrials,1.0
+regulation,GOOGL,2026-06-15,significant,Communication Services,2.0
+regulation,META,2026-06-15,significant,Communication Services,2.0
+regulation,NFLX,2026-06-15,significant,Communication Services,2.0
+regulation,T,2026-06-15,significant,Communication Services,2.0
+regulation,VZ,2026-06-15,significant,Communication Services,2.0
+regulation,UNH,2026-06-16,significant,Health Care,2.0
+regulation,JNJ,2026-06-16,significant,Health Care,2.0
+regulation,LLY,2026-06-16,significant,Health Care,2.0
+regulation,PFE,2026-06-16,significant,Health Care,2.0
+regulation,MRK,2026-06-16,significant,Health Care,2.0
+regulation,UNH,2026-06-16,standard,Health Care,1.0
+regulation,JNJ,2026-06-16,standard,Health Care,1.0
+regulation,LLY,2026-06-16,standard,Health Care,1.0
+regulation,PFE,2026-06-16,standard,Health Care,1.0
+regulation,MRK,2026-06-16,standard,Health Care,1.0
+regulation,JPM,2026-06-16,standard,Financials,1.0
+regulation,BAC,2026-06-16,standard,Financials,1.0
+regulation,WFC,2026-06-16,standard,Financials,1.0
+regulation,GS,2026-06-16,standard,Financials,1.0
+regulation,MS,2026-06-16,standard,Financials,1.0
+regulation,BA,2026-06-16,significant,Industrials,2.0
+regulation,CAT,2026-06-16,significant,Industrials,2.0
+regulation,GE,2026-06-16,significant,Industrials,2.0
+regulation,LMT,2026-06-16,significant,Industrials,2.0
+regulation,RTX,2026-06-16,significant,Industrials,2.0
+regulation,GOOGL,2026-06-16,standard,Communication Services,1.0
+regulation,META,2026-06-16,standard,Communication Services,1.0
+regulation,NFLX,2026-06-16,standard,Communication Services,1.0
+regulation,T,2026-06-16,standard,Communication Services,1.0
+regulation,VZ,2026-06-16,standard,Communication Services,1.0
+regulation,UNH,2026-06-17,standard,Health Care,1.0
+regulation,JNJ,2026-06-17,standard,Health Care,1.0
+regulation,LLY,2026-06-17,standard,Health Care,1.0
+regulation,PFE,2026-06-17,standard,Health Care,1.0
+regulation,MRK,2026-06-17,standard,Health Care,1.0
+regulation,JPM,2026-06-17,standard,Financials,1.0
+regulation,BAC,2026-06-17,standard,Financials,1.0
+regulation,WFC,2026-06-17,standard,Financials,1.0
+regulation,GS,2026-06-17,standard,Financials,1.0
+regulation,MS,2026-06-17,standard,Financials,1.0
+regulation,JPM,2026-06-17,significant,Financials,2.0
+regulation,BAC,2026-06-17,significant,Financials,2.0
+regulation,WFC,2026-06-17,significant,Financials,2.0
+regulation,GS,2026-06-17,significant,Financials,2.0
+regulation,MS,2026-06-17,significant,Financials,2.0
+regulation,GOOGL,2026-06-17,standard,Communication Services,1.0
+regulation,META,2026-06-17,standard,Communication Services,1.0
+regulation,NFLX,2026-06-17,standard,Communication Services,1.0
+regulation,T,2026-06-17,standard,Communication Services,1.0
+regulation,VZ,2026-06-17,standard,Communication Services,1.0
+regulation,UNH,2026-06-18,standard,Health Care,1.0
+regulation,JNJ,2026-06-18,standard,Health Care,1.0
+regulation,LLY,2026-06-18,standard,Health Care,1.0
+regulation,PFE,2026-06-18,standard,Health Care,1.0
+regulation,MRK,2026-06-18,standard,Health Care,1.0
+regulation,JPM,2026-06-18,standard,Financials,1.0
+regulation,BAC,2026-06-18,standard,Financials,1.0
+regulation,WFC,2026-06-18,standard,Financials,1.0
+regulation,GS,2026-06-18,standard,Financials,1.0
+regulation,MS,2026-06-18,standard,Financials,1.0
+regulation,XOM,2026-06-18,standard,Energy,1.0
+regulation,CVX,2026-06-18,standard,Energy,1.0
+regulation,COP,2026-06-18,standard,Energy,1.0
+regulation,SLB,2026-06-18,standard,Energy,1.0
+regulation,EOG,2026-06-18,standard,Energy,1.0
+regulation,BA,2026-06-18,standard,Industrials,1.0
+regulation,CAT,2026-06-18,standard,Industrials,1.0
+regulation,GE,2026-06-18,standard,Industrials,1.0
+regulation,LMT,2026-06-18,standard,Industrials,1.0
+regulation,RTX,2026-06-18,standard,Industrials,1.0
+regulation,GOOGL,2026-06-18,standard,Communication Services,1.0
+regulation,META,2026-06-18,standard,Communication Services,1.0
+regulation,NFLX,2026-06-18,standard,Communication Services,1.0
+regulation,T,2026-06-18,standard,Communication Services,1.0
+regulation,VZ,2026-06-18,standard,Communication Services,1.0
+regulation,UNH,2026-06-22,standard,Health Care,1.0
+regulation,JNJ,2026-06-22,standard,Health Care,1.0
+regulation,LLY,2026-06-22,standard,Health Care,1.0
+regulation,PFE,2026-06-22,standard,Health Care,1.0
+regulation,MRK,2026-06-22,standard,Health Care,1.0
+regulation,JPM,2026-06-22,standard,Financials,1.0
+regulation,BAC,2026-06-22,standard,Financials,1.0
+regulation,WFC,2026-06-22,standard,Financials,1.0
+regulation,GS,2026-06-22,standard,Financials,1.0
+regulation,MS,2026-06-22,standard,Financials,1.0
+regulation,XOM,2026-06-22,standard,Energy,1.0
+regulation,CVX,2026-06-22,standard,Energy,1.0
+regulation,COP,2026-06-22,standard,Energy,1.0
+regulation,SLB,2026-06-22,standard,Energy,1.0
+regulation,EOG,2026-06-22,standard,Energy,1.0
+regulation,GOOGL,2026-06-22,standard,Communication Services,1.0
+regulation,META,2026-06-22,standard,Communication Services,1.0
+regulation,NFLX,2026-06-22,standard,Communication Services,1.0
+regulation,T,2026-06-22,standard,Communication Services,1.0
+regulation,VZ,2026-06-22,standard,Communication Services,1.0
+regulation,UNH,2026-06-23,standard,Health Care,1.0
+regulation,JNJ,2026-06-23,standard,Health Care,1.0
+regulation,LLY,2026-06-23,standard,Health Care,1.0
+regulation,PFE,2026-06-23,standard,Health Care,1.0
+regulation,MRK,2026-06-23,standard,Health Care,1.0
+regulation,JPM,2026-06-23,standard,Financials,1.0
+regulation,BAC,2026-06-23,standard,Financials,1.0
+regulation,WFC,2026-06-23,standard,Financials,1.0
+regulation,GS,2026-06-23,standard,Financials,1.0
+regulation,MS,2026-06-23,standard,Financials,1.0
+regulation,XOM,2026-06-23,standard,Energy,1.0
+regulation,CVX,2026-06-23,standard,Energy,1.0
+regulation,COP,2026-06-23,standard,Energy,1.0
+regulation,SLB,2026-06-23,standard,Energy,1.0
+regulation,EOG,2026-06-23,standard,Energy,1.0
+regulation,BA,2026-06-23,standard,Industrials,1.0
+regulation,CAT,2026-06-23,standard,Industrials,1.0
+regulation,GE,2026-06-23,standard,Industrials,1.0
+regulation,LMT,2026-06-23,standard,Industrials,1.0
+regulation,RTX,2026-06-23,standard,Industrials,1.0
+regulation,GOOGL,2026-06-23,standard,Communication Services,1.0
+regulation,META,2026-06-23,standard,Communication Services,1.0
+regulation,NFLX,2026-06-23,standard,Communication Services,1.0
+regulation,T,2026-06-23,standard,Communication Services,1.0
+regulation,VZ,2026-06-23,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-23,significant,Communication Services,2.0
+regulation,META,2026-06-23,significant,Communication Services,2.0
+regulation,NFLX,2026-06-23,significant,Communication Services,2.0
+regulation,T,2026-06-23,significant,Communication Services,2.0
+regulation,VZ,2026-06-23,significant,Communication Services,2.0
+regulation,AMZN,2026-06-23,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-23,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-23,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-23,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-23,standard,Consumer Discretionary,1.0
+regulation,AAPL,2026-06-24,standard,Information Technology,1.0
+regulation,MSFT,2026-06-24,standard,Information Technology,1.0
+regulation,NVDA,2026-06-24,standard,Information Technology,1.0
+regulation,AVGO,2026-06-24,standard,Information Technology,1.0
+regulation,AMD,2026-06-24,standard,Information Technology,1.0
+regulation,UNH,2026-06-24,standard,Health Care,1.0
+regulation,JNJ,2026-06-24,standard,Health Care,1.0
+regulation,LLY,2026-06-24,standard,Health Care,1.0
+regulation,PFE,2026-06-24,standard,Health Care,1.0
+regulation,MRK,2026-06-24,standard,Health Care,1.0
+regulation,JPM,2026-06-24,standard,Financials,1.0
+regulation,BAC,2026-06-24,standard,Financials,1.0
+regulation,WFC,2026-06-24,standard,Financials,1.0
+regulation,GS,2026-06-24,standard,Financials,1.0
+regulation,MS,2026-06-24,standard,Financials,1.0
+regulation,JPM,2026-06-24,significant,Financials,2.0
+regulation,BAC,2026-06-24,significant,Financials,2.0
+regulation,WFC,2026-06-24,significant,Financials,2.0
+regulation,GS,2026-06-24,significant,Financials,2.0
+regulation,MS,2026-06-24,significant,Financials,2.0
+regulation,XOM,2026-06-24,standard,Energy,1.0
+regulation,CVX,2026-06-24,standard,Energy,1.0
+regulation,COP,2026-06-24,standard,Energy,1.0
+regulation,SLB,2026-06-24,standard,Energy,1.0
+regulation,EOG,2026-06-24,standard,Energy,1.0
+regulation,XOM,2026-06-24,significant,Energy,2.0
+regulation,CVX,2026-06-24,significant,Energy,2.0
+regulation,COP,2026-06-24,significant,Energy,2.0
+regulation,SLB,2026-06-24,significant,Energy,2.0
+regulation,EOG,2026-06-24,significant,Energy,2.0
+regulation,GOOGL,2026-06-24,standard,Communication Services,1.0
+regulation,META,2026-06-24,standard,Communication Services,1.0
+regulation,NFLX,2026-06-24,standard,Communication Services,1.0
+regulation,T,2026-06-24,standard,Communication Services,1.0
+regulation,VZ,2026-06-24,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-24,significant,Communication Services,2.0
+regulation,META,2026-06-24,significant,Communication Services,2.0
+regulation,NFLX,2026-06-24,significant,Communication Services,2.0
+regulation,T,2026-06-24,significant,Communication Services,2.0
+regulation,VZ,2026-06-24,significant,Communication Services,2.0
+regulation,AMZN,2026-06-24,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-24,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-24,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-24,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-24,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-06-25,standard,Health Care,1.0
+regulation,JNJ,2026-06-25,standard,Health Care,1.0
+regulation,LLY,2026-06-25,standard,Health Care,1.0
+regulation,PFE,2026-06-25,standard,Health Care,1.0
+regulation,MRK,2026-06-25,standard,Health Care,1.0
+regulation,JPM,2026-06-25,standard,Financials,1.0
+regulation,BAC,2026-06-25,standard,Financials,1.0
+regulation,WFC,2026-06-25,standard,Financials,1.0
+regulation,GS,2026-06-25,standard,Financials,1.0
+regulation,MS,2026-06-25,standard,Financials,1.0
+regulation,JPM,2026-06-25,significant,Financials,2.0
+regulation,BAC,2026-06-25,significant,Financials,2.0
+regulation,WFC,2026-06-25,significant,Financials,2.0
+regulation,GS,2026-06-25,significant,Financials,2.0
+regulation,MS,2026-06-25,significant,Financials,2.0
+regulation,XOM,2026-06-25,standard,Energy,1.0
+regulation,CVX,2026-06-25,standard,Energy,1.0
+regulation,COP,2026-06-25,standard,Energy,1.0
+regulation,SLB,2026-06-25,standard,Energy,1.0
+regulation,EOG,2026-06-25,standard,Energy,1.0
+regulation,GOOGL,2026-06-25,standard,Communication Services,1.0
+regulation,META,2026-06-25,standard,Communication Services,1.0
+regulation,NFLX,2026-06-25,standard,Communication Services,1.0
+regulation,T,2026-06-25,standard,Communication Services,1.0
+regulation,VZ,2026-06-25,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-25,significant,Communication Services,2.0
+regulation,META,2026-06-25,significant,Communication Services,2.0
+regulation,NFLX,2026-06-25,significant,Communication Services,2.0
+regulation,T,2026-06-25,significant,Communication Services,2.0
+regulation,VZ,2026-06-25,significant,Communication Services,2.0
+regulation,UNH,2026-06-26,standard,Health Care,1.0
+regulation,JNJ,2026-06-26,standard,Health Care,1.0
+regulation,LLY,2026-06-26,standard,Health Care,1.0
+regulation,PFE,2026-06-26,standard,Health Care,1.0
+regulation,MRK,2026-06-26,standard,Health Care,1.0
+regulation,JPM,2026-06-26,standard,Financials,1.0
+regulation,BAC,2026-06-26,standard,Financials,1.0
+regulation,WFC,2026-06-26,standard,Financials,1.0
+regulation,GS,2026-06-26,standard,Financials,1.0
+regulation,MS,2026-06-26,standard,Financials,1.0
+regulation,XOM,2026-06-26,standard,Energy,1.0
+regulation,CVX,2026-06-26,standard,Energy,1.0
+regulation,COP,2026-06-26,standard,Energy,1.0
+regulation,SLB,2026-06-26,standard,Energy,1.0
+regulation,EOG,2026-06-26,standard,Energy,1.0
+regulation,BA,2026-06-26,standard,Industrials,1.0
+regulation,CAT,2026-06-26,standard,Industrials,1.0
+regulation,GE,2026-06-26,standard,Industrials,1.0
+regulation,LMT,2026-06-26,standard,Industrials,1.0
+regulation,RTX,2026-06-26,standard,Industrials,1.0
+regulation,GOOGL,2026-06-26,standard,Communication Services,1.0
+regulation,META,2026-06-26,standard,Communication Services,1.0
+regulation,NFLX,2026-06-26,standard,Communication Services,1.0
+regulation,T,2026-06-26,standard,Communication Services,1.0
+regulation,VZ,2026-06-26,standard,Communication Services,1.0
+regulation,GOOGL,2026-06-26,significant,Communication Services,2.0
+regulation,META,2026-06-26,significant,Communication Services,2.0
+regulation,NFLX,2026-06-26,significant,Communication Services,2.0
+regulation,T,2026-06-26,significant,Communication Services,2.0
+regulation,VZ,2026-06-26,significant,Communication Services,2.0
+regulation,AMZN,2026-06-26,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-26,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-26,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-26,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-26,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-06-29,standard,Health Care,1.0
+regulation,JNJ,2026-06-29,standard,Health Care,1.0
+regulation,LLY,2026-06-29,standard,Health Care,1.0
+regulation,PFE,2026-06-29,standard,Health Care,1.0
+regulation,MRK,2026-06-29,standard,Health Care,1.0
+regulation,UNH,2026-06-29,significant,Health Care,2.0
+regulation,JNJ,2026-06-29,significant,Health Care,2.0
+regulation,LLY,2026-06-29,significant,Health Care,2.0
+regulation,PFE,2026-06-29,significant,Health Care,2.0
+regulation,MRK,2026-06-29,significant,Health Care,2.0
+regulation,JPM,2026-06-29,standard,Financials,1.0
+regulation,BAC,2026-06-29,standard,Financials,1.0
+regulation,WFC,2026-06-29,standard,Financials,1.0
+regulation,GS,2026-06-29,standard,Financials,1.0
+regulation,MS,2026-06-29,standard,Financials,1.0
+regulation,JPM,2026-06-29,significant,Financials,2.0
+regulation,BAC,2026-06-29,significant,Financials,2.0
+regulation,WFC,2026-06-29,significant,Financials,2.0
+regulation,GS,2026-06-29,significant,Financials,2.0
+regulation,MS,2026-06-29,significant,Financials,2.0
+regulation,XOM,2026-06-29,standard,Energy,1.0
+regulation,CVX,2026-06-29,standard,Energy,1.0
+regulation,COP,2026-06-29,standard,Energy,1.0
+regulation,SLB,2026-06-29,standard,Energy,1.0
+regulation,EOG,2026-06-29,standard,Energy,1.0
+regulation,GOOGL,2026-06-29,standard,Communication Services,1.0
+regulation,META,2026-06-29,standard,Communication Services,1.0
+regulation,NFLX,2026-06-29,standard,Communication Services,1.0
+regulation,T,2026-06-29,standard,Communication Services,1.0
+regulation,VZ,2026-06-29,standard,Communication Services,1.0
+regulation,AMZN,2026-06-29,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-29,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-29,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-29,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-29,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-06-30,standard,Health Care,1.0
+regulation,JNJ,2026-06-30,standard,Health Care,1.0
+regulation,LLY,2026-06-30,standard,Health Care,1.0
+regulation,PFE,2026-06-30,standard,Health Care,1.0
+regulation,MRK,2026-06-30,standard,Health Care,1.0
+regulation,UNH,2026-06-30,significant,Health Care,2.0
+regulation,JNJ,2026-06-30,significant,Health Care,2.0
+regulation,LLY,2026-06-30,significant,Health Care,2.0
+regulation,PFE,2026-06-30,significant,Health Care,2.0
+regulation,MRK,2026-06-30,significant,Health Care,2.0
+regulation,JPM,2026-06-30,standard,Financials,1.0
+regulation,BAC,2026-06-30,standard,Financials,1.0
+regulation,WFC,2026-06-30,standard,Financials,1.0
+regulation,GS,2026-06-30,standard,Financials,1.0
+regulation,MS,2026-06-30,standard,Financials,1.0
+regulation,XOM,2026-06-30,standard,Energy,1.0
+regulation,CVX,2026-06-30,standard,Energy,1.0
+regulation,COP,2026-06-30,standard,Energy,1.0
+regulation,SLB,2026-06-30,standard,Energy,1.0
+regulation,EOG,2026-06-30,standard,Energy,1.0
+regulation,XOM,2026-06-30,significant,Energy,2.0
+regulation,CVX,2026-06-30,significant,Energy,2.0
+regulation,COP,2026-06-30,significant,Energy,2.0
+regulation,SLB,2026-06-30,significant,Energy,2.0
+regulation,EOG,2026-06-30,significant,Energy,2.0
+regulation,GOOGL,2026-06-30,standard,Communication Services,1.0
+regulation,META,2026-06-30,standard,Communication Services,1.0
+regulation,NFLX,2026-06-30,standard,Communication Services,1.0
+regulation,T,2026-06-30,standard,Communication Services,1.0
+regulation,VZ,2026-06-30,standard,Communication Services,1.0
+regulation,AMZN,2026-06-30,standard,Consumer Discretionary,1.0
+regulation,TSLA,2026-06-30,standard,Consumer Discretionary,1.0
+regulation,HD,2026-06-30,standard,Consumer Discretionary,1.0
+regulation,MCD,2026-06-30,standard,Consumer Discretionary,1.0
+regulation,NKE,2026-06-30,standard,Consumer Discretionary,1.0
+regulation,UNH,2026-07-01,standard,Health Care,1.0
+regulation,JNJ,2026-07-01,standard,Health Care,1.0
+regulation,LLY,2026-07-01,standard,Health Care,1.0
+regulation,PFE,2026-07-01,standard,Health Care,1.0
+regulation,MRK,2026-07-01,standard,Health Care,1.0
+regulation,UNH,2026-07-01,significant,Health Care,2.0
+regulation,JNJ,2026-07-01,significant,Health Care,2.0
+regulation,LLY,2026-07-01,significant,Health Care,2.0
+regulation,PFE,2026-07-01,significant,Health Care,2.0
+regulation,MRK,2026-07-01,significant,Health Care,2.0
+regulation,JPM,2026-07-01,significant,Financials,2.0
+regulation,BAC,2026-07-01,significant,Financials,2.0
+regulation,WFC,2026-07-01,significant,Financials,2.0
+regulation,GS,2026-07-01,significant,Financials,2.0
+regulation,MS,2026-07-01,significant,Financials,2.0
+regulation,XOM,2026-07-01,significant,Energy,2.0
+regulation,CVX,2026-07-01,significant,Energy,2.0
+regulation,COP,2026-07-01,significant,Energy,2.0
+regulation,SLB,2026-07-01,significant,Energy,2.0
+regulation,EOG,2026-07-01,significant,Energy,2.0
+regulation,XOM,2026-07-01,standard,Energy,1.0
+regulation,CVX,2026-07-01,standard,Energy,1.0
+regulation,COP,2026-07-01,standard,Energy,1.0
+regulation,SLB,2026-07-01,standard,Energy,1.0
+regulation,EOG,2026-07-01,standard,Energy,1.0
+regulation,BA,2026-07-01,standard,Industrials,1.0
+regulation,CAT,2026-07-01,standard,Industrials,1.0
+regulation,GE,2026-07-01,standard,Industrials,1.0
+regulation,LMT,2026-07-01,standard,Industrials,1.0
+regulation,RTX,2026-07-01,standard,Industrials,1.0
+regulation,BA,2026-07-01,significant,Industrials,2.0
+regulation,CAT,2026-07-01,significant,Industrials,2.0
+regulation,GE,2026-07-01,significant,Industrials,2.0
+regulation,LMT,2026-07-01,significant,Industrials,2.0
+regulation,RTX,2026-07-01,significant,Industrials,2.0
+regulation,GOOGL,2026-07-01,standard,Communication Services,1.0
+regulation,META,2026-07-01,standard,Communication Services,1.0
+regulation,NFLX,2026-07-01,standard,Communication Services,1.0
+regulation,T,2026-07-01,standard,Communication Services,1.0
+regulation,VZ,2026-07-01,standard,Communication Services,1.0
+regulation,GOOGL,2026-07-01,significant,Communication Services,2.0
+regulation,META,2026-07-01,significant,Communication Services,2.0
+regulation,NFLX,2026-07-01,significant,Communication Services,2.0
+regulation,T,2026-07-01,significant,Communication Services,2.0
+regulation,VZ,2026-07-01,significant,Communication Services,2.0
+regulation,AMZN,2026-07-01,significant,Consumer Discretionary,2.0
+regulation,TSLA,2026-07-01,significant,Consumer Discretionary,2.0
+regulation,HD,2026-07-01,significant,Consumer Discretionary,2.0
+regulation,MCD,2026-07-01,significant,Consumer Discretionary,2.0
+regulation,NKE,2026-07-01,significant,Consumer Discretionary,2.0
+regulation,UNH,2026-07-02,significant,Health Care,2.0
+regulation,JNJ,2026-07-02,significant,Health Care,2.0
+regulation,LLY,2026-07-02,significant,Health Care,2.0
+regulation,PFE,2026-07-02,significant,Health Care,2.0
+regulation,MRK,2026-07-02,significant,Health Care,2.0
+regulation,JPM,2026-07-02,significant,Financials,2.0
+regulation,BAC,2026-07-02,significant,Financials,2.0
+regulation,WFC,2026-07-02,significant,Financials,2.0
+regulation,GS,2026-07-02,significant,Financials,2.0
+regulation,MS,2026-07-02,significant,Financials,2.0
+regulation,XOM,2026-07-02,standard,Energy,1.0
+regulation,CVX,2026-07-02,standard,Energy,1.0
+regulation,COP,2026-07-02,standard,Energy,1.0
+regulation,SLB,2026-07-02,standard,Energy,1.0
+regulation,EOG,2026-07-02,standard,Energy,1.0
+regulation,BA,2026-07-02,standard,Industrials,1.0
+regulation,CAT,2026-07-02,standard,Industrials,1.0
+regulation,GE,2026-07-02,standard,Industrials,1.0
+regulation,LMT,2026-07-02,standard,Industrials,1.0
+regulation,RTX,2026-07-02,standard,Industrials,1.0
+regulation,BA,2026-07-02,significant,Industrials,2.0
+regulation,CAT,2026-07-02,significant,Industrials,2.0
+regulation,GE,2026-07-02,significant,Industrials,2.0
+regulation,LMT,2026-07-02,significant,Industrials,2.0
+regulation,RTX,2026-07-02,significant,Industrials,2.0
+regulation,GOOGL,2026-07-02,standard,Communication Services,1.0
+regulation,META,2026-07-02,standard,Communication Services,1.0
+regulation,NFLX,2026-07-02,standard,Communication Services,1.0
+regulation,T,2026-07-02,standard,Communication Services,1.0
+regulation,VZ,2026-07-02,standard,Communication Services,1.0
+regulation,UNH,2026-07-06,standard,Health Care,1.0
+regulation,JNJ,2026-07-06,standard,Health Care,1.0
+regulation,LLY,2026-07-06,standard,Health Care,1.0
+regulation,PFE,2026-07-06,standard,Health Care,1.0
+regulation,MRK,2026-07-06,standard,Health Care,1.0
+regulation,JPM,2026-07-06,standard,Financials,1.0
+regulation,BAC,2026-07-06,standard,Financials,1.0
+regulation,WFC,2026-07-06,standard,Financials,1.0
+regulation,GS,2026-07-06,standard,Financials,1.0
+regulation,MS,2026-07-06,standard,Financials,1.0
+regulation,XOM,2026-07-06,standard,Energy,1.0
+regulation,CVX,2026-07-06,standard,Energy,1.0
+regulation,COP,2026-07-06,standard,Energy,1.0
+regulation,SLB,2026-07-06,standard,Energy,1.0
+regulation,EOG,2026-07-06,standard,Energy,1.0
+regulation,BA,2026-07-06,standard,Industrials,1.0
+regulation,CAT,2026-07-06,standard,Industrials,1.0
+regulation,GE,2026-07-06,standard,Industrials,1.0
+regulation,LMT,2026-07-06,standard,Industrials,1.0
+regulation,RTX,2026-07-06,standard,Industrials,1.0
+regulation,GOOGL,2026-07-06,standard,Communication Services,1.0
+regulation,META,2026-07-06,standard,Communication Services,1.0
+regulation,NFLX,2026-07-06,standard,Communication Services,1.0
+regulation,T,2026-07-06,standard,Communication Services,1.0
+regulation,VZ,2026-07-06,standard,Communication Services,1.0
+regulation,UNH,2026-07-07,standard,Health Care,1.0
+regulation,JNJ,2026-07-07,standard,Health Care,1.0
+regulation,LLY,2026-07-07,standard,Health Care,1.0
+regulation,PFE,2026-07-07,standard,Health Care,1.0
+regulation,MRK,2026-07-07,standard,Health Care,1.0
+regulation,JPM,2026-07-07,standard,Financials,1.0
+regulation,BAC,2026-07-07,standard,Financials,1.0
+regulation,WFC,2026-07-07,standard,Financials,1.0
+regulation,GS,2026-07-07,standard,Financials,1.0
+regulation,MS,2026-07-07,standard,Financials,1.0
+regulation,XOM,2026-07-07,significant,Energy,2.0
+regulation,CVX,2026-07-07,significant,Energy,2.0
+regulation,COP,2026-07-07,significant,Energy,2.0
+regulation,SLB,2026-07-07,significant,Energy,2.0
+regulation,EOG,2026-07-07,significant,Energy,2.0
+regulation,XOM,2026-07-07,standard,Energy,1.0
+regulation,CVX,2026-07-07,standard,Energy,1.0
+regulation,COP,2026-07-07,standard,Energy,1.0
+regulation,SLB,2026-07-07,standard,Energy,1.0
+regulation,EOG,2026-07-07,standard,Energy,1.0
+regulation,BA,2026-07-07,significant,Industrials,2.0
+regulation,CAT,2026-07-07,significant,Industrials,2.0
+regulation,GE,2026-07-07,significant,Industrials,2.0
+regulation,LMT,2026-07-07,significant,Industrials,2.0
+regulation,RTX,2026-07-07,significant,Industrials,2.0
+regulation,GOOGL,2026-07-07,standard,Communication Services,1.0
+regulation,META,2026-07-07,standard,Communication Services,1.0
+regulation,NFLX,2026-07-07,standard,Communication Services,1.0
+regulation,T,2026-07-07,standard,Communication Services,1.0
+regulation,VZ,2026-07-07,standard,Communication Services,1.0

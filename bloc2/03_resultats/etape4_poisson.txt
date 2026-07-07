@@ -1,0 +1,33 @@
+================================================================================
+ETAPE 4 (Bloc 2) - REGRESSION DE POISSON : le nb d'evenements depend-il du secteur ?
+Unite = un ticker. Y = nombre d'evenements recus. Facteur = secteur GICS.
+================================================================================
+Tickers : 49 | evenements totaux : 2878 | moyenne/ticker : 58.7
+Moyenne=58.73  Variance=1570.66  ratio(dispersion)=26.74
+  (ratio >> 1 => sur-dispersion : la binomiale negative serait plus prudente.)
+--------------------------------------------------------------------------------
+
+Modele  log(E[n]) = beta0 + effets secteur   (GLM Poisson)
+Deviance=1525.6  AIC=1796.4  pseudo-R2=0.137
+
+terme                                            coef  exp(coef)         p
+--------------------------------------------------------------------------
+Intercept                                       3.932      51.00         0
+C(secteur)[T.Consumer Discretionary]            0.487       1.63  9.32e-10
+C(secteur)[T.Energy]                            0.475       1.61  2.61e-09
+C(secteur)[T.Financials]                        0.111       1.12     0.197
+C(secteur)[T.Health Care]                       0.109       1.12     0.154
+C(secteur)[T.Industrials]                      -0.112       0.89     0.139
+C(secteur)[T.Information Technology]            0.238       1.27   0.00235
+C(secteur)[T.Materials]                        -3.932       0.02   8.7e-05
+
+--------------------------------------------------------------------------------
+Lecture : exp(coef) = combien de fois PLUS (ou moins) d'evenements un secteur
+          recoit par rapport au secteur de reference (a p<0.05). Un exp(coef)=2
+          => deux fois plus d'evenements. Confirme que les signaux d'information
+          se CONCENTRENT sur certains secteurs (defense pour les contrats, etc.).
+Reserve : forte sur-dispersion (ratio=26.7) -> p-values Poisson optimistes.
+          On refait donc le modele en BINOMIALE NEGATIVE (plus prudente) :
+          AIC binom.neg=506.4 (vs Poisson 1796.4) ; termes significatifs :
+          Poisson=5  ->  binom.neg=2 (certains effets disparaissent une
+          fois la sur-dispersion prise en compte : conclusion plus robuste).

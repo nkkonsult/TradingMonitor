@@ -1,0 +1,19 @@
+================================================================================
+ETAPE 3 (Bloc 2) - LE SENS DU SIGNAL EST-IL LIE A L'ISSUE ? (khi-deux + V de Cramer)
+Issue = signe du CAR (hausse si CAR>0, baisse sinon). H0 : sens et issue independants.
+================================================================================
+
+[contrat] un seul sens ('attribution') -> pas de croisement possible (n=174).
+
+[regulation]  n=2030
+issue        baisse  hausse
+sens                       
+significant     338     302
+standard        713     677
+  chi2=0.40  dof=1  p=0.525  V_Cramer=0.014 (negligeable)  -> independant
+
+--------------------------------------------------------------------------------
+Lecture : p<0.05 => lien statistique entre le sens du signal et la direction du
+          rendement anormal. MAIS le V de Cramer dit s'il est EXPLOITABLE :
+          <0.1 negligeable, 0.1-0.2 faible, >0.3 fort. Un lien 'significatif mais
+          negligeable' (grand n) n'a pas de valeur pratique de trading.

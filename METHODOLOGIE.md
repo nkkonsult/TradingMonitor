@@ -291,7 +291,7 @@ Cinq méthodes de cours appliquées à la base des 38 035 trades, par des chemin
 
 **Bloc 1 : terminé** (tests, ANOVA/Tukey, χ², ACP, AFC, ACM — synthèse dans `bloc1/SYNTHESE.md`). La suite est organisée **par blocs** (cf. `ARCHITECTURE.md`) :
 1. **Bloc 3 — relations inter-actions** : sur les séries de prix (déjà en cache), corrélations, **causalité de Granger** (une action en précède-t-elle une autre ?), ACP sur les rendements, **ARIMA**.
-2. **Bloc 2 — signaux d'information** : contrats publics, transactions du Congrès, lois, actualités (via les agents n8n, APIs gratuites) ; *event studies* et tests.
+2. **Bloc 2 — signaux d'information : terminé** (dossier `bloc2/`). Signaux collectés via les agents n8n et figés en CSV (contrats USASpending, régulations Federal Register ; Congrès/résultats FMP prêts à brancher) ; **étude d'événement** (rendement anormal cumulé, CAR), tests par sens, **χ²**, **régression de Poisson** (+ binomiale négative). Verdict : l'information publique est déjà price-in. Synthèse : `bloc2/SYNTHESE.md` ; les 28 signaux du rapport n8n cartographiés dans `bloc2/CATALOGUE_SIGNAUX.md`.
 3. **Bloc final — régression** : régression linéaire et **logistique** sur **tous les signaux validés** par les blocs → l'équation prédictive. *(Ne vient qu'à la fin.)*
 4. **Onglet « Statistiques »** dans le dashboard pour visualiser les résultats des blocs.
 

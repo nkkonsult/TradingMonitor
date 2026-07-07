@@ -14,7 +14,7 @@
 │  BLOC 2 — SIGNAUX D'INFORMATION (événementiel)                │
 │  Données : contrats gouv., Congress trades, lois/régulations,  │
 │            news (via les agents n8n)                           │
-│  Méthodes : event study, tests, χ²…                            │
+│  Méthodes : event study (CAR), tests, χ², Poisson             │
 │  Sortie : QUELS signaux d'info ont de la valeur               │
 └────────────────────────────────────────────────────────────────┘
 ┌────────────────────────────────────────────────────────────────┐
@@ -43,6 +43,6 @@
 
 ## État actuel
 - **Bloc 1** : ✅ **fait** (dossier `bloc1/`). 38 035 trades ; 5 méthodes (tests, ANOVA+Tukey, χ², ACP, AFC/ACM) ; verdict : seul le RSI bat le hasard. Synthèse : `bloc1/SYNTHESE.md`.
-- **Bloc 2** : agents n8n existants (contrats, Congress, lois, news) — à brancher plus tard.
+- **Bloc 2** : ✅ **fait** (dossier `bloc2/`). Signaux d'information collectés via les agents n8n et figés en CSV ; 2878 événements (contrats USASpending + régulations Federal Register, sources gratuites) ; 4 méthodes (étude d'événement/CAR, tests par sens, χ², Poisson+binomiale négative) ; verdict : l'information publique « lente » est déjà price-in (aucun edge significatif après Bonferroni), mais les événements se concentrent par secteur. Congrès/résultats (clé FMP) prêts à brancher. Synthèse : `bloc2/SYNTHESE.md` ; catalogue des 28 signaux : `bloc2/CATALOGUE_SIGNAUX.md`.
 - **Bloc 3** : ✅ **fait** (dossier `bloc3/`). Rendements sectoriels (4132 j) ; 4 méthodes (corrélation, Granger, ACP, ARIMA) ; verdict : marché très couplé (facteur marché 73 %) et peu prévisible par lui-même. Synthèse : `bloc3/SYNTHESE.md`.
 - **Bloc final** : **plus tard**, une fois les blocs validés.
