@@ -40,6 +40,25 @@ IT ×1,3 ; p<0,01). Mais **sur-dispersion massive (ratio ≈ 27)** : passée en 
 négative (AIC 506 vs 1796), le nombre d'effets significatifs tombe de **5 à 2**. Leçon :
 « significatif en Poisson » ≠ « robuste » — la concentration réelle est plus modeste.
 
+## `etape5_contagion.py` — le signal sur A fait-il réagir les actifs LIÉS à A ?
+**Recadrage** : on ne teste plus si le signal est tradable *sur A*, mais s'il **se propage**
+vers les actifs liés. Pour chaque titre-source A, deux familles de cibles : les **pairs
+corrélés** (data-driven, les 3 titres les plus corrélés à A) et les **thèmes / matières
+premières** (`liens_thematiques.py` : Tesla→lithium, défense→ITA…). On mesure le CAR de
+chaque cible autour de la date du signal sur A.
+**Résultat** : impact **simultané confirmé** — pairs corrélés CAR **+0,27 %** (p=0,003) et
+thèmes/matières **+0,26 %** (p=0,0006). → Quand A reçoit un signal, son écosystème bouge
+(ex. contrat Lockheed → Northrop, GD, ETF défense réagissent).
+
+## `etape6_leadlag.py` — A précède-t-il B (contagion décalée) ?
+**Méthode** : on décompose l'AR de la cible en **immédiat** (J0–J1) vs **décalé** (J2–J5),
+et on teste (esprit **Granger**) si le choc de A en J0 prédit le rendement de B en J+1.
+**Résultat** : l'impact est surtout **immédiat/synchrone** (pairs p=0,008, thèmes p=8e−10) ;
+l'effet **décalé J2–J5 n'est pas significatif**. La régression Granger montre un **léger
+entraînement A→B le lendemain sur les pairs corrélés** (pente +0,033, p=0,049), mais un
+rebond (pente négative) sur les thèmes. → La contagion est réelle mais **essentiellement
+synchrone** ; l'entraînement décalé exploitable est marginal.
+
 ## Verdict commun (voir `../SYNTHESE.md`)
 Sur les données **actuellement branchées** (contrats + régulations, sources gratuites), les
 signaux d'information publics **ne dégagent pas d'edge significatif** après correction : le

@@ -4,8 +4,9 @@
 > collectés via les agents n8n), ce que la **MACHINE** fait (les méthodes du cours), et ce
 > qui **SORT** (les verdicts). Tout est ouvrable et relançable. Ici, on ne juge plus des
 > stratégies techniques ni des liens entre actions, mais la **valeur prédictive de
-> l'information exogène** : quand un signal tombe (contrat public, transaction d'un élu,
-> nouvelle régulation, résultat d'entreprise), le cours du titre bouge-t-il *anormalement* ?
+> l'information exogène**. Deux questions complémentaires :
+> 1. **Impact direct** (étapes 1-4) : quand un signal tombe sur un titre, *ce titre* bouge-t-il anormalement ?
+> 2. **Impact de contagion** (étapes 5-6) : quand un signal touche A, quels **autres** actifs liés à A (pairs corrélés, matières premières, ETF de thème) réagissent — en même temps, ou après (*A précède-t-il B ?*) ? Mesurer les **répercussions** d'un signal sur le reste du marché.
 
 ```
         01_donnees/                    02_methodes/                    03_resultats/
@@ -15,6 +16,8 @@
  │ evenements.csv           │  │ etape2 tests (par sens)│  │                        │
  │ dictionnaire.md          │  │ etape3 chi2            │  │                        │
  │ + prix via charts.data   │  │ etape4 poisson         │  │                        │
+ │ liens_thematiques.py     │  │ etape5 contagion       │  │                        │
+ │                          │  │ etape6 lead-lag        │  │                        │
  └──────────────────────────┘  └────────────────────────┘  └────────────────────────┘
          CE QUI ENTRE               CE QUE LA MACHINE FAIT          CE QUI SORT
 ```
@@ -37,6 +40,8 @@
 - `etape2_tests.py`        — bat-il le hasard selon son **sens** ? (Student/Wilcoxon, Bonferroni)
 - `etape3_chi2.py`         — le sens est-il lié à l'**issue** ? (khi-deux + V de Cramér)
 - `etape4_poisson.py`      — les événements se **concentrent**-ils par secteur ? (Poisson + binom. nég.)
+- `etape5_contagion.py`    — le signal sur A fait-il **réagir les actifs liés à A** ? (CAR des pairs corrélés + matières premières autour de J0 — *impact simultané*)
+- `etape6_leadlag.py`      — **A précède-t-il B** ? (AR immédiat vs décalé + prédictibilité Granger — *contagion dans le temps*)
 
 ## 03_resultats/ — CE QUI SORT
 Verdicts `.txt` + la courbe `etape1_car.png` (CAR moyen autour de l'événement).

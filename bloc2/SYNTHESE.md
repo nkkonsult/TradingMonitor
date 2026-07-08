@@ -50,29 +50,50 @@ de l'événement **moins** le rendement « normal » prédit par le modèle de m
   effets sectoriels ; la **binomiale négative**, plus honnête sur la variance, n'en retient
   que 2. « Significatif » n'est pas « robuste ».
 
-## 4. Le verdict commun
+## 4. La question centrale : la contagion (un signal sur A déplace-t-il B ?)
 
-Les quatre méthodes convergent :
+L'objectif n'est pas seulement de savoir si un signal est *tradable sur son propre titre*,
+mais de mesurer ses **répercussions** : quand un signal touche un titre **A**, les actifs
+**liés à A** — ses **pairs corrélés** (data-driven) et ses **matières premières / thèmes**
+(ex. Tesla→lithium, défense→ETF ITA) — bougent-ils en réaction ? Deux méthodes
+supplémentaires (étapes 5 et 6) répondent.
 
-> **Sur les signaux d'information *publics et gratuits* testés (contrats, régulations), aucun
-> ne dégage d'edge significatif après correction.** Le marché a largement **anticipé**
-> l'information (efficience semi-forte). Seule une **régulation « significative »** montre un
-> frémissement baissier (−0,47 %), à confirmer. En revanche, ces événements **ne tombent pas
-> au hasard** : ils se **concentrent** sur quelques secteurs (défense, énergie, tech).
+| # | Méthode | Question | Résultat |
+|---|---|---|---|
+| 5 | **Contagion simultanée** (CAR des cibles autour de J0) | Les actifs liés à A réagissent-ils ? | **OUI** : pairs corrélés CAR **+0,27 %** (p≈0,003), thèmes/matières **+0,26 %** (p≈0,0006). L'écosystème de A bouge. |
+| 6 | **Contagion décalée / lead-lag** (immédiat J0-J1 vs décalé J2-J5 + Granger) | A précède-t-il B ? | Effet surtout **synchrone** (immédiat significatif) ; décalé J2-J5 **non significatif**. Léger entraînement A→B le lendemain sur les **pairs corrélés** (pente Granger +0,03, p≈0,05). |
 
-## 5. Limites assumées
+> **La contagion est réelle : un signal sur A déplace significativement les actifs liés à A
+> (pairs corrélés et matières premières).** Mais elle est **essentiellement synchrone** (le
+> jour même) ; l'entraînement décalé, seul vraiment exploitable, n'est que **marginal** (A
+> précède faiblement B d'un jour, sur les pairs corrélés uniquement).
+
+## 5. Le verdict commun
+
+Les six méthodes convergent :
+
+> **Impact direct** — sur les signaux publics testés (contrats, régulations), aucun ne dégage
+> d'edge significatif *sur son propre titre* après correction : le marché a **anticipé**
+> l'information. **Impact de contagion** — en revanche, un signal **se propage** aux actifs
+> liés (pairs, matières premières), surtout de façon **synchrone**. Et ces événements ne
+> tombent pas au hasard : ils se **concentrent** sur quelques secteurs (défense, énergie, tech).
+
+## 6. Limites assumées
 
 - **Anticipation / fenêtre** : le CAR est mesuré J−1→J+5 ; une information peut fuiter avant
   (délit d'initié, anticipation) → l'effet « jour de l'annonce » est dilué. Tester des
   fenêtres plus larges est une piste.
 - **Mapping et projection** : contrats rattachés par nom (défense cotée surtout) ; régulations
   projetées sur des paniers sectoriels → événements corrélés intra-secteur.
+- **Contagion** : les *pairs corrélés* sont data-driven (corrélation des rendements) ; les
+  *liens thématiques* (A→matière première) sont un **choix économique déclaré**
+  (`liens_thematiques.py`), donc discutable et limité aux titres suivis.
 - **Signaux à clé non encore branchés** : le **Congrès (achat/vente)** et les **surprises de
   résultats** sont *le* cas d'école de l'étude d'événement ; le code les intègre dès que la
   clé FMP est fournie. Le verdict actuel ne porte donc **que** sur l'information publique
   « lente » (contrats, régulations), pas encore sur l'information « à sens » (achat/vente).
 
-## 6. Ce que ça implique pour la suite
+## 7. Ce que ça implique pour la suite
 
 L'information publique « lente » est déjà dans les prix : peu d'edge. La **valeur** se
 trouvera plutôt dans les signaux **à sens et à délai court** (transactions du Congrès,

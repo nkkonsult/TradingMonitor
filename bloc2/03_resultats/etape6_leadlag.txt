@@ -1,0 +1,26 @@
+============================================================================================
+ETAPE 6 (Bloc 2) - CONTAGION DECALEE (lead-lag) : le signal sur A ANNONCE-t-il B ?
+Immediat = AR cible cumule J0..J1 | Decale = AR cible cumule J2..J5
+============================================================================================
+
+type de cible           n     AR_imm  AR_decale  p_immediat    p_decale
+--------------------------------------------------------------------------------------------
+pairs correles       2919     0.0012     0.0007      0.0085        0.34
+                                                  -> immediat=OUI  decale=non
+themes/mat.1res      1526     0.0023    -0.0006       8e-10         0.3
+                                                  -> immediat=OUI  decale=non
+
+============================================================================================
+PREDICTIBILITE (esprit Granger) : le choc sur A en J0 predit-il B le lendemain ?
+Regression  AR_B(J+1) = a + b * AR_A(J0)   ; pente b>0 & p<0.05 => A precede B
+--------------------------------------------------------------------------------------------
+type de cible           n    pente_b     p_pente  verdict
+pairs correles       2898      0.033       0.049 A PRECEDE B
+themes/mat.1res      1517     -0.056     0.00018      non
+
+--------------------------------------------------------------------------------------------
+Lecture : AR_decale significatif => la cible bouge ENCORE J2..J5 apres le signal
+          sur A (contagion qui se propage dans le temps). Pente Granger>0 &
+          significative => le choc sur A ANNONCE le mouvement de B le lendemain :
+          c'est le cas potentiellement EXPLOITABLE (A precede B). Un effet
+          uniquement IMMEDIAT (J0..J1) est deja price-in, donc non exploitable.
