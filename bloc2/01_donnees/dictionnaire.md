@@ -26,8 +26,11 @@
 - **`brut_regulations.csv`** — Federal Register (gratuit). Champs : `doc_id, theme, secteur,
   title, type, agencies, date, effective_date, significant, url`. Type ∈ {Rule, Proposed
   Rule}. Reprend le workflow n8n *Get Federal Regulations*, élargi à 9 thèmes sectoriels.
-- **`brut_congres.csv`** — FMP (clé requise). Champs : `chamber, politician, ticker,
-  transaction, amount, date, disclosure_date`. Produit quand `FMP_API_KEY` est fournie.
+- **`brut_congres.csv`** — FMP (clé détenue par n8n). Champs : `chamber, politician, ticker,
+  transaction, amount, date, disclosure_date`. Collecté via un **pont webhook n8n** (le
+  sous-workflow *Get Congress Trades* détient la clé) ou en direct si `FMP_API_KEY` est
+  exportée — cf. `collecteur.py`. FMP ne livre que les trades **récents** → échantillon
+  modeste (~43 trades), documenté comme limite.
 - **`brut_earnings.csv`** — FMP (clé requise). Champs : `ticker, date, eps_actual,
   eps_estimated, sens`.
 

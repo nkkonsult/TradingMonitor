@@ -27,6 +27,10 @@ sont **prêts** (mêmes scripts, il suffit de la clé FMP).
 - **Régulations fédérales** (Federal Register) : ~2000 règles finales/proposées, réparties
   sur 7 secteurs, dont une part « significatives ».
 
+Un **troisième signal** est branché via un pont n8n vers l'API FMP : les **transactions du
+Congrès** (43 trades achat/vente datés) — la source-or de l'étude d'événement, mais dont FMP
+ne livre que les trades récents (échantillon modeste, limite assumée).
+
 La variable-juge est le **CAR** (*Cumulative Abnormal Return*) : le rendement du titre autour
 de l'événement **moins** le rendement « normal » prédit par le modèle de marché
 (`R = α + β·R_marché`). Un `CAR ≠ 0` signale une réaction anormale imputable au signal.
@@ -36,8 +40,8 @@ de l'événement **moins** le rendement « normal » prédit par le modèle de m
 | # | Méthode (vue en cours) | Question | Résultat |
 |---|---|---|---|
 | 1 | **Étude d'événement** (CAR, Student/Wilcoxon) | Le signal déplace-t-il le cours ? | Contrats **+0,3 %** (p≈0,35), régulations **−0,15 %** (p≈0,2) : **non significatif**. L'info est déjà price-in. |
-| 2 | **Tests par sens** (Shapiro, Student, Wilcoxon, Bonferroni) | Le *sens* du signal porte-t-il un edge ? | Régulation **« significative » → −0,47 %** (p≈0,02) : détectable au seuil brut, **rejeté après Bonferroni**. Le plus proche d'un signal. |
-| 3 | **Khi-deux** (+ V de Cramér) | Le sens est-il lié à l'issue (hausse/baisse) ? | **Indépendant** (V≈0,01, négligeable). Pas de lien exploitable sur les données actuelles. |
+| 2 | **Tests par sens** (Shapiro, Student, Wilcoxon, Bonferroni) | Le *sens* du signal porte-t-il un edge ? | **Achat du Congrès → +2,0 %** (le CAR le plus élevé ; Wilcoxon p≈0,016 mais n=19, rejeté après Bonferroni). Régulation « significative » **−0,47 %** (p≈0,02, rejeté aussi). |
+| 3 | **Khi-deux** (+ V de Cramér) | Le sens est-il lié à l'issue (hausse/baisse) ? | Congrès achat/vente : achats **14 hausses / 5 baisses**, V≈0,20 (**faible mais non négligeable**), à confirmer sur plus de données. Régulations : indépendant. |
 | 4 | **Régression de Poisson** (+ binomiale négative) | Les événements se concentrent-ils par secteur ? | **Oui** (Consumer Disc. ×1,6, Energy ×1,6, IT ×1,3). Mais **sur-dispersion (≈27)** : en binomiale négative, effets significatifs 5 → 2. |
 
 ### Détail méthodologique (pour l'oral)
@@ -62,6 +66,7 @@ supplémentaires (étapes 5 et 6) répondent.
 |---|---|---|---|
 | 5 | **Contagion simultanée** (CAR des cibles autour de J0) | Les actifs liés à A réagissent-ils ? | **OUI** : pairs corrélés CAR **+0,27 %** (p≈0,003), thèmes/matières **+0,26 %** (p≈0,0006). L'écosystème de A bouge. |
 | 6 | **Contagion décalée / lead-lag** (immédiat J0-J1 vs décalé J2-J5 + Granger) | A précède-t-il B ? | Effet surtout **synchrone** (immédiat significatif) ; décalé J2-J5 **non significatif**. Léger entraînement A→B le lendemain sur les **pairs corrélés** (pente Granger +0,03, p≈0,05). |
+| 7 | **Cartographie fine** (CAR par couple A→B + carte de chaleur) | Quels couples A→B précis sont contagieux ? | Canaux nets : **UNH→HUM +2,8 %**, labos pharma s'entraînent (**JNJ/LLY/PFE→MRK +1,6 %**) ; défense en **substitution** (**BA→RTX −0,7 %**, LMT/BA→ETF défense ITA baisse). Carte : `etape7_heatmap.png`. |
 
 > **La contagion est réelle : un signal sur A déplace significativement les actifs liés à A
 > (pairs corrélés et matières premières).** Mais elle est **essentiellement synchrone** (le

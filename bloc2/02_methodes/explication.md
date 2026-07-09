@@ -59,6 +59,14 @@ entraînement A→B le lendemain sur les pairs corrélés** (pente +0,033, p=0,0
 rebond (pente négative) sur les thèmes. → La contagion est réelle mais **essentiellement
 synchrone** ; l'entraînement décalé exploitable est marginal.
 
+## `etape7_carte_contagion.py` — cartographie fine (quels couples A→B ?)
+**Méthode** : pour chaque couple (titre-source A, cible B), CAR moyen de B autour des dates
+de signal de A + test de Student ; classement des couples les plus contagieux + **carte de
+chaleur** (`etape7_heatmap.png`).
+**Résultat** : canaux nets et interprétables — **UNH→HUM +2,8 %** (assureurs santé),
+**JNJ/LLY/PFE→MRK +1,6 %** (labos pharma), et un effet de **substitution dans la défense**
+(**BA→RTX −0,7 %**, LMT/BA → ETF défense ITA en baisse). 8 couples significatifs sur 44.
+
 ## Verdict commun (voir `../SYNTHESE.md`)
 Sur les données **actuellement branchées** (contrats + régulations, sources gratuites), les
 signaux d'information publics **ne dégagent pas d'edge significatif** après correction : le

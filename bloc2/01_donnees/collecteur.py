@@ -169,51 +169,85 @@ def collecte_regulations(par_theme: int = 100) -> pd.DataFrame:
 
 
 # ======================================================================================
-# SOURCE 1 — TRADES DU CONGRES  (FMP, cle requise -> via env FMP_API_KEY ou n8n)
+# SOURCE 1 — TRADES DU CONGRES  (FMP ; cle detenue par n8n)
 # ======================================================================================
+# La cle FMP vit dans les credentials n8n et n'est PAS lisible via l'API (securite).
+# Deux voies :
+#   (A) via un WEBHOOK n8n qui appelle le sous-workflow 'Get Congress Trades' (qui a la
+#       cle en interne) et renvoie le JSON brut. C'est la voie utilisee ici (reproductible
+#       sans exposer la cle). Renseigne l'URL du webhook ci-dessous.
+#   (B) en direct si tu exportes FMP_API_KEY dans l'environnement.
+# NB : l'endpoint FMP 'senate-latest/house-latest' ne renvoie que les trades RECENTS
+# (25/appel, pas d'historique profond) -> echantillon modeste, documente comme limite.
+CONGRES_WEBHOOK = os.environ.get("CONGRES_WEBHOOK_URL", "").strip()
+
+
 def collecte_congres(pages: int = 10) -> pd.DataFrame:
-    """Transactions declarees par les membres du Congres (STOCK Act), via FMP.
+    """Transactions declarees par les membres du Congres (STOCK Act).
 
-    Necessite FMP_API_KEY (la meme cle que celle stockee dans n8n). Sans cle, la
-    fonction s'arrete proprement et renvoie un DataFrame vide (les sources gratuites
-    permettent deja de faire tourner toute la chaine d'analyse).
-
-    Champs FMP (endpoints senate-latest / house-latest) : symbol, transactionDate,
-    type (achat/vente), amount, firstName, lastName, disclosureDate...
+    Voie A (webhook n8n) si CONGRES_WEBHOOK_URL est defini ; sinon voie B (FMP direct)
+    si FMP_API_KEY ; sinon source ignoree (les sources gratuites suffisent a la chaine).
     """
-    if not FMP_API_KEY:
-        _log("[congres] FMP_API_KEY absente -> source ignoree "
-             "(exporte la cle ou declenche le workflow n8n 'Get Congress Trades').")
+    rows: list[dict] = []
+
+    if CONGRES_WEBHOOK:
+        for page in range(pages):
+            try:
+                r = requests.post(CONGRES_WEBHOOK,
+                                  json={"chamber": "both", "page": page}, timeout=120)
+                d = r.json()
+                if isinstance(d, list):
+                    d = d[0] if d else {}
+                trades = d.get("trades", [])
+            except Exception:  # noqa: BLE001
+                break
+            if not trades:
+                break
+            for t in trades:
+                rows.append({
+                    "chamber": t.get("chamber"),
+                    "politician": t.get("politician"),
+                    "ticker": t.get("ticker"),
+                    "transaction": t.get("transaction"),
+                    "amount": t.get("amount"),
+                    "date": t.get("trade_date"),
+                    "disclosure_date": t.get("disclosure_date"),
+                })
+            _log(f"  [congres] page {page} : {len(trades)} trades")
+            time.sleep(0.5)
+
+    elif FMP_API_KEY:
+        for chambre, ep in (("Senate", "senate-latest"), ("House", "house-latest")):
+            for page in range(pages):
+                url = f"https://financialmodelingprep.com/stable/{ep}"
+                params = {"page": page, "limit": 100, "apikey": FMP_API_KEY}
+                r = requests.get(url, params=params, timeout=60)
+                if r.status_code != 200:
+                    break
+                res = r.json()
+                if not res:
+                    break
+                for t in res:
+                    rows.append({
+                        "chamber": chambre,
+                        "politician": f"{t.get('firstName','')} {t.get('lastName','')}".strip(),
+                        "ticker": t.get("symbol"),
+                        "transaction": t.get("type"),
+                        "amount": t.get("amount"),
+                        "date": t.get("transactionDate"),
+                        "disclosure_date": t.get("disclosureDate"),
+                    })
+                time.sleep(0.3)
+    else:
+        _log("[congres] ni CONGRES_WEBHOOK_URL ni FMP_API_KEY -> source ignoree.")
         return pd.DataFrame()
 
-    rows: list[dict] = []
-    for chambre, ep in (("Senate", "senate-latest"), ("House", "house-latest")):
-        for page in range(pages):
-            url = f"https://financialmodelingprep.com/stable/{ep}"
-            params = {"page": page, "limit": 100, "apikey": FMP_API_KEY}
-            r = requests.get(url, params=params, timeout=60)
-            if r.status_code != 200:
-                _log(f"  [congres] {chambre} p{page} HTTP {r.status_code} -> stop")
-                break
-            res = r.json()
-            if not res:
-                break
-            for t in res:
-                rows.append({
-                    "chamber": chambre,
-                    "politician": f"{t.get('firstName','')} {t.get('lastName','')}".strip(),
-                    "ticker": t.get("symbol"),
-                    "transaction": t.get("type"),
-                    "amount": t.get("amount"),
-                    "date": t.get("transactionDate"),
-                    "disclosure_date": t.get("disclosureDate"),
-                })
-            _log(f"  [congres] {chambre} page {page} : {len(res)} trades")
-            time.sleep(0.3)
     df = pd.DataFrame(rows)
-    out = ICI / "brut_congres.csv"
-    df.to_csv(out, index=False, encoding="utf-8")
-    _log(f"[congres] {len(df)} trades -> {out}")
+    if len(df):
+        df = df[df["ticker"].notna() & (df["ticker"] != "N/A")]
+        out = ICI / "brut_congres.csv"
+        df.to_csv(out, index=False, encoding="utf-8")
+        _log(f"[congres] {len(df)} trades -> {out}")
     return df
 
 

@@ -117,13 +117,46 @@ binomiale négative (AIC $506$ vs $1796$), le nombre d'effets significatifs
 tombe de \textbf{5 à 2}. « Significatif » n'est pas « robuste ».
 
 % =====================================================================
+\section{Contagion --- un signal sur A déplace-t-il d'autres actifs B ?}
+\label{sec:b2-contagion}
+On ne cherche plus l'effet du signal sur \emph{son} titre, mais sur les actifs
+\textbf{liés} à A~: ses \emph{pairs corrélés} (les plus corrélés en rendement,
+data-driven) et ses \emph{thèmes / matières premières} (proxies ETF déclarés~:
+Tesla~$\to$~lithium, défense~$\to$~ETF ITA\ldots).
+
+\subsection{Impact simultané (étape 5)}
+% bloc2/03_resultats/etape5_contagion.txt
+Autour du signal sur A, le CAR moyen des cibles est significativement positif~:
+pairs corrélés $+0{,}27\%$ ($p\approx0{,}003$), thèmes/matières $+0{,}26\%$
+($p\approx6\times10^{-4}$). \textbf{L'écosystème de A réagit.}
+
+\subsection{Impact décalé / lead-lag (étape 6)}
+% bloc2/03_resultats/etape6_leadlag.txt
+On sépare la réaction \emph{immédiate} ($J0$--$J1$) de la \emph{décalée}
+($J2$--$J5$), et on teste (esprit Granger) si $AR_A(J0)$ prédit $AR_B(J{+}1)$.
+L'effet est surtout \textbf{synchrone} (immédiat significatif)~; le décalé n'est
+pas significatif. Léger entraînement $A\to B$ le lendemain sur les pairs
+corrélés (pente $+0{,}03$, $p\approx0{,}05$).
+
+\subsection{Cartographie fine (étape 7)}
+% bloc2/03_resultats/etape7_carte_contagion.txt + etape7_heatmap.png
+Au niveau du couple $A\to B$, des canaux nets apparaissent~: \texttt{UNH}$\to$
+\texttt{HUM} ($+2{,}8\%$), entraînement mutuel des laboratoires pharmaceutiques
+(\texttt{JNJ/LLY/PFE}$\to$\texttt{MRK}, $+1{,}6\%$), et un effet de
+\emph{substitution} dans la défense (\texttt{BA}$\to$\texttt{RTX}, $-0{,}7\%$~;
+\texttt{LMT/BA}$\to$ETF défense en baisse). \emph{[Insérer
+\texttt{etape7\_heatmap.png}.]}
+
+% =====================================================================
 \section{Synthèse du Bloc 2}
-Sur les signaux publics gratuits testés (contrats, régulations), aucun ne
-dégage d'edge significatif après correction~: le marché a anticipé
-l'information. Seule une régulation \emph{significative} montre un frémissement
-baissier. Les événements ne sont pas aléatoires~: ils se concentrent sur
-quelques secteurs. Les signaux \emph{à sens et à délai court} (Congrès,
-résultats), prêts à être mesurés, sont les plus prometteurs pour la suite.
+\textbf{Impact direct}~: sur les signaux publics testés (contrats, régulations),
+aucun ne dégage d'edge significatif sur son propre titre après correction~: le
+marché a anticipé l'information. L'\emph{achat du Congrès} montre le CAR le plus
+élevé ($+2{,}0\%$) mais sur un échantillon trop faible ($n=19$) pour conclure.
+\textbf{Contagion}~: un signal sur A \emph{déplace} significativement les actifs
+liés (pairs, matières premières), surtout de façon synchrone~; la cartographie
+fine révèle des canaux interprétables (santé qui s'entraîne, défense en
+substitution). Les événements se concentrent par secteur.
 ```
 
 ---

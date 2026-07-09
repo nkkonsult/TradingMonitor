@@ -3,6 +3,13 @@ ETAPE 3 (Bloc 2) - LE SENS DU SIGNAL EST-IL LIE A L'ISSUE ? (khi-deux + V de Cra
 Issue = signe du CAR (hausse si CAR>0, baisse sinon). H0 : sens et issue independants.
 ================================================================================
 
+[congres]  n=23
+issue  baisse  hausse
+sens                 
+achat       5      14
+vente       2       2
+  chi2=0.88  dof=1  p=0.349  V_Cramer=0.195 (faible)  -> independant
+
 [contrat] un seul sens ('attribution') -> pas de croisement possible (n=174).
 
 [regulation]  n=2030

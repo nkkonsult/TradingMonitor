@@ -1,4 +1,47 @@
 signal,ticker,date,sens,secteur,intensite
+congres,MBB,2026-05-13,vente,,1.0
+congres,ALB,2026-05-15,achat,Materials,1.0
+congres,ACN,2026-05-15,vente,Information Technology,1.0
+congres,GS,2026-05-27,achat,Financials,1.0
+congres,GOOGL,2026-05-27,vente,Communication Services,1.0
+congres,SCHP,2026-05-27,achat,,1.0
+congres,MBB,2026-05-27,achat,,1.0
+congres,IVV,2026-05-27,vente,,1.0
+congres,WFC,2026-06-01,achat,Financials,1.0
+congres,JPM,2026-06-01,achat,Financials,1.0
+congres,UBS,2026-06-02,achat,,1.0
+congres,GS,2026-06-02,achat,Financials,1.0
+congres,CTAS,2026-06-02,achat,Industrials,1.0
+congres,USB,2026-06-02,achat,Financials,1.0
+congres,AJG,2026-06-02,achat,Financials,1.0
+congres,TMUS,2026-06-02,achat,Communication Services,1.0
+congres,KMB,2026-06-02,achat,Consumer Staples,1.0
+congres,AMGN,2026-06-02,achat,Health Care,1.0
+congres,C,2026-06-02,achat,Financials,1.0
+congres,ABT,2026-06-02,achat,Health Care,1.0
+congres,URI,2026-06-02,achat,Industrials,1.0
+congres,CVS,2026-06-02,achat,Health Care,1.0
+congres,SHW,2026-06-02,achat,Materials,1.0
+congres,ROK,2026-06-05,vente,Industrials,1.0
+congres,ODFL,2026-06-05,achat,Industrials,1.0
+congres,AVGO,2026-06-05,achat,Information Technology,1.0
+congres,WMT,2026-06-05,achat,Consumer Staples,1.0
+congres,KO,2026-06-05,vente,Consumer Staples,1.0
+congres,AMZN,2026-06-05,achat,Consumer Discretionary,1.0
+congres,ENTG,2026-06-08,achat,,1.0
+congres,WAB,2026-06-10,vente,Industrials,1.0
+congres,MIDD,2026-06-12,vente,,1.0
+congres,UBER,2026-06-15,achat,Industrials,1.0
+congres,MIDD,2026-06-15,vente,,1.0
+congres,C,2026-06-16,vente,Financials,1.0
+congres,AAPL,2026-06-24,vente,Information Technology,1.0
+congres,BMO,2026-06-24,achat,,1.0
+congres,COHR,2026-06-25,achat,Information Technology,1.0
+congres,MU,2026-06-25,achat,Information Technology,1.0
+congres,CCI,2026-06-25,vente,Real Estate,1.0
+congres,T,2026-06-29,achat,Communication Services,1.0
+congres,NVDA,2026-06-30,vente,Information Technology,1.0
+congres,GEHC,2026-06-30,achat,Health Care,1.0
 contrat,HII,2010-06-30,attribution,Industrials,2704759379.0
 contrat,LMT,2010-07-06,attribution,Industrials,4993929468.3
 contrat,BA,2010-08-19,attribution,Industrials,3127786036.39

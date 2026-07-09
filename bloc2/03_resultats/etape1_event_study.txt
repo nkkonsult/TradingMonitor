@@ -1,9 +1,10 @@
 ========================================================================================
 ETAPE 1 (Bloc 2) - ETUDE D'EVENEMENT : rendement anormal cumule (CAR) par signal
-Fenetre estimation J-250..J-11 | Fenetre evenement J-1..J5 | Bonferroni=0.0250
+Fenetre estimation J-250..J-11 | Fenetre evenement J-1..J5 | Bonferroni=0.0167
 ========================================================================================
 signal             n    CAR_moy    CAR_med   p_student    p_wilcox  verdict
 ----------------------------------------------------------------------------------------
+congres           23     0.0175     0.0248        0.23       0.035      non
 contrat          174     0.0027     0.0021        0.35        0.25      non
 regulation      2030    -0.0015    -0.0018         0.2       0.061      non
 ----------------------------------------------------------------------------------------

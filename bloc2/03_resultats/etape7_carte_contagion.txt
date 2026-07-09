@@ -1,0 +1,26 @@
+============================================================================================
+ETAPE 7 (Bloc 2) - CARTOGRAPHIE FINE DE LA CONTAGION : couples A -> B
+CAR moyen de la cible B autour des dates de signal sur A (n>=10).
+============================================================================================
+
+TOP couples A -> B contagieux et significatifs (p<0.05), tries par |CAR| :
+source cible  type       CAR_moy      n         p
+------------------------------------------------------------
+UNH    HUM    pair       +2.817%     63     0.039   B monte
+LLY    MRK    pair       +1.624%     62     0.015   B monte
+JNJ    MRK    pair       +1.624%     62     0.015   B monte
+PFE    MRK    pair       +1.440%     66     0.023   B monte
+BA     RTX    pair       -0.738%     92     0.032   B baisse
+BA     ITA    theme      -0.699%     92    0.0055   B baisse
+LMT    ITA    theme      -0.526%    129    0.0082   B baisse
+
+Total couples testes : 45 | significatifs : 7
+
+-> carte de chaleur : D:\Trading Agent\TradingMonitor-bloc2\bloc2\03_resultats\etape7_heatmap.png
+
+--------------------------------------------------------------------------------------------
+Lecture : une case rouge = quand A recoit un signal, la cible B monte en moyenne ;
+          bleue = elle baisse. Les couples du classement sont les canaux de
+          contagion les plus nets (ex. entre valeurs de defense, ou vers un ETF
+          sectoriel). |CAR| donne l'ampleur, p la fiabilite. A confirmer decale
+          (etape 6) avant d'en faire un signal exploitable.

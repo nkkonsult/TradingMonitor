@@ -1,9 +1,10 @@
 ============================================================================================
 ETAPE 2 (Bloc 2) - LE SIGNAL BAT-IL LE HASARD SELON SON SENS ? (H0: CAR moyen = 0)
-Evenements exploitables : 2204 | couples (signal,sens) testes : 3 | Bonferroni=0.0167
+Evenements exploitables : 2227 | couples (signal,sens) testes : 4 | Bonferroni=0.0125
 ============================================================================================
 signal       sens               n    CAR_moy   p_shapiro   p_student    p_wilcox verdict
 --------------------------------------------------------------------------------------------
+congres      achat             19     0.0203     0.00018         0.2       0.016     non
 contrat      attribution      174     0.0027     1.3e-10        0.35        0.25     non
 regulation   significant      640    -0.0047     6.1e-11        0.02       0.033     non
 regulation   standard        1390    -0.0001     3.4e-17        0.97        0.41     non

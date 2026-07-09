@@ -7,24 +7,24 @@ Fenetre d'impact J-1..J5 | 12 titres-source | k=3 pairs correles
 source pairs correles (corr)        themes lies               n_sig                     
 ------------------------------------------------------------------------------------------
 LMT    NOC(0.74), GD(0.66), LHX(0.6 ITA, XLI                    142
-BA     RTX(0.60), TXT(0.58), HON(0. ITA, XLI                    104
-PFE    JNJ(0.52), MRK(0.51), LLY(0. XLV                          88
-MRK    JNJ(0.53), PFE(0.51), LLY(0. XLV                          87
-UNH    HUM(0.66), HON(0.40), GD(0.3 XLV                          85
-JNJ    MRK(0.53), PFE(0.52), HON(0. XLV                          84
-LLY    MRK(0.45), JNJ(0.43), PFE(0. XLV                          84
-NVDA   AMD(0.56), MSFT(0.55), AVGO( SOXX, XLK                    84
-MSFT   GOOGL(0.60), AAPL(0.57), AMZ XLK                          84
-AAPL   MSFT(0.57), GOOGL(0.53), AMZ SOXX, XLK                    84
-AMD    NVDA(0.56), AVGO(0.42), MSFT SOXX, XLK                    84
-AVGO   NVDA(0.55), MSFT(0.48), AAPL SOXX, XLK                    84
+BA     IVV(0.62), RTX(0.60), TXT(0. ITA, XLI                    104
+PFE    JNJ(0.52), MRK(0.51), IVV(0. XLV                          88
+MRK    JNJ(0.53), PFE(0.51), AMGN(0 XLV                          87
+UNH    HUM(0.66), IVV(0.50), CVS(0. XLV                          85
+LLY    MRK(0.45), JNJ(0.43), IVV(0. XLV                          84
+JNJ    ABT(0.53), MRK(0.53), PFE(0. XLV                          84
+NVDA   IVV(0.63), AMD(0.56), MSFT(0 SOXX, XLK                    85
+AAPL   IVV(0.68), MSFT(0.57), GOOGL SOXX, XLK                    84
+AVGO   IVV(0.62), NVDA(0.55), ENTG( SOXX, XLK                    84
+MSFT   IVV(0.73), GOOGL(0.60), AAPL XLK                          84
+AMD    NVDA(0.56), IVV(0.52), ENTG( SOXX, XLK                    84
 
 ==========================================================================================
 TEST D'ENSEMBLE - le CAR moyen des cibles est-il != 0 autour du signal sur A ?
 Bonferroni (2 types de cible) : 0.0250
 ------------------------------------------------------------------------------------------
 type de cible                 n     CAR_moy   p_student    p_wilcox  verdict
-pairs correles             2832      0.0027      0.0035        0.12      OUI
+pairs correles             2832      0.0015       0.075        0.52      non
 themes/matieres 1res       1489      0.0026     0.00058      0.0044      OUI
 
 ------------------------------------------------------------------------------------------
