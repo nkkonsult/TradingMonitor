@@ -13,6 +13,10 @@
 \usepackage[a4paper,margin=2.5cm]{geometry}
 \usepackage{setspace}
 \onehalfspacing
+
+% Les subsubsections servent de titres NON numérotés (via \subsubsection*)
+% pour nommer chaque méthode sans alourdir avec des 3.1.1, 3.1.2...
+% On garde donc la numérotation standard jusqu'aux subsections.
 \usepackage{parskip}
 \usepackage{microtype}
 
@@ -79,6 +83,8 @@
 
 % --- En-têtes --------------------------------------------------------
 \usepackage{fancyhdr}
+\setlength{\headheight}{13.6pt}      % évite le warning "headheight too small"
+\addtolength{\topmargin}{-1.6pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\leftmark}

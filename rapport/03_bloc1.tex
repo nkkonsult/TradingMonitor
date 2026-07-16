@@ -1,4 +1,4 @@
-% ---------------------------------------------------------------------
+ % ---------------------------------------------------------------------
 %  Chapitre 3 — BLOC 1 (chapitre développé)
 %  Suit les 5 points des consignes pour CHAQUE méthode :
 %   théorie -> conditions d'application -> résultats -> limites
@@ -15,33 +15,207 @@ analyses factorielles.
 \section{Étape 1 --- chaque stratégie bat-elle le hasard ?}
 \label{sec:b1-etape1}
 
-On teste, stratégie par stratégie, l'hypothèse
-\(\Hzero : \mu_{\edgevar} = 0\) contre \(\Hun : \mu_{\edgevar} > 0\).
+\subsection{La question posée à l'outil}
+% [À RÉDIGER — schéma « on se demande… »]
+% Idées à développer avec TES mots :
+%  - Première brique du protocole de validation : une stratégie qui
+%    affiche un edge moyen positif le doit-elle à un vrai avantage, ou
+%    à la variabilité d'échantillonnage ?
+%  - Formaliser : comparer la moyenne de l'edge à la valeur 0.
+%    H0 : mu_edge = 0 (pas mieux que le hasard) ; H1 : mu_edge > 0.
+%  - Pourquoi unilatéral (> 0) : on ne s'intéresse qu'à un avantage,
+%    pas à un désavantage.
+Pour évaluer une stratégie, on commence par la comparer au hasard. À
+chaque trade réalisé par la stratégie, on associe 200~trades fictifs de
+même exposition (même titre, même durée, même sens), mais dont la date
+d'entrée est tirée au sort~; la moyenne de leurs rendements définit le
+\emph{gain du hasard} pour ce trade.
 
-\subsection{Présentation théorique}
-% [À DÉVELOPPER]
-\paragraph{Test de normalité de Shapiro--Wilk.}
-La statistique \(W = b^2 / \mathrm{SCE}\) compare une estimation de la
-variance fondée sur les statistiques d'ordre à l'estimation classique~;
-\(W\) proche de 1 indique la normalité~\cite{shapiro1965}. % détailler b et SCE
+On définit alors, pour chaque trade, son \edgevar{} comme le rendement
+effectivement obtenu par la stratégie (éventuellement négatif) diminué de
+ce gain du hasard~:
+\[
+  \edgevar = \text{gain de la stratégie} - \text{gain du hasard}.
+\]
+Un \edgevar{} positif signifie que la stratégie a fait mieux qu'une entrée
+au hasard de même exposition~: son \emph{timing} apporte une information
+que la seule dérive du marché n'explique pas.
 
-\paragraph{Test \(t\) de Student à un échantillon.}
+La première question posée à l'outil est donc~: l'avantage moyen affiché
+par une stratégie est-il réel, ou n'est-il qu'un accident
+d'échantillonnage~? On la formalise en confrontant la moyenne de
+l'\edgevar{} à la valeur zéro, ce qui conduit au test de Student présenté
+ci-dessous.
+
+\subsection{Les méthodes qui y répondent}
+
+% --- MÉTHODE 1 : le test principal -----------------------------------
+\subsubsection*{Test de Student}
+
+Lorsque l'on obtient un edge moyen positif, on cherche à savoir si la
+stratégie constitue réellement une prédiction, ou si cela est dû à l'aléa
+de l'échantillon.
+
+Il faut ici distinguer deux quantités~: l'edge moyen
+\emph{théorique} \(\mu_{\edgevar}\), c'est-à-dire la vraie valeur (inconnue)
+gouvernant la stratégie, et sa moyenne
+\emph{observée} \(\bar e\), calculée sur notre échantillon de trades
+(connue). On se pose la question suivante~: à partir de la valeur observée
+\(\bar e\), peut-on conclure que la vraie valeur \(\mu_{\edgevar}\) est
+positive~?
+
+Le test de Student à un échantillon répond à cette question en confrontant
+\(\mu_{\edgevar}\) à une valeur de référence fixée à zéro (zéro~$=$ aucun
+avantage sur le hasard). Sa mise en \oe uvre suppose toutefois que l'edge
+vérifie un critère de normalité~; cette condition, d'abord énoncée sur
+l'edge lui-même, sera ensuite assouplie grâce au théorème central limite,
+comme on le verra à la suite de ce test. On oppose ainsi deux
+hypothèses~:
+\[
+  \begin{cases}
+    \Hzero : \mu_{\edgevar} = 0 & \text{(le vrai edge est nul : pas mieux que le hasard),}\\[2pt]
+    \Hun : \mu_{\edgevar} > 0 & \text{(le vrai edge est positif : avantage réel).}
+  \end{cases}
+\]
+Le test est \emph{unilatéral}~: seul un avantage strictement positif nous
+intéresse.
+
+Pour trancher, on définit \(t\) comme étant le nombre d'erreurs-types
+nécessaires pour faire basculer l'edge moyen de zéro vers celui obtenu
+dans notre échantillon~:
 \[
   t = \frac{\bar e}{s/\sqrt{n}} \sim t_{n-1} \quad\text{sous } \Hzero .
 \]
-Justifier le recours au \textbf{théorème central limite} lorsque la
-normalité est rejetée mais \(n\) grand~\cite{student1908}.
 
-\paragraph{Correction de Bonferroni.}
-Dix stratégies testées \(\Rightarrow\) seuil individuel
-\(\alpha' = 0{,}05/10 = 0{,}005\), afin de contrôler le risque global
-de première espèce (inégalité de Boole).
+Sous \Hzero{} (edge nul), \(t\) suit une loi de Student à \(n-1\) degrés
+de liberté. On évalue alors la p-value, c'est-à-dire la probabilité
+d'obtenir un \(t\) au moins aussi grand que celui observé si \Hzero{}
+était vraie.
+
+Si la p-value est très faible, le hasard n'est plus une
+explication crédible de l'edge moyen positif observé.
+
+On tranche alors sur le fait que l'edge moyen théorique est positif, et que la
+stratégie permet donc de faire mieux que le hasard.
+
+
+On a dit précédemment que le test de Student nécessitait que l'edge suive
+une loi normale. On cherche à vérifier cette condition, dans un premier
+temps avec le test de Shapiro--Wilk, puis dans un second temps à l'aide du
+théorème central limite (TCL). En effet, le test de Shapiro--Wilk a peu de
+chances de valider cette hypothèse~: la taille conséquente de l'échantillon
+déstabilise ce test, alors qu'elle renforce au contraire le TCL.
+
+% --- MÉTHODE 2 : la condition du test principal ----------------------
+\subsubsection*{Test de normalité de Shapiro--Wilk} % [À RÉDIGER]
+% Idées à mettre dans TES mots :
+%  - Enchaînement : le Student suppose (en toute rigueur) des données
+%    normales ; avant de l'appliquer, l'outil doit donc TESTER cette
+%    hypothèse.
+%  - Shapiro compare une estimation de la variance fondée sur les
+%    statistiques d'ordre à l'estimation classique ; W proche de 1 =
+%    échantillon compatible avec une loi normale.
+Le test de Shapiro--Wilk est un test de normalité qui consiste à comparer
+deux mesures de dispersion~: d'une part les écarts à la moyenne, d'autre
+part l'ordre des valeurs. Ces deux mesures ne coïncident que si
+l'hypothèse de normalité est vraie. On oppose ainsi deux hypothèses~:
+\[
+  \begin{cases}
+    \Hzero \;(W \simeq 1) : \text{l'edge suit une loi normale,}\\[2pt]
+    \Hun \;(W \ll 1) : \text{l'edge ne suit pas une loi normale.}
+  \end{cases}
+\]
+On notera que, contrairement au test de Student, c'est ici \Hzero{} qui
+correspond à la propriété recherchée (la normalité)~: une p-value faible
+conduira donc à \emph{rejeter} la normalité.
+
+On pose alors la statistique \(W = b^2 / \mathrm{SCE}\) comme rapport de
+ces deux mesures. Lorsque \(W\) est proche de 1, l'échantillon est
+compatible avec une loi normale.
+
+Pour trancher sur la normalité, on procède de façon similaire au test de
+Student~: on calcule la p-value d'obtenir notre \(W\) observé si la loi
+était normale~; si cette probabilité est trop faible, alors on rejette
+l'hypothèse de normalité.
+
+% Constat sur nos données (détail W + p-value en annexe)
+Appliqué à nos données, le test rejette la normalité pour les dix
+stratégies (statistique \(W\) et p-values détaillées en
+annexe~\ref{tab:ann-shapiro}). La condition du test de Student n'est donc,
+en apparence, pas remplie.
+
+% --- LE TCL : ce qui débloque le test de Student ---------------------
+\subsubsection*{Théorème central limite} % [À RÉDIGER]
+% Idées à mettre dans TES mots :
+%  - Le rejet de Shapiro porte sur l'edge INDIVIDUEL (non normal :
+%    queues épaisses des rendements financiers).
+%  - MAIS le test de Student ne dépend que de la MOYENNE (edge-bar),
+%    pas des edges individuels.
+%  - Le TCL garantit que la moyenne d'un grand échantillon est
+%    quasi-normale QUELLE QUE SOIT la loi de départ.
+%  - Donc : Student reste valide malgré le rejet de Shapiro, parce que
+%    c'est la normalité de la MOYENNE qui compte, et elle est assurée
+%    par le grand n (973 à 8469 trades).
+%  - Bien insister : le TCL ne dit PAS "les données sont normales",
+%    il dit "la moyenne des données est normale".
+Le rejet de Shapiro--Wilk porte sur la non-normalité de l'edge
+individuel. Mais comme le test de Student ne dépend que de la
+moyenne de l'edge, on peut se rabattre sur le théorème central
+limite, qui garantit la quasi-normalité de la moyenne sur les grands
+échantillons, quelle que soit la loi de départ~:
+\[
+  \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
+  \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
+\]
+La condition réellement utile au test de Student est donc satisfaite,
+malgré le rejet de Shapiro--Wilk.
+
+On remarque de plus que cette quantité est exactement celle du test de
+Student~: sous \Hzero{} (\(\mu_{\edgevar} = 0\)), et en remplaçant l'écart-type
+théorique \(\sigma\) (inconnu) par son estimation \(s\), on retrouve la
+statistique \(t = \bar e / (s/\sqrt{n})\). Le théorème central limite
+justifie ainsi directement la forme et la validité du test de Student.
+
+% --- MÉTHODE 3 : le garde-fou des tests multiples --------------------
+\subsubsection*{Correction de Bonferroni} % [À RÉDIGER]
+% Idées à mettre dans TES mots :
+%  - Enchaînement : comme l'outil teste plusieurs stratégies d'un coup,
+%    il faut se protéger des faux positifs.
+%  - Tester 10 stratégies au seuil 5 %, c'est multiplier les occasions
+%    d'un faux positif (P(au moins un) ~ 40 %). Bonferroni durcit le
+%    seuil individuel pour contrôler le risque GLOBAL (inégalité de Boole).
+Pour appliquer le test de Student, il faut fixer une valeur seuil pour la
+p-value. Lorsque l'on effectue un test isolé, on prend habituellement
+\(0{,}05\)~: on estime que s'il n'y avait que \(5\,\%\) de chances
+d'obtenir un tel résultat sous \Hzero{}, il est peu vraisemblable d'être
+tombé dessus par hasard, et l'on accepte alors le risque de rejeter
+\Hzero{}.
+
+Seulement, ici, on effectue \(10\) tests. Plaçons-nous dans le cas le plus
+défavorable où aucune stratégie n'a d'avantage réel (\Hzero{} vraie pour
+les dix)~: pour un test isolé, la probabilité de ne pas conclure à tort à
+un avantage est alors \(0{,}95\). En supposant les tests indépendants, la
+probabilité de ne commettre aucune erreur sur les \(10\) tests tombe à
+\(0{,}95^{10} \approx 0{,}60\). Le risque de commettre \emph{au moins un}
+faux positif sur l'ensemble s'élève donc à
+\(1 - 0{,}95^{10} \approx 0{,}40\), ce qui est inacceptable.
+
+Pour éviter cela, on raisonne en sens inverse~: on fixe le risque
+\emph{global} à \(0{,}05\) et l'on en déduit le seuil de chaque test.
+On s'appuie sur l'\textbf{inégalité de Boole}, selon laquelle la
+probabilité qu'au moins un événement se produise est inférieure ou égale
+à la somme de leurs probabilités individuelles. Pour garantir un risque
+global inférieur à \(0{,}05\), il suffit donc que la somme des seuils
+individuels soit égale à \(0{,}05\). En les prenant tous égaux, on obtient
+la \textbf{correction de Bonferroni}~:
+\[
+  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{10} = 0{,}005 .
+\]
 
 \begin{conditions}
 Indépendance des trades~; normalité \emph{de la moyenne} assurée par le
-TCL ($n$ compris entre 973 et 8\,469 selon la stratégie). La normalité
-des observations individuelles est rejetée (Shapiro, $p<10^{-15}$
-partout)~: ce point est discuté ci-dessous.
+théorème central limite ($n$ compris entre 973 et 8\,469 selon la
+stratégie).
 \end{conditions}
 
 \subsection{Résultats}
@@ -69,10 +243,11 @@ Seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
 correction de Bonferroni.
 
 \begin{limites}
-Shapiro rejette la normalité partout, ce qui est attendu pour des
-rendements financiers (queues épaisses) et sur de grands échantillons~;
-la validité du Student repose alors sur le TCL, non sur la normalité des
-données brutes. % point à défendre à l'oral
+À très grand $n$, un test de Student devient sensible au moindre écart~:
+une p-value très faible signale un edge \emph{statistiquement} non nul,
+sans garantir qu'il soit \emph{économiquement} exploitable (frais,
+exécution). L'ampleur de l'edge, et non sa seule significativité, devra
+donc être prise en compte.
 \end{limites}
 
 % =====================================================================
