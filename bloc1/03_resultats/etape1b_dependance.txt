@@ -1,0 +1,24 @@
+==============================================================================================================
+ETAPE 1b - DIAGNOSTIC DE DEPENDANCE + TEST DE STUDENT CORRIGE (grappe = ticker)
+Entree: trades.csv (38035 trades)   Seuil Bonferroni: 0.0050   Bootstrap: 4000 tirages
+==============================================================================================================
+strategie           n     k  m_bar    rho   DEFF   n_eff |    t_naif    t_corr |    p_naif    p_corr    p_boot verdict
+--------------------------------------------------------------------------------------------------------------
+db_bottom        8469   501   16.9  0.000   1.00    8469 |     -2.27     -2.27 |      0.99      0.99      0.99     non
+dt_top           7331   500   14.7  0.000   1.00    7331 |     -4.71     -4.71 |         1         1         1     non
+hs_classic       1052   429    2.5  0.077   1.11     946 |     -1.20     -1.13 |      0.88      0.87      0.88     non
+hs_inverse       1204   445    2.7  0.001   1.00    1203 |     -1.34     -1.33 |      0.91      0.91      0.91     non
+ma_crossover     5411   499   10.8  0.007   1.07    5062 |     -4.42     -4.27 |         1         1         1     non
+rsi_classic      7083   502   14.1  0.000   1.00    7083 |      5.78      5.78 |   3.9e-09   3.9e-09         0     OUI
+rsi_strict        973   456    2.1  0.153   1.17     829 |      6.09      5.62 |     8e-10   1.3e-08         0     OUI
+rsi_trend        2777   496    5.6  0.008   1.04    2677 |      0.87      0.85 |      0.19       0.2      0.19     non
+sr_breakdown     1370   457    3.0  0.054   1.11    1236 |      0.05      0.05 |      0.48      0.48      0.46     non
+sr_breakout      2365   478    4.9  0.000   1.00    2361 |     -4.45     -4.44 |         1         1         1     non
+--------------------------------------------------------------------------------------------------------------
+Lecture : rho = correlation intra-titre des edges (0 = trades independants).
+          DEFF = effet de plan de Kish : la variance reelle de la moyenne est
+          DEFF fois celle calculee sous independance -> n_eff = n/DEFF.
+          p_corr = p-value Student avec erreur-type corrigee (df = n_eff - 1).
+          p_boot = bootstrap par grappes (tickers reechantillonnes entiers),
+          aucune hypothese d'independance entre trades d'un meme titre.
+          verdict OUI = p_corr ET p_boot < seuil Bonferroni (0.005).
