@@ -9,6 +9,8 @@
 | `sector` | texte (catégorie) | — | Secteur GICS (ex. `Health Care`) | Table de correspondance S&P 500 |
 | `strategy` | texte (catégorie) | — | La stratégie qui a produit le trade | 1 des 10 (voir liste ci-dessous) |
 | `params_version` | texte | — | Version des réglages (`v1`) | Trace de reproductibilité : quels seuils ont produit ce trade |
+| `entry_date` | date | `AAAA-MM-JJ` | **Date d'entrée** du trade | Jour d'ouverture de la position (⚠️ nécessite une base régénérée après 2026-07) |
+| `exit_date` | date | `AAAA-MM-JJ` | **Date de sortie** du trade | Jour de clôture de la position — sert à mesurer les chevauchements entre trades |
 | `regime_entry` | texte (catégorie) | `haussier`/`baissier` | État du marché le jour de l'entrée | S&P 500 au-dessus / en dessous de sa MM200 (causal) |
 | `direction` | entier | `+1`/`-1` | Sens du trade | `+1` = achat (long), `-1` = vente à découvert (short) |
 | `holding_days` | entier | jours | Durée de détention | nb de jours entre entrée et sortie |
