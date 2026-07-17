@@ -1,13 +1,14 @@
 ============================================================================================
 ETAPE 2 (Bloc 2) - LE SIGNAL BAT-IL LE HASARD SELON SON SENS ? (H0: CAR moyen = 0)
-Evenements exploitables : 2227 | couples (signal,sens) testes : 4 | Bonferroni=0.0125
+Evenements exploitables : 4074 | couples (signal,sens) testes : 5 | Bonferroni=0.0100
 ============================================================================================
 signal       sens               n    CAR_moy   p_shapiro   p_student    p_wilcox verdict
 --------------------------------------------------------------------------------------------
-congres      achat             19     0.0203     0.00018         0.2       0.016     non
+congres      achat             29    -0.0180       0.012        0.12        0.31     non
+congres      vente             12    -0.0168       0.027        0.47        0.52     non
 contrat      attribution      174     0.0027     1.3e-10        0.35        0.25     non
-regulation   significant      640    -0.0047     6.1e-11        0.02       0.033     non
-regulation   standard        1390    -0.0001     3.4e-17        0.97        0.41     non
+regulation   significant      842    -0.0049     1.9e-10      0.0048       0.012     OUI
+regulation   standard        3017    -0.0029     1.9e-18      0.0022     0.00013     OUI
 --------------------------------------------------------------------------------------------
 Lecture : verdict=OUI => pour ce (signal, sens), le CAR moyen est significativement
           != 0 APRES Bonferroni. CAR_moy>0 = le titre sur-performe apres le signal ;

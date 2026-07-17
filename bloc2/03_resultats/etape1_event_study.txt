@@ -4,9 +4,9 @@ Fenetre estimation J-250..J-11 | Fenetre evenement J-1..J5 | Bonferroni=0.0167
 ========================================================================================
 signal             n    CAR_moy    CAR_med   p_student    p_wilcox  verdict
 ----------------------------------------------------------------------------------------
-congres           23     0.0175     0.0248        0.23       0.035      non
+congres            0  (trop peu d'evenements exploitables)
 contrat          174     0.0027     0.0021        0.35        0.25      non
-regulation      2030    -0.0015    -0.0018         0.2       0.061      non
+regulation      2815    -0.0009    -0.0010        0.34        0.15      non
 ----------------------------------------------------------------------------------------
 Lecture : CAR_moy = rendement anormal moyen cumule sur la fenetre d'evenement.
           verdict=OUI => le signal deplace le cours de facon significative (!=0)

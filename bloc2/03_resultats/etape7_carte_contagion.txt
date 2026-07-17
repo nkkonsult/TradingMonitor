@@ -6,15 +6,25 @@ CAR moyen de la cible B autour des dates de signal sur A (n>=10).
 TOP couples A -> B contagieux et significatifs (p<0.05), tries par |CAR| :
 source cible  type       CAR_moy      n         p
 ------------------------------------------------------------
-UNH    HUM    pair       +2.817%     63     0.039   B monte
-LLY    MRK    pair       +1.624%     62     0.015   B monte
-JNJ    MRK    pair       +1.624%     62     0.015   B monte
-PFE    MRK    pair       +1.440%     66     0.023   B monte
-BA     RTX    pair       -0.738%     92     0.032   B baisse
-BA     ITA    theme      -0.699%     92    0.0055   B baisse
-LMT    ITA    theme      -0.526%    129    0.0082   B baisse
+UNH    HUM    pair       +3.154%     79    0.0058   B monte
+EOG    SLB    pair       -2.378%     59     0.011   B baisse
+CVX    SLB    pair       -2.378%     59     0.011   B baisse
+LLY    MRK    pair       +1.882%     78    0.0029   B monte
+JNJ    MRK    pair       +1.882%     78    0.0029   B monte
+COP    XOM    pair       -1.879%     59    0.0076   B baisse
+SLB    XOM    pair       -1.879%     59    0.0076   B baisse
+EOG    XOM    pair       -1.879%     59    0.0076   B baisse
+CVX    XOM    pair       -1.879%     59    0.0076   B baisse
+PFE    MRK    pair       +1.721%     82    0.0045   B monte
+XOM    CVX    pair       -1.529%     59     0.025   B baisse
+COP    CVX    pair       -1.529%     59     0.025   B baisse
+LLY    XLV    theme      +0.809%     79      0.01   B monte
+JNJ    XLV    theme      +0.809%     79      0.01   B monte
+MRK    XLV    theme      +0.806%     82    0.0081   B monte
+UNH    XLV    theme      +0.806%     80    0.0096   B monte
+PFE    XLV    theme      +0.774%     83    0.0099   B monte
 
-Total couples testes : 45 | significatifs : 7
+Total couples testes : 45 | significatifs : 17
 
 -> carte de chaleur : D:\Trading Agent\TradingMonitor-bloc2\bloc2\03_resultats\etape7_heatmap.png
 

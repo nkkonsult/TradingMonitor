@@ -126,9 +126,10 @@ Tesla~$\to$~lithium, défense~$\to$~ETF ITA\ldots).
 
 \subsection{Impact simultané (étape 5)}
 % bloc2/03_resultats/etape5_contagion.txt
-Autour du signal sur A, le CAR moyen des cibles est significativement positif~:
-pairs corrélés $+0{,}27\%$ ($p\approx0{,}003$), thèmes/matières $+0{,}26\%$
-($p\approx6\times10^{-4}$). \textbf{L'écosystème de A réagit.}
+Les tests d'ensemble sont \textbf{instables}~: leurs verdicts changent selon la
+définition de la base d'événements, car ils héritent de la pseudo-réplication
+(non corrigée à ce niveau, cf.~section~\ref{sec:b2-dependance}). Ils sont
+présentés à titre \emph{exploratoire}.
 
 \subsection{Impact décalé / lead-lag (étape 6)}
 % bloc2/03_resultats/etape6_leadlag.txt
@@ -140,23 +141,63 @@ corrélés (pente $+0{,}03$, $p\approx0{,}05$).
 
 \subsection{Cartographie fine (étape 7)}
 % bloc2/03_resultats/etape7_carte_contagion.txt + etape7_heatmap.png
-Au niveau du couple $A\to B$, des canaux nets apparaissent~: \texttt{UNH}$\to$
-\texttt{HUM} ($+2{,}8\%$), entraînement mutuel des laboratoires pharmaceutiques
-(\texttt{JNJ/LLY/PFE}$\to$\texttt{MRK}, $+1{,}6\%$), et un effet de
-\emph{substitution} dans la défense (\texttt{BA}$\to$\texttt{RTX}, $-0{,}7\%$~;
-\texttt{LMT/BA}$\to$ETF défense en baisse). \emph{[Insérer
+Au niveau du couple $A\to B$, quelques canaux \emph{récurrents} (robustes aux
+changements de base) apparaissent, à titre exploratoire~: \texttt{UNH}$\to$
+\texttt{HUM} ($+3{,}2\%$, $p\approx0{,}006$), entraînement des laboratoires
+(\texttt{LLY}$\to$\texttt{MRK}, $+1{,}9\%$), substitution dans l'énergie
+(\texttt{CVX/EOG}$\to$\texttt{SLB}, $-2{,}4\%$). \emph{[Insérer
 \texttt{etape7\_heatmap.png}.]}
 
 % =====================================================================
+\section{La dépendance entre événements --- les deux portes}
+\label{sec:b2-dependance}
+Comme pour les trades du Bloc~1, les événements ne sont pas indépendants~:
+(i)~une régulation est projetée sur un panier de $\sim$5 titres du secteur,
+créant 5 CAR mécaniquement corrélés comptés comme 5 observations
+(\emph{pseudo-réplication})~; (ii)~les événements arrivent en grappes dans le
+temps et partagent le choc de marché du mois (facteur commun $\approx73\,\%$,
+chapitre~\ref{chap:bloc3}). On applique la même discipline que le Bloc~1~:
+
+\begin{itemize}
+  \item \textbf{Porte A — un événement, un vote}~: le CAR d'une règle
+        $=$ moyenne des CAR de son panier (653~règles réelles au lieu de
+        2\,700 lignes)~;
+  \item \textbf{Porte B — un mois, un vote}~: moyenne des CAR (dédupliqués)
+        par mois d'événement, autocorrélation résiduelle contrôlée
+        (ACF$_1\le0{,}21$).
+\end{itemize}
+
+Par ailleurs, les transactions du Congrès sont datées à leur
+\textbf{divulgation} (STOCK Act) — la seule date observable par le marché~;
+datées au jour du trade de l'élu, elles mesureraient son talent, pas un signal.
+
+% Chiffres réels : bloc2/03_resultats/etape8_portes_dependance.txt
+\begin{table}[H]\centering
+\caption{Verdicts après fermeture des deux portes (Bonferroni $=0{,}0125$).}
+\begin{tabular}{@{}lrrrrrc@{}}\toprule
+Signal & $n_{\text{évts}}$ & $CAR_A$ & $p_A$ & $n_{\text{mois}}$ & $p_B$ & Verdict \\\midrule
+Contrat        & 174 & $+0{,}003$ & $0{,}35$ & 108 & $0{,}37$ & non \\
+Régulation     & 653 & $-0{,}003$ & $0{,}04$ & 26  & $0{,}31$ & non \\
+Congrès achat  & 29  & $-0{,}018$ & $0{,}12$ & 2   & ---      & $n<5$ \\
+Congrès vente  & 12  & $-0{,}017$ & $0{,}47$ & 2   & ---      & $n<5$ \\\bottomrule
+\end{tabular}\end{table}
+
+\textbf{Aucun signal ne franchit les deux portes.} Fait notable~: daté à la
+divulgation, l'« achat du Congrès » perd tout attrait ($-1{,}8\,\%$, ns) alors
+qu'il affichait $+2{,}0\,\%$ daté au trade de l'élu — l'écart entre le
+\emph{talent de l'initié} et le \emph{signal exploitable par le public}.
+
+% =====================================================================
 \section{Synthèse du Bloc 2}
-\textbf{Impact direct}~: sur les signaux publics testés (contrats, régulations),
-aucun ne dégage d'edge significatif sur son propre titre après correction~: le
-marché a anticipé l'information. L'\emph{achat du Congrès} montre le CAR le plus
-élevé ($+2{,}0\%$) mais sur un échantillon trop faible ($n=19$) pour conclure.
-\textbf{Contagion}~: un signal sur A \emph{déplace} significativement les actifs
-liés (pairs, matières premières), surtout de façon synchrone~; la cartographie
-fine révèle des canaux interprétables (santé qui s'entraîne, défense en
-substitution). Les événements se concentrent par secteur.
+\textbf{Impact direct}~: aucun signal d'information testé (contrats,
+régulations, Congrès à la divulgation) ne dégage d'edge significatif sur son
+propre titre une fois l'indépendance rétablie~: le marché a anticipé
+l'information (efficience semi-forte). \textbf{Contagion}~: un signal sur A
+déplace les actifs liés (pairs, matières premières), mais de façon
+essentiellement \emph{synchrone} — donc déjà intégrée, non exploitable en
+décalé. Les événements se concentrent par secteur. C'est le comportement
+attendu d'un \emph{outil de validation} qui fonctionne~: appliqué à de
+l'information publique, il conclut proprement qu'elle est déjà dans les prix.
 ```
 
 ---

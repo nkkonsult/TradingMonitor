@@ -2,34 +2,34 @@
 ETAPE 4 (Bloc 2) - REGRESSION DE POISSON : le nb d'evenements depend-il du secteur ?
 Unite = un ticker. Y = nombre d'evenements recus. Facteur = secteur GICS.
 ================================================================================
-Tickers : 71 | evenements totaux : 2912 | moyenne/ticker : 41.0
-Moyenne=41.01  Variance=1805.76  ratio(dispersion)=44.03
+Tickers : 71 | evenements totaux : 4501 | moyenne/ticker : 63.4
+Moyenne=63.39  Variance=4582.19  ratio(dispersion)=72.28
   (ratio >> 1 => sur-dispersion : la binomiale negative serait plus prudente.)
 --------------------------------------------------------------------------------
 
 Modele  log(E[n]) = beta0 + effets secteur   (GLM Poisson)
-Deviance=2781.6  AIC=3101.8  pseudo-R2=0.246
+Deviance=4160.7  AIC=4496.4  pseudo-R2=0.310
 
 terme                                            coef  exp(coef)         p
 --------------------------------------------------------------------------
-Intercept                                       3.761      43.00         0
-C(secteur)[T.Consumer Discretionary]            0.660       1.93  8.14e-17
-C(secteur)[T.Consumer Staples]                 -3.761       0.02  9.35e-11
-C(secteur)[T.Energy]                            0.646       1.91  4.54e-16
-C(secteur)[T.Financials]                       -0.160       0.85    0.0602
-C(secteur)[T.Health Care]                      -0.080       0.92     0.294
-C(secteur)[T.Industrials]                      -0.336       0.71  8.22e-06
-C(secteur)[T.Information Technology]            0.171       1.19    0.0283
-C(secteur)[T.Materials]                        -3.761       0.02  9.35e-11
-C(secteur)[T.Real Estate]                      -3.761       0.02  0.000174
+Intercept                                       4.429      83.83         0
+C(secteur)[T.Consumer Discretionary]            0.178       1.20   0.00472
+C(secteur)[T.Consumer Staples]                 -4.429       0.01  2.04e-14
+C(secteur)[T.Energy]                            0.742       2.10  3.54e-40
+C(secteur)[T.Financials]                       -0.280       0.76  8.77e-06
+C(secteur)[T.Health Care]                      -0.158       0.85   0.00442
+C(secteur)[T.Industrials]                      -0.822       0.44   5.6e-44
+C(secteur)[T.Information Technology]           -0.394       0.67  3.84e-10
+C(secteur)[T.Materials]                        -4.429       0.01  2.04e-14
+C(secteur)[T.Real Estate]                      -4.429       0.01  9.67e-06
 
 --------------------------------------------------------------------------------
 Lecture : exp(coef) = combien de fois PLUS (ou moins) d'evenements un secteur
           recoit par rapport au secteur de reference (a p<0.05). Un exp(coef)=2
           => deux fois plus d'evenements. Confirme que les signaux d'information
           se CONCENTRENT sur certains secteurs (defense pour les contrats, etc.).
-Reserve : forte sur-dispersion (ratio=44.0) -> p-values Poisson optimistes.
+Reserve : forte sur-dispersion (ratio=72.3) -> p-values Poisson optimistes.
           On refait donc le modele en BINOMIALE NEGATIVE (plus prudente) :
-          AIC binom.neg=649.8 (vs Poisson 3101.8) ; termes significatifs :
-          Poisson=8  ->  binom.neg=4 (certains effets disparaissent une
+          AIC binom.neg=699.3 (vs Poisson 4496.4) ; termes significatifs :
+          Poisson=10  ->  binom.neg=4 (certains effets disparaissent une
           fois la sur-dispersion prise en compte : conclusion plus robuste).

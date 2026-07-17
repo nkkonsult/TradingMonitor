@@ -43,6 +43,7 @@
 - `etape5_contagion.py`    — le signal sur A fait-il **réagir les actifs liés à A** ? (CAR des pairs corrélés + matières premières autour de J0 — *impact simultané*)
 - `etape6_leadlag.py`      — **A précède-t-il B** ? (AR immédiat vs décalé + prédictibilité Granger — *contagion dans le temps*)
 - `etape7_carte_contagion.py` — **quels couples A→B** précis sont contagieux ? (CAR par couple + carte de chaleur PNG)
+- `etape8_portes_dependance.py` — **le verdict corrigé** : 1 événement = 1 vote, 1 mois = 1 vote (même discipline que le Bloc 1) — aucun signal ne passe les deux portes
 
 ## 03_resultats/ — CE QUI SORT
 Verdicts `.txt` + la courbe `etape1_car.png` (CAR moyen autour de l'événement).

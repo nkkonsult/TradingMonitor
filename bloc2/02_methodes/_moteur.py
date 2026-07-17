@@ -25,15 +25,22 @@ MIN_EST = 60
 
 
 def marche() -> pd.Series:
-    """Rendement quotidien du marche : colonne MARCHE du Bloc 3, sinon SPY."""
-    ref = ICI.parents[0] / "bloc3" / "01_donnees" / "rendements_secteurs.csv"
-    if ref.exists():
-        m = pd.read_csv(ref, index_col="date", parse_dates=True)["MARCHE"]
-        m.index = m.index.tz_localize(None)
-        return m
+    """Rendement quotidien du marche : colonne MARCHE du Bloc 3, prolongee par SPY.
+
+    Le CSV du Bloc 3 est fige a sa date de construction ; les evenements recents
+    (ex. divulgations du Congres) ont besoin de jours au-dela. On prolonge donc la
+    serie avec les rendements de SPY (proxy marche) apres sa derniere date —
+    raccord documente comme limite (moyenne equiponderee vs indice pondere).
+    """
     spy = data.get_ohlcv("SPY")["Close"].pct_change()
     spy.index = pd.to_datetime(spy.index).tz_localize(None)
-    return spy
+    ref = ICI.parents[0] / "bloc3" / "01_donnees" / "rendements_secteurs.csv"
+    if not ref.exists():
+        return spy
+    m = pd.read_csv(ref, index_col="date", parse_dates=True)["MARCHE"]
+    m.index = m.index.tz_localize(None)
+    queue = spy[spy.index > m.index.max()]
+    return pd.concat([m, queue]) if len(queue) else m
 
 
 _CACHE: dict[str, pd.Series | None] = {}

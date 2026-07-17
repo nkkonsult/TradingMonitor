@@ -1,0 +1,18 @@
+==============================================================================================================
+ETAPE 8 (Bloc 2) - LES DEUX PORTES : un evenement = un vote (A), un mois = un vote (B)
+Lignes brutes exploitables : 4074   Seuil Bonferroni (4 unites) : 0.0125
+==============================================================================================================
+signal                  lignes |   n_evts  CAR_moy_A      t_A       p_A |  n_mois  CAR_moy_B      t_B       p_B    ACF1 |  verdict
+--------------------------------------------------------------------------------------------------------------
+congres_achat               29 |       29    -0.0180    -1.60      0.12 |       2    -0.0233      nan       nan     nan |      n<5
+congres_vente               12 |       12    -0.0168    -0.74      0.47 |       2    -0.0261      nan       nan     nan |      n<5
+contrat                    174 |      174     0.0027     0.93      0.35 |     108     0.0033     0.90      0.37    0.06 |      non
+regulation                3859 |      653    -0.0026    -2.06      0.04 |      26     0.0061     1.03      0.31    0.21 |      non
+--------------------------------------------------------------------------------------------------------------
+Lecture : PORTE A ferme la pseudo-replication (une regle projetee sur 5 tickers
+          ne vote qu'une fois : son CAR = la moyenne du panier). PORTE B ferme
+          la dependance temporelle (les evenements du meme mois partagent le
+          choc de marche : ils fondent en un vote). verdict OUI = p_A ET p_B <
+          seuil Bonferroni. ACF1 = autocorrelation des moyennes mensuelles :
+          proche de 0 => l'independance entre mois (condition du test B) tient.
+Rappel  : Congres date a la DIVULGATION (seule date visible du marche).

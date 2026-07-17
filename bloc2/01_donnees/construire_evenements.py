@@ -105,6 +105,7 @@ def build_contrats(nom2tk, tk2sec) -> pd.DataFrame:
     df = df.dropna(subset=["ticker"])
     out = pd.DataFrame({
         "signal": "contrat",
+        "evenement_id": df["award_id"].astype(str),   # 1 contrat = 1 evenement (porte 1)
         "ticker": df["ticker"],
         "date": df["date"].str[:10],
         "sens": "attribution",              # un contrat = signal positif (revenus futurs)
@@ -130,8 +131,9 @@ def build_regulations(tk2sec) -> pd.DataFrame:
         for tk in panier:
             rows.append({
                 "signal": "regulation",
-                "ticker": tk,
-                "date": str(r["date"])[:10],
+                "evenement_id": str(r["doc_id"]),   # 1 REGLE = 1 evenement, quel que soit
+                "ticker": tk,                        # le nb de tickers du panier (anti
+                "date": str(r["date"])[:10],         # pseudo-replication)
                 "sens": sens,
                 "secteur": secteur,
                 "intensite": 1.0 if not sig else 2.0,
@@ -144,16 +146,21 @@ def build_congres(tk2sec) -> pd.DataFrame:
     if not f.exists():
         return pd.DataFrame()
     df = pd.read_csv(f)
-    df = df[df["date"] >= DATE_MIN].copy()
-    df = df.dropna(subset=["ticker"])
+    # DATE = DIVULGATION, pas la date du trade de l'elu : le marche (et nous) ne voit
+    # la transaction qu'a sa publication STOCK Act. C'est la seule date exploitable
+    # pour un signal ; le trade_date mesurerait le talent de l'elu, pas le signal.
+    df = df.dropna(subset=["ticker", "disclosure_date"])
+    df = df[df["disclosure_date"] >= DATE_MIN].copy()
     # sens : achat vs vente (le coeur du signal Congres)
     typ = df["transaction"].astype(str).str.lower()
     sens = typ.map(lambda t: "achat" if "purchase" in t or "buy" in t
                    else ("vente" if "sale" in t or "sell" in t else "autre"))
     out = pd.DataFrame({
         "signal": "congres",
+        "evenement_id": (df["politician"].astype(str) + "|" + df["ticker"].astype(str)
+                         + "|" + df["disclosure_date"].str[:10]),
         "ticker": df["ticker"].astype(str).str.replace(".", "-", regex=False),
-        "date": df["date"].str[:10],
+        "date": df["disclosure_date"].str[:10],
         "sens": sens,
         "secteur": df["ticker"].map(tk2sec),
         "intensite": 1.0,
@@ -169,6 +176,7 @@ def build_earnings(tk2sec) -> pd.DataFrame:
     df = df[df["date"] >= DATE_MIN].copy()
     out = pd.DataFrame({
         "signal": "earnings",
+        "evenement_id": df["ticker"].astype(str) + "|" + df["date"].str[:10],
         "ticker": df["ticker"],
         "date": df["date"].str[:10],
         "sens": df["sens"],                 # beat / miss / inline

@@ -46,9 +46,9 @@ vers les actifs liés. Pour chaque titre-source A, deux familles de cibles : les
 corrélés** (data-driven, les 3 titres les plus corrélés à A) et les **thèmes / matières
 premières** (`liens_thematiques.py` : Tesla→lithium, défense→ITA…). On mesure le CAR de
 chaque cible autour de la date du signal sur A.
-**Résultat** : impact **simultané confirmé** — pairs corrélés CAR **+0,27 %** (p=0,003) et
-thèmes/matières **+0,26 %** (p=0,0006). → Quand A reçoit un signal, son écosystème bouge
-(ex. contrat Lockheed → Northrop, GD, ETF défense réagissent).
+**Résultat (lecture prudente)** : les verdicts d'ensemble sont **instables** — ils changent
+de signe selon la définition de la base d'événements, car ces tests héritent de la
+pseudo-réplication (non corrigée ici, cf. étape 8). À traiter comme **exploratoire**.
 
 ## `etape6_leadlag.py` — A précède-t-il B (contagion décalée) ?
 **Méthode** : on décompose l'AR de la cible en **immédiat** (J0–J1) vs **décalé** (J2–J5),
@@ -63,9 +63,20 @@ synchrone** ; l'entraînement décalé exploitable est marginal.
 **Méthode** : pour chaque couple (titre-source A, cible B), CAR moyen de B autour des dates
 de signal de A + test de Student ; classement des couples les plus contagieux + **carte de
 chaleur** (`etape7_heatmap.png`).
-**Résultat** : canaux nets et interprétables — **UNH→HUM +2,8 %** (assureurs santé),
-**JNJ/LLY/PFE→MRK +1,6 %** (labos pharma), et un effet de **substitution dans la défense**
-(**BA→RTX −0,7 %**, LMT/BA → ETF défense ITA en baisse). 8 couples significatifs sur 44.
+**Résultat** : quelques canaux récurrents (robustes aux changements de base) à titre
+exploratoire — **UNH→HUM +3,2 %** (assureurs santé), **LLY→MRK +1,9 %** (labos), énergie en
+substitution (**CVX/EOG→SLB −2,4 %**). À confirmer avec la discipline des deux portes.
+
+## `etape8_portes_dependance.py` — le verdict corrigé (les deux portes)
+**Méthode** : même discipline que le Bloc 1 (`etape1c`). Porte A « un événement = un vote » :
+une règle projetée sur 5 tickers ne compte qu'une fois (CAR du panier = 1 observation) —
+ferme la pseudo-réplication. Porte B « un mois = un vote » : les CAR se fondent par mois
+d'événement — ferme la dépendance temporelle (choc de marché commun). Diagnostic ACF₁ sur
+les moyennes mensuelles. Le Congrès est daté à la **divulgation** (seule date visible).
+**Résultat** : **aucun signal ne passe les deux portes.** Régulations : 653 vraies règles
+(pas 2 700 lignes), p=0,04 > seuil Bonferroni. **Congrès à la divulgation : le +2,0 %
+mesuré au trade_date disparaît (−1,8 %, ns)** — c'était le timing de l'élu, pas un signal.
+Cohérent avec le Bloc 1 corrigé : l'évaluateur rejette proprement.
 
 ## Verdict commun (voir `../SYNTHESE.md`)
 Sur les données **actuellement branchées** (contrats + régulations, sources gratuites), les
