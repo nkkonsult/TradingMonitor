@@ -10,11 +10,47 @@
 
 ---
 
-## Bloc 1 — Étape 1 (Shapiro, Student, Bonferroni)
+## Bloc 1 — Étape 1 (Student, Shapiro, TCL, Bonferroni)
+
+> ⭐ **Questions issues de la rédaction** (soulevées en écrivant le rapport —
+> ce sont des points sur lesquels je me suis effectivement interrogé, donc
+> le jury le peut aussi).
+
+**Q : Pourquoi tester µ_edge alors que la moyenne ē est connue ? On teste un truc qu'on connaît ?**
+- R : On ne teste pas ē (la moyenne observée, connue). On teste **µ_edge**, l'edge moyen *théorique* de la stratégie « en général » (inconnu). ē n'est que l'**estimateur** qui sert à trancher sur µ_edge. C'est le principe de l'inférence : remonter de l'échantillon (connu, limité) à la population (inconnue).
+- Piège : ne jamais dire « on teste la moyenne » sans préciser « théorique ».
+
+**Q : Pourquoi dire « edge moyen » et pas simplement « edge » ?**
+- R : Trois niveaux à distinguer. (1) l'edge d'UN trade e_i ; (2) l'edge moyen *observé* ē (moyenne des e_i sur l'échantillon) ; (3) l'edge moyen *théorique* µ_edge = E[e_i] (espérance, inconnue). Le test juge la stratégie **dans son ensemble** (sa tendance centrale), donc sur la moyenne — d'où « edge moyen ».
+
+**Q : Que représente exactement la statistique t ?**
+- R : Le **nombre d'erreurs-types** séparant l'edge moyen observé de zéro. t = ē / (s/√n). Petit t → banal (dans le bruit) ; grand t → suspect, écart difficile à attribuer au hasard. Le √n récompense la quantité de données : même edge = plus convaincant sur 7000 trades que sur 20.
+- Piège : ne pas confondre **erreur-type** (incertitude sur la moyenne, s/√n) et **écart-type** (dispersion des données, s).
+
+**Q : La condition de Student, c'est la normalité des données ou de la moyenne ?**
+- R : Formellement le test suppose la normalité des **observations** (l'edge). Mais ce qui rend réellement t valide, c'est la normalité de la **moyenne** ē — garantie par le TCL à grand n même si les observations ne sont pas normales. Raisonnement en 3 temps : condition posée sur l'edge → Shapiro la teste, échec → TCL la sauve via la moyenne.
 
 **Q : Shapiro rejette la normalité partout. Comment justifiez-vous alors un test de Student ?**
 - R : Le Student ne suppose pas la normalité des données brutes mais celle de *la moyenne*. Le **théorème central limite** garantit la quasi-normalité de la moyenne pour n grand (ici 973 à 8 469 trades). La condition qui compte est donc satisfaite.
 - Piège : ne pas prétendre que « les données sont normales ». Assumer le rejet et s'appuyer explicitement sur le TCL.
+
+**Q : Concrètement, comment le test de Shapiro « voit »-il la normalité ? Et pourquoi W ≈ 1 = normal ?**
+- R : W = b²/SCE compare deux mesures de dispersion : SCE (écarts à la moyenne, classique) et b² (dispersion *attendue si les valeurs triées suivaient une loi normale*, via les espérances des statistiques d'ordre). Elles ne coïncident que sous normalité → W ≈ 1. C'est la **version chiffrée de la droite de Henry (QQ-plot)** : W proche de 1 = les points triés s'alignent sur la droite gaussienne.
+- Piège : W est **toujours ≤ 1** ; ne pas écrire « H1 : W < 1 » (toujours vrai). La bonne opposition est W ≃ 1 (H0) vs W ≪ 1 (H1).
+
+**Q : Comment décide-t-on que W est « assez proche » de 1 ?**
+- R : Pas de seuil arbitraire sur W. On calcule la **p-value** (proba d'un W aussi bas si les données étaient normales, pour ce n). À grand n, la distribution de W sous H0 se resserre vers 1 → le moindre écart devient significatif → rejet quasi systématique. C'est pourquoi Shapiro est un mauvais juge de normalité sur des milliers de trades.
+- Chiffre à dégainer : dans nos données, W va de 0,49 (ma_crossover) à 0,96 (dt_top) — mais les DEUX sont rejetés. Même une distribution « presque normale » (W=0,96) échoue au test à cause du grand n. Preuve concrète que le test sur-rejette. (détail : tableau en annexe)
+
+**Q : Attention au sens de H0 pour Shapiro ?**
+- R : Oui, INVERSE de Student. Pour Shapiro, H0 = « c'est normal » (la propriété recherchée). Donc p-value faible → on REJETTE la normalité.
+
+**Q : Le TCL n'est-il pas un ajout artificiel pour contourner le rejet de Shapiro ?**
+- R : Non, c'est même le contraire : le TCL *justifie la forme même* de la statistique t. La quantité (ē−µ)/(σ/√n) qui converge vers N(0,1) dans le TCL est exactement t (sous H0, µ=0, avec s à la place de σ). Le test de Student n'est donc rien d'autre que l'application du TCL. Le rejet de Shapiro sur les données individuelles ne l'affecte pas, puisque t ne dépend que de la moyenne.
+- Piège : bien dire « le TCL rend la MOYENNE normale, pas les données ».
+
+**Q : Pourquoi une moyenne devient-elle normale alors que les données ne le sont pas ? (intuition du TCL)**
+- R : Effet de compensation : en moyennant des milliers d'edges, les valeurs extrêmes (grosses pertes/gains) s'annulent mutuellement ; ce qui survit est une fluctuation régulière et symétrique autour de µ = la cloche. Image des dés : un dé seul = loi plate (uniforme), mais la moyenne de 10 dés = cloche. Moyenner fait émerger la normale, quelle que soit la loi de départ.
 
 **Q : Pourquoi tester `edge` et pas `return_net` ?**
 - R : Sur la période, ~97 % des titres montent → un rendement positif ne prouve rien. `edge = return_net − rand_return` neutralise la dérive haussière : on teste un *talent de timing*, pas la chance d'un marché porteur.
@@ -22,6 +58,20 @@
 **Q : Pourquoi Bonferroni, puisque vous faites 10 tests séparés ?**
 - R : Mécaniquement 10 tests indépendants, mais l'interprétation d'ensemble change la question : « au moins un faux positif parmi 10 » vaut ~40 % à α=5 %. Bonferroni ramène le risque global sous 5 % en durcissant le seuil individuel à 0,005 (inégalité de Boole).
 - Piège : savoir citer l'analogie des 10 dés (P(au moins un 6) = 84 %).
+
+**Q : D'où vient le 0,40 ? (attention : PAS 0,05×10 = 0,50)**
+- R : Calcul par le complémentaire : P(au moins un FP) = 1 − P(aucun FP) = 1 − 0,95¹⁰ ≈ 0,40. On multiplie 0,95 par lui-même (puissance), pas par 10 (l'addition donnerait 0,50, voire >1 avec plus de tests → absurde).
+- Le 0,50 = borne de Boole (m×α), c'est un MAJORANT, pas la valeur exacte. Boole ne sert pas à calculer le 0,40 ; il sert à *garantir* le seuil corrigé.
+
+**Q : Le 0,95, il vaut ça sous quelle condition ?**
+- R : SOUS H0 vraie. α = P(rejeter H0 | H0 vraie) est conditionnel *par définition*. Le calcul du 0,40 se place donc dans le pire cas : « si aucune stratégie n'a d'edge (H0 vraie partout), quel risque d'en déclarer une gagnante à tort ? ». Si H0 est fausse, il n'y a pas de faux positif possible.
+- Piège : ne pas dire « P(faux positif) = 5 % » sans le « sous H0 ».
+
+**Q : Vérification que Bonferroni marche ?**
+- R : Avec α'=0,005 : risque global = 1 − 0,995¹⁰ ≈ 0,049 < 0,05. Objectif atteint. Bonferroni est même légèrement conservateur (4,9 % < 5 %), au prix de possibles faux négatifs.
+
+**Q : Faut-il corriger Shapiro et le TCL par Bonferroni ?**
+- R : Non. Le TCL n'est pas un test (aucune p-value à corriger). Shapiro est un test de *diagnostic* (condition), pas de *décision finale* — hors de la famille de décisions dont on contrôle le risque global. On ne corrige QUE les 10 tests de Student (le verdict). Corriger Shapiro reviendrait d'ailleurs à faciliter la conclusion « c'est normal », ce qu'on ne veut pas.
 
 **Q : Pourquoi ne pas avoir gardé le test de Wilcoxon / le V de Cramér ?**
 - R : Choix d'ancrage aux méthodes explicitement vues dans les cours SAS/Python du M1. Wilcoxon n'y figure pas (vu seulement en R), le V de Cramér dans aucun des trois cours logiciels. Ils ont servi de **vérification interne** mais ne sont pas revendiqués comme méthodes du rapport.

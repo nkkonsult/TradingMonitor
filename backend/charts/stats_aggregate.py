@@ -85,6 +85,8 @@ def build_eval(tickers: list[str] | None = None, cost: float = config.COST_PER_S
                         "sector": sector,
                         "strategy": key,
                         "params_version": PARAMS_VERSION,
+                        "entry_date": t.entry_date.strftime("%Y-%m-%d"),
+                        "exit_date": t.exit_date.strftime("%Y-%m-%d"),
                         "regime_entry": regime_mod.regime_at(reg, t.entry_date),
                         "direction": t.direction,
                         "holding_days": t.holding_days,

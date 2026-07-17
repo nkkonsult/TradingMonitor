@@ -8,26 +8,38 @@
 \section{But du mémoire}
 \label{sec:but}
 
-% [À DÉVELOPPER] Formuler la question centrale en une phrase, puis la
-% décliner. Idée directrice : parmi les nombreux « signaux » que l'on
-% peut extraire des marchés (signaux techniques, signaux d'information,
-% relations entre actifs), lesquels ont une valeur statistiquement
-% démontrable, c'est-à-dire lesquels battent le hasard ?
+% ANGLE DU MÉMOIRE (décidé) : ce n'est PAS une étude de stratégies de
+% trading, mais la construction d'un OUTIL DE VALIDATION statistique.
+% Les stratégies ne sont que des jeux de données de test.
 
-Ce mémoire cherche à déterminer, par des méthodes statistiques
-rigoureuses, \emph{quels signaux issus des marchés financiers possèdent
-une valeur démontrable}, en distinguant systématiquement un effet réel
-d'un artefact de la hausse générale du marché ou du hasard
-d'échantillonnage.
+L'objet de ce mémoire n'est pas de découvrir une stratégie de trading
+rentable, ni de porter un jugement d'expert sur des stratégies
+existantes. Il est de \emph{construire et d'éprouver un protocole
+statistique de validation}~: un enchaînement de méthodes capable de
+déterminer, pour une stratégie quelconque qu'on lui soumet, si l'avantage
+qu'elle affiche est \emph{réel} ou s'il relève du hasard d'échantillonnage
+ou du biais de marché.
+
+Autrement dit, la contribution revendiquée est \textbf{méthodologique}~:
+la chaîne de tests, sa justification et la vérification de ses conditions
+d'application. Les dix stratégies d'analyse technique utilisées dans ce
+mémoire ne constituent pas l'objet d'étude mais un \textbf{banc d'essai}~:
+elles fournissent des jeux de données réels et contrastés permettant de
+montrer que l'outil \emph{discrimine} correctement — qu'il sait rejeter
+ce qui ne tient pas et retenir ce qui résiste à l'analyse. Les résultats
+obtenus sont donc présentés à titre d'\emph{illustration} du bon
+fonctionnement du protocole, et non comme des recommandations
+d'investissement.
 
 \paragraph{Le problème du biais de marché.} % argument central à défendre à l'oral
-Sur la période étudiée, la très grande majorité des titres du S\&P~500
-progressent : un rendement positif ne prouve donc rien en soi. La
-variable d'intérêt n'est pas le rendement brut mais l'\emph{avantage}
+La difficulté centrale que l'outil doit surmonter est la suivante~: sur
+la période étudiée, la très grande majorité des titres du S\&P~500
+progressent, si bien qu'un rendement positif ne prouve rien en soi. La
+variable pertinente n'est donc pas le rendement brut mais l'\emph{avantage}
 (\edgevar{}) d'une stratégie sur un tirage aléatoire de mêmes
-caractéristiques (même titre, même durée, même sens). Tester cet
-avantage revient à tester un \emph{talent} de décision, une fois retirée
-la dérive haussière du marché.
+caractéristiques (même titre, même durée, même sens)~: tester
+l'avantage, c'est isoler ce qui, dans la performance, ne s'explique pas
+par la simple dérive haussière du marché.
 
 \section{Planification de l'expérience}
 \label{sec:planification}

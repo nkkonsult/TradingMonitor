@@ -45,15 +45,16 @@ def main() -> None:
     out("Entree: trades.csv (%d trades exploitables)" % len(df))
     out("Seuil Bonferroni (10 strategies): %.4f" % seuil_bonf)
     out("=" * 86)
-    out("%-14s %7s %10s %11s %11s %11s %7s" %
-        ("strategie", "n", "edge_moy", "p_shapiro", "p_student", "p_wilcox", "verdict"))
-    out("-" * 86)
+    out("%-14s %7s %10s %9s %11s %11s %11s %7s" %
+        ("strategie", "n", "edge_moy", "W_shapiro", "p_shapiro", "p_student", "p_wilcox", "verdict"))
+    out("-" * 96)
 
     for k in strategies:
         edge = df.loc[df["strategy"] == k, "edge"].to_numpy()
         # 1) normalite (documentee) : sous-echantillon si n trop grand pour Shapiro
         s = edge if len(edge) <= SHAPIRO_MAX else rng.choice(edge, SHAPIRO_MAX, replace=False)
-        p_shapiro = st.shapiro(s).pvalue
+        sw = st.shapiro(s)               # renvoie statistic (W) ET pvalue
+        w_shapiro, p_shapiro = sw.statistic, sw.pvalue
         # 2) Student 1-echantillon, unilateral H1: moyenne > 0
         t, p_two = st.ttest_1samp(edge, 0.0)
         p_student = p_two / 2 if t > 0 else 1 - p_two / 2
@@ -63,8 +64,8 @@ def main() -> None:
         except ValueError:
             p_wilcox = float("nan")
         verdict = "OUI" if p_student < seuil_bonf else "non"
-        out("%-14s %7d %10.4f %11.2g %11.2g %11.2g %7s" %
-            (k, len(edge), edge.mean(), p_shapiro, p_student, p_wilcox, verdict))
+        out("%-14s %7d %10.4f %9.4f %11.2g %11.2g %11.2g %7s" %
+            (k, len(edge), edge.mean(), w_shapiro, p_shapiro, p_student, p_wilcox, verdict))
 
     out("-" * 86)
     out("Lecture : 'verdict=OUI' = edge significativement > 0 APRES Bonferroni")
