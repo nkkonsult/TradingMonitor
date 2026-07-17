@@ -160,6 +160,13 @@
 
 ## Questions transverses / méthodologie
 
+**Q : Vous passez le Bloc 1 à éliminer la dépendance et le Bloc 3 à la chercher. N'est-ce pas contradictoire ?**
+- R : Non — la dépendance joue deux rôles opposés selon la question posée. Pour **juger** (Bloc 1), elle est une nuisance : chaque trade doit être un témoin indépendant, sinon pseudo-réplication et faux positifs ; l'indépendance y est une *condition d'application* qu'on vérifie et répare. Pour **prédire** (Bloc 3, lead-lag), elle est la ressource : un marché où tout est indépendant = marché efficient = rien à trader ; l'indépendance y est *l'hypothèse nulle* qu'on cherche à rejeter (Granger).
+- Le raffinement : distinguer par **retard**. La dépendance *simultanée* (chocs communs, facteur marché à 73 % de l'ACP) est intradable ET toxique pour l'inférence — c'est la porte « période » du Bloc 1. La dépendance *retardée* (lead-lag) est le seul gisement exploitable, car le délai laisse le temps de passer l'ordre.
+- Boucle à citer : le facteur marché mesuré par l'ACP du Bloc 3 EST la cause commune que le Bloc 1 a dû neutraliser. Et toute dépendance retardée transformée en stratégie devra repasser par l'outil de validation du Bloc 1. Les deux blocs sont les deux faces du même objet.
+
+
+
 **Q : Quelle est votre principale limite ?**
 - R : Résultats *in-sample*. Une validation *walk-forward* (hors échantillon, respectant l'ordre temporel) est nécessaire avant tout usage. Les k-fold classiques fuiteraient l'information du futur.
 
