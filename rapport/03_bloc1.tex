@@ -251,6 +251,272 @@ donc être prise en compte.
 \end{limites}
 
 % =====================================================================
+\section{Étape 1 bis --- le verdict survit-il à la dépendance des trades ?}
+\label{sec:b1-dependance}
+% NOTE STRUCTURE : l'intro du chapitre dit « six étapes » -> à ajuster
+% (« sept étapes » ou reformuler) quand tu rédiges cette section.
+
+\subsection{La question posée à l'outil}
+% [À RÉDIGER — schéma « on se demande… »]
+% Idées à développer avec TES mots :
+%  - L'encadré « conditions » de l'étape 1 contenait une hypothèse restée
+%    dans l'ombre : l'INDÉPENDANCE des trades. Un outil de validation
+%    honnête doit tester ses propres conditions, pas les décréter.
+%  - Pourquoi elle est douteuse ici, par DEUX portes possibles :
+%      porte ACTION  : deux trades sur le même titre partagent la vie de
+%                      ce titre (même société, mêmes chocs) ;
+%      porte PÉRIODE : deux trades simultanés partagent les mêmes journées
+%                      de bourse — les stratégies déclenchent en vagues
+%                      (un signal RSI<30 sonne sur des dizaines de titres
+%                      le même jour de krach), et les trades DURENT
+%                      (holding jusqu'à ~300 jours), donc se chevauchent.
+%  - Conséquence mécanique : n trades ≠ n informations indépendantes.
+%    L'erreur-type s/√n est sous-estimée -> t gonflé -> p-values trop
+%    optimistes -> risque de faux positifs à l'étape 1.
+%  - La question : les deux verdicts positifs (rsi_classic, rsi_strict)
+%    survivent-ils quand on retire l'hypothèse d'indépendance ?
+%  - Annonce du plan : diagnostiquer (ICC), corriger (DEFF, bootstrap),
+%    puis FERMER chaque porte (agrégation), et enfin vérifier que la
+%    porte « mois » elle-même tient (série mensuelle).
+
+\subsection{Les méthodes qui y répondent}
+
+% --- MÉTHODE 1 : diagnostiquer la porte « action » --------------------
+\subsubsection*{Corrélation intra-grappe (ICC)}
+% [À RÉDIGER] Idées :
+%  - On se demande : les edges de trades d'un même titre se ressemblent-ils
+%    plus que ceux de titres différents ? La corrélation intra-grappe
+%    (grappe = ticker) répond, estimée par la décomposition de la variance
+%    de l'ANOVA (inter-titres vs intra-titre), la même qu'à l'étape 2 :
+\[
+  \hat\rho \;=\; \frac{\mathrm{MSB}-\mathrm{MSW}}
+                      {\mathrm{MSB} + (n_0 - 1)\,\mathrm{MSW}},
+\]
+%  avec MSB / MSW les carrés moyens inter / intra et n_0 la taille moyenne
+%  ajustée des grappes (effectifs déséquilibrés).
+%  - Lecture : rho = 0 -> les trades d'un même titre ne se ressemblent pas
+%    plus que deux trades quelconques (indépendance plausible) ; rho > 0
+%    -> les trades d'un même titre votent « en bloc ».
+
+% --- MÉTHODE 2 : corriger la variance (cours de sondages) -------------
+\subsubsection*{Effet de plan de Kish (DEFF)}
+% [À RÉDIGER] Idées :
+%  - Nos trades ne sont pas un échantillon i.i.d. mais un TIRAGE PAR
+%    GRAPPES (on « visite » 500 titres, chaque titre livre plusieurs
+%    trades) : cadre exact du cours de théorie des sondages.
+%  - L'effet de plan de Kish quantifie ce que la mise en grappes coûte :
+\[
+  \mathrm{DEFF} = 1 + (\bar m - 1)\,\hat\rho,
+  \qquad n_{\mathrm{eff}} = \frac{n}{\mathrm{DEFF}},
+  \qquad \widehat{\mathrm{se}}_{\mathrm{corr}}
+        = \frac{s}{\sqrt{n}}\sqrt{\mathrm{DEFF}},
+\]
+%    avec m-bar la taille moyenne des grappes. La variance réelle de la
+%    moyenne vaut DEFF fois celle calculée sous indépendance : tout se
+%    passe comme si l'on n'avait que n_eff = n/DEFF observations.
+%  - On refait alors le Student de l'étape 1 avec l'erreur-type corrigée
+%    (df = n_eff - 1), même seuil de Bonferroni 0,005.
+
+% --- MÉTHODE 3 : robustesse sans hypothèse de forme -------------------
+\subsubsection*{Bootstrap par grappes}
+% [À RÉDIGER] Idées :
+%  - Vérification croisée : on rééchantillonne des TITRES ENTIERS (avec
+%    remise), jamais des trades isolés -> la structure de dépendance
+%    interne de chaque titre est transportée telle quelle dans chaque
+%    réplique. 4 000 tirages -> p-value empirique sans hypothèse de
+%    normalité NI d'indépendance entre trades d'un même titre.
+%  - Seule hypothèse restante : l'indépendance ENTRE titres.
+
+% --- MÉTHODE 4 : le test décisif -------------------------------------
+\subsubsection*{Les deux portes : une unité réelle, un vote}
+% [À RÉDIGER] Idées :
+%  - Corriger la variance ne suffit pas : le DEFF garde la pondération du
+%    test naïf (un titre à 200 trades pèse 200 fois plus qu'un titre à
+%    1 trade). L'agrégation change de logique : on FOND chaque grappe en
+%    une seule observation.
+%      Porte ACTION  : moyenne des edges par (stratégie, titre)
+%                      -> Student unilatéral sur ~500 moyennes ;
+%      Porte PÉRIODE : moyenne des edges par (stratégie, mois d'entrée)
+%                      -> Student unilatéral sur ~190 moyennes.
+%  - La dépendance intra-grappe ne peut plus RIEN changer : chaque titre
+%    (chaque mois) ne vote qu'une fois. Le TCL s'applique aux moyennes de
+%    grappes (k ≈ 500 / 190).
+%  - Verdict exigé : passer LES DEUX portes (seuil Bonferroni sur chaque).
+
+% --- MÉTHODE 5 : la porte « mois » est-elle vraiment fermée ? ---------
+\subsubsection*{Série mensuelle : le pipeline de séries temporelles}
+% [À RÉDIGER] Idées (méthode = cours de séries temporelles, pipeline
+% d'estimation ARMA appliqué avec q = 0) :
+%  - Le Student de la porte « mois » suppose à son tour les MOIS
+%    indépendants. Or des trades durent plus d'un mois -> deux mois
+%    voisins partagent des trades -> la série mensuelle est autocorrélée.
+%  - Pipeline du cours, dans l'ordre, conditions données en même temps :
+%    (0) STATIONNARITÉ, condition de tout ce qui suit, testée deux fois
+%        avec des H0 opposées : Dickey--Fuller (H0 : racine unité ;
+%        p petit = stationnaire) et KPSS (H0 : stationnaire ; p grand =
+%        stationnaire). Concordance des deux = conclusion robuste.
+%    (1) CENTRAGE de la série.
+%    (2) ACF rho(h) et PACF tau(h).
+%    (3) ORDRE p : le PACF d'un AR(p) « coupe » après p ->
+%        p_hat = dernier retard h avec |tau(h)| > q_N(0,975)/√T.
+%    (4) ESTIMATION AR(p) par les équations de Yule--Walker.
+%    (5) VARIANCE CORRIGÉE de la moyenne : pour un AR(p) stationnaire,
+\[
+  \gamma_{\mathrm{lr}}
+     = \frac{\sigma^2_\eta}{\bigl(1-\sum_{i=1}^{p}\Phi_i\bigr)^{2}},
+  \qquad
+  \widehat{\mathrm{Var}}(\bar x) \approx \frac{\gamma_{\mathrm{lr}}}{T},
+  \qquad
+  \mathrm{DEFF}_t = \frac{\gamma_{\mathrm{lr}}}{\gamma(0)} .
+\]
+%        (variance « de long terme » : somme de toutes les
+%        autocovariances ; généralise le s²/T qui, lui, suppose
+%        l'indépendance). Puis Student corrigé, df = T/DEFF_t - 1.
+%    (6) VALIDATION : Box--Pierce sur les résidus de l'AR
+%        (H0 : bruit blanc), S_BP = T·somme des rho²(h) ~ khi2(H - p),
+%        H = 15. p > 0,05 = le modèle AR suffit, la correction est fondée.
+
+\begin{conditions}
+Indépendance \emph{entre} grappes (titres, resp.\ mois --- pour les mois,
+précisément l'objet de la vérification par série temporelle)~;
+normalité des moyennes de grappes assurée par le théorème central limite
+($k \approx 500$ titres, $T \approx 190$ mois)~; stationnarité des séries
+mensuelles vérifiée par Dickey--Fuller \emph{et} KPSS~; adéquation des
+modèles AR validée par Box--Pierce sur les résidus.
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres RÉELS (base régénérée, 38 210 trades) extraits de :
+%   bloc1/03_resultats/etape1b_dependance.txt
+%   bloc1/03_resultats/etape1c_agregation.txt
+%   bloc1/03_resultats/etape1d_serie_mensuelle.txt
+
+% --- 1b : diagnostic + correction DEFF (les deux « survivantes ») -----
+\begin{table}[H]
+\centering
+\caption{Diagnostic de dépendance intra-titre et test corrigé (étape 1b).}
+\label{tab:b1-dep-deff}
+\small
+\begin{tabular}{@{}lrrrccc@{}}
+\toprule
+Stratégie & $\hat\rho$ & DEFF & $n_{\text{eff}}$ & $p$ naïve & $p$ corrigée & $p$ bootstrap \\
+\midrule
+\texttt{rsi\_classic} & $0{,}000$ & $1{,}00$ & $7\,117$ & $1{,}2\times10^{-8}$ & $1{,}2\times10^{-8}$ & $<2{,}5\times10^{-4}$ \\
+\texttt{rsi\_strict}  & $0{,}134$ & $1{,}15$ & $848$    & $5{,}5\times10^{-10}$ & $7\times10^{-9}$     & $<2{,}5\times10^{-4}$ \\
+\multicolumn{7}{c}{\footnotesize (autres stratégies~: verdict « non » inchangé, $\hat\rho \le 0{,}09$)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [À RÉDIGER] Lecture à mettre dans TES mots :
+%  - rho intra-titre quasi nul -> la correction DEFF ne change presque
+%    rien : les deux stratégies « survivent » à cette première correction.
+%  - MAIS ce test reste pondéré par le nombre de trades : il ne dit pas
+%    si l'avantage est PARTAGÉ par les titres ou concentré sur quelques
+%    titres très tradés. D'où le test décisif suivant.
+
+% --- 1c : les deux portes (TABLEAU CENTRAL de la section) --------------
+\begin{table}[H]
+\centering
+\caption{Le test des deux portes~: une unité réelle, un vote (étape 1c).}
+\label{tab:b1-dep-portes}
+\small
+\begin{tabular}{@{}lrrrrc@{}}
+\toprule
+ & \multicolumn{2}{c}{Porte action ($k$ titres)} & \multicolumn{2}{c}{Porte période ($k$ mois)} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
+\midrule
+\texttt{rsi\_classic}  & 501 & $0{,}059$            & 195 & $0{,}039$ & non \\
+\texttt{rsi\_strict}   & 456 & $3{,}9\times10^{-4}$ & 138 & $0{,}26$  & non \\
+\texttt{rsi\_trend}    & 495 & $0{,}22$             & 175 & $0{,}29$  & non \\
+\texttt{sr\_breakdown} & 457 & $0{,}37$             & 184 & $0{,}94$  & non \\
+\multicolumn{6}{c}{\footnotesize (six autres stratégies~: $p_A \ge 0{,}74$, toutes « non »)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [À RÉDIGER] Lecture à mettre dans TES mots — le c\oe ur du chapitre :
+%  - rsi_classic TOMBE AUX DEUX PORTES (0,059 et 0,039, très loin du
+%    seuil 0,005). Le t = 5,6 de l'étape 1 était de la PSEUDO-RÉPLICATION :
+%    7 117 trades ne portaient pas 7 117 informations indépendantes.
+%    Quand chaque titre ne vote qu'une fois, l'avantage disparaît ->
+%    il était concentré sur les titres (et les mois) les plus tradés.
+%    => FAUX POSITIF du test naïf, démasqué par l'outil lui-même.
+%  - rsi_strict passe brillamment la porte action (p = 0,0004 : son edge
+%    est partagé par beaucoup de titres) mais ÉCHOUE à la porte période
+%    (p = 0,26) : l'avantage est ÉPISODIQUE, concentré sur quelques mois
+%    (138 mois de présence seulement). Pas de régularité temporelle
+%    démontrable -> pas exploitable tel quel.
+%  - Conclusion intermédiaire : plus AUCUNE stratégie ne passe les deux
+%    portes.
+
+% --- 1d : la porte « mois » corrigée de l'autocorrélation -------------
+\begin{table}[H]
+\centering
+\caption{Série mensuelle des edges~: autocorrélation et test corrigé (étape 1d).}
+\label{tab:b1-dep-mensuel}
+\small
+\begin{tabular}{@{}lrrrrrc@{}}
+\toprule
+Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ (AR) & $\mathrm{DEFF}_t$ & $p$ corrigée & $p$ Box--Pierce \\
+\midrule
+\texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $6{,}4$ & $0{,}94$ & $0{,}14$ \\
+\texttt{dt\_top}       & 197 & $0{,}39$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
+\texttt{db\_bottom}    & 197 & $0{,}36$ & 1 & $2{,}1$ & $0{,}82$ & $0{,}90$ \\
+\texttt{hs\_inverse}   & 186 & $0{,}31$ & 1 & $1{,}9$ & $0{,}91$ & $0{,}93$ \\
+\texttt{rsi\_classic}  & 195 & $0{,}23$ & 1 & $1{,}6$ & $0{,}08$ & $0{,}93$ \\
+\texttt{rsi\_strict}   & 138 & $0{,}03$ & 2 & $1{,}5$ & $0{,}30$ & $0{,}96$ \\
+\multicolumn{7}{c}{\footnotesize (quatre autres stratégies~: $\mathrm{DEFF}_t \le 2{,}4$, aucune significative)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+% [À RÉDIGER] Lecture à mettre dans TES mots :
+%  - Les moyennes mensuelles sont bel et bien autocorrélées (rho(1)
+%    jusqu'à 0,56 pour ma_crossover) : l'hypothèse « un mois = un vote
+%    indépendant » de la porte B était elle-même optimiste, la variance
+%    sous-estimée d'un facteur allant jusqu'à 6,4.
+%  - Toutes les séries sont stationnaires (DF p <= 0,005 partout, KPSS
+%    ne rejette pas — réserves mineures : KPSS = 0,012 pour sr_breakout,
+%    DF = 0,005 pour ma_crossover) ; tous les AR validés par Box--Pierce
+%    (p > 0,05) -> la correction est fondée.
+%  - Après correction : AUCUN verdict ne bascule. rsi_classic finit à
+%    p = 0,08. La porte « mois » est fermée PROPREMENT.
+%  - NB honnêteté : mois sans trade traités comme consécutifs
+%    (couverture 71 % pour rsi_strict, > 88 % ailleurs) — limite assumée.
+
+\begin{limites}
+L'effet de plan de Kish n'est qu'approché pour des grappes de tailles
+inégales~; l'agrégation équipondérée protège du faux positif au prix
+d'une perte de puissance (choix assumé~: la prudence prime pour un outil
+de validation)~; les mois sans trade sont traités comme consécutifs dans
+les séries mensuelles~; l'ordre des AR est plafonné à~6.
+\end{limites}
+
+% [À RÉDIGER — 3 à 5 lignes de conclusion de section] Idées :
+%  - Verdict du Bloc 1 au standard corrigé : AUCUNE des dix stratégies ne
+%    démontre d'avantage réel. Le verdict de l'étape 1 ne tenait que par
+%    une condition non vérifiée.
+%  - C'est LE résultat central du mémoire : l'outil de validation a
+%    démasqué son propre faux positif en testant ses conditions. Un
+%    verdict négatif rendu proprement = l'outil fonctionne.
+
+% ------------------------------------------------------------------
+% TODO (mécanique, hors rédaction — à faire par le chat sur demande) :
+%  1. Tableau de l'étape 1 (tab:b1-etape1) encore sur l'ANCIENNE base
+%     (38 035) -> mettre à jour avec etape1_tests.txt (38 210 trades) :
+%     rsi_classic n=7117, +0,0123, p=1,2e-8 ; rsi_strict n=978, +0,1313,
+%     p=5,5e-10 ; rsi_trend n=2789, +0,0021, p=0,25 ; db_bottom n=8513,
+%     -0,0025, p=0,98 ; ma_crossover n=5417, -0,0248, p~1.
+%     Idem « 973 à 8 469 » dans l'encadré conditions -> « 978 à 8 513 ».
+%  2. Encadré conditions de l'étape 1 : ajouter un renvoi du type
+%     « l'indépendance des trades est mise à l'épreuve en
+%     section~\ref{sec:b1-dependance} ».
+%  3. Synthèse du chapitre (sec:b1-synthese) à réécrire : plus aucune
+%     stratégie validée (texte actuel obsolète).
+%  4. Étapes 2-6 : signaler dans leurs limites que l'indépendance y est
+%     aussi supposée (renvoi vers la section 1 bis).
+% ------------------------------------------------------------------
+
+% =====================================================================
 \section{Étape 2 --- les stratégies diffèrent-elles entre elles ?}
 \label{sec:b1-etape2}
 

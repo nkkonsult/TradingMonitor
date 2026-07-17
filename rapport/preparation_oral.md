@@ -79,6 +79,42 @@
 
 ---
 
+## Bloc 1 — Étape 1 bis (dépendance : ICC, DEFF, deux portes, série mensuelle)
+
+**Q : Pourquoi la correction DEFF laisse-t-elle passer `rsi_classic` alors que l'agrégation le rejette ?**
+- R : Le DEFF corrige la **variance** mais garde la **pondération** du test naïf (un titre à 200 trades pèse 200 fois plus qu'un titre à 1 trade). Comme ρ intra-titre ≈ 0 pour `rsi_classic`, DEFF ≈ 1 et rien ne change. L'agrégation change la *question* : chaque titre vote une fois, à poids égal. Si l'avantage est concentré sur quelques titres très tradés, le test pondéré dit « oui », le test équipondéré dit « non » → l'avantage ne se généralise pas.
+- Piège : ne pas dire que le DEFF était « faux » — il répond à une autre question (variance sous la pondération existante).
+
+**Q : ρ intra-titre ≈ 0, donc les trades étaient indépendants ? Où était le problème ?**
+- R : L'ICC par ticker ne voit que la porte ACTION. `rsi_classic` tombe surtout par la porte PÉRIODE (p_B = 0,039 ≫ 0,005) et par l'équipondération. La dépendance a deux portes ; en fermer une ne suffit pas.
+
+**Q : Votre Student sur les moyennes mensuelles suppose les mois indépendants. Le sont-ils ?**
+- R : Non — c'est exactement l'objet de l'étape 1d. Des trades durent plus d'un mois → mois voisins corrélés (ρ(1) jusqu'à 0,56 pour `ma_crossover`). Correction par variance de long terme d'un AR(p) : DEFF temporel jusqu'à 6,4. Aucun verdict ne bascule.
+
+**Q : Pourquoi DEUX tests de stationnarité (DF et KPSS) ?**
+- R : Leurs H0 sont **opposées** : Dickey–Fuller pose H0 « racine unité » (p petit = stationnaire), KPSS pose H0 « stationnaire » (p grand = stationnaire). Quand les deux concordent, la conclusion ne dépend pas du choix de l'hypothèse nulle — beaucoup plus robuste qu'un test seul.
+- Piège : ne pas lire les deux p-values dans le même sens.
+
+**Q : D'où sort la variance « de long terme » σ²η/(1−ΣΦ)² ?**
+- R : La variance de la moyenne d'une série autocorrélée fait intervenir TOUTES les autocovariances : Var(x̄) ≈ (1/T)·Σₕ γ(h) (somme sur tous les retards). Pour un AR(p), cette somme vaut exactement σ²η/(1−ΣΦᵢ)². Le s²/T classique n'en est que le cas particulier « tout γ(h≠0) = 0 », c'est-à-dire l'indépendance. Plus ΣΦ approche 1 (persistance forte), plus la correction explose.
+
+**Q : Pourquoi Box–Pierce sur les résidus, et pourquoi χ²(H − p) ?**
+- R : Il valide la condition de la correction : si les résidus de l'AR sont un bruit blanc, le modèle a capturé toute l'autocorrélation, donc la variance de long terme est le bon dénominateur. On retire p degrés de liberté car p paramètres Φ ont été estimés sur les mêmes données.
+
+**Q : Pourquoi ne pas pondérer les moyennes de titres par leur nombre de trades ?**
+- R : Ce serait réintroduire le test naïf (les gros titres redomineraient). L'équipondération est le choix le plus prudent : « une unité réelle, un vote ». Pour un outil de VALIDATION, on préfère perdre de la puissance que laisser passer un faux positif.
+
+**Q : Pourquoi le bootstrap par grappes préserve-t-il la dépendance ?**
+- R : On tire des tickers ENTIERS avec remise : l'intérieur de chaque grappe (et sa dépendance) voyage intact dans chaque réplique. On ne simule jamais l'indépendance entre trades — seule reste l'hypothèse d'indépendance entre titres.
+
+**Q : `rsi_strict` passe la porte titre avec p = 4×10⁻⁴, ce n'est pas suffisant ?**
+- R : Non : le protocole exige les DEUX portes. Son edge est partagé par beaucoup de titres (porte action OK) mais concentré sur quelques mois (p_B = 0,26, présent 138 mois sur 195) : avantage **épisodique**, sans régularité temporelle démontrable — inexploitable tel quel.
+
+**Q : Mois sans trade traités comme consécutifs — ça ne fausse pas l'ACF ?**
+- R : Limite assumée, signalée dans le rapport. Couverture > 88 % partout sauf `rsi_strict` (71 %) ; l'approximation raccourcit certains écarts temporels et tendrait plutôt à SURestimer l'autocorrélation, donc la correction — sens conservateur pour notre usage (validation).
+
+---
+
 ## Bloc 1 — Étape 2 (ANOVA + Tukey + interaction)
 
 **Q : Quelles conditions d'application de l'ANOVA avez-vous vérifiées ?**
