@@ -1,0 +1,168 @@
+% ---------------------------------------------------------------------
+%  Chapitre 4 — Le contexte des trades : comparer et caractériser
+%  (ex-étapes 2 à 6 du Bloc 1 : ANOVA, khi-deux, ACP, AFC, ACM)
+%  Rôle dans le mémoire : une fois le jugement individuel rendu
+%  (chap. 3), on compare les stratégies entre elles et on cartographie
+%  les situations d'entrée. Analyses DESCRIPTIVES et comparatives —
+%  les réserves d'indépendance du chap. 3 s'appliquent et sont
+%  signalées dans les encadrés.
+% ---------------------------------------------------------------------
+\chapter{Le contexte des trades~: comparer et caractériser}
+\label{chap:contexte}
+
+% [À RÉDIGER — chapeau du chapitre, 3-4 lignes] Idées :
+%  - Le chap. 3 a jugé chaque stratégie isolément (contre le hasard).
+%    Ce chapitre change de question : les stratégies diffèrent-elles
+%    ENTRE ELLES ? et le succès dépend-il du CONTEXTE (régime, secteur,
+%    situation d'entrée) ?
+%  - Statut des conclusions : comparatif et descriptif — on n'y valide
+%    aucune stratégie (le verdict appartient au chap. 3).
+
+% =====================================================================
+\section{Les stratégies diffèrent-elles entre elles ?}
+\label{sec:b1-etape2}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] ANOVA à 1 facteur : décomposition SCE_inter / SCE_intra,
+% statistique F ~ Fisher(k-1, n-k). Puis Tukey HSD (range studentisé).
+% Puis ANOVA à 2 facteurs (strategy x regime) avec terme d'interaction.
+\paragraph{ANOVA à un facteur.}
+\[
+  F = \frac{\mathrm{SCE}_{\text{inter}}/(k-1)}
+           {\mathrm{SCE}_{\text{intra}}/(n-k)} \sim F_{k-1,\,n-k}.
+\]
+La décomposition de la variance et le test \(F\) suivent le cadre
+classique de l'analyse de la variance~\cite{scheffe1959}.
+
+\paragraph{Comparaisons multiples (Tukey HSD).}
+Fondées sur la loi du \emph{range studentisé}, elles corrigent
+automatiquement le risque lié aux $k(k-1)/2$ paires.
+
+\paragraph{ANOVA à deux facteurs avec interaction.}
+Modèle \(\edgevar = \mu + \alpha_i + \beta_j + \gamma_{ij} + \varepsilon\)~;
+le terme d'interaction \(\gamma_{ij}\) teste si l'effet de la stratégie
+\emph{dépend du régime de marché}.
+
+\begin{conditions}
+Indépendance des observations --- hypothèse mise à l'épreuve au
+chapitre~\ref{chap:juger}~: les p-values de ce chapitre, calculées au
+niveau trade, s'entendent donc sous cette réserve (les $F$ colossaux
+restent interprétables comme ordres de grandeur)~; normalité des résidus
+(TCL)~; \textbf{homoscédasticité} vérifiée par les tests de
+\textbf{Bartlett} et de \textbf{Levene}. En cas de variances inégales,
+bascule possible vers l'ANOVA de Welch.
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres réels : F ~ 47, p ~ 1e-85 (1 facteur) ; interaction p ~ 5e-69
+L'ANOVA à un facteur rejette massivement l'égalité des moyennes
+(\(F\approx 47\), \(p\approx 10^{-85}\)). Le test de Tukey identifie
+18~paires significatives sur 45, \texttt{rsi\_strict} se détachant du
+reste. L'interaction stratégie~$\times$~régime est très significative
+(\(p\approx 5\times10^{-69}\))~: \emph{la valeur d'une stratégie dépend
+du régime de marché}.
+
+% =====================================================================
+\section{Gagner dépend-il du contexte ?}
+\label{sec:b1-etape3}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] Test du khi-deux d'indépendance sur tableau de
+% contingence : effectifs attendus E_ij = (N_i. N_.j)/N ;
+% chi2 = somme (N_ij - E_ij)^2 / E_ij ~ chi2 à (r-1)(c-1) ddl.
+\[
+  \chi^2 = \sum_{i,j}\frac{(N_{ij}-E_{ij})^2}{E_{ij}},
+  \qquad E_{ij}=\frac{N_{i\cdot}N_{\cdot j}}{N},
+  \qquad \chi^2 \sim \chi^2_{(r-1)(c-1)}.
+\]
+
+\begin{conditions}
+Effectifs théoriques \(E_{ij}\ge 5\) (règle de Cochran). Sur tableaux
+\(2\times2\) ou à faibles effectifs, recours possible à la correction de
+\textbf{Yates}, au \textbf{test exact de Fisher} ou au \textbf{G-test}.
+Indépendance des observations~: même réserve qu'à la section
+précédente (chapitre~\ref{chap:juger}).
+\end{conditions}
+
+\subsection{Résultats}
+% Chiffres réels de etape3_chi2.txt
+\begin{table}[H]
+\centering
+\caption{Dépendance de \texttt{win} au contexte (khi-deux d'indépendance).}
+\label{tab:b1-etape3}
+\small
+\begin{tabular}{@{}lrrc@{}}
+\toprule
+Croisement & $\chi^2$ & ddl & Verdict \\
+\midrule
+\texttt{win} $\times$ \texttt{regime\_entry} & $112{,}3$   & 2  & lien significatif \\
+\texttt{win} $\times$ \texttt{sector}        & $16{,}6$    & 10 & indépendance ($p=0{,}08$) \\
+\texttt{win} $\times$ \texttt{strategy}      & $6\,381{,}7$& 9  & lien très fort \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le taux de gain dépend fortement de la \emph{stratégie}, faiblement du
+\emph{régime}, et pas du \emph{secteur}.
+
+\begin{limites}
+À très grand \(n\), le \(\chi^2\) devient significatif même pour des
+liens négligeables~; la \emph{significativité} ne dit rien de la
+\emph{force} du lien. % justifie la prudence d'interprétation
+\end{limites}
+
+% =====================================================================
+\section{Le contexte d'entrée en carte --- ACP}
+\label{sec:b1-etape4}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] ACP normée (Périnel) : centrage-réduction,
+% diagonalisation de la matrice de corrélation R, valeurs propres
+% lambda_k = inertie, cercle des corrélations, cos^2, CTR.
+% Critères Kaiser / Cattell pour le nombre d'axes. Variables
+% illustratives (régime, secteur, win) projetées a posteriori (V.test).
+On réalise une \textbf{ACP normée}~\cite{saporta2006,lebart2006} sur les
+variables quantitatives de contexte (\texttt{vol\_entry},
+\texttt{rsi\_entry}, \texttt{dist\_ma200},
+\texttt{holding\_days})~; le nombre d'axes est justifié par les critères
+de \textbf{Kaiser} et de \textbf{Cattell}. Les variables qualitatives
+(\texttt{regime}, \texttt{secteur}, \texttt{win}) sont projetées en
+\textbf{illustratives} (valeur-test).
+
+\begin{conditions}
+Variables quantitatives~; standardisation obligatoire (unités
+hétérogènes)~; l'ACP ne capture que des relations \emph{linéaires}.
+\end{conditions}
+
+\subsection{Résultats}
+% [À COMPLÉTER avec etape4_acp.txt / etape4_acp.png]
+\emph{[Insérer la figure \texttt{etape4\_acp.png}, l'inertie des axes et
+la lecture du plan factoriel.]}
+
+% =====================================================================
+\section{AFC et ACM}
+\label{sec:b1-etape56}
+
+\subsection{Présentation théorique}
+% [À DÉVELOPPER] AFC sur tableau de contingence strategy x tranche de
+% résultat (profils lignes/colonnes, distance du chi-deux, résidus de
+% Haberman). ACM sur plusieurs variables qualitatives (correction de
+% Benzécri, rapport de corrélation eta^2).
+L'\textbf{AFC} analyse le tableau de contingence croisant stratégie et
+tranche de résultat~; l'\textbf{ACM} étend l'analyse à plusieurs
+variables qualitatives simultanément.
+
+\subsection{Résultats}
+% [À COMPLÉTER avec etape5_afc.* et etape6_acm.*]
+\emph{[Insérer les plans factoriels AFC et ACM et leur interprétation.]}
+
+% =====================================================================
+\section{Synthèse du chapitre}
+\label{sec:contexte-synthese}
+% [À RÉDIGER — 4-6 lignes] Idées :
+%  - Les stratégies diffèrent fortement entre elles et leur valeur
+%    dépend du régime de marché (interaction) ; le secteur ne joue pas.
+%  - MAIS aucun de ces contrastes ne remet en cause le verdict du
+%    chap. 3 : différer du voisin n'est pas battre le hasard.
+%  - Ces cartes du contexte préparent la perspective « edge
+%    conditionnel » (chap. 5).

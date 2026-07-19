@@ -41,34 +41,50 @@ caractéristiques (même titre, même durée, même sens)~: tester
 l'avantage, c'est isoler ce qui, dans la performance, ne s'explique pas
 par la simple dérive haussière du marché.
 
-\section{Planification de l'expérience}
+\section{Les trois menaces qui pèsent sur le jugement}
+\label{sec:menaces}
+
+% [À RÉDIGER — le cœur de l'introduction]
+% Idées à développer avec TES mots (annonce les trois obstacles que le
+% protocole devra franchir ; chacun sera traité dans le rapport) :
+%  1. LA DÉRIVE DU MARCHÉ : sur la période, la quasi-totalité des titres
+%     montent -> un rendement positif ne prouve aucun talent. (Déjà
+%     amorcé en §\ref{sec:but} : réponse = l'edge apparié au hasard.)
+%  2. LA MULTIPLICITÉ : dix stratégies testées d'un coup -> multiplier
+%     les occasions d'un faux positif (~40 % de risque global à 5 %).
+%     Réponse = contrôle du risque global (Bonferroni).
+%  3. LA DÉPENDANCE : les trades ne sont pas des témoins indépendants
+%     (même titre, mêmes journées de bourse, chevauchements). C'est la
+%     menace la plus grave et la moins visible -> elle sera MESURÉE
+%     avant tout test (chap. 2) puis neutralisée pas à pas (chap. 3).
+%  - Finir sur l'idée : une validation qui ignore une seule de ces
+%    menaces produit des verdicts trop optimistes ; l'outil les traite
+%    toutes les trois, et c'est sa raison d'être.
+
+\section{Démarche du mémoire}
 \label{sec:planification}
 
-% [À DÉVELOPPER] Décrire l'architecture en blocs dissociables : chaque
-% bloc a ses propres données, ses propres méthodes, sa propre conclusion,
-% et n'est validé qu'ensuite. Un bloc final de régression ne combine QUE
-% les signaux déjà validés.
-
-L'étude est organisée en \textbf{blocs indépendants}, chacun disposant
-de ses propres données et de ses propres méthodes, validé isolément
-avant tout regroupement~:
+L'étude suit le fil d'une enquête unique, du diagnostic au verdict~:
 
 \begin{description}
-  \item[Bloc~1 --- Stratégies techniques.] Les trades produits par dix
-    stratégies d'analyse technique. Question~: quels signaux graphiques
-    battent le hasard~? \textit{(chapitre~\ref{chap:bloc1})}
-  \item[Bloc~2 --- Signaux d'information.] Événements exogènes (contrats
-    publics, transactions parlementaires, réglementation, actualités).
-    \textit{(chapitre~\ref{chap:bloc2})}
-  \item[Bloc~3 --- Relations inter-actifs.] Séries de rendements
-    sectoriels~: couplage, avance/retard, prévisibilité.
-    \textit{(chapitre~\ref{chap:bloc3})}
-  \item[Bloc final --- Régression.] Combinaison des seuls signaux
-    validés en une équation prédictive. \textit{(chapitre~\ref{chap:blocfinal})}
+  \item[Chapitre~\ref{chap:donnees} --- Les données et leur structure.]
+    La base des 38\,210 trades, la construction de l'\edgevar{} apparié,
+    et le \emph{diagnostic de dépendance}~: les trois canaux par lesquels
+    les observations se ressemblent, mesurés avant tout test.
+  \item[Chapitre~\ref{chap:juger} --- Juger les stratégies.] Le cœur du
+    protocole~: du test naïf au test corrigé, une escalade de prudence
+    dont chaque étage répare une condition d'application défaillante~;
+    puis la lecture du verdict à la lumière du marché lui-même.
+  \item[Chapitre~\ref{chap:contexte} --- Le contexte des trades.]
+    Comparer les stratégies entre elles et caractériser les situations
+    d'entrée (analyse de la variance, khi-deux, analyses factorielles).
+  \item[Chapitre~\ref{chap:protocole} --- Le protocole et ses suites.]
+    L'outil récapitulé en livrable, ses limites assumées, et les étapes
+    suivantes qu'il appelle.
 \end{description}
 
-\begin{limites}
-Ce mémoire présente en détail le Bloc~1, méthodologiquement le plus
-abouti ; les Blocs~2, 3 et final sont présentés dans leur état
-d'avancement. % [à ajuster selon l'état réel au moment du rendu]
-\end{limites}
+% NOTE : l'ancienne architecture « par blocs » (stratégies / signaux
+% d'information / relations inter-actifs / régression finale) a été
+% resserrée : le mémoire se concentre sur le jugement des stratégies ;
+% les signaux d'information et la régression sont renvoyés en
+% perspectives (chap. \ref{chap:protocole}).

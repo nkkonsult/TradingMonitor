@@ -1,0 +1,85 @@
+% ---------------------------------------------------------------------
+%  Chapitre 5 — Le protocole, ses limites, ses suites
+%  Rôle : livrer L'OUTIL (le produit du stage), assumer ses limites,
+%  et tracer les étapes suivantes (dont les chantiers retirés du
+%  périmètre : logistique sur grappes, signaux d'information, lead-lag).
+% ---------------------------------------------------------------------
+\chapter{Le protocole, ses limites, ses suites}
+\label{chap:protocole}
+
+\section{Le protocole récapitulé}
+\label{sec:protocole}
+
+% [À RÉDIGER — présenter l'outil comme le LIVRABLE du stage, 5-8 lignes]
+% Idées :
+%  - Ce que le stage livre n'est pas une stratégie gagnante mais une
+%    procédure de jugement, réutilisable telle quelle sur tout signal
+%    futur de l'agent (technique, informationnel ou relationnel).
+%  - Chaque étage répare une condition d'application précise ; le
+%    verdict n'est prononcé que si TOUS les étages concordent.
+%  - Renvoyer au tableau récapitulatif.
+
+\begin{table}[H]
+\centering
+\caption{Le protocole de validation en six étages~: chaque étage répare
+une menace identifiée, et le verdict exige de tous les franchir.}
+\label{tab:protocole}
+\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.34\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Étage & Menace traitée & Outil \\
+\midrule
+1. \edgevar{} apparié au hasard & dérive du marché & Monte Carlo apparié \\
+2. Student unilatéral + TCL & variabilité d'échantillonnage & test de référence \\
+3. Seuil de Bonferroni & multiplicité (10 tests) & contrôle du risque global \\
+4. DEFF + bootstrap par grappes & dépendance intra-titre & sondages, rééchantillonnage \\
+5. Les deux portes (titre, mois) & pseudo-réplication & agrégation équipondérée \\
+6. Série mensuelle AR($p$) & autocorrélation résiduelle & variance de long terme \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Limites assumées}
+\label{sec:limites}
+
+% [À RÉDIGER — commentaire de l'encadré, 3-5 lignes] Idées :
+%  - Aucune de ces limites n'invalide le verdict ; chacune trace en
+%    revanche la frontière de ce que le protocole PEUT affirmer.
+\begin{limites}
+\begin{itemize}
+  \item Résultats établis \emph{in-sample}~: le protocole juge des
+        signaux passés~; une validation hors échantillon
+        (\emph{walk-forward}) reste nécessaire avant tout usage
+        opérationnel.
+  \item Périmètre du jugement~: dix stratégies déclarées \emph{a
+        priori}. À plus grande échelle (des milliers de variantes
+        essayées), le contrôle du \emph{data snooping} exigerait des
+        outils dédiés comme le \emph{Reality Check} de
+        White~\cite{white2000}.
+  \item Frais et conditions d'exécution modélisés de façon simplifiée.
+  \item Puissance statistique élevée sur grands échantillons~:
+        distinguer soigneusement significativité et taille d'effet.
+\end{itemize}
+\end{limites}
+
+\section{Perspectives}
+\label{sec:perspectives}
+
+% [À RÉDIGER — 3 paragraphes courts, un par perspective] Idées :
+%  1. VALIDATION TEMPORELLE : figer les seuils sur une période
+%     d'apprentissage, juger sur la suivante (walk-forward /
+%     TimeSeriesSplit) — la validation croisée classique est interdite
+%     ici (fuite du futur).
+%  2. L'EDGE CONDITIONNEL : modéliser P(win | contexte) par une
+%     régression logistique. Écartée de ce mémoire PAR RIGUEUR : sur
+%     38 210 trades dépendants, les p-values des coefficients seraient
+%     trop optimistes (même piège qu'au chap. 3). Les outils adaptés
+%     (modèles à effets mixtes, équations d'estimation généralisées)
+%     dépassent le cadre du M1 -> prochaine étape naturelle.
+%  3. LES AUTRES SIGNAUX DE L'AGENT : l'agent collecte aussi des
+%     signaux d'information (contrats publics, transactions du
+%     Congrès, réglementation) et des relations d'avance/retard entre
+%     titres (causalité de Granger \cite{granger1969}). Des travaux
+%     exploratoires ont été engagés sur ces deux fronts ; le protocole
+%     du chap. 3 est précisément l'outil qui permettra de les juger —
+%     hors du périmètre de ce mémoire.

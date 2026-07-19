@@ -1,63 +1,177 @@
 % ---------------------------------------------------------------------
-%  Chapitre 2 — Données
+%  Chapitre 2 — Les données et leur structure de dépendance
+%  Principe du chapitre : décrire les données PUIS mesurer, AVANT tout
+%  test, les trois canaux par lesquels les observations se ressemblent.
+%  (Le chap. 3 s'appuiera sur ces mesures : « la menace quantifiée en
+%  §2.3 »). Réflexe du cours de sondages : connaître son plan
+%  d'échantillonnage avant d'estimer.
 % ---------------------------------------------------------------------
-\chapter{Données}
+\chapter{Les données et leur structure de dépendance}
 \label{chap:donnees}
 
-\section{Bloc 1 --- la base des trades}
-\label{sec:donnees-bloc1}
+\section{La base des trades}
+\label{sec:donnees-trades}
 
-% [À DÉVELOPPER] 1 ligne = 1 trade. 38 035 trades exploitables issus de
-% 10 stratégies sur les titres du S&P 500. Décrire la construction de la
-% référence aléatoire (rand_return) et de la variable edge.
+% [À COMPLÉTER si tu veux étoffer] 1 ligne = 1 trade fermé. Provenance :
+% moteur de stratégies de l'agent développé en stage (10 stratégies
+% d'analyse technique, titres du S&P 500, 2010-2026).
 
-La base du Bloc~1 comporte \textbf{38\,035 trades} exploitables~; chaque
-ligne correspond à une position ouverte puis fermée par l'une des
-dix stratégies sur un titre du S\&P~500.
+La base comporte \textbf{38\,210 trades} exploitables, produits par dix
+stratégies d'analyse technique sur \textbf{501 titres} du S\&P~500 entre
+janvier~2010 et juillet~2026~; chaque ligne correspond à une position
+ouverte puis fermée par une stratégie sur un titre.
 
 \begin{table}[H]
 \centering
 \caption{Principales variables de \texttt{trades.csv}.}
-\label{tab:dico-bloc1}
+\label{tab:dico-trades}
 \small
 \begin{tabular}{@{}lll@{}}
 \toprule
 Variable & Nature & Rôle \\
 \midrule
-\texttt{strategy}     & qualitative (10 mod.) & facteur principal \\
-\texttt{sector}       & qualitative (11 mod.) & contexte \\
-\texttt{regime\_entry}& qualitative           & régime de marché à l'entrée \\
-\texttt{vol\_entry}   & quantitative          & volatilité à l'entrée \\
-\texttt{rsi\_entry}   & quantitative          & niveau de RSI à l'entrée \\
-\texttt{dist\_ma200}  & quantitative          & distance à la MM200 \\
-\texttt{return\_net}  & quantitative          & rendement net du trade \\
-\texttt{rand\_return} & quantitative          & rendement d'un trade aléatoire équivalent \\
-\texttt{edge}         & quantitative          & \textbf{avantage} $=$ \texttt{return\_net} $-$ \texttt{rand\_return} \\
-\texttt{win}          & binaire               & trade gagnant (1) ou non (0) \\
+\texttt{ticker}       & qualitative (501 mod.) & titre traité (grappe naturelle) \\
+\texttt{strategy}     & qualitative (10 mod.)  & facteur principal \\
+\texttt{sector}       & qualitative (11 mod.)  & contexte \\
+\texttt{entry\_date}, \texttt{exit\_date} & dates & fenêtre d'exposition du trade \\
+\texttt{holding\_days}& quantitative           & durée de détention \\
+\texttt{regime\_entry}& qualitative            & régime de marché à l'entrée \\
+\texttt{vol\_entry}   & quantitative           & volatilité à l'entrée \\
+\texttt{rsi\_entry}   & quantitative           & niveau de RSI à l'entrée \\
+\texttt{dist\_ma200}  & quantitative           & distance à la MM200 \\
+\texttt{return\_net}  & quantitative           & rendement net du trade \\
+\texttt{rand\_return} & quantitative           & rendement d'un trade aléatoire équivalent \\
+\texttt{edge}         & quantitative           & \textbf{avantage} $=$ \texttt{return\_net} $-$ \texttt{rand\_return} \\
+\texttt{win}          & binaire                & trade gagnant (1) ou non (0) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \paragraph{Construction de la référence aléatoire.}
-% argument à savoir défendre à l'oral
+% argument à savoir défendre à l'oral (c'est un Monte Carlo apparié)
 Pour chaque trade réel, on simule 200 trades fictifs de même titre,
 durée et sens, mais à dates de départ tirées au sort~; la moyenne de
 leurs rendements donne \texttt{rand\_return}. L'\edgevar{} mesure alors
 l'écart entre le rendement réel et ce que l'on aurait obtenu « sans
 talent de timing ».
 
-\section{Bloc 3 --- les rendements sectoriels}
-\label{sec:donnees-bloc3}
+\section{Les rendements sectoriels}
+\label{sec:donnees-secteurs}
 
-% [À DÉVELOPPER] 11 séries de rendements sectoriels + un indice MARCHE,
-% ~4 132 jours de cotation.
-Le Bloc~3 s'appuie sur \textbf{11 séries de rendements sectoriels}
-(plus un indice de marché agrégé) observées sur environ 4\,132 jours de
-cotation.
+% Sert au diagnostic de dépendance (§2.3, canal 2) et à la lecture du
+% verdict (chap. 3) : 11 séries de rendements quotidiens sectoriels
+% + un indice MARCHE agrégé, ~4 132 jours de cotation.
+En complément de la base des trades, on dispose de \textbf{11 séries de
+rendements quotidiens sectoriels} (plus un indice de marché agrégé)
+observées sur environ 4\,132 jours de cotation. Elles serviront à
+mesurer la part \emph{commune} des mouvements du marché
+(section~\ref{sec:dep-mesuree}) puis à éclairer le verdict du
+chapitre~\ref{chap:juger}.
 
-\section{Bloc 2 --- signaux d'information}
-\label{sec:donnees-bloc2}
-% [À DÉVELOPPER] Sources événementielles collectées via agents n8n :
-% contrats publics, transactions du Congrès, réglementation, actualités.
-% Décrire le schéma de données (cf. modélisation MCD/MLD prévue).
-\emph{[Section à compléter : sources, périmètre, schéma de données.]}
+\section{La structure de dépendance, mesurée}
+\label{sec:dep-mesuree}
+
+% [À RÉDIGER — chapeau de la section, 5-8 lignes] Idées :
+%  - Les tests du chap. 3 traiteront chaque trade comme un témoin. Or un
+%    témoignage ne vaut que s'il est indépendant des autres. Avant de
+%    tester, on fait donc le bilan : PAR OÙ les trades peuvent-ils se
+%    ressembler ?
+%  - C'est le réflexe du cours de sondages : décrire le plan
+%    d'échantillonnage (ici : des trades qui arrivent en grappes par
+%    titre, en vagues par date, et qui se chevauchent dans le temps)
+%    AVANT de calculer la moindre erreur-type.
+%  - Annonce des trois canaux et de leur mesure, chacun par une méthode
+%    de cours : ICC (ANOVA), corrélations + ACP, ACF.
+
+% --- Canal 1 : les grappes par titre ---------------------------------
+\subsection{Canal 1 --- les grappes par titre}
+\label{sec:dep-canal1}
+
+% [À RÉDIGER] Idées :
+%  - Deux trades sur le même titre partagent la vie de ce titre (même
+%    société, mêmes chocs spécifiques) : la base est un TIRAGE PAR
+%    GRAPPES (grappe = ticker), pas un échantillon i.i.d.
+%  - Mesure : corrélation intra-grappe (ICC), estimée par la
+%    décomposition inter/intra de l'ANOVA :
+\[
+  \hat\rho \;=\; \frac{\mathrm{MSB}-\mathrm{MSW}}
+                      {\mathrm{MSB} + (n_0 - 1)\,\mathrm{MSW}},
+\]
+%    avec MSB / MSW les carrés moyens inter / intra-titres et n_0 la
+%    taille moyenne ajustée des grappes.
+%  - Lecture du tableau 2.2 : rho quasi nul pour les stratégies à gros
+%    effectifs, mais jusqu'à 0,134 (rsi_strict) : les trades d'un même
+%    titre y votent partiellement « en bloc ».
+
+% --- Canal 2 : les vagues simultanées --------------------------------
+\subsection{Canal 2 --- les vagues simultanées et le facteur marché}
+\label{sec:dep-canal2}
+
+% [À RÉDIGER] Idées :
+%  - Deux trades ouverts le même jour partagent les mêmes journées de
+%    bourse. Or les signaux se déclenchent EN VAGUES : un jour de krach
+%    fait sonner le RSI sur des dizaines de titres à la fois.
+%  - La cause commune se mesure : corrélation moyenne entre secteurs
+%    = 0,70 (hors diagonale) -> le marché bouge largement « d'un bloc ».
+%  - ACP des rendements sectoriels (figure 2.1) : la première composante
+%    capte 73 % de la variance, TOUS les secteurs de même signe -> c'est
+%    le FACTEUR MARCHÉ (risque systématique). La deuxième (8 %) oppose
+%    secteurs défensifs et cycliques.
+%  - Conclusion du canal : la « cause commune » derrière les trades
+%    simultanés n'est pas une hypothèse, c'est une mesure : 73 % des
+%    mouvements sont portés par une force unique.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.78\linewidth]{etape3_acp.png}
+  \caption{ACP des rendements sectoriels~: la première composante
+  (73~\% de la variance, secteurs tous de même signe) est le
+  \emph{facteur marché}.}
+  \label{fig:acp-marche}
+\end{figure}
+
+% --- Canal 3 : les chevauchements dans le temps ----------------------
+\subsection{Canal 3 --- les chevauchements dans le temps}
+\label{sec:dep-canal3}
+
+% [À RÉDIGER] Idées :
+%  - Les trades DURENT : médiane 70 jours, moyenne ~137, et 74 % des
+%    trades dépassent un mois. Deux mois voisins partagent donc des
+%    trades encore ouverts -> même agrégées par mois, les observations
+%    se ressemblent d'un mois sur l'autre.
+%  - Mesure : autocorrélation d'ordre 1 de la série des moyennes
+%    mensuelles d'edge, rho(1) jusqu'à 0,56 (ma_crossover), cf.
+%    tableau 2.2.
+
+\begin{table}[H]
+\centering
+\caption{Les dépendances mesurées, stratégie par stratégie~:
+corrélation intra-titre $\hat\rho$ (canal~1) et autocorrélation
+mensuelle $\hat\rho(1)$ (canal~3).}
+\label{tab:dep-mesures}
+\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Stratégie & $\hat\rho$ intra-titre & $\hat\rho(1)$ mensuelle \\
+\midrule
+\texttt{db\_bottom}    & $0{,}000$ & $0{,}36$ \\
+\texttt{dt\_top}       & $0{,}000$ & $0{,}39$ \\
+\texttt{hs\_classic}   & $0{,}087$ & $0{,}15$ \\
+\texttt{hs\_inverse}   & $0{,}001$ & $0{,}31$ \\
+\texttt{ma\_crossover} & $0{,}003$ & $0{,}56$ \\
+\texttt{rsi\_classic}  & $0{,}000$ & $0{,}23$ \\
+\texttt{rsi\_strict}   & $0{,}134$ & $0{,}03$ \\
+\texttt{rsi\_trend}    & $0{,}010$ & $0{,}20$ \\
+\texttt{sr\_breakdown} & $0{,}051$ & $0{,}11$ \\
+\texttt{sr\_breakout}  & $0{,}004$ & $0{,}05$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% [À RÉDIGER — conclusion de section, 3-5 lignes] Idées :
+%  - Bilan : les trois canaux existent et sont mesurés. Aucun n'est
+%    assez fort pour crever les yeux (rho intra-titre souvent ~0), mais
+%    le chapitre suivant montrera qu'ils suffisent à renverser des
+%    verdicts.
+%  - Transition : on peut maintenant tester — en sachant exactement ce
+%    qui menace les tests.

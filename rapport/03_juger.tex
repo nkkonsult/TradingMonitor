@@ -1,15 +1,22 @@
- % ---------------------------------------------------------------------
-%  Chapitre 3 — BLOC 1 (chapitre développé)
+% ---------------------------------------------------------------------
+%  Chapitre 3 — JUGER LES STRATÉGIES (le cœur du mémoire)
 %  Suit les 5 points des consignes pour CHAQUE méthode :
 %   théorie -> conditions d'application -> résultats -> limites
+%  Structure : étape 1 (test de référence, rédigée) -> étape 1 bis
+%  (l'escalade de prudence face à la dépendance) -> lecture du verdict
+%  (le marché comme série temporelle) -> synthèse.
 % ---------------------------------------------------------------------
-\chapter{Bloc 1 --- valeur des stratégies techniques}
-\label{chap:bloc1}
+\chapter{Juger les stratégies~: l'escalade de prudence}
+\label{chap:juger}
+\label{chap:bloc1} % ancien nom du label conservé pour d'éventuels renvois
 
+% [À REFORMULER si tu veux — chapeau du chapitre, 3-4 lignes]
 Ce chapitre traite la question~: \emph{parmi dix stratégies d'analyse
 technique, lesquelles produisent un avantage (\edgevar) significativement
-positif~?} L'analyse procède en six étapes, des tests univariés aux
-analyses factorielles.
+positif~?} On applique d'abord le test de référence sous ses hypothèses
+standard, puis on met à l'épreuve, une à une, ses conditions
+d'application — en s'appuyant sur la structure de dépendance mesurée au
+chapitre~\ref{chap:donnees}.
 
 % =====================================================================
 \section{Étape 1 --- chaque stratégie bat-elle le hasard ?}
@@ -253,8 +260,6 @@ donc être prise en compte.
 % =====================================================================
 \section{Étape 1 bis --- le verdict survit-il à la dépendance des trades ?}
 \label{sec:b1-dependance}
-% NOTE STRUCTURE : l'intro du chapitre dit « six étapes » -> à ajuster
-% (« sept étapes » ou reformuler) quand tu rédiges cette section.
 
 \subsection{La question posée à l'outil}
 % [À RÉDIGER — schéma « on se demande… »]
@@ -262,48 +267,34 @@ donc être prise en compte.
 %  - L'encadré « conditions » de l'étape 1 contenait une hypothèse restée
 %    dans l'ombre : l'INDÉPENDANCE des trades. Un outil de validation
 %    honnête doit tester ses propres conditions, pas les décréter.
-%  - Pourquoi elle est douteuse ici, par DEUX portes possibles :
-%      porte ACTION  : deux trades sur le même titre partagent la vie de
-%                      ce titre (même société, mêmes chocs) ;
-%      porte PÉRIODE : deux trades simultanés partagent les mêmes journées
-%                      de bourse — les stratégies déclenchent en vagues
-%                      (un signal RSI<30 sonne sur des dizaines de titres
-%                      le même jour de krach), et les trades DURENT
-%                      (holding jusqu'à ~300 jours), donc se chevauchent.
+%  - Or le chapitre 2 (§ structure de dépendance) a MESURÉ trois canaux
+%    par lesquels les trades se ressemblent : les grappes par titre
+%    (rho intra-titre jusqu'à 0,134), les vagues simultanées portées par
+%    le facteur marché (73 % de la variance commune), les chevauchements
+%    temporels (74 % des trades > 1 mois, rho(1) mensuel jusqu'à 0,56).
+%    On regroupe les deux premiers en « porte ACTION » et « porte
+%    PÉRIODE » : les deux seules voies par lesquelles deux trades
+%    peuvent partager une cause commune.
 %  - Conséquence mécanique : n trades ≠ n informations indépendantes.
 %    L'erreur-type s/√n est sous-estimée -> t gonflé -> p-values trop
 %    optimistes -> risque de faux positifs à l'étape 1.
 %  - La question : les deux verdicts positifs (rsi_classic, rsi_strict)
 %    survivent-ils quand on retire l'hypothèse d'indépendance ?
-%  - Annonce du plan : diagnostiquer (ICC), corriger (DEFF, bootstrap),
-%    puis FERMER chaque porte (agrégation), et enfin vérifier que la
-%    porte « mois » elle-même tient (série mensuelle).
+%  - Annonce du plan (l'escalade) : corriger la variance (DEFF),
+%    vérifier sans hypothèse de forme (bootstrap par grappes), FERMER
+%    chaque porte (agrégation), et enfin vérifier que la porte « mois »
+%    elle-même tient (série mensuelle).
 
 \subsection{Les méthodes qui y répondent}
 
-% --- MÉTHODE 1 : diagnostiquer la porte « action » --------------------
-\subsubsection*{Corrélation intra-grappe (ICC)}
-% [À RÉDIGER] Idées :
-%  - On se demande : les edges de trades d'un même titre se ressemblent-ils
-%    plus que ceux de titres différents ? La corrélation intra-grappe
-%    (grappe = ticker) répond, estimée par la décomposition de la variance
-%    de l'ANOVA (inter-titres vs intra-titre), la même qu'à l'étape 2 :
-\[
-  \hat\rho \;=\; \frac{\mathrm{MSB}-\mathrm{MSW}}
-                      {\mathrm{MSB} + (n_0 - 1)\,\mathrm{MSW}},
-\]
-%  avec MSB / MSW les carrés moyens inter / intra et n_0 la taille moyenne
-%  ajustée des grappes (effectifs déséquilibrés).
-%  - Lecture : rho = 0 -> les trades d'un même titre ne se ressemblent pas
-%    plus que deux trades quelconques (indépendance plausible) ; rho > 0
-%    -> les trades d'un même titre votent « en bloc ».
-
-% --- MÉTHODE 2 : corriger la variance (cours de sondages) -------------
+% --- MÉTHODE 1 : corriger la variance (cours de sondages) -------------
 \subsubsection*{Effet de plan de Kish (DEFF)}
 % [À RÉDIGER] Idées :
 %  - Nos trades ne sont pas un échantillon i.i.d. mais un TIRAGE PAR
 %    GRAPPES (on « visite » 500 titres, chaque titre livre plusieurs
-%    trades) : cadre exact du cours de théorie des sondages.
+%    trades) : cadre exact du cours de théorie des sondages. La
+%    ressemblance intra-grappe rho a été mesurée au chap. 2
+%    (tab.~\ref{tab:dep-mesures}) ; reste à la FACTURER.
 %  - L'effet de plan de Kish quantifie ce que la mise en grappes coûte :
 \[
   \mathrm{DEFF} = 1 + (\bar m - 1)\,\hat\rho,
@@ -317,17 +308,19 @@ donc être prise en compte.
 %  - On refait alors le Student de l'étape 1 avec l'erreur-type corrigée
 %    (df = n_eff - 1), même seuil de Bonferroni 0,005.
 
-% --- MÉTHODE 3 : robustesse sans hypothèse de forme -------------------
+% --- MÉTHODE 2 : robustesse sans hypothèse de forme -------------------
 \subsubsection*{Bootstrap par grappes}
 % [À RÉDIGER] Idées :
-%  - Vérification croisée : on rééchantillonne des TITRES ENTIERS (avec
-%    remise), jamais des trades isolés -> la structure de dépendance
-%    interne de chaque titre est transportée telle quelle dans chaque
-%    réplique. 4 000 tirages -> p-value empirique sans hypothèse de
-%    normalité NI d'indépendance entre trades d'un même titre.
+%  - Vérification croisée par rééchantillonnage (bootstrap,
+%    \cite{efron1979} — hors cours, introduit avec sa référence) : on
+%    rééchantillonne des TITRES ENTIERS (avec remise), jamais des trades
+%    isolés -> la structure de dépendance interne de chaque titre est
+%    transportée telle quelle dans chaque réplique. 4 000 tirages ->
+%    p-value empirique sans hypothèse de normalité NI d'indépendance
+%    entre trades d'un même titre.
 %  - Seule hypothèse restante : l'indépendance ENTRE titres.
 
-% --- MÉTHODE 4 : le test décisif -------------------------------------
+% --- MÉTHODE 3 : le test décisif -------------------------------------
 \subsubsection*{Les deux portes : une unité réelle, un vote}
 % [À RÉDIGER] Idées :
 %  - Corriger la variance ne suffit pas : le DEFF garde la pondération du
@@ -343,7 +336,7 @@ donc être prise en compte.
 %    grappes (k ≈ 500 / 190).
 %  - Verdict exigé : passer LES DEUX portes (seuil Bonferroni sur chaque).
 
-% --- MÉTHODE 5 : la porte « mois » est-elle vraiment fermée ? ---------
+% --- MÉTHODE 4 : la porte « mois » est-elle vraiment fermée ? ---------
 \subsubsection*{Série mensuelle : le pipeline de séries temporelles}
 % [À RÉDIGER] Idées (méthode = cours de séries temporelles, pipeline
 % d'estimation ARMA appliqué avec q = 0) :
@@ -491,8 +484,26 @@ de validation)~; les mois sans trade sont traités comme consécutifs dans
 les séries mensuelles~; l'ordre des AR est plafonné à~6.
 \end{limites}
 
+\subsection{Positionnement dans la littérature financière}
+\label{sec:b1-positionnement}
+% [À RÉDIGER — 5 à 8 lignes, la « double ancre »] Idées :
+%  - Les outils de ce chapitre ont été construits à partir des seuls
+%    concepts de cours (sondages, ANOVA, séries temporelles) ; or ils
+%    coïncident avec les standards de l'économétrie financière — signe
+%    que la démarche converge vers la pratique établie.
+%  - L'agrégation par mois (une statistique par période, puis inférence
+%    sur la série des périodes) est exactement la démarche de
+%    Fama--MacBeth \cite{famamacbeth1973}, standard du domaine.
+%  - La variance de long terme estimée via l'AR poursuit le même
+%    objectif que les erreurs-types robustes à l'autocorrélation de
+%    Newey--West \cite{neweywest1987} (version paramétrique, validée ici
+%    par Box--Pierce).
+%  - Le contrôle des faux positifs sur un GRAND univers de stratégies
+%    relèverait du « Reality Check » de White \cite{white2000} ; à dix
+%    stratégies, Bonferroni suffit et reste le choix le plus prudent.
+
 % [À RÉDIGER — 3 à 5 lignes de conclusion de section] Idées :
-%  - Verdict du Bloc 1 au standard corrigé : AUCUNE des dix stratégies ne
+%  - Verdict au standard corrigé : AUCUNE des dix stratégies ne
 %    démontre d'avantage réel. Le verdict de l'étape 1 ne tenait que par
 %    une condition non vérifiée.
 %  - C'est LE résultat central du mémoire : l'outil de validation a
@@ -510,147 +521,72 @@ les séries mensuelles~; l'ordre des AR est plafonné à~6.
 %  2. Encadré conditions de l'étape 1 : ajouter un renvoi du type
 %     « l'indépendance des trades est mise à l'épreuve en
 %     section~\ref{sec:b1-dependance} ».
-%  3. Synthèse du chapitre (sec:b1-synthese) à réécrire : plus aucune
-%     stratégie validée (texte actuel obsolète).
-%  4. Étapes 2-6 : signaler dans leurs limites que l'indépendance y est
-%     aussi supposée (renvoi vers la section 1 bis).
+%  3. Fin de l'étape 1 : une phrase de transition à rédiger (« ce verdict
+%     reste suspendu à une condition non encore vérifiée : l'indépendance
+%     des trades — objet de la section suivante »).
 % ------------------------------------------------------------------
 
 % =====================================================================
-\section{Étape 2 --- les stratégies diffèrent-elles entre elles ?}
-\label{sec:b1-etape2}
+\section{Lecture du verdict --- le marché comme série temporelle}
+\label{sec:b1-lecture}
 
-\subsection{Présentation théorique}
-% [À DÉVELOPPER] ANOVA à 1 facteur : décomposition SCE_inter / SCE_intra,
-% statistique F ~ Fisher(k-1, n-k). Puis Tukey HSD (range studentisé).
-% Puis ANOVA à 2 facteurs (strategy x regime) avec terme d'interaction.
-\paragraph{ANOVA à un facteur.}
-\[
-  F = \frac{\mathrm{SCE}_{\text{inter}}/(k-1)}
-           {\mathrm{SCE}_{\text{intra}}/(n-k)} \sim F_{k-1,\,n-k}.
-\]
-La décomposition de la variance et le test \(F\) suivent le cadre
-classique de l'analyse de la variance~\cite{scheffe1959}.
+% [À RÉDIGER — chapeau, 3-4 lignes] Idées :
+%  - Le verdict est tombé : aucune stratégie ne démontre d'avantage.
+%    Avant de conclure, on se demande si ce résultat était prévisible —
+%    en interrogeant le marché lui-même, avec les outils du cours de
+%    séries temporelles.
+%  - Rappel du chap. 2 : la dépendance SIMULTANÉE est massive (facteur
+%    marché, 73 %). Question restante : existe-t-il de la dépendance
+%    RETARDÉE — la seule qu'une stratégie puisse exploiter, puisqu'il
+%    faut un délai pour passer un ordre ?
 
-\paragraph{Comparaisons multiples (Tukey HSD).}
-Fondées sur la loi du \emph{range studentisé}, elles corrigent
-automatiquement le risque lié aux $k(k-1)/2$ paires.
+\subsection{Les méthodes qui y répondent}
+% [À RÉDIGER] Idées (tout est vu en cours, section séries temporelles) :
+%  - Stationnarité d'abord (condition de toute modélisation) : test de
+%    Dickey--Fuller augmenté sur le PRIX puis sur le RENDEMENT de
+%    l'indice de marché. Attendu du cours : prix non stationnaire
+%    (marche aléatoire), rendement stationnaire -> on modélise le
+%    rendement, jamais le prix.
+%  - ACF du rendement : la « mémoire » d'un jour sur l'autre.
+%  - ARIMA \cite{boxjenkins1970} sur le rendement : cherche une
+%    structure exploitable combinant AR et MA.
 
-\paragraph{ANOVA à deux facteurs avec interaction.}
-Modèle \(\edgevar = \mu + \alpha_i + \beta_j + \gamma_{ij} + \varepsilon\)~;
-le terme d'interaction \(\gamma_{ij}\) teste si l'effet de la stratégie
-\emph{dépend du régime de marché}.
+\subsection{Résultats}
+% Chiffres RÉELS de bloc3/03_resultats/etape4_arima.txt :
+%   ADF prix : p = 0,999 (non stationnaire -> marche aléatoire)
+%   ADF rendement : p = 3,9e-26 (stationnaire)
+%   ACF du rendement, retards 1..10 : entre -0,08 et +0,09 (quasi nuls)
+%   ARIMA(1,0,1) : ar1 = -0,77 et ma1 = +0,70 se compensent presque ->
+%   aucune structure exploitable.
+% [À RÉDIGER — lecture, 6-10 lignes] Idées :
+%  - Le prix est une marche aléatoire (l'ARIMA(0,1,0) du cours) ; le
+%    rendement, quasi sans autocorrélation, est proche d'un bruit blanc :
+%    son propre passé ne prédit guère le lendemain.
+%  - C'est l'EFFICIENCE FAIBLE du marché : la dépendance retardée est
+%    quasi absente.
+%  - La boucle est bouclée : le marché regorge de dépendance simultanée
+%    (73 % — toxique pour les tests, intradable) et manque de dépendance
+%    retardée (la seule exploitable). L'échec des dix stratégies n'est
+%    pas un accident : c'est la signature de cette asymétrie.
 
 \begin{conditions}
-Indépendance~; normalité des résidus (TCL)~; \textbf{homoscédasticité}
-vérifiée par les tests de \textbf{Bartlett} et de \textbf{Levene}. En cas
-de variances inégales, bascule possible vers l'ANOVA de Welch.
+Travailler sur les \textbf{rendements} (stationnaires), jamais sur les
+prix bruts~; la stationnarité est vérifiée par le test de Dickey--Fuller
+avant toute modélisation.
 \end{conditions}
 
-\subsection{Résultats}
-% Chiffres réels : F ~ 47, p ~ 1e-85 (1 facteur) ; interaction p ~ 5e-69
-L'ANOVA à un facteur rejette massivement l'égalité des moyennes
-(\(F\approx 47\), \(p\approx 10^{-85}\)). Le test de Tukey identifie
-18~paires significatives sur 45, \texttt{rsi\_strict} se détachant du
-reste. L'interaction stratégie~$\times$~régime est très significative
-(\(p\approx 5\times10^{-69}\))~: \emph{la valeur d'une stratégie dépend
-du régime de marché}.
-
 % =====================================================================
-\section{Étape 3 --- gagner dépend-il du contexte ?}
-\label{sec:b1-etape3}
-
-\subsection{Présentation théorique}
-% [À DÉVELOPPER] Test du khi-deux d'indépendance sur tableau de
-% contingence : effectifs attendus E_ij = (N_i. N_.j)/N ;
-% chi2 = somme (N_ij - E_ij)^2 / E_ij ~ chi2 à (r-1)(c-1) ddl.
-\[
-  \chi^2 = \sum_{i,j}\frac{(N_{ij}-E_{ij})^2}{E_{ij}},
-  \qquad E_{ij}=\frac{N_{i\cdot}N_{\cdot j}}{N},
-  \qquad \chi^2 \sim \chi^2_{(r-1)(c-1)}.
-\]
-
-\begin{conditions}
-Effectifs théoriques \(E_{ij}\ge 5\) (règle de Cochran). Sur tableaux
-\(2\times2\) ou à faibles effectifs, recours possible à la correction de
-\textbf{Yates}, au \textbf{test exact de Fisher} ou au \textbf{G-test}.
-\end{conditions}
-
-\subsection{Résultats}
-% Chiffres réels de etape3_chi2.txt
-\begin{table}[H]
-\centering
-\caption{Dépendance de \texttt{win} au contexte (khi-deux d'indépendance).}
-\label{tab:b1-etape3}
-\small
-\begin{tabular}{@{}lrrc@{}}
-\toprule
-Croisement & $\chi^2$ & ddl & Verdict \\
-\midrule
-\texttt{win} $\times$ \texttt{regime\_entry} & $112{,}3$   & 2  & lien significatif \\
-\texttt{win} $\times$ \texttt{sector}        & $16{,}6$    & 10 & indépendance ($p=0{,}08$) \\
-\texttt{win} $\times$ \texttt{strategy}      & $6\,381{,}7$& 9  & lien très fort \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Le taux de gain dépend fortement de la \emph{stratégie}, faiblement du
-\emph{régime}, et pas du \emph{secteur}.
-
-\begin{limites}
-À très grand \(n\), le \(\chi^2\) devient significatif même pour des
-liens négligeables~; la \emph{significativité} ne dit rien de la
-\emph{force} du lien. % justifie la prudence d'interprétation
-\end{limites}
-
-% =====================================================================
-\section{Étape 4 --- ACP du contexte d'entrée}
-\label{sec:b1-etape4}
-
-\subsection{Présentation théorique}
-% [À DÉVELOPPER] ACP normée (Périnel) : centrage-réduction,
-% diagonalisation de la matrice de corrélation R, valeurs propres
-% lambda_k = inertie, cercle des corrélations, cos^2, CTR.
-% Critères Kaiser / Cattell pour le nombre d'axes. Variables
-% illustratives (régime, secteur, win) projetées a posteriori (V.test).
-On réalise une \textbf{ACP normée}~\cite{saporta2006,lebart2006} sur les
-variables quantitatives de contexte (\texttt{vol\_entry},
-\texttt{rsi\_entry}, \texttt{dist\_ma200},
-\texttt{holding\_days})~; le nombre d'axes est justifié par les critères
-de \textbf{Kaiser} et de \textbf{Cattell}. Les variables qualitatives
-(\texttt{regime}, \texttt{secteur}, \texttt{win}) sont projetées en
-\textbf{illustratives} (valeur-test).
-
-\begin{conditions}
-Variables quantitatives~; standardisation obligatoire (unités
-hétérogènes)~; l'ACP ne capture que des relations \emph{linéaires}.
-\end{conditions}
-
-\subsection{Résultats}
-% [À COMPLÉTER avec etape4_acp.txt / etape4_acp.png]
-\emph{[Insérer la figure \texttt{etape4\_acp.png}, l'inertie des axes et
-la lecture du plan factoriel.]}
-
-% =====================================================================
-\section{Étapes 5 et 6 --- AFC et ACM}
-\label{sec:b1-etape56}
-
-\subsection{Présentation théorique}
-% [À DÉVELOPPER] AFC sur tableau de contingence strategy x tranche de
-% résultat (profils lignes/colonnes, distance du chi-deux, résidus de
-% Haberman). ACM sur plusieurs variables qualitatives (correction de
-% Benzécri, rapport de corrélation eta^2).
-L'\textbf{AFC} analyse le tableau de contingence croisant stratégie et
-tranche de résultat~; l'\textbf{ACM} étend l'analyse à plusieurs
-variables qualitatives simultanément.
-
-\subsection{Résultats}
-% [À COMPLÉTER avec etape5_afc.* et etape6_acm.*]
-\emph{[Insérer les plans factoriels AFC et ACM et leur interprétation.]}
-
-% =====================================================================
-\section{Synthèse du Bloc 1}
+\section{Synthèse du chapitre}
 \label{sec:b1-synthese}
-Sur dix stratégies, seules les deux variantes RSI (hors filtre de
-tendance) démontrent un avantage réel~; cet avantage dépend du régime de
-marché. Le secteur n'influe pas sur la probabilité de gain.
+% [À RÉDIGER — la synthèse du cœur du mémoire, 8-12 lignes] Idées :
+%  - Rappel du chemin : test naïf (deux stratégies « gagnantes ») ->
+%    conditions mises à l'épreuve -> DEFF, bootstrap, deux portes,
+%    série mensuelle -> plus AUCUNE stratégie ne passe.
+%  - rsi_classic : faux positif de pseudo-réplication, démasqué par les
+%    deux portes. rsi_strict : avantage réel par titre mais épisodique
+%    dans le temps -> non exploitable tel quel.
+%  - Lecture du verdict : cohérent avec un marché proche de l'efficience
+%    faible (pas de dépendance retardée à exploiter).
+%  - Le message central : le protocole a fait exactement son travail —
+%    il a démasqué son propre faux positif en vérifiant ses conditions.
+%    Un verdict négatif rendu proprement, c'est l'outil qui fonctionne.

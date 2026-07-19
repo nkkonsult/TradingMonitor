@@ -16,8 +16,10 @@
 \input{preambule}
 
 % --- Métadonnées ------------------------------------------------------
-\newcommand{\titrememoire}{Évaluation statistique de signaux de trading :\\
-  des stratégies techniques aux relations inter-sectorielles}
+% Titre PROPOSÉ (recentrage acté : protocole de validation, données
+% dépendantes). Reformule-le à ta main si tu veux.
+\newcommand{\titrememoire}{Juger des stratégies de trading :\\
+  un protocole statistique de validation sur données dépendantes}
 \newcommand{\auteur}{Prénom NOM}          % <-- à compléter
 \newcommand{\encadrant}{Nicolas Poulin}    % encadrant unique (consignes §2)
 \newcommand{\anneeuniv}{2025--2026}
@@ -38,13 +40,12 @@
 % ======================================================================
 %  CORPS DU RAPPORT
 % ======================================================================
-\input{01_introduction}   % but du mémoire + planification de l'expérience
-\input{02_donnees}        % présentation des données par bloc
-\input{03_bloc1}          % Bloc 1 — DÉVELOPPÉ (théorie, conditions, résultats, limites)
-\input{04_bloc2}          % Bloc 2 — esquissé
-\input{05_bloc3}          % Bloc 3 — esquissé
-\input{06_blocfinal}      % Bloc final — esquissé
-\input{07_conclusion}     % bilan + limites globales + perspectives
+\input{01_introduction}   % le stage, la question statistique, les trois menaces
+\input{02_donnees}        % les données + la structure de dépendance MESURÉE
+\input{03_juger}          % le cœur : l'escalade de prudence + lecture du verdict
+\input{04_contexte}       % comparer et caractériser (ANOVA, khi2, ACP/AFC/ACM)
+\input{05_protocole}      % le protocole livrable, limites, perspectives
+\input{06_conclusion}     % bilan + ouverture
 
 % ======================================================================
 %  BIBLIOGRAPHIE (hors décompte)
@@ -56,6 +57,6 @@
 %  ANNEXES (10 pages max — PAS de code complet)
 % ======================================================================
 \appendix
-\input{08_annexes}
+\input{07_annexes}
 
 \end{document}
