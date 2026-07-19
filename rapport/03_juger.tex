@@ -71,16 +71,12 @@ gouvernant la stratégie, et sa moyenne
 \(\bar e\), peut-on conclure que la vraie valeur \(\mu_{\edgevar}\) est
 positive~?
 
-Sa mise en œuvre suppose  : que l'edge 
-vérifie un critère de normalité […], et que les trades soient indépendants les uns des autres. La première sera assouplie par le TCL (ci-après) ; 
-la seconde, plus délicate, sera examinée en section suivante.
-
 Le test de Student à un échantillon répond à cette question en confrontant
 \(\mu_{\edgevar}\) à une valeur de référence fixée à zéro (zéro~$=$ aucun
 avantage sur le hasard). Sa mise en \oe uvre suppose deux conditions : que l'edge
 vérifie un critère de normalité, et que les trades soient indépendants les uns des autres.
 La première sera assouplie par le TCL (ci-après) ; 
-la seconde, plus délicate, sera examinée en section suivante.On oppose ainsi deux
+la seconde, plus délicate, sera examinée en section suivante. On oppose ainsi deux
 hypothèses~:
 \[
   \begin{cases}
@@ -178,8 +174,10 @@ limite, qui garantit la quasi-normalité de la moyenne sur les grands
   \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
   \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
 \]
+Cette justification suppose un effectif suffisant ;
+un outil générique devrait écarter les stratégies trop peu fournies.
 Ici, \(n\) est compris entre 978 et 8\,513 selon la stratégie, ce qui est
-largement suffisant pour appliquer le TCL.
+largement suffisant.
 La condition réellement utile au test de Student est donc satisfaite,
 malgré le rejet de Shapiro--Wilk.
 
@@ -254,6 +252,18 @@ Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
 
 Seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
 correction de Bonferroni.
+
+Il est judicieux de rappeler que ce test vient uniquement répondre à la question de savoir 
+si le edge moyen positif est dû seulement à l'échantillon, auquel cas on conserve H0 ce qui
+signifie que la stratégie n'est pas gagnante.
+Toutefois dans le cas inverse, on pourra affirmer que la stratégie a capturé un signal,
+mais pas qu'elle est gagnante pour deux raisons. 
+D'une part, un edge positif ne signifie pas des gains positifs, mais simplement que l'on perd moins que le hasard. 
+D'autre part, dû au fait que n est grand, la loi normale de la moyenne a une largeur qui s'écrase~: 
+on fait alors ressortir comme significatives des stratégies dont la moyenne d'edges n'est que très 
+faiblement positive, que les frais suffiraient à rendre perdantes.
+
+
 
 \begin{limites}
 À très grand $n$, un test de Student devient sensible au moindre écart~:

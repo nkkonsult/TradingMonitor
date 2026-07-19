@@ -27,11 +27,22 @@
 - R : Le **nombre d'erreurs-types** séparant l'edge moyen observé de zéro. t = ē / (s/√n). Petit t → banal (dans le bruit) ; grand t → suspect, écart difficile à attribuer au hasard. Le √n récompense la quantité de données : même edge = plus convaincant sur 7000 trades que sur 20.
 - Piège : ne pas confondre **erreur-type** (incertitude sur la moyenne, s/√n) et **écart-type** (dispersion des données, s).
 
+**Q : Pourquoi diviser par l'écart-type ? Pourquoi ne pas garder ē seul ?**
+- R : ē seul n'est pas interprétable : +0,012 est-il « loin » de 0 ? Ça dépend de la dispersion. Diviser par s/√n convertit ē en **nombre d'écarts-types au-dessus de 0** → une échelle universelle qui permet de calculer une p-value. Sans cette mise à l'échelle, aucune référence pour juger « loin ».
+
+**Q : Pourquoi une loi de Student et pas une normale ?**
+- R : Si on connaissait le vrai σ, (ē−µ)/(σ/√n) serait **normale** exacte. Mais σ est inconnu, remplacé par **s estimé sur le même échantillon** → on divise une variable (ē) par une autre variable (s) → la loi du rapport est **Student** (n−1 ddl), une cloche à queues un peu plus épaisses qui absorbe l'incertitude sur s. Student = normale corrigée du fait que s est estimé.
+- Nuance à dégainer : à grand n, s ≈ σ → Student ≈ normale (indiscernables au-delà de n≈100). À nos n (978 à 8 513), aucune différence pratique — d'où l'emploi de « normale » via le TCL, rigoureusement une Student.
+- Piège : le **TCL** parle de la normalité de **ē** ; le nom **Student** parle de la loi du **t** (car s estimé). Les deux ne se contredisent pas.
+
+**Q : Comment estime-t-on l'écart-type s ?**
+- R : Écart-type empirique : s = √[ (1/(n−1)) Σ(eᵢ−ē)² ]. On divise par **n−1** (correction de Bessel), pas n : les écarts sont calculés par rapport à ē elle-même estimée sur les données → sans correction, on sous-estimerait la vraie dispersion. C'est le **même n−1** que les degrés de liberté de la loi de Student (un degré « consommé » pour estimer ē).
+
 **Q : La condition de Student, c'est la normalité des données ou de la moyenne ?**
 - R : Formellement le test suppose la normalité des **observations** (l'edge). Mais ce qui rend réellement t valide, c'est la normalité de la **moyenne** ē — garantie par le TCL à grand n même si les observations ne sont pas normales. Raisonnement en 3 temps : condition posée sur l'edge → Shapiro la teste, échec → TCL la sauve via la moyenne.
 
 **Q : Shapiro rejette la normalité partout. Comment justifiez-vous alors un test de Student ?**
-- R : Le Student ne suppose pas la normalité des données brutes mais celle de *la moyenne*. Le **théorème central limite** garantit la quasi-normalité de la moyenne pour n grand (ici 973 à 8 469 trades). La condition qui compte est donc satisfaite.
+- R : Le Student ne suppose pas la normalité des données brutes mais celle de *la moyenne*. Le **théorème central limite** garantit la quasi-normalité de la moyenne pour n grand (ici 978 à 8 513 trades). La condition qui compte est donc satisfaite.
 - Piège : ne pas prétendre que « les données sont normales ». Assumer le rejet et s'appuyer explicitement sur le TCL.
 
 **Q : Concrètement, comment le test de Shapiro « voit »-il la normalité ? Et pourquoi W ≈ 1 = normal ?**
