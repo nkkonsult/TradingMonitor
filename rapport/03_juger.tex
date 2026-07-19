@@ -71,12 +71,16 @@ gouvernant la stratégie, et sa moyenne
 \(\bar e\), peut-on conclure que la vraie valeur \(\mu_{\edgevar}\) est
 positive~?
 
+Sa mise en œuvre suppose  : que l'edge 
+vérifie un critère de normalité […], et que les trades soient indépendants les uns des autres. La première sera assouplie par le TCL (ci-après) ; 
+la seconde, plus délicate, sera examinée en section suivante.
+
 Le test de Student à un échantillon répond à cette question en confrontant
 \(\mu_{\edgevar}\) à une valeur de référence fixée à zéro (zéro~$=$ aucun
-avantage sur le hasard). Sa mise en \oe uvre suppose toutefois que l'edge
-vérifie un critère de normalité~; cette condition, d'abord énoncée sur
-l'edge lui-même, sera ensuite assouplie grâce au théorème central limite,
-comme on le verra à la suite de ce test. On oppose ainsi deux
+avantage sur le hasard). Sa mise en \oe uvre suppose deux conditions : que l'edge
+vérifie un critère de normalité, et que les trades soient indépendants les uns des autres.
+La première sera assouplie par le TCL (ci-après) ; 
+la seconde, plus délicate, sera examinée en section suivante.On oppose ainsi deux
 hypothèses~:
 \[
   \begin{cases}
@@ -174,6 +178,8 @@ limite, qui garantit la quasi-normalité de la moyenne sur les grands
   \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
   \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
 \]
+Ici, \(n\) est compris entre 978 et 8\,513 selon la stratégie, ce qui est
+largement suffisant pour appliquer le TCL.
 La condition réellement utile au test de Student est donc satisfaite,
 malgré le rejet de Shapiro--Wilk.
 
@@ -221,7 +227,7 @@ la \textbf{correction de Bonferroni}~:
 
 \begin{conditions}
 Indépendance des trades~; normalité \emph{de la moyenne} assurée par le
-théorème central limite ($n$ compris entre 973 et 8\,469 selon la
+théorème central limite ($n$ compris entre 978 et 8\,513 selon la
 stratégie).
 \end{conditions}
 
@@ -236,11 +242,11 @@ stratégie).
 \toprule
 Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
 \midrule
-\texttt{rsi\_classic} & 7\,083 & $+0{,}0127$ & $3{,}9\times10^{-9}$  & \textbf{bat le hasard} \\
-\texttt{rsi\_strict}  &   973  & $+0{,}1308$ & $8\times10^{-10}$     & \textbf{bat le hasard} \\
-\texttt{rsi\_trend}   & 2\,777 & $+0{,}0027$ & $0{,}19$             & non \\
-\texttt{db\_bottom}   & 8\,469 & $-0{,}0029$ & $0{,}99$             & non \\
-\texttt{ma\_crossover}& 5\,411 & $-0{,}0241$ & $\approx 1$          & non \\
+\texttt{rsi\_classic} & 7\,117 & $+0{,}0123$ & $1{,}2\times10^{-8}$  & \textbf{bat le hasard} \\
+\texttt{rsi\_strict}  &   978  & $+0{,}1313$ & $5{,}5\times10^{-10}$ & \textbf{bat le hasard} \\
+\texttt{rsi\_trend}   & 2\,789 & $+0{,}0021$ & $0{,}25$             & non \\
+\texttt{db\_bottom}   & 8\,513 & $-0{,}0025$ & $0{,}98$             & non \\
+\texttt{ma\_crossover}& 5\,417 & $-0{,}0248$ & $\approx 1$          & non \\
 \multicolumn{5}{c}{\footnotesize (autres stratégies~: $p>0{,}45$, non significatives)} \\
 \bottomrule
 \end{tabular}
@@ -512,12 +518,10 @@ les séries mensuelles~; l'ordre des AR est plafonné à~6.
 
 % ------------------------------------------------------------------
 % TODO (mécanique, hors rédaction — à faire par le chat sur demande) :
-%  1. Tableau de l'étape 1 (tab:b1-etape1) encore sur l'ANCIENNE base
-%     (38 035) -> mettre à jour avec etape1_tests.txt (38 210 trades) :
-%     rsi_classic n=7117, +0,0123, p=1,2e-8 ; rsi_strict n=978, +0,1313,
-%     p=5,5e-10 ; rsi_trend n=2789, +0,0021, p=0,25 ; db_bottom n=8513,
-%     -0,0025, p=0,98 ; ma_crossover n=5417, -0,0248, p~1.
-%     Idem « 973 à 8 469 » dans l'encadré conditions -> « 978 à 8 513 ».
+%  1. [FAIT le 19/07] Tableau étape 1, encadré conditions et phrase TCL
+%     remis sur la base 38 210. MAIS : relecture « chiffres périmés » de
+%     TOUT le rapport encore À FAIRE avant rendu (d'autres 38 035 /
+%     anciennes p-values peuvent traîner ailleurs). Ne pas oublier.
 %  2. Encadré conditions de l'étape 1 : ajouter un renvoi du type
 %     « l'indépendance des trades est mise à l'épreuve en
 %     section~\ref{sec:b1-dependance} ».

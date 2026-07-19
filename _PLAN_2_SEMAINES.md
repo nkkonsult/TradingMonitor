@@ -53,6 +53,13 @@ Granger, bloc final logistique → tous mentionnés en perspectives (ch. 5).
 
 ## 4. Points de vigilance
 
+0. **⚠️ RELECTURE « CHIFFRES PÉRIMÉS » (à faire avant rendu, NE PAS OUBLIER)** :
+   le rapport a d'abord été écrit sur l'ANCIENNE base (38 035 trades). Le tableau
+   de l'étape 1, l'encadré conditions et la phrase TCL du ch. 3 ont été remis sur
+   la base actuelle (38 210) le 19/07, mais **tout le reste doit être repassé au
+   peigne fin** : chercher les vieux nombres (38 035, n par stratégie 973/8 469/
+   7 083…, anciennes p-values et W) partout dans `rapport/*.tex`. Source de vérité :
+   `bloc1/03_resultats/*.txt` et `bloc3/03_resultats/*.txt`.
 1. **≤ 40 pages** : les tableaux du ch. 3 sont nombreux — si dépassement, basculer
    les tables 1b et 1d en annexe (garder les deux portes dans le corps).
 2. Citations : les `\cite` du positionnement sont dans des commentaires-trames →
