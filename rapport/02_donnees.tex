@@ -12,9 +12,22 @@
 \section{La base des trades}
 \label{sec:donnees-trades}
 
-% [À COMPLÉTER si tu veux étoffer] 1 ligne = 1 trade fermé. Provenance :
-% moteur de stratégies de l'agent développé en stage (10 stratégies
-% d'analyse technique, titres du S&P 500, 2010-2026).
+% [À RÉDIGER — présentation de la matière première, 8-12 lignes]
+% Idées à développer avec TES mots :
+%  - Provenance : le moteur de stratégies de l'agent développé en stage
+%    (10 stratégies d'analyse technique, titres du S&P 500, 2010->2026).
+%    Chaque LIGNE = un trade fermé (une position ouverte puis clôturée
+%    par une stratégie sur un titre) -> unité statistique du chap. 3.
+%  - Volumétrie : 38 210 trades exploitables, 501 titres.
+%  - Présenter le tableau des variables (tab:dico-trades ci-dessous) :
+%    distinguer les qualitatives (strategy, sector, regime) des
+%    quantitatives de contexte (vol, rsi, dist_ma200, holding) et des
+%    variables de résultat (return_net, edge, win).
+%  - IMPORTANT (sert le chap. 3) : signaler dès ici que `ticker` est une
+%    GRAPPE naturelle (plusieurs trades par titre) et que `entry/exit_date`
+%    ouvrent la fenêtre d'exposition (des trades qui DURENT) -> ce sont
+%    les deux ingrédients de la dépendance mesurée en §2.3. Ne pas encore
+%    la traiter, juste la semer.
 
 La base comporte \textbf{38\,210 trades} exploitables, produits par dix
 stratégies d'analyse technique sur \textbf{501 titres} du S\&P~500 entre
@@ -48,7 +61,23 @@ Variable & Nature & Rôle \\
 \end{table}
 
 \paragraph{Construction de la référence aléatoire.}
-% argument à savoir défendre à l'oral (c'est un Monte Carlo apparié)
+% [À RÉDIGER — le point clé du chapitre, à défendre à l'oral, 6-10 lignes]
+% Idées à développer avec TES mots (c'est un Monte Carlo APPARIÉ) :
+%  - Problème : sur la période, la quasi-totalité des titres montent ->
+%    un rendement positif ne prouve aucun talent. Il faut neutraliser la
+%    dérive du marché.
+%  - Solution : pour CHAQUE trade réel, on simule 200 trades fictifs de
+%    MÊME exposition (même titre, même durée, même sens) mais à date
+%    d'entrée TIRÉE AU SORT -> la moyenne de leurs rendements = rand_return
+%    = « ce qu'aurait rapporté une entrée au hasard de même exposition ».
+%  - edge = return_net - rand_return : on retranche le hasard du marché à
+%    chaque trade -> ce qui reste est le TALENT DE TIMING, pas la chance
+%    d'un marché porteur.
+%  - Nuance à poser (elle resservira au chap. 3) : l'edge est une
+%    DIFFÉRENCE appariée (trade réel vs son propre benchmark), dans
+%    l'esprit du test de Student apparié du cours.
+%  - Éviter la redite avec l'intro (§\ref{sec:but}) : là c'était le
+%    CONCEPT (pourquoi) ; ici c'est la CONSTRUCTION (comment, dans la base).
 Pour chaque trade réel, on simule 200 trades fictifs de même titre,
 durée et sens, mais à dates de départ tirées au sort~; la moyenne de
 leurs rendements donne \texttt{rand\_return}. L'\edgevar{} mesure alors
@@ -58,9 +87,18 @@ talent de timing ».
 \section{Les rendements sectoriels}
 \label{sec:donnees-secteurs}
 
-% Sert au diagnostic de dépendance (§2.3, canal 2) et à la lecture du
-% verdict (chap. 3) : 11 séries de rendements quotidiens sectoriels
-% + un indice MARCHE agrégé, ~4 132 jours de cotation.
+% [À RÉDIGER — court, 4-6 lignes : c'est une donnée SECONDAIRE]
+% Idées à développer avec TES mots :
+%  - Nature : 11 séries de rendements quotidiens sectoriels + un indice
+%    de marché agrégé, ~4 132 jours de cotation. (Distinct de la base des
+%    trades : ici on observe le marché lui-même, pas les positions.)
+%  - À quoi ça sert (annoncer les 2 usages, sans les traiter) :
+%    (a) mesurer la part COMMUNE des mouvements = le canal 2 de la
+%        dépendance (§\ref{sec:dep-mesuree}) ;
+%    (b) éclairer le verdict du chap. 3 (le marché est-il prévisible par
+%        son passé ? -> lecture du verdict).
+%  - Ne pas détailler les résultats ici (facteur marché, ARIMA) : ils
+%    viennent au §2.3 et au chap. 3.
 En complément de la base des trades, on dispose de \textbf{11 séries de
 rendements quotidiens sectoriels} (plus un indice de marché agrégé)
 observées sur environ 4\,132 jours de cotation. Elles serviront à
