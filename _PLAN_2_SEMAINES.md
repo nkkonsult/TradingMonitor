@@ -49,20 +49,20 @@ Granger, bloc final logistique → tous mentionnés en perspectives (ch. 5).
 ### RESTE À RÉDIGER (13 jours, rendu 3/08 — marge intégrée)
 | Jour | À boucler | Charge |
 |---|---|---|
-| **Mar 22/07** | **Ch. 2** entier (§2.1 base+edge, §2.2 secteurs, §2.3 les 3 canaux) | moyenne |
-| **Mer 23/07** | **Ch. 3 étape 1 bis** : la question + 4 méthodes (DEFF, bootstrap, deux portes, série mensuelle) | **LOURDE (cœur)** |
-| **Jeu 24/07** | **Ch. 3 étape 1 bis** : lecture des 3 tableaux + positionnement littérature | moyenne |
-| **Ven 25/07** | **Ch. 3** : lecture du verdict (ARIMA/efficience) + synthèse. → **ch. 3 fini** | moyenne |
-| **Sam 26/07** | **Ch. 4** : recalcul étapes 2-6 SANS oracle (chat) + rédaction ANOVA & χ² | moyenne |
-| **Dim 27/07** | **Ch. 4** : lectures ACP/AFC/ACM + synthèse → **ch. 4 fini** | moyenne |
-| **Lun 28/07** | **Ch. 5** (protocole, limites+survivorship, perspectives) + **Ch. 6** (conclusion) | légère×2 |
-| **Mar 29/07** | **§1.3** (annonce du plan, EN DERNIER) + page de garde « Prénom NOM » + relecture chiffres périmés | légère |
-| **Mer 30/07** | **Compilation propre** : ≤ 40 pages, bijectivité biblio, figures, encadrés→texte | technique |
-| **Jeu 31/07** | **Relecture orthographe + registre** intégrale (passe « anti-oral ») | attention |
-| **Ven 1 – Sam 2/08** | **MARGE** (imprévus, 2ᵉ relecture) | tampon |
-| **Dim 3/08** | **RENDU** | — |
+| **Mer 22/07** | **Ch. 2** entier (§2.1 base+edge, §2.2 secteurs, §2.3 les 3 canaux) | moyenne |
+| **Jeu 23/07** | **Ch. 3 étape 1 bis** : la question + 4 méthodes (DEFF, bootstrap, deux portes, série mensuelle) | **LOURDE (cœur)** |
+| **Ven 24/07** | **Ch. 3 étape 1 bis** : lecture des 3 tableaux + positionnement littérature | moyenne |
+| **Sam 25/07** | **Ch. 3** : lecture du verdict (ARIMA/efficience) + synthèse. → **ch. 3 fini** | moyenne |
+| **Dim 26/07** | **Ch. 4** : recalcul étapes 2-6 SANS oracle (chat) + rédaction ANOVA & χ² | moyenne |
+| **Lun 27/07** | **Ch. 4** : lectures ACP/AFC/ACM + synthèse → **ch. 4 fini** | moyenne |
+| **Mar 28/07** | **Ch. 5** (protocole, limites+survivorship, perspectives) + **Ch. 6** (conclusion) | légère×2 |
+| **Mer 29/07** | **§1.3** (annonce du plan, EN DERNIER) + page de garde « Prénom NOM » + relecture chiffres périmés | légère |
+| **Jeu 30/07** | **Compilation propre** : ≤ 40 pages, bijectivité biblio, figures, encadrés→texte | technique |
+| **Ven 31/07** | **Relecture orthographe + registre** intégrale (passe « anti-oral ») | attention |
+| **Sam 1 – Dim 2/08** | **MARGE** (imprévus, 2ᵉ relecture) | tampon |
+| **Lun 3/08** | **RENDU** | — |
 
-**Point critique = mer 23** (étape 1 bis). Si ça déborde → étaler sur 23-24, la marge (1-2/08) absorbe.
+**Point critique = jeu 23** (étape 1 bis). Si ça déborde → étaler sur 23-24, la marge (1-2/08) absorbe.
 **Après le 3/08** : 12 jours pour diapo + exposé (oral 15/08), hors de ce calendrier.
 
 ### (ancien détail support, conservé)
