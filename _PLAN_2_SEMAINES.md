@@ -39,17 +39,36 @@ Granger, bloc final logistique → tous mentionnés en perspectives (ch. 5).
 - Jamais prétendre l'indépendance défendable. Compilation `pdflatex + biber` (pas latexmk).
 - Questions jury notées au fil de l'eau dans `rapport/preparation_oral.md`.
 
-## 3. Calendrier (15 jours)
+## 3. Calendrier (réécrit le 21/07 — état réel de l'avancée)
 
-| Jour | Rédaction (LUI) | Support (chat) |
+### DÉJÀ FAIT (au 21/07)
+- Intro **§1.1 (but)** + **§1.2 (trois menaces)** rédigées. §1.3 en trame (à faire en dernier).
+- Ch. 3 **étape 1 (Student/Shapiro/TCL/Bonferroni)** rédigée + paragraphe de clôture.
+- **Oracle témoin** créé, base à 40 362 trades, tableaux du ch. 3 à jour, encadré ch. 4.
+
+### RESTE À RÉDIGER (13 jours, rendu 3/08 — marge intégrée)
+| Jour | À boucler | Charge |
 |---|---|---|
-| **J1-J3** 19-21/07 | **Ch. 3 étape 1 bis** (le morceau central) | correction fautes au fil ; TODO mécaniques étape 1 (tableau 38 210, renvoi conditions) sur demande |
-| **J4** 22/07 | **Ch. 2 §2.3** structure de dépendance | vérif chiffres/figure ACP |
-| **J5-J6** 23-24/07 | **Ch. 3** lecture du verdict + positionnement + synthèse | — |
-| **J7-J8** 25-26/07 | **Ch. 4** (théorie ANOVA/χ² + lectures ACP/AFC/ACM) | fournir chiffres + figures depuis `bloc1/03_resultats/` |
-| **J9** 27/07 | **Ch. 1** trois menaces + **ch. 5** trames | — |
-| **J10** 28/07 | **Ch. 6** conclusion + page de garde (« Prénom NOM » !) | annexes complémentaires |
-| **J11** 29/07 | relecture chiffres | **compilation ≤ 40 pages**, bijectivité biblio, figures |
+| **Mar 22/07** | **Ch. 2** entier (§2.1 base+edge, §2.2 secteurs, §2.3 les 3 canaux) | moyenne |
+| **Mer 23/07** | **Ch. 3 étape 1 bis** : la question + 4 méthodes (DEFF, bootstrap, deux portes, série mensuelle) | **LOURDE (cœur)** |
+| **Jeu 24/07** | **Ch. 3 étape 1 bis** : lecture des 3 tableaux + positionnement littérature | moyenne |
+| **Ven 25/07** | **Ch. 3** : lecture du verdict (ARIMA/efficience) + synthèse. → **ch. 3 fini** | moyenne |
+| **Sam 26/07** | **Ch. 4** : recalcul étapes 2-6 SANS oracle (chat) + rédaction ANOVA & χ² | moyenne |
+| **Dim 27/07** | **Ch. 4** : lectures ACP/AFC/ACM + synthèse → **ch. 4 fini** | moyenne |
+| **Lun 28/07** | **Ch. 5** (protocole, limites+survivorship, perspectives) + **Ch. 6** (conclusion) | légère×2 |
+| **Mar 29/07** | **§1.3** (annonce du plan, EN DERNIER) + page de garde « Prénom NOM » + relecture chiffres périmés | légère |
+| **Mer 30/07** | **Compilation propre** : ≤ 40 pages, bijectivité biblio, figures, encadrés→texte | technique |
+| **Jeu 31/07** | **Relecture orthographe + registre** intégrale (passe « anti-oral ») | attention |
+| **Ven 1 – Sam 2/08** | **MARGE** (imprévus, 2ᵉ relecture) | tampon |
+| **Dim 3/08** | **RENDU** | — |
+
+**Point critique = mer 23** (étape 1 bis). Si ça déborde → étaler sur 23-24, la marge (1-2/08) absorbe.
+**Après le 3/08** : 12 jours pour diapo + exposé (oral 15/08), hors de ce calendrier.
+
+### (ancien détail support, conservé)
+| Jour | Support (chat) |
+|---|---|
+| au fil | correction fautes ; fournir chiffres/figures depuis `bloc1/03_resultats/` ; recalcul étapes 2-6 sans oracle |
 | **J12** 30/07 | relecture anti-plagiat intégrale | cohérence texte ↔ `03_resultats/` |
 | **J13-J15** 31/07-2/08 | **MARGE** + préparation orale (20 min + Q&A) | `preparation_oral.md` complet |
 | **3/08** | **RENDU** | — |
