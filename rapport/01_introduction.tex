@@ -14,10 +14,14 @@
 
 Lors de mon stage en entreprise j'ai eu la consigne de créer un agent IA capable de faire du trading.
 J'ai alors décidé de donner à mon agent des capacités d'analyse statistique.
-Dans un premier temps j'ai estimé qu'il fallait qu'il soit capable d'évaluer
+Après avoir créé le nécessaire pour qu'un agent puisse passer des ordres et
+avoir accès à différentes données du marché, j'ai estimé qu'il fallait qu'il soit capable d'évaluer
 les stratégies de trading qu'il aura établies.
 
-L'objet de ce mémoire n'est pas de découvrir une stratégie de trading
+Je vais présenter dans ce rapport l'outil d'évaluation de stratégies que
+j'ai donné à mon agent.
+
+L'objectif de cet outil n'est pas de découvrir une stratégie de trading
 rentable. Il est de construire un enchaînement de méthodes capable de
 déterminer, pour une stratégie quelconque qu'on lui soumet, si l'avantage
 qu'elle affiche est réel ou s'il relève du hasard d'échantillonnage
@@ -27,33 +31,17 @@ Autrement dit, la contribution revendiquée est méthodologique~:
 la chaîne de tests, sa justification et la vérification de ses conditions
 d'application. 
 
-Pour cela on a appliqué 11 stratégies sur le S\&P~500 et l'on a obtenu
-40\,362 trades, avec entre 978 et 8\,513 trades par stratégie.
-Les stratégies n'ont pas été optimisées car justement, pour les optimiser, il
-faut l'outil capable de les évaluer, ce qui constitue l'objet de ce rapport.
-On dispose alors, pour chaque trade, des données correspondantes~: le titre
-(\emph{ticker}), la stratégie employée, le secteur, les dates d'entrée et de
-sortie, la durée de détention, le régime de marché et le contexte à l'entrée
-(volatilité, RSI, distance à la moyenne mobile), le rendement et l'avantage
-(\edgevar{}) sur un tirage aléatoire équivalent.
-
 Les dix stratégies d'analyse technique utilisées dans ce
-mémoire ne constituent pas l'objet d'étude mais un banc d'essai~:
+rapport ne constituent pas l'objet d'étude mais un banc d'essai~:
 elles fournissent des jeux de données réels permettant de
 montrer que l'outil discrimine correctement — qu'il sait rejeter
 ce qui ne tient pas et retenir ce qui résiste à l'analyse. Les résultats
 obtenus sont donc présentés à titre d'illustration du bon
 fonctionnement du protocole, et non comme des recommandations
 d'investissement.
-% NOTE : « dix » = les vraies stratégies. La 11e (l'oracle, ci-dessous) n'est
-% pas un banc d'essai mais le témoin positif -> distinction volontaire.
 
-Pour vérifier que le protocole sait aussi \emph{reconnaître} un vrai avantage,
-j'ai inséré une stratégie faussée qui investit en connaissant à l'avance le
-cours du marché~: elle doit, elle, franchir toutes les étapes du protocole.
-Les dix autres stratégies sont au contraire déterminées par des signaux
-uniquement antérieurs, à l'instant de la décision de passer un ordre.
-
+Pour s'assurer que l'outil ne rejette pas tout par excès de sévérité,
+on lui soumettra aussi un témoin dont l'avantage est réel par construction.
 
 
 \section{Les trois menaces qui pèsent sur le jugement}
@@ -76,49 +64,66 @@ uniquement antérieurs, à l'instant de la décision de passer un ordre.
 %    menaces produit des verdicts trop optimistes ; l'outil les traite
 %    toutes les trois, et c'est sa raison d'être.
 
-D'autant plus que l'on a appliqué ces stratégies 
-uniquement sur le SetP500 qui représente un package de 500 action solide
-et stable. Bien que chacune des action ne monte pas forcément, l'agglomeration
-de ces actions et la part de chacune d'elle dans l'envelloppe fait que 
-l'ensemble est en croissance continue depuis X années. 
-C'est pourquoi il sera a l'evidence difficile de pouvoir assurer qu'une 
-stratégie est vraiment determinante, c'est pourquoi 
+La première difficulté tient à la dérive du marché.
+Le premier réflexe pour juger une stratégie est d'examiner si elle
+est rentable : un gain positif la ferait « marcher ». Ce raisonnement
+est pourtant trompeur, car encore faut-il que ce gain dépasse ce
+qu'une entrée au hasard aurait rapporté.
 
-\paragraph{Le biais de marché~:} % argument central à défendre à l'oral
+Ici les stratégies sont appliquées aux titres du S\&P~500,
+l'indice des 500 grandes capitalisations américaines,
+dont la tendance est haussière sur la période étudiée.
+Cette dérive haussière est un problème car une stratégie peut effectuer
+des gains sans pourtant n'avoir capté aucun signal.
+C'est pourquoi on calculera non pas les gains mais plutôt l'avantage
+qu'apporte chaque stratégie.
 
-La premiere difficulté que l'outil doit surmonter est qu'un rendement positif ne
-prouve rien en soi.
-Car sur la période étudiée, la très grande majorité des titres du S\&P~500
-progressent. La variable pertinente n'est donc pas le rendement brut mais l'avantage
-(edge) d'une stratégie sur un tirage aléatoire de mêmes
-caractéristiques (même titre, même durée, même sens). 
-Tester l'avantage, c'est exclure ce qui s'explique
-par la simple dérive haussière du marché.
+La deuxième provient du nombre de tests. En effet,
+plus on teste de stratégies, plus le risque d'obtenir au moins un faux
+positif augmente. Ce problème sera traité au
+chapitre~\ref{sec:b1-etape1} à l'aide de la correction de Bonferroni.
+
+La troisième, sans doute la plus délicate, est la dépendance
+des données. De nombreuses méthodes statistiques
+imposent en condition l'indépendance des variables, or ici les trades sont
+dépendants sous différents aspects, comme la période, le titre et même le secteur~;
+cette difficulté sera mesurée au chapitre~\ref{chap:donnees}, puis neutralisée
+au chapitre~\ref{chap:juger}.
+
+On est forcé de prendre en compte ces trois difficultés, sous peine
+d'un verdict trop optimiste : c'est leur traitement conjoint qui fait de ce
+protocole un véritable outil de validation.
 
 \section{Démarche du mémoire}
 \label{sec:planification}
 
-L'étude suit le fil d'une enquête unique, du diagnostic au verdict~:
+% [À RÉDIGER — en PROSE, 1 à 2 paragraphes, pas une liste à puces]
+% Idée directrice : UNE seule enquête, du diagnostic au verdict. Enchaîner
+% les 4 chapitres avec des transitions, dans TES mots. Squelette :
+%
+%  - Phrase d'ouverture (garde l'esprit) : ce mémoire suit une seule
+%    enquête, du diagnostic au verdict.
+%  - Ch. 2 (\ref{chap:donnees}) : on présente les données (les 40 362
+%    trades, l'edge apparié) PUIS on mesure la dépendance qui menace les
+%    tests -> on part du terrain et de ses pièges.
+%  - Ch. 3 (\ref{chap:juger}) : le CŒUR. On juge les stratégies, du test
+%    naïf au test corrigé (l'escalade de prudence), puis on lit le verdict
+%    à la lumière du marché lui-même.
+%  - Ch. 4 (\ref{chap:contexte}) : on change de question -> comparer les
+%    stratégies entre elles et caractériser le contexte d'entrée (ANOVA,
+%    khi-deux, analyses factorielles). Statut descriptif.
+%  - Ch. 5 (\ref{chap:protocole}) : on récapitule l'outil en livrable,
+%    ses limites et les étapes suivantes.
+%  - Optionnel (1 phrase) : dire que le fil va du plus fragile (la donnée,
+%    la dépendance) au plus solide (le verdict, puis l'outil réutilisable).
+%
+% Astuce transitions : « d'abord… », « le cœur du travail… », « on change
+% alors de question… », « enfin… ». Utilise les \ref{} pour les numéros.
 
-\begin{description}
-  \item[Chapitre~\ref{chap:donnees} --- Les données et leur structure.]
-    La base des 40\,362 trades, la construction de l'\edgevar{} apparié,
-    et le \emph{diagnostic de dépendance}~: les trois canaux par lesquels
-    les observations se ressemblent, mesurés avant tout test.
-  \item[Chapitre~\ref{chap:juger} --- Juger les stratégies.] Le cœur du
-    protocole~: du test naïf au test corrigé, une escalade de prudence
-    dont chaque étage répare une condition d'application défaillante~;
-    puis la lecture du verdict à la lumière du marché lui-même.
-  \item[Chapitre~\ref{chap:contexte} --- Le contexte des trades.]
-    Comparer les stratégies entre elles et caractériser les situations
-    d'entrée (analyse de la variance, khi-deux, analyses factorielles).
-  \item[Chapitre~\ref{chap:protocole} --- Le protocole et ses suites.]
-    L'outil récapitulé en livrable, ses limites assumées, et les étapes
-    suivantes qu'il appelle.
-\end{description}
+L'étude suit le fil d'une enquête unique, du diagnostic au verdict.
 
-% NOTE : l'ancienne architecture « par blocs » (stratégies / signaux
-% d'information / relations inter-actifs / régression finale) a été
-% resserrée : le mémoire se concentre sur le jugement des stratégies ;
-% les signaux d'information et la régression sont renvoyés en
-% perspectives (chap. \ref{chap:protocole}).
+% NOTE (ne pas rédiger) : l'ancienne architecture « par blocs » (stratégies
+% / signaux d'information / relations inter-actifs / régression finale) a été
+% resserrée : le mémoire se concentre sur le jugement des stratégies ; les
+% signaux d'information et la régression sont renvoyés en perspectives
+% (chap.~\ref{chap:protocole}).
