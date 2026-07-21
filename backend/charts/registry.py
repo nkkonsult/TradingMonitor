@@ -9,9 +9,11 @@ détections porte cette version -> reproductibilité (on sait quels seuils l'ont
 """
 from __future__ import annotations
 
-from .strategy import double_top_bottom, head_shoulders, ma_crossover, rsi, support_resistance
+from .strategy import double_top_bottom, head_shoulders, ma_crossover, oracle, rsi, support_resistance
 
 STRATEGIES = {
+    # Témoin positif du protocole : triche en regardant le futur (cf. strategy/oracle.py).
+    "oracle": (oracle, "Oracle (témoin — voit le futur)", {}),
     "ma_crossover": (ma_crossover, "Croisement de moyennes mobiles", {}),
     "rsi_classic": (rsi, "RSI 30/70", {"lower": 30, "upper": 70}),
     "rsi_strict": (rsi, "RSI 20/80 (strict)", {"lower": 20, "upper": 80}),
@@ -30,6 +32,7 @@ PARAMS_VERSION = "v1"
 #  - "overlay" : signal de SORTIE (éviter une chute) -> comparer au buy & hold (tenir).
 #  - "entry"   : signal d'ENTRÉE (détecter une montée) -> comparer au HASARD (pile ou face).
 EVAL_MODE = {
+    "oracle": "entry",
     "ma_crossover": "overlay",
     "rsi_classic": "overlay",
     "rsi_strict": "overlay",
