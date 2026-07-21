@@ -1,8 +1,11 @@
 # Plan de bataille — dernière ligne droite (19 juillet → 3 août 2026)
 
 > Réécrit le 19/07 après le **recentrage du mémoire** (décision actée) :
-> un seul chat, branche `main`. **Rendu : 3 août** (PDF + source), soutenance 18 août.
-> Objectif interne : **tout boucler le 30 juillet** → 4 jours de marge.
+> un seul chat, branche `main`. **Rendu rapport : 3 août** (PDF + source).
+> **Oral : 15 août** → 12 jours APRÈS le rendu pour la diapo + l'exposé
+> (hors chemin critique : rien à préparer avant le 3/08, on alimente juste
+> `preparation_oral.md` au fil de l'eau).
+> Objectif interne rapport : **tout boucler le 30 juillet** → 4 jours de marge.
 
 ---
 
@@ -53,6 +56,14 @@ Granger, bloc final logistique → tous mentionnés en perspectives (ch. 5).
 
 ## 4. Points de vigilance
 
+-1. **⚠️ ÉTAPES 2-6 (ch. 4) À RECALCULER SANS L'ORACLE** : l'oracle témoin
+   (edge ~+26 %) a été ajouté à la base (11 stratégies) ; il DOIT rester dans le
+   ch. 3 (jugement) mais être EXCLU du ch. 4 (ANOVA, χ², ACP/AFC/ACM) où il
+   écraserait tout. Les scripts `bloc1/02_methodes/etape2..6*.py` incluront
+   désormais l'oracle si on les relance -> filtrer `strategy != 'oracle'` avant
+   de régénérer les chiffres du ch. 4. Encadré déjà posé dans `04_contexte.tex`.
+   Les chiffres actuels du ch. 4 (F≈47, χ²…) datent d'AVANT l'oracle = encore
+   valides tant qu'on ne relance pas les scripts bruts.
 0. **⚠️ RELECTURE « CHIFFRES PÉRIMÉS » (à faire avant rendu, NE PAS OUBLIER)** :
    le rapport a d'abord été écrit sur l'ANCIENNE base (38 035 trades). Le tableau
    de l'étape 1, l'encadré conditions et la phrase TCL du ch. 3 ont été remis sur

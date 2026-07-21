@@ -12,34 +12,49 @@
 % trading, mais la construction d'un OUTIL DE VALIDATION statistique.
 % Les stratégies ne sont que des jeux de données de test.
 
+Lors de mon stage en entreprise j'ai eu la consigne de créer un agent IA capable de faire du trading.
+J'ai alors décidé de donner à mon agent des capacités d'analyse statistique.
+Dans un premier temps j'ai estimé qu'il fallait qu'il soit capable d'évaluer
+les stratégies de trading qu'il aura établies.
+
 L'objet de ce mémoire n'est pas de découvrir une stratégie de trading
-rentable, ni de porter un jugement d'expert sur des stratégies
-existantes. Il est de \emph{construire et d'éprouver un protocole
-statistique de validation}~: un enchaînement de méthodes capable de
+rentable. Il est de construire un enchaînement de méthodes capable de
 déterminer, pour une stratégie quelconque qu'on lui soumet, si l'avantage
-qu'elle affiche est \emph{réel} ou s'il relève du hasard d'échantillonnage
+qu'elle affiche est réel ou s'il relève du hasard d'échantillonnage
 ou du biais de marché.
 
-Autrement dit, la contribution revendiquée est \textbf{méthodologique}~:
+Autrement dit, la contribution revendiquée est méthodologique~:
 la chaîne de tests, sa justification et la vérification de ses conditions
-d'application. Les dix stratégies d'analyse technique utilisées dans ce
-mémoire ne constituent pas l'objet d'étude mais un \textbf{banc d'essai}~:
-elles fournissent des jeux de données réels et contrastés permettant de
-montrer que l'outil \emph{discrimine} correctement — qu'il sait rejeter
+d'application. 
+
+Pour cela on a appliqué 11 stratégies sur le S\&P~500 et l'on a obtenu
+40\,362 trades, avec entre 978 et 8\,513 trades par stratégie.
+Les stratégies n'ont pas été optimisées car justement, pour les optimiser, il
+faut l'outil capable de les évaluer, ce qui constitue l'objet de ce rapport.
+On dispose alors, pour chaque trade, des données correspondantes~: le titre
+(\emph{ticker}), la stratégie employée, le secteur, les dates d'entrée et de
+sortie, la durée de détention, le régime de marché et le contexte à l'entrée
+(volatilité, RSI, distance à la moyenne mobile), le rendement et l'avantage
+(\edgevar{}) sur un tirage aléatoire équivalent.
+
+Les dix stratégies d'analyse technique utilisées dans ce
+mémoire ne constituent pas l'objet d'étude mais un banc d'essai~:
+elles fournissent des jeux de données réels permettant de
+montrer que l'outil discrimine correctement — qu'il sait rejeter
 ce qui ne tient pas et retenir ce qui résiste à l'analyse. Les résultats
-obtenus sont donc présentés à titre d'\emph{illustration} du bon
+obtenus sont donc présentés à titre d'illustration du bon
 fonctionnement du protocole, et non comme des recommandations
 d'investissement.
+% NOTE : « dix » = les vraies stratégies. La 11e (l'oracle, ci-dessous) n'est
+% pas un banc d'essai mais le témoin positif -> distinction volontaire.
 
-\paragraph{Le problème du biais de marché.} % argument central à défendre à l'oral
-La difficulté centrale que l'outil doit surmonter est la suivante~: sur
-la période étudiée, la très grande majorité des titres du S\&P~500
-progressent, si bien qu'un rendement positif ne prouve rien en soi. La
-variable pertinente n'est donc pas le rendement brut mais l'\emph{avantage}
-(\edgevar{}) d'une stratégie sur un tirage aléatoire de mêmes
-caractéristiques (même titre, même durée, même sens)~: tester
-l'avantage, c'est isoler ce qui, dans la performance, ne s'explique pas
-par la simple dérive haussière du marché.
+Pour vérifier que le protocole sait aussi \emph{reconnaître} un vrai avantage,
+j'ai inséré une stratégie faussée qui investit en connaissant à l'avance le
+cours du marché~: elle doit, elle, franchir toutes les étapes du protocole.
+Les dix autres stratégies sont au contraire déterminées par des signaux
+uniquement antérieurs, à l'instant de la décision de passer un ordre.
+
+
 
 \section{Les trois menaces qui pèsent sur le jugement}
 \label{sec:menaces}
@@ -61,6 +76,25 @@ par la simple dérive haussière du marché.
 %    menaces produit des verdicts trop optimistes ; l'outil les traite
 %    toutes les trois, et c'est sa raison d'être.
 
+D'autant plus que l'on a appliqué ces stratégies 
+uniquement sur le SetP500 qui représente un package de 500 action solide
+et stable. Bien que chacune des action ne monte pas forcément, l'agglomeration
+de ces actions et la part de chacune d'elle dans l'envelloppe fait que 
+l'ensemble est en croissance continue depuis X années. 
+C'est pourquoi il sera a l'evidence difficile de pouvoir assurer qu'une 
+stratégie est vraiment determinante, c'est pourquoi 
+
+\paragraph{Le biais de marché~:} % argument central à défendre à l'oral
+
+La premiere difficulté que l'outil doit surmonter est qu'un rendement positif ne
+prouve rien en soi.
+Car sur la période étudiée, la très grande majorité des titres du S\&P~500
+progressent. La variable pertinente n'est donc pas le rendement brut mais l'avantage
+(edge) d'une stratégie sur un tirage aléatoire de mêmes
+caractéristiques (même titre, même durée, même sens). 
+Tester l'avantage, c'est exclure ce qui s'explique
+par la simple dérive haussière du marché.
+
 \section{Démarche du mémoire}
 \label{sec:planification}
 
@@ -68,7 +102,7 @@ L'étude suit le fil d'une enquête unique, du diagnostic au verdict~:
 
 \begin{description}
   \item[Chapitre~\ref{chap:donnees} --- Les données et leur structure.]
-    La base des 38\,210 trades, la construction de l'\edgevar{} apparié,
+    La base des 40\,362 trades, la construction de l'\edgevar{} apparié,
     et le \emph{diagnostic de dépendance}~: les trois canaux par lesquels
     les observations se ressemblent, mesurés avant tout test.
   \item[Chapitre~\ref{chap:juger} --- Juger les stratégies.] Le cœur du

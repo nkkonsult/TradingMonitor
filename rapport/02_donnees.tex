@@ -15,10 +15,11 @@
 % [À RÉDIGER — présentation de la matière première, 8-12 lignes]
 % Idées à développer avec TES mots :
 %  - Provenance : le moteur de stratégies de l'agent développé en stage
-%    (10 stratégies d'analyse technique, titres du S&P 500, 2010->2026).
+%    (10 vraies stratégies d'analyse technique + 1 oracle témoin, titres
+%    du S&P 500, 2010->2026).
 %    Chaque LIGNE = un trade fermé (une position ouverte puis clôturée
 %    par une stratégie sur un titre) -> unité statistique du chap. 3.
-%  - Volumétrie : 38 210 trades exploitables, 501 titres.
+%  - Volumétrie : 40 362 trades exploitables (dont oracle 2 152), 501 titres.
 %  - Présenter le tableau des variables (tab:dico-trades ci-dessous) :
 %    distinguer les qualitatives (strategy, sector, regime) des
 %    quantitatives de contexte (vol, rsi, dist_ma200, holding) et des
@@ -29,10 +30,17 @@
 %    les deux ingrédients de la dépendance mesurée en §2.3. Ne pas encore
 %    la traiter, juste la semer.
 
-La base comporte \textbf{38\,210 trades} exploitables, produits par dix
-stratégies d'analyse technique sur \textbf{501 titres} du S\&P~500 entre
-janvier~2010 et juillet~2026~; chaque ligne correspond à une position
-ouverte puis fermée par une stratégie sur un titre.
+Notre objectif étant seulement de développer un outil capable
+de déterminer si une strategies est gagnante il n'est pass nécessaires 
+d'avoir des données.
+Cependant pour sortir de l'aspect uniquement théorique j'ai tout de 
+meme décidé 
+
+La base comporte \textbf{40\,362 trades} exploitables, produits par onze
+stratégies (dix stratégies d'analyse technique et un oracle témoin) sur
+\textbf{501 titres} du S\&P~500 entre janvier~2010 et juillet~2026~;
+chaque ligne correspond à une position ouverte puis fermée par une
+stratégie sur un titre.
 
 \begin{table}[H]
 \centering
@@ -44,7 +52,7 @@ ouverte puis fermée par une stratégie sur un titre.
 Variable & Nature & Rôle \\
 \midrule
 \texttt{ticker}       & qualitative (501 mod.) & titre traité (grappe naturelle) \\
-\texttt{strategy}     & qualitative (10 mod.)  & facteur principal \\
+\texttt{strategy}     & qualitative (11 mod.)  & facteur principal \\
 \texttt{sector}       & qualitative (11 mod.)  & contexte \\
 \texttt{entry\_date}, \texttt{exit\_date} & dates & fenêtre d'exposition du trade \\
 \texttt{holding\_days}& quantitative           & durée de détention \\

@@ -202,14 +202,14 @@ d'obtenir un tel résultat sous \Hzero{}, il est peu vraisemblable d'être
 tombé dessus par hasard, et l'on accepte alors le risque de rejeter
 \Hzero{}.
 
-Seulement, ici, on effectue \(10\) tests. Plaçons-nous dans le cas le plus
+Seulement, ici, on effectue \(11\) tests. Plaçons-nous dans le cas le plus
 défavorable où aucune stratégie n'a d'avantage réel (\Hzero{} vraie pour
-les dix)~: pour un test isolé, la probabilité de ne pas conclure à tort à
+les onze)~: pour un test isolé, la probabilité de ne pas conclure à tort à
 un avantage est alors \(0{,}95\). En supposant les tests indépendants, la
-probabilité de ne commettre aucune erreur sur les \(10\) tests tombe à
-\(0{,}95^{10} \approx 0{,}60\). Le risque de commettre \emph{au moins un}
+probabilité de ne commettre aucune erreur sur les \(11\) tests tombe à
+\(0{,}95^{11} \approx 0{,}57\). Le risque de commettre \emph{au moins un}
 faux positif sur l'ensemble s'élève donc à
-\(1 - 0{,}95^{10} \approx 0{,}40\), ce qui est inacceptable.
+\(1 - 0{,}95^{11} \approx 0{,}43\), ce qui est inacceptable.
 
 Pour éviter cela, on raisonne en sens inverse~: on fixe le risque
 \emph{global} à \(0{,}05\) et l'on en déduit le seuil de chaque test.
@@ -220,7 +220,7 @@ global inférieur à \(0{,}05\), il suffit donc que la somme des seuils
 individuels soit égale à \(0{,}05\). En les prenant tous égaux, on obtient
 la \textbf{correction de Bonferroni}~:
 \[
-  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{10} = 0{,}005 .
+  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{11} \approx 0{,}0045 .
 \]
 
 \begin{conditions}
@@ -233,12 +233,14 @@ stratégie).
 % Chiffres RÉELS extraits de bloc1/03_resultats/etape1_tests.txt
 \begin{table}[H]
 \centering
-\caption{Test de l'avantage moyen par stratégie (seuil Bonferroni $=0{,}005$).}
+\caption{Test de l'avantage moyen par stratégie (seuil Bonferroni $\approx 0{,}0045$).}
 \label{tab:b1-etape1}
 \small
 \begin{tabular}{@{}lrrrc@{}}
 \toprule
 Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
+\midrule
+\texttt{oracle} (témoin) & 2\,152 & $+0{,}2626$ & $5\times10^{-53}$    & \textbf{bat le hasard} \\
 \midrule
 \texttt{rsi\_classic} & 7\,117 & $+0{,}0123$ & $1{,}2\times10^{-8}$  & \textbf{bat le hasard} \\
 \texttt{rsi\_strict}  &   978  & $+0{,}1313$ & $5{,}5\times10^{-10}$ & \textbf{bat le hasard} \\
@@ -250,7 +252,8 @@ Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
 \end{tabular}
 \end{table}
 
-Seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
+Outre l'oracle témoin (qui bat le hasard de très loin, comme attendu),
+seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
 correction de Bonferroni.
 
 Il est judicieux de rappeler que ce test vient uniquement répondre à la question de savoir 
@@ -322,7 +325,7 @@ donc être prise en compte.
 %    moyenne vaut DEFF fois celle calculée sous indépendance : tout se
 %    passe comme si l'on n'avait que n_eff = n/DEFF observations.
 %  - On refait alors le Student de l'étape 1 avec l'erreur-type corrigée
-%    (df = n_eff - 1), même seuil de Bonferroni 0,005.
+%    (df = n_eff - 1), même seuil de Bonferroni 0,0045.
 
 % --- MÉTHODE 2 : robustesse sans hypothèse de forme -------------------
 \subsubsection*{Bootstrap par grappes}
@@ -395,7 +398,7 @@ modèles AR validée par Box--Pierce sur les résidus.
 \end{conditions}
 
 \subsection{Résultats}
-% Chiffres RÉELS (base régénérée, 38 210 trades) extraits de :
+% Chiffres RÉELS (base régénérée, 40 362 trades, 11 stratégies) extraits de :
 %   bloc1/03_resultats/etape1b_dependance.txt
 %   bloc1/03_resultats/etape1c_agregation.txt
 %   bloc1/03_resultats/etape1d_serie_mensuelle.txt
@@ -409,6 +412,8 @@ modèles AR validée par Box--Pierce sur les résidus.
 \begin{tabular}{@{}lrrrccc@{}}
 \toprule
 Stratégie & $\hat\rho$ & DEFF & $n_{\text{eff}}$ & $p$ naïve & $p$ corrigée & $p$ bootstrap \\
+\midrule
+\texttt{oracle} (témoin) & $0{,}015$ & $1{,}05$ & $2\,049$ & $\approx 0$ & $\approx 0$ & $<2{,}5\times10^{-4}$ \\
 \midrule
 \texttt{rsi\_classic} & $0{,}000$ & $1{,}00$ & $7\,117$ & $1{,}2\times10^{-8}$ & $1{,}2\times10^{-8}$ & $<2{,}5\times10^{-4}$ \\
 \texttt{rsi\_strict}  & $0{,}134$ & $1{,}15$ & $848$    & $5{,}5\times10^{-10}$ & $7\times10^{-9}$     & $<2{,}5\times10^{-4}$ \\
@@ -435,6 +440,8 @@ Stratégie & $\hat\rho$ & DEFF & $n_{\text{eff}}$ & $p$ naïve & $p$ corrigée &
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
 \midrule
+\texttt{oracle} (témoin) & 482 & $\approx 0$          & 188 & $\approx 0$ & \textbf{OUI} \\
+\midrule
 \texttt{rsi\_classic}  & 501 & $0{,}059$            & 195 & $0{,}039$ & non \\
 \texttt{rsi\_strict}   & 456 & $3{,}9\times10^{-4}$ & 138 & $0{,}26$  & non \\
 \texttt{rsi\_trend}    & 495 & $0{,}22$             & 175 & $0{,}29$  & non \\
@@ -444,8 +451,11 @@ Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
 \end{tabular}
 \end{table}
 % [À RÉDIGER] Lecture à mettre dans TES mots — le c\oe ur du chapitre :
-%  - rsi_classic TOMBE AUX DEUX PORTES (0,059 et 0,039, très loin du
-%    seuil 0,005). Le t = 5,6 de l'étape 1 était de la PSEUDO-RÉPLICATION :
+%  - L'ORACLE (témoin) passe les DEUX portes de très loin (p_A et p_B ~ 0) :
+%    l'outil sait donc bien dire OUI quand l'avantage est réel. C'est la
+%    preuve qu'il ne rejette pas tout par excès de sévérité.
+%  - rsi_classic TOMBE AUX DEUX PORTES (0,059 et 0,039, loin du seuil
+%    0,0045). Le t = 5,6 de l'étape 1 était de la PSEUDO-RÉPLICATION :
 %    7 117 trades ne portaient pas 7 117 informations indépendantes.
 %    Quand chaque titre ne vote qu'une fois, l'avantage disparaît ->
 %    il était concentré sur les titres (et les mois) les plus tradés.
@@ -455,8 +465,8 @@ Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
 %    (p = 0,26) : l'avantage est ÉPISODIQUE, concentré sur quelques mois
 %    (138 mois de présence seulement). Pas de régularité temporelle
 %    démontrable -> pas exploitable tel quel.
-%  - Conclusion intermédiaire : plus AUCUNE stratégie ne passe les deux
-%    portes.
+%  - Conclusion intermédiaire : à part le témoin, plus AUCUNE vraie
+%    stratégie ne passe les deux portes -> l'outil DISCRIMINE.
 
 % --- 1d : la porte « mois » corrigée de l'autocorrélation -------------
 \begin{table}[H]
@@ -467,6 +477,8 @@ Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
 \begin{tabular}{@{}lrrrrrc@{}}
 \toprule
 Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ (AR) & $\mathrm{DEFF}_t$ & $p$ corrigée & $p$ Box--Pierce \\
+\midrule
+\texttt{oracle} (témoin) & 188 & $0{,}03$ & 3 & $2{,}0$ & $2\times10^{-90}$ & $0{,}23$ \\
 \midrule
 \texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $6{,}4$ & $0{,}94$ & $0{,}14$ \\
 \texttt{dt\_top}       & 197 & $0{,}39$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
