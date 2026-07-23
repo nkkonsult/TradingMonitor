@@ -30,67 +30,95 @@
 %    les deux ingrédients de la dépendance mesurée en §2.3. Ne pas encore
 %    la traiter, juste la semer.
 
-Notre objectif étant seulement de développer un outil capable
-de déterminer si une strategies est gagnante il n'est pass nécessaires 
-d'avoir des données.
-Cependant pour sortir de l'aspect uniquement théorique j'ai tout de 
-meme décidé 
+Tout au long de ce rapport, on appliquera les méthodes à notre base
+de données. Celle-ci a été obtenue en appliquant différentes stratégies
+sur des données antérieures. Cette méthode se nomme le \emph{backtesting}, et
+consiste à vérifier si notre stratégie a repéré un signal de prédiction
+du marché.
 
-La base comporte \textbf{40\,362 trades} exploitables, produits par onze
-stratégies (dix stratégies d'analyse technique et un oracle témoin) sur
-\textbf{501 titres} du S\&P~500 entre janvier~2010 et juillet~2026~;
-chaque ligne correspond à une position ouverte puis fermée par une
+Ici nous appliquons 10 stratégies techniques classiques ainsi qu'une stratégie
+oracle témoin.
+La stratégie oracle utilise les données futures pour effectuer des
+trades uniquement gagnants, afin de vérifier si notre protocole laisse passer
+une stratégie dont le signal fonctionne réellement.
+Les 10 autres stratégies, elles, effectuent un trade à une date fixée en
+utilisant uniquement les données précédant cette date.
+
+J'ai alors choisi d'appliquer ces stratégies de trading aux
+501 grandes capitalisations américaines présentes dans le S\&P~500.
+Le S\&P~500 est un ensemble de 501 titres sur lequel on peut investir avec peu de
+risque~: même si le cours de chacune de ces actions peut chuter
+individuellement, l'indice lui-même reste relativement stable et possède une tendance
+haussière.
+
+Pour qu'une stratégie soit validée, il faut qu'elle ait de meilleurs
+résultats qu'une stratégie au hasard et que cela ne soit pas du a 
+notre échantillonnage.
+Ici la tendance est haussière, ce qui nous amène à la première
+difficulté mentionnée dans l'introduction~: comment évaluer une 
+stratégie lorsque la tendance est haussière ?
+
+Pour répondre à cette problématique, on va simuler le hasard.
+À chaque trade réalisé, on associe 200~trades fictifs de même exposition
+(même titre, même durée, même sens), mais dont la date
+d'entrée est tirée au sort~; la moyenne de leurs rendements définit le
+gain du hasard pour ce trade.
+
+On définit alors, pour chaque trade, son \edgevar{} comme le rendement
+effectivement obtenu par la stratégie (éventuellement négatif) diminué de
+ce gain du hasard~:
+\[
+  \edgevar = \text{gain de la stratégie} - \text{gain du hasard}.
+\]
+Un \edgevar{} positif signifie que la stratégie a fait mieux qu'une entrée
+au hasard de même exposition~: son \emph{timing} apporte une information
+que la seule dérive du marché n'explique pas.
+
+On obtient ainsi une base de données contenant, pour chaque stratégie,
+entre 978 et 8\,513 trades effectués entre janvier~2010 et juillet~2026,
+pour un total de 40\,362 trades.
+Dans nos données, chaque ligne correspond à une position ouverte puis fermée par une
 stratégie sur un titre.
+On y associe les indications suivantes~: le titre
+(\emph{ticker}), la stratégie employée, le secteur, les dates d'entrée et de
+sortie, la durée de détention, le régime de marché et le contexte à l'entrée
+(volatilité, RSI, distance à la moyenne mobile), le rendement et l'avantage
+(\edgevar{}) sur un tirage aléatoire équivalent.
 
 \begin{table}[H]
 \centering
-\caption{Principales variables de \texttt{trades.csv}.}
+\caption{Description des variables d'un trade, illustrées sur un trade réel
+de la base (achat du titre \texttt{A} par la stratégie \texttt{rsi\_classic}).}
 \label{tab:dico-trades}
+\renewcommand{\arraystretch}{1.3}
 \small
-\begin{tabular}{@{}lll@{}}
+\begin{tabular}{@{}p{2.4cm}p{2.6cm}p{5.6cm}l@{}}
 \toprule
-Variable & Nature & Rôle \\
+Variable & Nature & Signification & Exemple \\
 \midrule
-\texttt{ticker}       & qualitative (501 mod.) & titre traité (grappe naturelle) \\
-\texttt{strategy}     & qualitative (11 mod.)  & facteur principal \\
-\texttt{sector}       & qualitative (11 mod.)  & contexte \\
-\texttt{entry\_date}, \texttt{exit\_date} & dates & fenêtre d'exposition du trade \\
-\texttt{holding\_days}& quantitative           & durée de détention \\
-\texttt{regime\_entry}& qualitative            & régime de marché à l'entrée \\
-\texttt{vol\_entry}   & quantitative           & volatilité à l'entrée \\
-\texttt{rsi\_entry}   & quantitative           & niveau de RSI à l'entrée \\
-\texttt{dist\_ma200}  & quantitative           & distance à la MM200 \\
-\texttt{return\_net}  & quantitative           & rendement net du trade \\
-\texttt{rand\_return} & quantitative           & rendement d'un trade aléatoire équivalent \\
-\texttt{edge}         & quantitative           & \textbf{avantage} $=$ \texttt{return\_net} $-$ \texttt{rand\_return} \\
-\texttt{win}          & binaire                & trade gagnant (1) ou non (0) \\
+\texttt{ticker}       & qualitative (501 mod.) & le titre traité (une même action revient dans plusieurs trades) & \texttt{A} \\
+\texttt{strategy}     & qualitative (11 mod.)  & la stratégie ayant produit le trade & \texttt{rsi\_classic} \\
+\texttt{sector}       & qualitative (11 mod.)  & le secteur d'activité du titre & Santé \\
+\texttt{entry\_date}  & date                   & date d'achat & 2011-08-11 \\
+\texttt{exit\_date}   & date                   & date de revente & 2012-01-20 \\
+\texttt{holding\_days}& quantitative           & durée de détention, en jours & $162$ \\
+\texttt{regime\_entry}& qualitative            & régime du marché à l'entrée & baissier \\
+\texttt{vol\_entry}   & quantitative           & volatilité du titre à l'entrée & $0{,}043$ \\
+\texttt{rsi\_entry}   & quantitative           & niveau de l'indicateur RSI à l'entrée & $30{,}1$ \\
+\texttt{dist\_ma200}  & quantitative           & écart à la moyenne mobile sur 200 jours & $-0{,}210$ \\
+\texttt{return\_net}  & quantitative           & rendement net réalisé par la stratégie & $+0{,}187$ \\
+\texttt{rand\_return} & quantitative           & rendement d'une entrée au hasard équivalente & $+0{,}078$ \\
+\texttt{edge}         & quantitative           & \textbf{avantage} = \texttt{return\_net} $-$ \texttt{rand\_return} & $+0{,}109$ \\
+\texttt{win}          & binaire                & trade gagnant ($1$) ou perdant ($0$) & $1$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Construction de la référence aléatoire.}
-% [À RÉDIGER — le point clé du chapitre, à défendre à l'oral, 6-10 lignes]
-% Idées à développer avec TES mots (c'est un Monte Carlo APPARIÉ) :
-%  - Problème : sur la période, la quasi-totalité des titres montent ->
-%    un rendement positif ne prouve aucun talent. Il faut neutraliser la
-%    dérive du marché.
-%  - Solution : pour CHAQUE trade réel, on simule 200 trades fictifs de
-%    MÊME exposition (même titre, même durée, même sens) mais à date
-%    d'entrée TIRÉE AU SORT -> la moyenne de leurs rendements = rand_return
-%    = « ce qu'aurait rapporté une entrée au hasard de même exposition ».
-%  - edge = return_net - rand_return : on retranche le hasard du marché à
-%    chaque trade -> ce qui reste est le TALENT DE TIMING, pas la chance
-%    d'un marché porteur.
-%  - Nuance à poser (elle resservira au chap. 3) : l'edge est une
-%    DIFFÉRENCE appariée (trade réel vs son propre benchmark), dans
-%    l'esprit du test de Student apparié du cours.
-%  - Éviter la redite avec l'intro (§\ref{sec:but}) : là c'était le
-%    CONCEPT (pourquoi) ; ici c'est la CONSTRUCTION (comment, dans la base).
-Pour chaque trade réel, on simule 200 trades fictifs de même titre,
-durée et sens, mais à dates de départ tirées au sort~; la moyenne de
-leurs rendements donne \texttt{rand\_return}. L'\edgevar{} mesure alors
-l'écart entre le rendement réel et ce que l'on aurait obtenu « sans
-talent de timing ».
+
+
+% NOTE : la construction de rand_return / edge est déjà rédigée plus haut
+% (paragraphe « Pour répondre à cette problématique… »). L'ancien bloc-trame
+% redondant a été retiré pour éviter d'expliquer l'edge deux fois.
 
 \section{Les rendements sectoriels}
 \label{sec:donnees-secteurs}
