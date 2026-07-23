@@ -42,7 +42,36 @@ La stratégie oracle utilise les données futures pour effectuer des
 trades uniquement gagnants, afin de vérifier si notre protocole laisse passer
 une stratégie dont le signal fonctionne réellement.
 Les 10 autres stratégies, elles, effectuent un trade à une date fixée en
-utilisant uniquement les données précédant cette date.
+utilisant uniquement les données précédant cette date. Ces dix stratégies
+sont des figures classiques de l'analyse technique, résumées dans le
+tableau~\ref{tab:strategies}.
+
+\begin{table}[H]
+\centering
+\caption{Les onze stratégies du banc d'essai et l'indicateur sur lequel
+chacune repose.}
+\label{tab:strategies}
+\renewcommand{\arraystretch}{1.25}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Stratégie & Fondée sur \\
+\midrule
+\texttt{rsi\_classic}  & indicateur RSI (seuils 30/70) \\
+\texttt{rsi\_strict}   & indicateur RSI (seuils 20/80) \\
+\texttt{rsi\_trend}    & indicateur RSI avec filtre de tendance (MM200) \\
+\texttt{ma\_crossover} & croisement de deux moyennes mobiles \\
+\texttt{db\_bottom}    & figure en double creux \\
+\texttt{dt\_top}       & figure en double sommet \\
+\texttt{hs\_inverse}   & figure épaule-tête-épaule inversée \\
+\texttt{hs\_classic}   & figure épaule-tête-épaule \\
+\texttt{sr\_breakout}  & cassure d'une résistance \\
+\texttt{sr\_breakdown} & cassure d'un support \\
+\midrule
+\texttt{oracle}        & témoin~: connaît le cours futur (triche) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 J'ai alors choisi d'appliquer ces stratégies de trading aux
 501 grandes capitalisations américaines présentes dans le S\&P~500.

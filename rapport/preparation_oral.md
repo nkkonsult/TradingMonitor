@@ -10,6 +10,40 @@
 
 ---
 
+## Fiche « fonctionnement des stratégies » (au cas où le jury demande)
+
+> ⚠️ Le rapport ne détaille PAS les mécaniques (c'est de l'analyse technique, hors
+> sujet stat). Mais le jury PEUT demander « comment marche telle stratégie ? ».
+> Savoir expliquer 2-3 familles en une phrase suffit. Règles réelles (code
+> `backend/charts/strategy/`) :
+
+- **RSI** (`rsi_classic` 30/70, `rsi_strict` 20/80, `rsi_trend` + filtre MM200) :
+  l'indicateur RSI mesure si un titre est « survendu » (bas) ou « suracheté » (haut).
+  Achat quand le RSI **ressort de la survente** (repasse au-dessus du seuil bas),
+  vente quand il ressort du surachat. `rsi_trend` n'achète qu'au-dessus de la
+  moyenne mobile 200 jours (filtre de tendance).
+- **Croisement de moyennes mobiles** (`ma_crossover`) : achat quand la moyenne
+  mobile courte passe au-dessus de la longue (*golden cross*), vente au croisement
+  inverse (*death cross*).
+- **Figures chartistes** (`db_bottom`/`dt_top` = double creux/sommet ;
+  `hs_classic`/`hs_inverse` = épaule-tête-épaule) : détection de motifs graphiques
+  de retournement (deux creux successifs = signal d'achat, etc.).
+- **Cassures** (`sr_breakout`/`sr_breakdown`) : achat quand le cours franchit une
+  résistance vers le haut, vente quand il casse un support vers le bas.
+- **`oracle`** (témoin) : triche en regardant le cours des 30 jours à venir,
+  n'entre que si ça monte d'au moins 25 %. Sert à prouver que l'outil sait valider
+  un vrai avantage (faux négatif impossible).
+
+**LA réponse-parade si le jury insiste sur une mécanique** :
+> « Le fonctionnement précis de chaque stratégie relève de l'analyse technique ;
+> mon outil est **agnostique au signal** — il juge un edge, quelle qu'en soit la
+> provenance. C'est une force du protocole, et l'oracle le prouve : il "fonctionne"
+> par un mécanisme tout autre (la triche), et l'outil le juge sans difficulté. »
+- Détail important : les 10 vraies stratégies n'utilisent QUE de l'information
+  **passée** (pas de fuite du futur) ; seul l'oracle regarde l'avenir, volontairement.
+
+---
+
 ## Bloc 1 — Étape 1 (Student, Shapiro, TCL, Bonferroni)
 
 > ⭐ **Questions issues de la rédaction** (soulevées en écrivant le rapport —
