@@ -42,9 +42,7 @@ La stratégie oracle utilise les données futures pour effectuer des
 trades uniquement gagnants, afin de vérifier si notre protocole laisse passer
 une stratégie dont le signal fonctionne réellement.
 Les 10 autres stratégies, elles, effectuent un trade à une date fixée en
-utilisant uniquement les données précédant cette date. Ces dix stratégies
-sont des figures classiques de l'analyse technique, résumées dans le
-tableau~\ref{tab:strategies}.
+utilisant uniquement les données précédant cette date. 
 
 \begin{table}[H]
 \centering
@@ -143,12 +141,6 @@ Variable & Nature & Signification & Exemple \\
 \end{tabular}
 \end{table}
 
-
-
-% NOTE : la construction de rand_return / edge est déjà rédigée plus haut
-% (paragraphe « Pour répondre à cette problématique… »). L'ancien bloc-trame
-% redondant a été retiré pour éviter d'expliquer l'edge deux fois.
-
 \section{Les rendements sectoriels}
 \label{sec:donnees-secteurs}
 
@@ -164,12 +156,19 @@ Variable & Nature & Signification & Exemple \\
 %        son passé ? -> lecture du verdict).
 %  - Ne pas détailler les résultats ici (facteur marché, ARIMA) : ils
 %    viennent au §2.3 et au chap. 3.
-En complément de la base des trades, on dispose de \textbf{11 séries de
-rendements quotidiens sectoriels} (plus un indice de marché agrégé)
-observées sur environ 4\,132 jours de cotation. Elles serviront à
-mesurer la part \emph{commune} des mouvements du marché
-(section~\ref{sec:dep-mesuree}) puis à éclairer le verdict du
-chapitre~\ref{chap:juger}.
+
+Pour étudier la dépendance des données, on a besoin de données
+par secteur.
+Le S\&P~500 compte onze secteurs d'activité. Sur chacun d'eux on établit
+une courbe du rendement journalier, obtenu en moyennant chaque jour les
+rendements des titres du secteur.
+Ces données seront utilisées d'une part dans le canal~2 du
+paragraphe~\ref{sec:dep-canal2}, pour mettre en évidence le \emph{facteur
+marché}, c'est-à-dire la part des mouvements qui est commune à tous les
+secteurs~; et d'autre part dans la conclusion du chapitre~\ref{chap:juger},
+pour examiner si le marché est \emph{prévisible} à partir de son propre passé.
+
+
 
 \section{La structure de dépendance, mesurée}
 \label{sec:dep-mesuree}
@@ -186,8 +185,18 @@ chapitre~\ref{chap:juger}.
 %  - Annonce des trois canaux et de leur mesure, chacun par une méthode
 %    de cours : ICC (ANOVA), corrélations + ACP, ACF.
 
+Les tests que nous utiliserons au chapitre~\ref{chap:juger} ne fonctionnent que
+si les données sont indépendantes.
+Ici les données sont dépendantes par titre, par date et par durée.
+Cette dépendance a un nom en théorie des sondages — notre base
+n'est pas un tirage au hasard d'individus, mais un tirage par
+grappes (une grappe = un titre). Et le réflexe du sondage 
+impose de décrire ce plan d'échantillonnage avant d'estimer
+quoi que ce soit — c'est pourquoi on mesure les dépendances 
+maintenant, avant les tests.
+
 % --- Canal 1 : les grappes par titre ---------------------------------
-\subsection{Canal 1 --- les grappes par titre}
+\subsection{Canal 1 --- la dépendance de titre}
 \label{sec:dep-canal1}
 
 % [À RÉDIGER] Idées :
@@ -196,18 +205,57 @@ chapitre~\ref{chap:juger}.
 %    GRAPPES (grappe = ticker), pas un échantillon i.i.d.
 %  - Mesure : corrélation intra-grappe (ICC), estimée par la
 %    décomposition inter/intra de l'ANOVA :
+
+Deux trades d'un même titre sont liés par la gestion de la société
+ainsi que par l'image de la société à l'extérieur.
+Ces deux trades subissent les mêmes chocs propres à la société (résultats,
+décisions de direction, litiges) indépendamment du moment où ils sont
+ouverts.
+On appellera cet effet la dépendance de titre~: nos données constituent
+alors un tirage par grappes, où chaque grappe est un titre.
+
+On va alors définir l'estimateur suivant~:
 \[
   \hat\rho \;=\; \frac{\mathrm{MSB}-\mathrm{MSW}}
                       {\mathrm{MSB} + (n_0 - 1)\,\mathrm{MSW}},
 \]
-%    avec MSB / MSW les carrés moyens inter / intra-titres et n_0 la
-%    taille moyenne ajustée des grappes.
-%  - Lecture du tableau 2.2 : rho quasi nul pour les stratégies à gros
-%    effectifs, mais jusqu'à 0,134 (rsi_strict) : les trades d'un même
-%    titre y votent partiellement « en bloc ».
+où MSB (\emph{Mean Square Between}) est la variation \textsc{entre} les
+titres, donc inter-grappes, c'est-à-dire la moyenne des écarts d'\edgevar{}
+d'un titre à l'autre~; et MSW (\emph{Mean Square Within}) est la variation
+à l'intérieur d'un titre, donc intra-grappe, c'est-à-dire la moyenne
+des écarts d'\edgevar{} entre les trades d'un même titre.
+Deux cas se présentent alors. Si les trades d'un même titre ne se ressemblent
+pas plus que ceux de titres différents, la variation est identique à
+l'intérieur des titres et entre eux, et l'on obtient MSB~$\approx$~MSW. S'ils
+se ressemblent (dépendance intra-titre), la variation à l'intérieur d'un titre
+s'effondre tandis que la variation entre les titres subsiste, et l'on obtient
+MSB~$>$~MSW.
+
+On pourrait prendre un simple quotient de MSB et MSW et lorsqu'il vaut~1,
+cela signifierait l'indépendance. Mais un écart à~1, qu'il soit de
+$0{,}1$, de~3 ou de~100, ne se rattache à aucune échelle. On ne saurait
+dire s'il traduit une dépendance forte ou faible.
+Pour obtenir une réponse du type «~13{,}4~\% du résultat est dû à une
+dépendance de grappe~», on préfère la formule vue précédemment, qui ramène
+la mesure à une valeur comprise entre~0 et~1.
+
+Le terme $n_0$ correspond à la taille moyenne des grappes, c'est-à-dire au
+nombre de trades par titre, corrigée de l'inégalité des tailles de grappes.
+Il pondère la variation intra-titre au dénominateur, ce qui ramène la mesure
+entre~0 et~1~: plus les grappes contiennent de trades, plus $n_0$ est grand,
+et plus il faut de contraste entre les titres pour conclure à une dépendance.
+
+Le tableau~\ref{tab:dep-mesures} donne un $\hat\rho$ quasi nul pour la plupart
+des stratégies, mais atteignant $0{,}134$ pour \texttt{rsi\_strict}.
+
+La dépendance par le titre est donc négligeable pour toutes les stratégies,
+excepté \texttt{rsi\_strict}. Un $\hat\rho$ faible ne garantit toutefois pas
+l'indépendance des trades~: il n'écarte que ce premier canal, les deux suivants
+restant à examiner.
+
 
 % --- Canal 2 : les vagues simultanées --------------------------------
-\subsection{Canal 2 --- les vagues simultanées et le facteur marché}
+\subsection{Canal 2 --- la dépendance de marché}
 \label{sec:dep-canal2}
 
 % [À RÉDIGER] Idées :
@@ -224,17 +272,67 @@ chapitre~\ref{chap:juger}.
 %    simultanés n'est pas une hypothèse, c'est une mesure : 73 % des
 %    mouvements sont portés par une force unique.
 
+La deuxième dépendance que l'on va mesurer dans ce canal est la dépendance
+du moment. Des trades ouverts au même moment peuvent être liés parce qu'ils
+subissent la même journée de bourse.
+Par exemple, les jours de krach, de nombreuses valeurs chutent, ce qui
+peut déclencher des stratégies et provoquer plusieurs trades qui seront alors
+liés par la tendance du marché à cet instant. Ce phénomène n'est pas
+anecdotique~: sans même parler de krach boursier, une chute soudaine de deux
+secteurs liés entre eux provoque aussi des trades dépendants.
+Tous ces cas font qu'à une même période différentes actions changent de valeur
+conjointement, et les trades effectués sont alors liés par le marché.
+
+Pour avoir une vision globale, on va utiliser les données introduites au
+point~\ref{sec:donnees-secteurs}, c'est-à-dire les rendements quotidiens par
+secteur.
+On effectue alors le calcul des corrélations des secteurs deux à deux, puis on
+en calcule la moyenne~; on obtient une corrélation de $0{,}70$.
+Ce chiffre élevé signifie que les secteurs sont largement corrélés~: lorsqu'un
+secteur bouge, le marché a tendance à bouger dans le même sens, et
+inversement, lorsque le marché suit une tendance, la plupart des secteurs la
+suivent aussi.
+
+On utilise ensuite la méthode de l'ACP sur les onze secteurs, de
+façon à mettre en évidence les plus grandes corrélations
+(figure~\ref{fig:acp-marche}).
+Cette méthode calcule les axes qui captent la plus grande
+variance et les met en lumière.
+En l'appliquant ici, on observe un premier axe qui capte
+73~\% de la variance totale, le long duquel tous les secteurs
+progressent ensemble~: c'est le mouvement global du marché.
+On a ensuite un deuxième axe, nettement moins important,
+qui sépare les secteurs cycliques, réagissant fortement au
+marché, de ceux qui sont défensifs, c'est-à-dire qui ne bougent
+pas beaucoup quelle que soit la situation du marché. On pourrait
+donner en exemple de secteur cyclique la technologie, qui dépend du pouvoir
+d'achat~; et comme secteur défensif les services aux collectivités
+(électricité, eau, gaz), dont la consommation reste constante, que le marché
+soit haussier ou en crise.
+
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.78\linewidth]{etape3_acp.png}
-  \caption{ACP des rendements sectoriels~: la première composante
-  (73~\% de la variance, secteurs tous de même signe) est le
-  \emph{facteur marché}.}
+  \caption{ACP des onze rendements sectoriels~: variance expliquée par
+  composante (gauche) et position des secteurs sur les deux premiers
+  axes (droite).}
   \label{fig:acp-marche}
 \end{figure}
 
+Sur l'histogramme de gauche, la première barre écrase toutes les autres,
+elle capte à elle seule 73~\% de la variance, contre moins de 8~\% pour la
+deuxième. Sur le nuage de droite, tous les secteurs se situent du même côté
+de l'axe horizontal (la première composante), ce qui confirme qu'ils
+progressent ensemble~; le second axe (vertical) les répartit entre secteurs
+défensifs et cycliques.
+
+Cette cause commune n'est donc pas une hypothèse mais une mesure~: 73~\% des
+mouvements sont portés par une force unique. Deux trades ouverts au même
+moment subissent largement le même sort, ce qui les rend dépendants du marché.
+
 % --- Canal 3 : les chevauchements dans le temps ----------------------
-\subsection{Canal 3 --- les chevauchements dans le temps}
+\subsection{Canal 3 --- la dépendance temporelle}
 \label{sec:dep-canal3}
 
 % [À RÉDIGER] Idées :
@@ -246,6 +344,18 @@ chapitre~\ref{chap:juger}.
 %    mensuelles d'edge, rho(1) jusqu'à 0,56 (ma_crossover), cf.
 %    tableau 2.2.
 
+Dans la suite du rapport, on va avoir besoin d'agréger les trades par mois.
+Or les trades durent~: en moyenne 132~jours, avec une médiane de 65~jours,
+et plus de 75~\% d'entre eux dépassent un mois. Un même trade, encore ouvert,
+est donc compté dans plusieurs mois consécutifs~; deux mois voisins partagent
+ainsi des trades communs et se ressemblent d'un mois à l'autre.
+Même agrégées par mois, les observations ne sont donc pas indépendantes.
+C'est pourquoi on va mesurer la corrélation d'un mois à l'autre.
+
+Pour cela, on utilise l'autocorrélation d'ordre~1, notée
+$\hat\rho(1)$~: on décale la série mensuelle d'un mois et on corrèle la série
+avec elle-même ainsi décalée. Elle mesure donc à quel point un mois ressemble
+au précédent. On obtient les valeurs suivantes.
 \begin{table}[H]
 \centering
 \caption{Les dépendances mesurées, stratégie par stratégie~:
@@ -271,10 +381,21 @@ Stratégie & $\hat\rho$ intra-titre & $\hat\rho(1)$ mensuelle \\
 \end{tabular}
 \end{table}
 
-% [À RÉDIGER — conclusion de section, 3-5 lignes] Idées :
-%  - Bilan : les trois canaux existent et sont mesurés. Aucun n'est
-%    assez fort pour crever les yeux (rho intra-titre souvent ~0), mais
-%    le chapitre suivant montrera qu'ils suffisent à renverser des
-%    verdicts.
-%  - Transition : on peut maintenant tester — en sachant exactement ce
-%    qui menace les tests.
+Le $\hat\rho(1)$ est de $0{,}56$ pour \texttt{ma\_crossover}, sa valeur la plus
+forte, tandis qu'il est faible pour \texttt{rsi\_strict} ($0{,}03$).
+La dépendance temporelle est a priori forte pour les stratégies
+à trades longs, faible pour celles à trades courts. Attention~:
+ces valeurs élevées ne traduisent pas une prévisibilité du
+marché, mais le chevauchement mécanique des trades qui durent.
+
+% ---- Conclusion du §2.3 : bilan des trois canaux + transition ch.3 ----
+Les trois canaux de dépendance sont désormais mesurés. Aucun n'est
+systématiquement élevé. La dépendance de titre reste souvent proche de zéro,
+et même l'autocorrélation temporelle s'efface pour les stratégies à trades
+courts. Mais chacun se manifeste fortement pour certaines stratégies, la
+dépendance de titre pour \texttt{rsi\_strict}, la dépendance de marché pour
+toutes, la dépendance temporelle pour \texttt{ma\_crossover}~; et le
+chapitre~\ref{chap:juger} montrera qu'ils suffisent à renverser des verdicts.
+
+On peut maintenant juger les stratégies en sachant exactement ce qui menace
+les tests.

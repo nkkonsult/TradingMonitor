@@ -133,6 +133,13 @@
 **Q : ρ intra-titre ≈ 0, donc les trades étaient indépendants ? Où était le problème ?**
 - R : L'ICC par ticker ne voit que la porte ACTION. `rsi_classic` tombe surtout par la porte PÉRIODE (p_B = 0,039 ≫ 0,005) et par l'équipondération. La dépendance a deux portes ; en fermer une ne suffit pas.
 
+**Q : Dans la formule de l'ICC, c'est quoi n₀ exactement ? (formule NON mise dans le rapport)**
+- R : n₀ = la taille MOYENNE AJUSTÉE des grappes (≈ nb de trades par titre), corrigée de l'inégalité des tailles de grappes. Formule :
+  n₀ = (1/(k−1)) · ( N − (Σ nᵢ²)/N )
+  où k = nb de titres, N = nb total de trades, nᵢ = nb de trades du titre i.
+- Pourquoi pas la moyenne brute N/k : les grappes sont très inégales (50 trades sur un titre, 3 sur un autre) ; le terme Σnᵢ²/N pénalise ce déséquilibre. Si toutes les grappes ont la même taille n, alors n₀ = n.
+- Rôle : n₀ pondère MSW dans le dénominateur `MSB + (n₀−1)·MSW`. Grosses grappes → n₀ grand → mesure plus exigeante (il faut plus de contraste inter-titres pour un même ρ̂). n₀=1 (un trade/titre) → terme intra disparaît (la corrélation intra-titre n'a pas de sens).
+
 **Q : Votre Student sur les moyennes mensuelles suppose les mois indépendants. Le sont-ils ?**
 - R : Non — c'est exactement l'objet de l'étape 1d. Des trades durent plus d'un mois → mois voisins corrélés (ρ(1) jusqu'à 0,56 pour `ma_crossover`). Correction par variance de long terme d'un AR(p) : DEFF temporel jusqu'à 6,4. Aucun verdict ne bascule.
 
@@ -151,6 +158,11 @@
 
 **Q : Pourquoi le bootstrap par grappes préserve-t-il la dépendance ?**
 - R : On tire des tickers ENTIERS avec remise : l'intérieur de chaque grappe (et sa dépendance) voyage intact dans chaque réplique. On ne simule jamais l'indépendance entre trades — seule reste l'hypothèse d'indépendance entre titres.
+
+**Q : Pourquoi l'ACP sur les 11 SECTEURS et non sur les ~500 ACTIONS ?**
+- R : Trois raisons. (1) Stabilité : 500 actions = matrice 500×500 (250 000 corrélations), mal conditionnée → ACP instable ; 11 secteurs = matrice 11×11, propre. (2) Interprétabilité : « facteur marché » et « défensifs vs cycliques » se lisent d'un coup sur 11 secteurs nommés ; sur 500 tickers, nuage illisible. (3) L'objectif du canal 2 est la GROSSE structure (le facteur marché, cause de la dépendance simultanée), parfaitement captée au niveau sectoriel.
+- Revers assumé : l'agrégation NOIE les micro-couples d'actions liées. Un couple parfaitement corrélé mais isolé donnerait un axe à part entière (2 loadings forts, les autres ≈ 0), mais sa part de variance serait infime (noyée dans le bruit de centaines d'axes) → invisible sauf recherche ciblée. L'ACP voit les grosses structures, pas les micro-liens.
+- Conséquence : détecter les liens fins entre actifs précis n'est PAS un travail d'ACP (matrice de corrélation par paires / clustering) → hors périmètre de ce mémoire (perspectives).
 
 **Q : `rsi_strict` passe la porte titre avec p = 4×10⁻⁴, ce n'est pas suffisant ?**
 - R : Non : le protocole exige les DEUX portes. Son edge est partagé par beaucoup de titres (porte action OK) mais concentré sur quelques mois (p_B = 0,26, présent 138 mois sur 195) : avantage **épisodique**, sans régularité temporelle démontrable — inexploitable tel quel.
