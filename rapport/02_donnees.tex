@@ -274,20 +274,18 @@ restant à examiner.
 
 La deuxième dépendance que l'on va mesurer dans ce canal est la dépendance
 du moment. Des trades ouverts au même moment peuvent être liés parce qu'ils
-subissent la même journée de bourse.
-Par exemple, les jours de krach, de nombreuses valeurs chutent, ce qui
-peut déclencher des stratégies et provoquer plusieurs trades qui seront alors
-liés par la tendance du marché à cet instant. Ce phénomène n'est pas
-anecdotique~: sans même parler de krach boursier, une chute soudaine de deux
-secteurs liés entre eux provoque aussi des trades dépendants.
-Tous ces cas font qu'à une même période différentes actions changent de valeur
-conjointement, et les trades effectués sont alors liés par le marché.
+subissent la même journée de bourse~: à une même période, différentes actions
+changent de valeur conjointement, et les trades effectués sont alors liés par
+le marché.
 
-Pour avoir une vision globale, on va utiliser les données introduites au
+Cette dépendance ne s'observe pas directement sur les trades, mais sur le
+marché lui-même~: si les secteurs bougent ensemble, alors des trades ouverts
+au même moment, quel que soit leur secteur, subissent la même poussée. Pour
+la mesurer, on utilise donc les données introduites au
 point~\ref{sec:donnees-secteurs}, c'est-à-dire les rendements quotidiens par
 secteur.
-On effectue alors le calcul des corrélations des secteurs deux à deux, puis on
-en calcule la moyenne~; on obtient une corrélation de $0{,}70$.
+On calcule alors les corrélations des secteurs deux à deux, puis on
+en fait la moyenne~; on obtient une corrélation de $0{,}70$.
 Ce chiffre élevé signifie que les secteurs sont largement corrélés~: lorsqu'un
 secteur bouge, le marché a tendance à bouger dans le même sens, et
 inversement, lorsque le marché suit une tendance, la plupart des secteurs la
