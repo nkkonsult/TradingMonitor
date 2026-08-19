@@ -203,6 +203,23 @@
 - R : Principe du chapitre : **on ne corrige que ce qui est mesuré** (même logique que le DEFF, appliqué seulement si ρ le justifie). Le raisonnement du recouvrement rend l'autocorrélation *plausible*, pas *certaine*, et elle varie d'une stratégie à l'autre. Box–Pierce sur la série brute (6 décalages, aucun modèle requis) tranche : si l'indépendance n'est pas rejetée, la condition du test 1c est remplie telle quelle → son verdict tient, ni AR ni stationnarité à exiger. Sinon seulement, la branche AR s'applique.
 - Bénéfice concret : cela évite d'exiger la stationnarité de séries qui n'ont besoin d'aucune correction (3 stratégies sur 11 sortent par cette branche).
 
+**Q : Ne pas corriger après un non-rejet de Box–Pierce, n'est-ce pas transformer une absence de preuve en preuve ? (⭐ objection fine)**
+- R en 3 temps : (1) **Un signal indétectable est aussi incorrigeable** : ajuster
+  un AR sur une série sans mémoire mesurable donne des Φ̂ dans le bruit et
+  DEFF_t ≈ 1 — correction de rien, payée en bruit d'estimation. Même logique
+  que le DEFF (ρ̂ ≈ 0 → rien à mettre dans la formule). « On ne corrige que ce
+  qui est mesuré. » (2) **Le mécanisme corrobore** : la cause (recouvrement des
+  détentions) est absente précisément là où BP ne rejette pas (trades courts :
+  rsi_strict ρ̂(1)=0,03 ; oracle espacé d'un an). (3) **Conséquence** : une
+  dépendance positive ratée rend les p-values trop optimistes — dangereux
+  SEULEMENT pour une stratégie validée de justesse. Or rsi_strict est rejetée
+  (une correction n'aurait que grossi son 0,26) et l'oracle passe à 10⁻⁸⁵
+  (aucune correction plausible ne le renverse). Le cas vulnérable ne s'est pas
+  présenté ; le protocole le signalerait.
+- Piège : ne pas nier le principe (« oui, en toute rigueur c'est un non-rejet,
+  comme toute vérification de condition — Shapiro compris ») puis dérouler les
+  trois protections.
+
 **Q : Quelle différence entre Box–Pierce et le canal 3 du chapitre 2 ?**
 - R : Le canal 3 **mesure** (ρ̂(1) = intensité, un seul décalage, sans seuil) ; Box–Pierce **tranche** (6 décalages simultanément, avec un seuil qui intègre T). Une même valeur ρ̂ = 0,15 est significative sur 500 mois et pas sur 100 — la mesure brute ne peut pas le dire. Et une dépendance peut être absente au décalage 1 mais présente aux décalages 2-3 : le canal 3 ne la verrait pas.
 - Exemple vécu : l'ancien oracle avait ρ̂(1) = 0,03 (apparemment rien) et pourtant Box–Pierce rejetait l'indépendance (p = 0,015) — sa dépendance était logée plus loin. À l'inverse `hs_classic` a ρ̂(1) = 0,15 mais p = 0,053 : pas significatif sur 172 mois.

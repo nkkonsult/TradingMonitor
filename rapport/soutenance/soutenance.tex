@@ -616,21 +616,28 @@
 % ======================================================================
 \begin{frame}{1. Box--Pierce : les mois sont-ils indépendants ?}
   \[
+    \hat\rho(h) = \frac{\sum_{t}(x_t-\bar x)(x_{t+h}-\bar x)}
+                       {\sum_{t}(x_t-\bar x)^2}
+    \qquad
     S_{\mathrm{BP}} = T\sum_{h=1}^{6}\hat\rho(h)^2
     \;\underset{H_0}{\sim}\; \chi^2(6)
   \]
-  \vspace{3mm}
-  \begin{itemize}\setlength{\itemsep}{4mm}
-    \item sous $H_0$, chaque $\hat\rho(h)$ $=$ bruit d'ordre $1/\sqrt T$ :
-      $\sqrt T\,\hat\rho(h)\to\mathcal N(0,1)$
-    \item \textbf{6} décalages $=$ durée maximale des trades
-      {\footnotesize (plafond vérifié en fin de chaîne)}
+  \begin{itemize}\setlength{\itemsep}{2.5mm}
+    \item sous $H_0$, chaque produit $(x_t-\bar x)(x_{t+h}-\bar x)$ est
+      d'espérance nulle --- mais la compensation est imparfaite sur $T$
+      fini : $\mathrm{Var}(\hat\rho(h)) \approx 1/T$
+    \item donc $\sqrt T\,\hat\rho(h)\to\mathcal N(0,1)$, soit
+      $T\hat\rho(h)^2\sim\chi^2(1)$ ; la somme sur 6 décalages
+      $\sim\chi^2(6)$
+    \item ordre de grandeur : $T=195$ mois $\Rightarrow$ bruit typique
+      $1/\sqrt{195}\approx 0{,}07$
+    \item carrés : les signes ne se compensent pas ; \textbf{6} décalages
+      $=$ durée maximale des trades
   \end{itemize}
-  \vspace{5mm}
+  \vspace{1mm}
   \begin{block}{Chez nous}
-    La moitié des séries autocorrélées $\to$ correction.\\
-    Les autres (dont \texttt{oracle}, \texttt{rsi\_strict}) : verdict conservé
-    tel quel.
+    Moitié des séries autocorrélées $\to$ correction. Les autres gardent le
+    verdict de la porte période \textbf{tel quel}.
   \end{block}
 \end{frame}
 
@@ -667,12 +674,6 @@
       \end{itemize}
     \end{column}
   \end{columns}
-  \vspace{5mm}
-  \begin{block}{Concordance exigée}
-    DF \textbf{rejette} \emph{et} KPSS \textbf{ne rejette pas} $\to$ stationnaire.
-    Sinon : « ? ».\\
-    Chez nous : concordance partout.
-  \end{block}
 \end{frame}
 
 % ======================================================================
@@ -718,14 +719,18 @@
   \begin{tabular}{@{}lrrrrrc@{}}
     \toprule
     Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ & $\mathrm{DEFF}_t$ &
-      $p$ corrigée & $p$ BP résidus \\
+      $p$ corrigée & $p$ Box--Pierce \\
     \midrule
     \texttt{oracle}        & 193 & $0{,}18$ & 0 & $1{,}0$ & $9{,}4\times10^{-85}$ & $0{,}16$ \\
     \midrule
     \texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $\alert{6{,}4}$ & $0{,}94$ & $0{,}14$ \\
     \texttt{dt\_top}       & 197 & $0{,}38$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
+    \texttt{db\_bottom}    & 197 & $0{,}36$ & 1 & $2{,}1$ & $0{,}82$ & $0{,}90$ \\
+    \texttt{hs\_inverse}   & 186 & $0{,}31$ & 1 & $1{,}9$ & $0{,}91$ & $0{,}93$ \\
     \texttt{rsi\_classic}  & 195 & $0{,}23$ & 1 & $1{,}6$ & $0{,}08$ & $0{,}93$ \\
     \texttt{rsi\_strict}   & 138 & $0{,}03$ & 0 & $1{,}0$ & $0{,}26$ & $0{,}28$ \\
+    \multicolumn{7}{c}{\scriptsize (quatre autres stratégies :
+      $\mathrm{DEFF}_t \le 2{,}4$, aucune significative)} \\
     \bottomrule
   \end{tabular}
   \end{center}
@@ -801,8 +806,8 @@
 \begin{frame}{Limites assumées, suites prévues}
   \textbf{Limites}
   \begin{itemize}\setlength{\itemsep}{2mm}
-    \item résultats \emph{in-sample} $\to$ validation hors échantillon,
-      période après période
+    \item verdicts rendus sur la période d'étude $\to$ validation hors
+      échantillon, période après période
     \item biais du survivant ; frais simplifiés
     \item corrections empilées : garantie exacte du seuil perdue si les trois
       canaux étaient forts \emph{en même temps} {\footnotesize (signalé ---
@@ -823,356 +828,14 @@
 \begin{frame}{Conclusion}
   \vspace{2mm}
   \begin{itemize}\setlength{\itemsep}{5mm}
-    \item Le test de référence déclarait \textbf{deux} gagnantes ; la seule
+    \item Le test de référence déclarait \textbf{deux} gagnantes ; la
       vérification de l'\textbf{indépendance} a renversé les deux verdicts
     \item Le \structure{témoin}, construit pour gagner, a franchi chaque étage
   \end{itemize}
-  \vspace{5mm}
-  \begin{block}{}
-    Un outil de validation se juge à sa capacité d'attraper ses propres
-    erreurs \emph{tout en reconnaissant le vrai} : la démonstration est faite.
-  \end{block}
-  \vspace{5mm}
+  \vspace{8mm}
   \begin{center}
     \structure{Merci de votre attention.}
   \end{center}
-\end{frame}
-
-% ======================================================================
-%  ANNEXES — à dégainer pendant les questions
-% ======================================================================
-\appendix
-
-\begin{frame}{Annexes}
-  \small
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-      \begin{itemize}\setlength{\itemsep}{1mm}
-        \item[A1.] Dérivation du DEFF
-        \item[A2.] ICC : la formule de $n_0$
-        \item[A3.] Shapiro--Wilk : la statistique $W$
-        \item[A4.] Student : loi exacte, $n-1$ ddl
-        \item[A5.] Bonferroni : exact vs Boole
-        \item[A6.] DF : pourquoi pas la loi de Student ; AIC
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \begin{itemize}\setlength{\itemsep}{1mm}
-        \item[A7.] $\hat\rho$ : bruit en $1/\sqrt T$
-        \item[A8.] PACF : définition formelle
-        \item[A9.] Yule--Walker : dérivation
-        \item[A10.] Variance de long terme : preuve
-        \item[A11.] Les deux oracles (v1 $\to$ v2)
-        \item[A12.] Valeurs extrêmes : traitement
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-% --- A1 ---------------------------------------------------------------
-\begin{frame}{A1. Dérivation du DEFF}
-  $n$ trades, $k$ titres de $m$ trades ($n = km$).
-  Hypothèses : $\mathrm{Var}(x_i)=\sigma^2$ ;
-  $\mathrm{Cov}(x_i,x_j)=\rho\sigma^2$ si même titre, $0$ sinon.
-  \begin{align*}
-    \mathrm{Var}\Bigl(\sum_i x_i\Bigr)
-      &= \sum_i \mathrm{Var}(x_i) + \sum_i\sum_{j\neq i}\mathrm{Cov}(x_i,x_j)\\
-      &= n\sigma^2 + n(m-1)\rho\sigma^2
-      \qquad\text{\scriptsize (chaque trade : $m-1$ partenaires de grappe)}\\[1mm]
-    \mathrm{Var}(\bar x)
-      &= \frac{\sigma^2}{n}\,\bigl[\,1+(m-1)\rho\,\bigr]
-      = \frac{\sigma^2}{n}\cdot\mathrm{DEFF}
-  \end{align*}
-  \begin{block}{Contrôles de cohérence}
-    $\rho=0 \Rightarrow \mathrm{DEFF}=1$ (indépendance).\quad
-    $\rho=1 \Rightarrow \mathrm{DEFF}=m \Rightarrow
-      \mathrm{Var}(\bar x)=\sigma^2/k$ : il ne reste que $k$ informations
-      (une par titre).\quad
-    $m=1 \Rightarrow \mathrm{DEFF}=1$.\\
-    Grappes inégales : $m \to \bar m$.
-  \end{block}
-\end{frame}
-
-% --- A2 ---------------------------------------------------------------
-\begin{frame}{A2. ICC : le terme $n_0$}
-  \[
-    \hat\rho = \frac{\mathrm{MSB}-\mathrm{MSW}}
-                    {\mathrm{MSB}+(n_0-1)\mathrm{MSW}}
-    \qquad
-    n_0 = \frac{1}{k-1}\Bigl(N - \frac{\sum_i n_i^2}{N}\Bigr)
-  \]
-  \begin{itemize}\setlength{\itemsep}{2mm}
-    \item $k$ titres, $N$ trades, $n_i$ trades du titre $i$
-    \item $n_0$ = taille moyenne des grappes \textbf{ajustée} de leur
-      inégalité : le terme $\sum n_i^2/N$ pénalise le déséquilibre
-      (50 trades sur un titre, 3 sur un autre)
-    \item grappes égales de taille $n$ : $n_0 = n$ ; un trade par titre :
-      $n_0=1$, le terme intra disparaît
-    \item rôle : plus les grappes sont grosses, plus il faut de contraste
-      inter-titres pour un même $\hat\rho$ --- normalise la mesure entre 0 et 1
-  \end{itemize}
-\end{frame}
-
-% --- A3 ---------------------------------------------------------------
-\begin{frame}{A3. Shapiro--Wilk : la statistique $W$}
-  \[
-    W = \frac{b^2}{\mathrm{SCE}}, \qquad W \le 1
-  \]
-  \begin{itemize}\setlength{\itemsep}{2mm}
-    \item $\mathrm{SCE} = \sum_i (x_i - \bar x)^2$ : dispersion classique
-    \item $b^2$ : dispersion \emph{attendue si les valeurs triées suivaient
-      une normale} (combinaison des statistiques d'ordre et de leurs
-      espérances sous normalité)
-    \item les deux ne coïncident que sous normalité $\to$ $W \simeq 1$ ;
-      c'est la version chiffrée de la droite de Henry (QQ-plot)
-    \item $H_0$ ($W\simeq1$) : normalité --- p-value faible $\Rightarrow$
-      \textbf{rejet de la normalité} (sens inverse de Student !)
-  \end{itemize}
-  \begin{block}{Pourquoi il sur-rejette à grand $n$}
-    Sous $H_0$, la distribution de $W$ se resserre vers 1 quand $n$ croît :
-    le moindre écart devient significatif. Chez nous, $W$ de $0{,}50$ à
-    $0{,}95$ --- \emph{tous} rejetés. D'où le recours au TCL.
-  \end{block}
-\end{frame}
-
-% --- A4 ---------------------------------------------------------------
-\begin{frame}{A4. Student : loi exacte et degrés de liberté}
-  Si l'on connaissait $\sigma$ : $(\bar e - \mu)/(\sigma/\sqrt n)
-  \sim \mathcal N(0,1)$ exactement (données normales).\\[2mm]
-  $\sigma$ inconnu $\to$ remplacé par $s$, \emph{estimé sur le même
-  échantillon} :
-  \[
-    t = \frac{\bar e-\mu}{s/\sqrt n}
-    \;=\; \frac{\mathcal N(0,1)}{\sqrt{\chi^2_{n-1}/(n-1)}}
-    \;\sim\; t_{n-1}
-  \]
-  \begin{itemize}\setlength{\itemsep}{2mm}
-    \item rapport de deux variables aléatoires $\to$ queues plus épaisses
-      que la normale : l'incertitude sur $s$ est absorbée par la loi
-    \item $n-1$ : un degré consommé pour estimer $\bar e$ --- le même $n-1$
-      que la correction de Bessel dans
-      $s^2=\frac{1}{n-1}\sum(e_i-\bar e)^2$
-    \item dès $n \gtrsim 100$ : Student $\approx$ normale (chez nous,
-      $n \ge 978$)
-  \end{itemize}
-\end{frame}
-
-% --- A5 ---------------------------------------------------------------
-\begin{frame}{A5. Bonferroni : calcul exact vs borne de Boole}
-  \textbf{Exact (tests indépendants), par le complémentaire :}
-  \[
-    \mathrm P(\text{au moins un FP})
-    = 1 - \mathrm P(\text{aucun FP})
-    = 1 - (1-\alpha)^{11}
-    = 1 - 0{,}95^{11} \approx 0{,}43
-  \]
-  {\small On multiplie $0{,}95$ par lui-même (puissance) --- l'addition
-  $11\times0{,}05=0{,}55$ ne serait qu'un majorant (et dépasserait 1 avec
-  plus de tests).}
-  \vspace{2mm}
-
-  \textbf{Boole (sans hypothèse d'indépendance) :}
-  \[
-    \mathrm P\Bigl(\bigcup_i A_i\Bigr) \le \sum_i \mathrm P(A_i)
-    \quad\Longrightarrow\quad
-    \sum_i \alpha' = 0{,}05 \;\text{ garantit le risque global}
-  \]
-  \begin{itemize}
-    \item $\alpha$ est conditionnel \emph{par définition} :
-      $\alpha = \mathrm P(\text{rejeter } H_0 \mid H_0 \text{ vraie})$ ---
-      le calcul se place dans le pire cas ($H_0$ partout)
-    \item Vérification : $1-(1-0{,}0045)^{11}\approx0{,}049<0{,}05$
-      (légèrement conservateur : possibles faux négatifs)
-  \end{itemize}
-\end{frame}
-
-% --- A6 ---------------------------------------------------------------
-\begin{frame}{A6. DF : pourquoi pas la loi de Student ; l'AIC}
-  \textbf{La régression} : couples $(x_{t-1}, x_t)$, moindres carrés :
-  \[
-    \hat\phi = \frac{\sum x_{t-1}x_t}{\sum x_{t-1}^2}
-    \qquad
-    \widehat{\mathrm{se}}(\hat\phi)=\frac{\hat\sigma_\eta}{\sqrt{\sum x_{t-1}^2}}
-  \]
-  {\scriptsize En pratique on régresse la différence :
-  $\Delta x_t = \delta x_{t-1}+\eta_t$, $\delta=\phi-1$, test $\delta=0$
-  contre $\delta<0$ --- équivalent.}
-  \vspace{1mm}
-
-  \textbf{Pourquoi pas Student} : la loi du $t$ de régression suppose un
-  régresseur \emph{stationnaire}. Sous $H_0$ ($\phi=1$), $x_{t-1}$ est une
-  marche aléatoire, sa variance croît avec $t$ : les conditions s'effondrent.
-  Loi tabulée par Dickey \& Fuller, décalée vers les négatifs :
-  rejet à 5\,\% vers $-2{,}9$, contre $-1{,}65$ pour une normale.
-  \vspace{1mm}
-
-  \textbf{Version augmentée} : on ajoute $\Delta x_{t-1},\ldots,\Delta x_{t-k}$
-  pour blanchir les résidus ; $k$ choisi par
-  \[
-    \mathrm{AIC}_k = 2\ln\hat\sigma_k + \frac{k}{T}
-  \]
-  {\small ajustement contre complexité (chez nous : $k$ de 0 à 9). Ces retards
-  sont un \emph{correctif interne} au test --- rien à voir avec l'ordre
-  $\hat p$ du modèle AR, qui vient de la PACF.}
-\end{frame}
-
-% --- A7 ---------------------------------------------------------------
-\begin{frame}{A7. Pourquoi $\hat\rho(h)$ est un bruit en $1/\sqrt T$ sous $H_0$}
-  \[
-    \hat\rho(h) = \frac{\sum_{t=1}^{T-h}(x_t-\bar x)(x_{t+h}-\bar x)}
-                       {\sum_{t=1}^{T}(x_t-\bar x)^2}
-  \]
-  \begin{itemize}\setlength{\itemsep}{2mm}
-    \item sous $H_0$ (indépendance), chaque produit
-      $(x_t-\bar x)(x_{t+h}-\bar x)$ a une \textbf{espérance nulle}
-      (facteurs indépendants et centrés)
-    \item mais sur $T$ fini, les produits positifs et négatifs ne se
-      compensent qu'imparfaitement --- même phénomène qu'une moyenne
-      d'échantillon jamais exactement égale à $\mu$
-    \item TCL sur cette somme de termes non corrélés :
-      $\mathrm{Var}(\hat\rho(h))\approx 1/T$, donc
-      $\sqrt T\,\hat\rho(h)\to\mathcal N(0,1)$
-    \item d'où $T\hat\rho(h)^2 \sim \chi^2(1)$, et par indépendance
-      asymptotique entre décalages :
-      $S_{\mathrm{BP}} = T\sum_{h=1}^{6}\hat\rho(h)^2 \sim \chi^2(6)$
-  \end{itemize}
-  \begin{block}{Ordre de grandeur}
-    $T=195$ mois $\Rightarrow$ bruit typique $1/\sqrt{195}\approx0{,}07$ :
-    des $\hat\rho$ de $\pm0{,}07$ sont attendus \emph{sans} dépendance.
-  \end{block}
-\end{frame}
-
-% --- A8 ---------------------------------------------------------------
-\begin{frame}{A8. PACF : définition formelle}
-  \textbf{Le problème} : l'effet de chaîne. AR(1) de poids $0{,}6$ :
-  $\rho(2)=0{,}36\neq0$ alors que $t-2$ n'a \emph{aucun} effet direct
-  (le lien transite par $t-1$).
-  \vspace{1mm}
-
-  \textbf{Définition} : $\hat\tau(h)$ = corrélation entre $x_t$ et $x_{t-h}$
-  \emph{une fois retirée l'influence linéaire des intermédiaires} :
-  \begin{enumerate}
-    \item régresser $x_t$ sur $(x_{t-1},\ldots,x_{t-h+1})$ $\to$ résidu $u_t$
-    \item régresser $x_{t-h}$ sur les mêmes $\to$ résidu $v_t$
-    \item $\hat\tau(h) = \mathrm{corr}(u_t, v_t)$
-  \end{enumerate}
-  {\small Équivalence : $\hat\tau(h)$ = dernier coefficient d'un AR($h$)
-  ajusté sur la série.}
-  \begin{block}{Pourquoi elle identifie l'ordre}
-    Pour un AR($p$) : $\tau(h)=0$ pour tout $h>p$ (coupure nette), alors que
-    $\rho(h)$ décroît sans s'annuler. Décision : sous $H_0$,
-    $\sqrt T\hat\tau(h)\sim\mathcal N(0,1)$ $\to$ bande $\pm1{,}96/\sqrt T$ ;
-    on garde le dernier décalage significatif (plafond 6, intermédiaires
-    conservés --- surestimer la mémoire plutôt que la tronquer).
-  \end{block}
-\end{frame}
-
-% --- A9 ---------------------------------------------------------------
-\begin{frame}{A9. Yule--Walker : la dérivation}
-  Série stationnaire \textbf{centrée} : $\gamma(h) = \mathrm{Cov}(x_t,x_{t-h})
-  = \mathbb E[x_t x_{t-h}]$ --- l'espérance d'un produit de variables
-  centrées \emph{est} leur covariance.\\[2mm]
-  Modèle : $x_t = \Phi_1 x_{t-1}+\cdots+\Phi_p x_{t-p} + \eta_t$.
-  On multiplie par $x_{t-h}$ ($h\ge1$), on prend l'espérance :
-  \[
-    \underbrace{\mathbb E[x_t x_{t-h}]}_{\gamma(h)}
-    = \sum_i \Phi_i\,\gamma(h-i)
-    + \underbrace{\mathbb E[\eta_t x_{t-h}]}_{=\,0\ (\eta_t \perp \text{passé})}
-    \;\Longrightarrow\;
-    \rho(h) = \sum_i \Phi_i\,\rho(h-i)
-  \]
-  {\small $p$ équations ($h=1,\ldots,p$), $p$ inconnues ; $\rho(0)=1$,
-  $\rho(-k)=\rho(k)$. Cas $p=1$ : $\Phi_1=\rho(1)$.}
-  \begin{block}{Décalage nul $\to$ le bruit}
-    Avec $x_t$ lui-même, le bruit ne disparaît plus
-    ($\mathbb E[\eta_t x_t]=\sigma^2_\eta$) :
-    \[
-      \gamma(0) = \sum_i\Phi_i\gamma(i) + \sigma^2_\eta
-      \;\Longrightarrow\;
-      \sigma^2_\eta = \gamma(0)\Bigl(1-\sum_i\Phi_i\rho(i)\Bigr)
-    \]
-    = variance totale moins la part expliquée par le passé.
-  \end{block}
-\end{frame}
-
-% --- A10 --------------------------------------------------------------
-\begin{frame}{A10. Variance de long terme : la preuve en trois pas}
-  \textbf{1. Pourquoi $s^2/T$ est faux :}
-  \[
-    \mathrm{Var}(\bar x) = \frac{1}{T^2}\sum_t\sum_s \mathrm{Cov}(x_t,x_s)
-    \;\approx\; \frac{1}{T}\sum_{h=-\infty}^{+\infty}\gamma(h)
-    = \frac{\gamma_{\mathrm{lr}}}{T}
-  \]
-  {\small $s^2/T$ ne garde que la diagonale $\gamma(0)$ et jette tous les
-  $\gamma(h)$ croisés.}
-  \vspace{1mm}
-
-  \textbf{2. Pour un AR($p$)} --- effet cumulé d'un choc : $+1$ aujourd'hui,
-  $\sum\Phi$ demain, $(\sum\Phi)^2$ après\ldots\ son poids total :
-  \[
-    1+\Bigl(\sum\Phi\Bigr)+\Bigl(\sum\Phi\Bigr)^2+\cdots
-    = \frac{1}{1-\sum\Phi}
-    \;\Longrightarrow\;
-    \gamma_{\mathrm{lr}} = \frac{\sigma^2_\eta}{(1-\sum_i\Phi_i)^2}
-  \]
-  \textbf{3. Vérification exacte sur l'AR(1)} :
-  $\gamma(h)=\phi^{|h|}\gamma(0)$, $\gamma(0)=\sigma^2_\eta/(1-\phi^2)$ :
-  \[
-    \sum_h \gamma(h) = \gamma(0)\,\frac{1+\phi}{1-\phi}
-    = \frac{\sigma^2_\eta}{(1-\phi)^2} \;\checkmark
-  \]
-  {\small Cohérence : $\Phi=0 \Rightarrow \gamma_{\mathrm{lr}}=\gamma(0)$,
-  on retrouve $s^2/T$ ; $\sum\Phi \to 1$ : la correction explose.}
-\end{frame}
-
-% --- A11 --------------------------------------------------------------
-\begin{frame}{A11. Les deux oracles (v1 $\to$ v2)}
-  \textbf{Oracle v1} --- seuil $+25\,\%$ sur 30 jours :
-  \begin{itemize}\setlength{\itemsep}{0.5mm}
-    \item ne tradait que les rebonds extrêmes (2009, 2020) $\to$
-      $t \approx 120$, série mensuelle « tassée », presque plate hors bouffées
-    \item or DF a besoin de variabilité dans $x_{t-1}$ ($\hat\phi$ et se reposent sur
-      $\sum x_{t-1}^2$) : erreur-type énorme, \textbf{aucune puissance} $\to$ DF ne rejette
-      pas, KPSS dit stationnaire $\to$ divergence, verdict « ? »
-  \end{itemize}
-  \begin{block}{L'erreur de conception}
-    Un témoin trop parfait produit une série dégénérée, \emph{hors du domaine
-    de puissance} des outils qu'il doit calibrer. Un protocole à un seul test
-    l'aurait écarté \textbf{en silence} ; la règle de concordance a rendu
-    l'anomalie visible.
-  \end{block}
-  \textbf{Oracle v2} --- seuil $+5\,\%$, $\sim$1 an de repos entre entrées :
-  \begin{itemize}\setlength{\itemsep}{0.5mm}
-    \item entrées réparties sur tous les régimes, volume comparable aux
-      vraies stratégies : témoin \textbf{réaliste}, avantage toujours net
-    \item franchit les six étages --- et le témoin aura servi deux fois :
-      contrôler le faux négatif \emph{et} réviser le protocole
-  \end{itemize}
-\end{frame}
-
-% --- A12 --------------------------------------------------------------
-\begin{frame}{A12. Valeurs extrêmes : gardées, et voici pourquoi}
-  \textbf{Distinction} : valeur \emph{aberrante} = erreur de mesure (à
-  corriger) $\neq$ valeur \emph{extrême} = vraie réalisation d'une queue
-  lourde (de l'information).\\
-  {\small Ici : pas d'aberrantes (cours réels, rendements bornés) mais des
-  extrêmes massives --- visibles dans le $W$ de Shapiro ($0{,}50$ à $0{,}95$).}
-  \vspace{1mm}
-  \begin{block}{Ni supprimées, ni winsorisées --- quatre protections}
-    \begin{enumerate}
-      \item le test porte sur la \textbf{moyenne} : un extrême gonfle aussi
-        $s$ au dénominateur (effet conservateur)
-      \item le \textbf{bootstrap} les intègre sans hypothèse de forme
-      \item l'\textbf{agrégation} leur retire leur poids : un méga-trade ne
-        vote que dans sa grappe
-      \item un avantage porté par quelques extrêmes est \emph{exactement} ce
-        que les deux portes détectent (cas \texttt{rsi\_strict})
-    \end{enumerate}
-  \end{block}
-  \textbf{Pourquoi pas la médiane ?} Le gain total $= n\times$ moyenne :
-  une stratégie à médiane négative peut être rentable par quelques grands
-  gains --- la médiane la déclarerait perdante à tort. La moyenne est le seul
-  paramètre qui agrège les extrêmes \emph{avec} le reste.
 \end{frame}
 
 \end{document}
