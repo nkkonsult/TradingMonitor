@@ -1,0 +1,53 @@
+% ======================================================================
+%  APERÇU COMPILABLE DU MÉMOIRE COMPLET — dossier de travail
+%  (réutilise le préambule, la page de garde et les annexes de rapport/ ;
+%   les six chapitres sont les versions intégralement rédigées)
+%  Compilation :  pdflatex main -> biber main -> pdflatex main x2
+% ======================================================================
+\documentclass[11pt,a4paper]{report}
+\input{../rapport/preambule}
+\addbibresource{biblio.bib}
+
+% --- Métadonnées ------------------------------------------------------
+\newcommand{\titrememoire}{Évaluer des stratégies de trading :\\
+  un protocole statistique de validation sur données dépendantes}
+\newcommand{\auteur}{Yossef MANELA}
+\newcommand{\encadrant}{Nicolas Poulin}
+\newcommand{\anneeuniv}{2025--2026}
+
+\begin{document}
+
+% ======================================================================
+%  PAGES LIMINAIRES (hors décompte des 40 pages)
+% ======================================================================
+\input{../rapport/00_pagedegarde}
+
+\pagenumbering{roman}
+\input{../rapport/00_remerciements}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+
+% ======================================================================
+%  CORPS DU RAPPORT
+% ======================================================================
+\input{01_introduction}
+\input{02_donnees}
+\input{03_juger}
+\input{04_contexte}
+\input{05_protocole}
+\input{06_conclusion}
+
+% ======================================================================
+%  BIBLIOGRAPHIE (hors décompte)
+% ======================================================================
+\cleardoublepage
+\printbibliography[heading=bibintoc]
+
+% ======================================================================
+%  ANNEXES
+% ======================================================================
+\appendix
+\input{../rapport/07_annexes}
+
+\end{document}

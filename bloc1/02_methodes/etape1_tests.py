@@ -10,7 +10,7 @@ DEMARCHE (methodes de cours) :
      rend la moyenne quasi-normale, donc Student reste valide meme si l'edge brut
      n'est pas normal (Shapiro rejette presque toujours a grand n, c'est attendu).
   3) WILCOXON (rangs signes) reporte EN PLUS, comme controle non-parametrique.
-  4) Tests MULTIPLES (10 strategies) -> correction de BONFERRONI : seuil = 0.05/10.
+  4) Tests MULTIPLES (11 strategies) -> correction de BONFERRONI : seuil = 0.05/11.
 
 Entree :  bloc1/01_donnees/trades.csv
 Sortie :  bloc1/03_resultats/etape1_tests.txt
@@ -43,7 +43,7 @@ def main() -> None:
     out("=" * 86)
     out("ETAPE 1 - LA STRATEGIE BAT-ELLE LE HASARD ?  (H0: edge moyen = 0  /  H1: > 0)")
     out("Entree: trades.csv (%d trades exploitables)" % len(df))
-    out("Seuil Bonferroni (10 strategies): %.4f" % seuil_bonf)
+    out("Seuil Bonferroni (%d strategies): %.4f" % (len(strategies), seuil_bonf))
     out("=" * 86)
     out("%-14s %7s %10s %9s %11s %11s %11s %7s" %
         ("strategie", "n", "edge_moy", "W_shapiro", "p_shapiro", "p_student", "p_wilcox", "verdict"))

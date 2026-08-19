@@ -1,0 +1,53 @@
+% ======================================================================
+%  Mémoire M1 — Master Mathématiques et applications, parcours Statistique
+%  Université de Strasbourg — UFR de mathématique et d'informatique
+%
+%  Compilation :  pdflatex main  ->  biber main  ->  pdflatex main x2
+%
+%  CONTRAINTES CONSIGNES (Consignes_M1_25_26.pdf) :
+%   - 40 pages max (hors garde, remerciements, sommaire, biblio)
+%   - 10 pages d'annexes max
+%   - LaTeX obligatoire ; rendu PDF + source pour le 3 août 2026
+%   - PAS de programme complet dans le corps ni en annexe (lignes
+%     principales seulement) ; le code est référencé sur une page web
+%   - Toute référence citée <-> présente en biblio, et inversement
+% ======================================================================
+\documentclass[11pt,a4paper]{report}
+\input{preambule}
+
+% --- Métadonnées ------------------------------------------------------
+% Titre validé par l'utilisateur (19/07).
+\newcommand{\titrememoire}{Juger une stratégie de bourse :\\
+  un protocole statistique de validation sur données dépendantes}
+\newcommand{\auteur}{Joseph MANELA}
+\newcommand{\encadrant}{Nicolas Poulin}    % encadrant unique (consignes §2)
+\newcommand{\anneeuniv}{2025--2026}
+
+\begin{document}
+
+% ======================================================================
+%  PAGES LIMINAIRES (hors décompte des 40 pages)
+% ======================================================================
+\input{00_pagedegarde}
+
+\pagenumbering{roman}
+\tableofcontents
+\cleardoublepage
+\pagenumbering{arabic}
+
+% ======================================================================
+%  CORPS DU RAPPORT
+% ======================================================================
+\input{01_introduction}   % le stage, la question statistique, les trois menaces
+\input{02_donnees}        % les données + la structure de dépendance MESURÉE
+\input{03_juger}          % le cœur : l'escalade de prudence + lecture du verdict
+\input{05_protocole}      % le protocole livrable, limites, perspectives
+\input{06_conclusion}     % bilan + ouverture
+
+% ======================================================================
+%  BIBLIOGRAPHIE (hors décompte)
+% ======================================================================
+\cleardoublepage
+\printbibliography[heading=bibintoc]
+
+\end{document}

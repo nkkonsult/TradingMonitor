@@ -1,0 +1,45 @@
+==============================================================
+ETAPE 1e — PREVISIBILITE DU MARCHE (efficience faible)
+==============================================================
+
+Serie : rendements quotidiens du marche agrege
+T = 4132 jours de cotation
+moyenne  = +0.000729
+ecart-type = 0.011298
+
+--- Autocorrelations ---
+bande de significativite a 5% : +/- 0.0305
+  rho( 1) = -0.0795  *
+  rho( 2) = +0.0716  *
+  rho( 3) = -0.0430  *
+  rho( 4) = -0.0489  *
+  rho( 5) = +0.0006
+  rho( 6) = -0.0836  *
+  rho( 7) = +0.0904  *
+  rho( 8) = -0.0602  *
+  rho( 9) = +0.0622  *
+  rho(10) = -0.0042
+nb hors bande sur 10 : 8
+
+--- Test de Box et Pierce sur la serie brute ---
+   6 retards : S =   93.69   ddl =  6   p = 0.000e+00
+  10 retards : S =  158.47   ddl = 10   p = 0.000e+00
+
+  -> l'independance est rejetee : il y a de la memoire dans le marche.
+
+--- Mais quelle amplitude ? ---
+  rho(1)      = -0.0795
+  rho(1)^2    = 0.00632  soit 0.63 % de la variance du lendemain
+
+--- Cette memoire est-elle exploitable ? ---
+  Strategie contrarienne : parier chaque jour contre la veille.
+  gain moyen par jour = +0.000070  (0.0070 %)
+  nb de jours         = 4131
+
+  net apres 0.01 % de frais aller-retour : -0.000030  -> PERDANT
+  net apres 0.05 % de frais aller-retour : -0.000430  -> PERDANT
+  net apres 0.10 % de frais aller-retour : -0.000930  -> PERDANT
+
+CONCLUSION : le marche est previsible au sens statistique,
+mais l'avantage est trop faible pour couvrir les frais.
+C'est l'efficience faible au sens de Fama (1970).

@@ -1,22 +1,26 @@
 ====================================================================================================================================
 ETAPE 1d - SERIE MENSUELLE DES EDGES : la porte 'mois' corrigee de l'autocorrelation
-Entree: trades.csv (40362 trades)   Seuil Bonferroni: 0.0045   Pipeline: DF/KPSS -> ACF/PACF -> AR(p) Yule-Walker -> Box-Pierce
+Entree: trades.csv (45008 trades)   Seuil Bonferroni: 0.0045   Pipeline: independance ? -> [DF/KPSS -> PACF -> AR(p) Yule-Walker -> Box-Pierce]
 ====================================================================================================================================
-strategie         T couv% |    p_DF  p_KPSS |   rho1  p  somPhi | DEFF_t  T_eff |   t_naif   t_corr     p_corr |    p_BP | verdict
-------------------------------------------------------------------------------------------------------------------------------------
-db_bottom       197  99.5 |   0.000   0.100 |   0.36  1    0.36 |   2.10     94 |    -1.31    -0.91       0.82 |    0.90 |     non
-dt_top          197  99.5 |   0.000   0.100 |   0.39  1    0.38 |   2.23     88 |    -2.83    -1.90       0.97 |    0.69 |     non
-hs_classic      172  88.2 |   0.000   0.100 |   0.15  6    0.38 |   2.40     72 |    -1.56    -1.01       0.84 |    0.49 |     non
-hs_inverse      186  97.4 |   0.000   0.100 |   0.31  1    0.31 |   1.89     98 |    -1.88    -1.37       0.91 |    0.93 |     non
-ma_crossover    188  99.5 |   0.005   0.073 |   0.56  3    0.68 |   6.42     29 |    -4.13    -1.63       0.94 |    0.14 |     non
-oracle          188  94.9 |   0.143   0.100 |   0.03  3    0.31 |   2.01     93 |   122.26    86.39      2e-90 |    0.23 |     OUI
-rsi_classic     195  98.5 |   0.000   0.100 |   0.23  1    0.23 |   1.59    123 |     1.77     1.41       0.08 |    0.93 |     non
-rsi_strict      138  70.8 |   0.000   0.100 |   0.03  2    0.21 |   1.54     90 |     0.65     0.52        0.3 |    0.96 |     non
-rsi_trend       175  92.6 |   0.000   0.100 |   0.20  4    0.24 |   1.58    111 |     0.56     0.45       0.33 |    0.06 |     non
-sr_breakdown    184  95.3 |   0.000   0.100 |   0.11  2   -0.03 |   1.00    184 |    -1.55    -1.63       0.95 |    0.90 |     non
-sr_breakout     195  99.5 |   0.000   0.012 |   0.05  0    0.00 |   1.00    195 |    -4.27    -4.29          1 |    0.42 |     non
-------------------------------------------------------------------------------------------------------------------------------------
-Lecture : p_DF   = Dickey-Fuller, H0 'racine unite' -> petit = stationnaire (condition du test remplie).
+strategie         T couv% | p_indep |    br |    p_DF  p_KPSS |   rho1  p  somPhi | DEFF_t  T_eff |   t_naif   t_corr     p_corr |    p_BP | verdict
+----------------------------------------------------------------------------------------------------------------------------------------------------
+db_bottom       197  99.5 |   0.000 |    AR |   0.000   0.100 |   0.36  1    0.36 |   2.10     94 |    -1.31    -0.91       0.82 |    0.90 |     non
+dt_top          197  99.5 |   0.000 |    AR |   0.000   0.100 |   0.39  1    0.38 |   2.23     88 |    -2.83    -1.90       0.97 |    0.69 |     non
+hs_classic      172  88.2 |   0.053 | indep |   0.000   0.100 |   0.15  0    0.00 |   1.00    172 |    -1.56    -1.56       0.94 |    0.05 |     non
+hs_inverse      186  97.4 |   0.000 |    AR |   0.000   0.100 |   0.31  1    0.31 |   1.89     98 |    -1.88    -1.37       0.91 |    0.93 |     non
+ma_crossover    188  99.5 |   0.000 |    AR |   0.005   0.073 |   0.56  3    0.68 |   6.42     29 |    -4.13    -1.63       0.94 |    0.14 |     non
+oracle          193  97.5 |   0.157 | indep |   0.000   0.010 |   0.18  0    0.00 |   1.00    193 |    34.60    34.60    9.4e-85 |    0.16 |     OUI
+rsi_classic     195  98.5 |   0.011 |    AR |   0.000   0.100 |   0.23  1    0.23 |   1.59    123 |     1.77     1.41       0.08 |    0.93 |     non
+rsi_strict      138  70.8 |   0.281 | indep |   0.000   0.100 |   0.03  0    0.00 |   1.00    138 |     0.65     0.65       0.26 |    0.28 |     non
+rsi_trend       175  92.6 |   0.015 |    AR |   0.000   0.100 |   0.20  4    0.24 |   1.58    111 |     0.56     0.45       0.33 |    0.06 |     non
+sr_breakdown    184  95.3 |   0.125 | indep |   0.000   0.100 |   0.11  0    0.00 |   1.00    184 |    -1.55    -1.55       0.94 |    0.12 |     non
+sr_breakout     195  99.5 |   0.972 | indep |   0.000   0.012 |   0.05  0    0.00 |   1.00    195 |    -4.27    -4.27          1 |    0.97 |     non
+----------------------------------------------------------------------------------------------------------------------------------------------------
+Lecture : p_indep = Box-Pierce sur la serie mensuelle BRUTE (H0 : mois independants, 6 retards).
+          br     = branche du protocole : 'indep' (independance non rejetee -> le test 1c est valide tel quel,
+                   aucune correction requise), 'AR' (autocorrelation reelle -> correction sous stationnarite),
+                   '?' (diagnostic non concluant) ou 'NS' (non-stationnarite averee) -> la strategie SORT.
+          p_DF   = Dickey-Fuller, H0 'racine unite' -> petit = stationnaire (condition du test remplie).
           p_KPSS = KPSS, H0 'stationnaire' -> grand = stationnaire (valeurs bornees a [0.01, 0.1]).
           rho1   = autocorrelation d'ordre 1 de la serie mensuelle (0 = mois independants, hypothese de 1c).
           p      = ordre AR choisi par coupure du PACF (|tau(h)| > 1.96/sqrt(T)), Phi estimes par Yule-Walker.
@@ -26,4 +30,9 @@ Lecture : p_DF   = Dickey-Fuller, H0 'racine unite' -> petit = stationnaire (con
           p_BP   = Box-Pierce sur les residus de l'AR (H0 bruit blanc) : > 0.05 = le modele AR suffit,
                    la correction de variance est donc fondee.
           verdict OUI = p_corr < seuil Bonferroni (porte 'mois' fermee, autocorrelation comprise).
+          verdict ?   = diagnostic non concluant (DF/KPSS divergent, ou AR insuffisant) : la strategie
+                        sort SANS etre rejetee -> examen humain (voir le bloc d'alertes ci-dessous).
+          verdict NS  = non-stationnarite averee (DF et KPSS concordent) : hors du domaine de la methode.
           Limite : mois sans trade traites comme consecutifs (couverture < 100 %, surtout rsi_strict).
+
+Aucune alerte : toutes les strategies remplissent les conditions d'application (stationnarite, T, Box-Pierce).

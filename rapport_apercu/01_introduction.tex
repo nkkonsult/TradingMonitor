@@ -1,0 +1,90 @@
+% ---------------------------------------------------------------------
+%  Chapitre 1 — Introduction (version aperçu, intégralement rédigée)
+% ---------------------------------------------------------------------
+\chapter{Introduction}
+\label{chap:intro}
+
+\section{But du mémoire}
+\label{sec:but}
+
+Lors de mon stage en entreprise, j'ai eu pour consigne de créer un agent
+d'intelligence artificielle capable de faire du trading, c'est-à-dire
+d'acheter et de revendre des actions en cherchant à tirer profit de leurs
+variations. J'ai alors décidé de donner à cet agent des capacités
+d'analyse statistique. Après avoir construit le nécessaire pour qu'il
+puisse passer des ordres et accéder aux données du marché, j'ai estimé
+qu'il devait être capable d'évaluer les stratégies de trading qu'il
+aurait établies, une stratégie étant une règle fixe qui décide quand
+acheter un titre et quand le revendre.
+
+Je présente dans ce rapport l'outil d'évaluation de stratégies que j'ai
+donné à mon agent.
+
+L'objectif de cet outil n'est pas de découvrir une stratégie rentable.
+Il est de construire un enchaînement de méthodes capable de déterminer,
+pour une stratégie quelconque qu'on lui soumet, si l'avantage qu'elle
+affiche est réel ou s'il relève du hasard d'échantillonnage ou du biais
+de marché. Autrement dit, la contribution revendiquée est
+méthodologique~: la chaîne de tests, sa justification et la vérification
+de ses conditions d'application.
+
+Les dix stratégies d'analyse technique utilisées dans ce rapport ne
+constituent donc pas l'objet d'étude, mais un banc d'essai. Elles
+fournissent des jeux de données réels permettant de montrer que l'outil
+discrimine correctement, qu'il sait rejeter ce qui ne tient pas et
+retenir ce qui résiste à l'analyse. Les résultats obtenus sont présentés
+à titre d'illustration du bon fonctionnement du protocole, et non comme
+des recommandations d'investissement. Pour s'assurer que l'outil ne
+rejette pas tout par excès de sévérité, on lui soumettra aussi un témoin
+dont l'avantage est réel par construction.
+
+\section{Les trois menaces qui pèsent sur le jugement}
+\label{sec:menaces}
+
+La première difficulté tient à la dérive du marché. Le premier réflexe
+pour juger une stratégie est d'examiner si elle est rentable~: un gain
+positif la ferait « marcher ». Ce raisonnement est pourtant trompeur,
+car encore faut-il que ce gain dépasse ce qu'une entrée au hasard aurait
+rapporté. Ici les stratégies sont appliquées aux titres du S\&P~500,
+l'indice des cinq cents grandes capitalisations américaines, dont la
+tendance est haussière sur la période étudiée. Cette dérive haussière
+pose problème, car une stratégie peut réaliser des gains sans avoir
+capté le moindre signal. C'est pourquoi on ne mesurera pas les gains,
+mais l'avantage qu'apporte chaque stratégie par rapport au hasard.
+
+La deuxième difficulté provient du nombre de tests. Plus on teste de
+stratégies, plus le risque d'obtenir au moins un faux positif augmente.
+Ce problème sera traité au chapitre~\ref{chap:juger} à l'aide de la
+correction de Bonferroni.
+
+La troisième, sans doute la plus délicate, est la dépendance des
+données. De nombreuses méthodes statistiques exigent l'indépendance des
+observations~; or ici les trades sont dépendants sous plusieurs aspects,
+comme la période, le titre ou encore le secteur. Cette difficulté sera
+mesurée au chapitre~\ref{chap:donnees}, puis neutralisée au
+chapitre~\ref{chap:juger}.
+
+On est forcé de prendre en compte ces trois difficultés, sous peine d'un
+verdict trop optimiste~: c'est leur traitement conjoint qui fait de ce
+protocole un véritable outil de validation.
+
+\section{Démarche du mémoire}
+\label{sec:planification}
+
+L'étude suit le fil d'une enquête unique, du diagnostic au verdict. Le
+chapitre~\ref{chap:donnees} présente d'abord la matière première, la
+base des quarante mille trades et la construction de l'avantage mesuré,
+puis dresse l'état des lieux de ce qui menace les tests, en mesurant les
+trois canaux par lesquels les observations se ressemblent. Le
+chapitre~\ref{chap:juger} constitue le c\oe ur du travail~: on y juge
+les stratégies, du test de référence jusqu'aux corrections de la
+dépendance, en resserrant la prudence à chaque étape, avant de relire le
+verdict à la lumière du comportement du marché lui-même. Le
+chapitre~\ref{chap:contexte} change ensuite de question~: il ne s'agit
+plus de valider, mais de comparer les stratégies entre elles et de
+décrire les situations dans lesquelles elles se déclenchent. Le
+chapitre~\ref{chap:protocole} récapitule enfin l'outil sous la forme
+d'un protocole réutilisable, en assume les limites et trace les étapes
+suivantes, avant la conclusion. Le fil conducteur va ainsi du plus
+fragile, la donnée et ses dépendances, au plus solide, le verdict, puis
+l'outil qui permettra d'en rendre d'autres.

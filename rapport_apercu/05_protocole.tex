@@ -1,0 +1,96 @@
+% ---------------------------------------------------------------------
+%  Chapitre 5 — Le protocole, ses limites, ses suites (aperçu, rédigé)
+% ---------------------------------------------------------------------
+\chapter{Le protocole, ses limites, ses suites}
+\label{chap:protocole}
+
+\section{Le protocole récapitulé}
+\label{sec:protocole}
+
+Ce que le stage livre n'est pas une stratégie gagnante, mais une
+procédure de jugement, réutilisable telle quelle sur tout signal futur
+de l'agent, qu'il soit technique, informationnel ou relationnel. Le
+tableau~\ref{tab:protocole} récapitule cette procédure en six étages.
+Chaque étage répare une menace précise identifiée au fil du mémoire, de
+la dérive du marché à l'autocorrélation résiduelle, et le verdict n'est
+prononcé que si tous les étages concordent. C'est cette exigence
+conjointe qui fait la valeur de l'ensemble~: la défaillance d'une seule
+condition suffit, comme on l'a vu, à fabriquer un faux positif.
+
+\begin{table}[H]
+\centering
+\caption{Le protocole de validation en six étages~: chaque étage répare
+une menace identifiée, et le verdict exige de tous les franchir.}
+\label{tab:protocole}
+\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.34\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Étage & Menace traitée & Outil \\
+\midrule
+1. \edgevar{} apparié au hasard & dérive du marché & Monte Carlo apparié \\
+2. Student unilatéral + TCL & variabilité d'échantillonnage & test de référence \\
+3. Seuil de Bonferroni & multiplicité (11 tests) & contrôle du risque global \\
+4. DEFF + bootstrap par grappes & dépendance intra-titre & sondages, rééchantillonnage \\
+5. Les deux portes (titre, mois) & pseudo-réplication & agrégation équipondérée \\
+6. Série mensuelle AR($p$) & autocorrélation résiduelle & variance de long terme \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Limites assumées}
+\label{sec:limites}
+
+Aucune des limites qui suivent n'invalide le verdict rendu. Chacune
+trace en revanche la frontière de ce que le protocole peut affirmer.
+
+\begin{limites}
+\begin{itemize}
+  \item Résultats établis sur l'échantillon ayant servi aux calculs~:
+        une validation hors échantillon (\emph{walk-forward}) reste
+        nécessaire avant tout usage opérationnel.
+  \item Périmètre du jugement~: dix stratégies déclarées à l'avance. À
+        plus grande échelle, le contrôle de la fouille de données
+        exigerait des outils dédiés comme le \emph{Reality Check} de
+        White~\cite{white2000}.
+  \item Frais et conditions d'exécution modélisés de façon simplifiée.
+  \item Puissance élevée des grands échantillons~: distinguer
+        soigneusement significativité et taille d'effet.
+  \item Biais du survivant~: la base ne contient que les entreprises
+        présentes dans l'indice sur la période, les sociétés disparues
+        en étant absentes~; ce biais est atténué par la construction
+        appariée de l'\edgevar{}, qui compare chaque trade au hasard sur
+        le même titre.
+\end{itemize}
+\end{limites}
+
+\section{Perspectives}
+\label{sec:perspectives}
+
+La première suite naturelle est la validation temporelle. Elle consiste
+à figer les règles sur une période d'apprentissage puis à juger sur la
+période suivante, en avançant pas à pas, ce que la littérature appelle
+le walk-forward. La validation croisée classique est ici interdite,
+puisqu'elle mélangerait le futur et le passé.
+
+La deuxième est l'avantage conditionnel. Les cartes du
+chapitre~\ref{chap:contexte} suggèrent que le succès dépend du régime de
+marché~; modéliser la probabilité de gain en fonction du contexte, par
+exemple par une régression logistique, en serait le prolongement direct.
+Cette voie a été écartée du présent mémoire par rigueur~: sur des
+dizaines de milliers de trades dépendants, les p-values des coefficients
+seraient trop optimistes, exactement le piège du
+chapitre~\ref{chap:juger}. Les outils adaptés, modèles à effets mixtes
+ou équations d'estimation généralisées, dépassent le cadre de ce travail
+et en constituent la prochaine étape. Une version outillée du protocole
+devrait aussi intégrer un garde-fou d'effectif, écartant en amont les
+stratégies trop peu fournies pour que le théorème central limite
+s'applique.
+
+La troisième concerne les autres signaux de l'agent. Celui-ci collecte
+également des signaux d'information, contrats publics, transactions de
+responsables politiques, annonces réglementaires, ainsi que des
+relations d'avance ou de retard entre titres, au sens de la causalité de
+Granger~\cite{granger1969}. Des travaux exploratoires ont été engagés
+sur ces deux fronts. Le protocole du chapitre~\ref{chap:juger} est
+précisément l'outil qui permettra de les juger, hors du périmètre de ce
+mémoire.

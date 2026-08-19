@@ -1,0 +1,40 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Remerciements}{i}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}But du mémoire}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Les trois menaces qui pèsent sur le jugement}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Démarche du mémoire}{2}{section.1.3}%
+\contentsline {chapter}{\numberline {2}Les données et leur structure de dépendance}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}La base des trades}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Les rendements sectoriels}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}La structure de dépendance, mesurée}{5}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Canal 1 --- la dépendance de titre}{6}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Canal 2 --- la dépendance de marché}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Canal 3 --- la dépendance temporelle}{8}{subsection.2.3.3}%
+\contentsline {chapter}{\numberline {3}Juger les stratégies~: l'escalade de prudence}{9}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Étape 1 --- chaque stratégie bat-elle le hasard ?}{9}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}La question posée à l'outil}{9}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Les méthodes qui y répondent}{9}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Résultats}{12}{subsection.3.1.3}%
+\contentsline {section}{\numberline {3.2}Étape 1 bis --- le verdict survit-il à la dépendance des trades ?}{12}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}La question posée à l'outil}{12}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Les méthodes qui y répondent}{13}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Résultats}{15}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}Positionnement dans la littérature financière}{17}{subsection.3.2.4}%
+\contentsline {section}{\numberline {3.3}Lecture du verdict --- le marché comme série temporelle}{17}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Synthèse du chapitre}{18}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Le contexte des trades~: comparer et caractériser}{19}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Les stratégies diffèrent-elles entre elles ?}{19}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Gagner dépend-il du contexte ?}{20}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Le contexte d'entrée en carte --- ACP}{21}{section.4.3}%
+\contentsline {section}{\numberline {4.4}AFC et ACM}{22}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Synthèse du chapitre}{22}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Le protocole, ses limites, ses suites}{23}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Le protocole récapitulé}{23}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Limites assumées}{23}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Perspectives}{24}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Conclusion}{25}{chapter.6}%
+\contentsline {chapter}{Bibliographie}{26}{chapter*.23}%
+\contentsline {chapter}{\numberline {A}Annexes}{27}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Extraits de commandes (lignes principales)}{27}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Tables complémentaires}{27}{section.A.2}%

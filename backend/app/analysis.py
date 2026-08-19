@@ -296,7 +296,7 @@ def analyze(
         trades = strat.detect_trades(df, **call_kwargs)
         metrics = stats.summarize(backtest.to_dataframe(trades, cost))
 
-        oe = strat.open_entry(df, **call_kwargs)
+        oe = strat.open_entry(df, **call_kwargs) if hasattr(strat, "open_entry") else None
         booked = metrics.get("rendement_total_cumule") or 0.0
         if oe is not None:
             # Position ouverte : coût d'achat payé, coût de vente pas encore (non clôturée).
@@ -317,7 +317,8 @@ def analyze(
         # Géométrie optionnelle (Head & Shoulders...) : ligne de cou, objectif, pivots.
         shp = strat.shapes(df, **call_kwargs) if hasattr(strat, "shapes") else None
 
-        ind = strat.indicators(df, **call_kwargs)
+        # Indicateurs optionnels (l'oracle n'en a pas : il regarde le futur, pas un signal).
+        ind = strat.indicators(df, **call_kwargs) if hasattr(strat, "indicators") else None
         overlays = [
             {
                 "name": col,
@@ -326,7 +327,7 @@ def analyze(
                 "data": [_round(v) for v in ind[col].to_numpy()],
             }
             for j, col in enumerate(ind.columns)
-        ]
+        ] if ind is not None else []
 
         equity = _equity_curve(df, trades, cost)
         # Overlay : garder l'action mais suivre les signaux (vs B&H toujours investi).

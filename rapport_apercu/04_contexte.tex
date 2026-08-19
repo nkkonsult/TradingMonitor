@@ -1,0 +1,181 @@
+% ---------------------------------------------------------------------
+%  Chapitre 4 — Le contexte des trades (version aperçu, rédigée)
+%  NB : chiffres de l'ancienne base (38 035), à régénérer sans l'oracle.
+% ---------------------------------------------------------------------
+\chapter{Le contexte des trades~: comparer et caractériser}
+\label{chap:contexte}
+
+Le chapitre précédent a jugé chaque stratégie isolément, contre le
+hasard. Celui-ci change de question. Les stratégies diffèrent-elles
+entre elles~? Le succès dépend-il du contexte, du régime de marché, du
+secteur, de la situation d'entrée~? Les conclusions de ce chapitre sont
+comparatives et descriptives~: on n'y valide aucune stratégie, le
+verdict appartenant au chapitre~\ref{chap:juger}.
+
+\begin{limites}
+La stratégie oracle (témoin, chapitre~\ref{chap:juger}) est exclue de ce
+chapitre~: son avantage artificiel (\edgevar{} moyen de l'ordre de
+$+26\,\%$) écraserait toute comparaison. Elle n'a de sens que comme
+témoin de validation, non comme stratégie à comparer aux autres. Les
+analyses ci-dessous portent donc sur les dix stratégies réelles.
+\end{limites}
+
+% =====================================================================
+\section{Les stratégies diffèrent-elles entre elles ?}
+\label{sec:b1-etape2}
+
+Pour comparer les stratégies entre elles, on analyse la variance de
+l'\edgevar{}. Si les moyennes des dix stratégies étaient égales, la
+variation entre stratégies ne dépasserait pas la variation interne à
+chacune. La statistique \(F\) rapporte ces deux variations~:
+\[
+  F = \frac{\mathrm{SCE}_{\text{inter}}/(k-1)}
+           {\mathrm{SCE}_{\text{intra}}/(n-k)} \sim F_{k-1,\,n-k}.
+\]
+La décomposition de la variance et le test \(F\) suivent le cadre
+classique de l'analyse de la variance~\cite{scheffe1959}. Les
+comparaisons deux à deux qui suivent le rejet global s'appuient sur le
+test de Tukey, fondé sur la loi du range studentisé, qui corrige de
+lui-même la multiplicité des paires. Une analyse à deux facteurs,
+croisant la stratégie et le régime de marché avec un terme
+d'interaction, teste enfin si l'effet de la stratégie dépend du régime.
+
+\begin{conditions}
+Indépendance des observations, hypothèse mise à l'épreuve au
+chapitre~\ref{chap:juger}~: les p-values de ce chapitre, calculées au
+niveau des trades, s'entendent sous cette réserve, les \(F\) colossaux
+restant interprétables comme ordres de grandeur~; normalité des résidus
+assurée par le théorème central limite~; homoscédasticité vérifiée par
+les tests de Bartlett et de Levene, avec bascule possible vers l'ANOVA
+de Welch en cas de variances inégales.
+\end{conditions}
+
+L'analyse à un facteur rejette massivement l'égalité des moyennes, avec
+\(F\approx 47\) et une p-value de l'ordre de $10^{-85}$. Le test de
+Tukey identifie dix-huit paires significatives sur quarante-cinq,
+\texttt{rsi\_strict} se détachant du lot. L'interaction entre stratégie
+et régime est très significative, de l'ordre de $5\times10^{-69}$~: la
+valeur d'une stratégie dépend du régime dans lequel elle opère.
+
+% =====================================================================
+\section{Gagner dépend-il du contexte ?}
+\label{sec:b1-etape3}
+
+On se demande ensuite si le simple fait de gagner dépend du contexte. La
+variable \texttt{win}, qui vaut un pour un trade gagnant, est croisée
+avec le régime, le secteur et la stratégie dans des tableaux de
+contingence, sur lesquels on applique le test du khi-deux
+d'indépendance~:
+\[
+  \chi^2 = \sum_{i,j}\frac{(N_{ij}-E_{ij})^2}{E_{ij}},
+  \qquad E_{ij}=\frac{N_{i\cdot}N_{\cdot j}}{N},
+  \qquad \chi^2 \sim \chi^2_{(r-1)(c-1)}.
+\]
+
+\begin{conditions}
+Effectifs théoriques \(E_{ij}\ge 5\) (règle de Cochran)~; sur tableaux
+restreints ou à faibles effectifs, recours possible à la correction de
+Yates, au test exact de Fisher ou au G-test~; indépendance des
+observations, même réserve qu'à la section précédente.
+\end{conditions}
+
+\begin{table}[H]
+\centering
+\caption{Dépendance de \texttt{win} au contexte (khi-deux d'indépendance).}
+\label{tab:b1-etape3}
+\small
+\begin{tabular}{@{}lrrc@{}}
+\toprule
+Croisement & $\chi^2$ & ddl & Verdict \\
+\midrule
+\texttt{win} $\times$ \texttt{regime\_entry} & $112{,}3$   & 2  & lien significatif \\
+\texttt{win} $\times$ \texttt{sector}        & $16{,}6$    & 10 & indépendance ($p=0{,}08$) \\
+\texttt{win} $\times$ \texttt{strategy}      & $6\,381{,}7$& 9  & lien très fort \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Le taux de gain dépend fortement de la stratégie, faiblement du régime,
+et pas du secteur.
+
+\begin{limites}
+À très grand \(n\), le khi-deux devient significatif même pour des liens
+négligeables~; la significativité ne dit rien de la force du lien, et
+ces contrastes se lisent comme des descriptions, non comme des
+validations.
+\end{limites}
+
+% =====================================================================
+\section{Le contexte d'entrée en carte --- ACP}
+\label{sec:b1-etape4}
+
+Pour cartographier les situations d'entrée, on réalise une ACP
+normée~\cite{saporta2006,lebart2006} sur les quatre variables
+quantitatives de contexte, la volatilité, le niveau du RSI, la distance
+à la moyenne mobile et la durée de détention, le nombre d'axes retenus
+étant justifié par les critères de Kaiser et de Cattell. Les variables
+qualitatives, régime, secteur et issue du trade, sont projetées en
+illustratives.
+
+\begin{conditions}
+Variables quantitatives~; standardisation obligatoire, les unités étant
+hétérogènes~; l'ACP ne capture que des relations linéaires.
+\end{conditions}
+
+Les deux premiers axes résument environ deux tiers de la variance, le
+premier étant porté par le RSI et la distance à la moyenne mobile,
+autrement dit par l'état de survente du titre à l'entrée, le second par
+la durée de détention et la volatilité. La question intéressante est de
+savoir si les trades gagnants occupent une région particulière de ce
+plan. La réponse est négative~: les positions moyennes des gagnants et
+des perdants sont presque confondues, avec un écart standardisé
+inférieur à $0{,}2$. Le contexte d'entrée, à lui seul, ne sépare pas les
+gagnants des perdants, résultat instructif qui rejoint le verdict du
+chapitre~\ref{chap:juger}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{etape4_acp.png}
+  \caption{ACP du contexte d'entrée~: plan factoriel des trades, gagnants
+  et perdants presque confondus.}
+  \label{fig:acp-contexte}
+\end{figure}
+
+% =====================================================================
+\section{AFC et ACM}
+\label{sec:b1-etape56}
+
+L'analyse factorielle des correspondances croise ensuite la stratégie
+avec la tranche de rendement obtenue, perte, gain modéré ou gain fort.
+Le premier axe, qui résume les trois quarts de l'inertie, oppose les
+stratégies à dominante perdante, comme \texttt{hs\_classic} ou
+\texttt{sr\_breakout}, aux stratégies dont les trades finissent plus
+souvent en gain, \texttt{rsi\_classic} et surtout \texttt{rsi\_strict},
+cette dernière se projetant nettement du côté des gains forts.
+
+L'analyse des correspondances multiples, menée sur la stratégie, le
+régime, le secteur et l'issue du trade, ne résume que faiblement
+l'information, comme il est habituel avec de nombreuses modalités, mais
+confirme la même géographie~: les modalités de secteur se massent au
+centre du plan, signe qu'elles ne structurent rien, tandis que les
+stratégies et le régime s'écartent, \texttt{rsi\_strict} voisinant avec
+le régime baissier, dont elle exploite les excès.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{etape5_afc.png}
+  \caption{AFC stratégie $\times$ tranche de rendement~: le premier axe
+  oppose profils perdants et profils gagnants.}
+  \label{fig:afc}
+\end{figure}
+
+% =====================================================================
+\section{Synthèse du chapitre}
+\label{sec:contexte-synthese}
+
+Les stratégies diffèrent donc fortement entre elles et leur valeur
+dépend du régime de marché, tandis que le secteur ne joue aucun rôle
+décelable. Mais aucun de ces contrastes ne remet en cause le verdict du
+chapitre~\ref{chap:juger}~: différer de son voisin n'est pas battre le
+hasard. Ces cartes du contexte préparent en revanche la perspective d'un
+avantage conditionnel, esquissée au chapitre~\ref{chap:protocole}.

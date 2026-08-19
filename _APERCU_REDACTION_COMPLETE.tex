@@ -1,0 +1,986 @@
+% =====================================================================
+%  APERÇU DE RÉDACTION COMPLÈTE DU MÉMOIRE — FICHIER DE TRAVAIL
+% =====================================================================
+%  Statut : ce fichier N'EST PAS le rapport. Il vit à la racine du
+%  projet, hors de rapport/, et ne doit jamais partir dans le rendu.
+%
+%  Usage : c'est un modèle de prose, chapitre par chapitre, dans l'ordre
+%  du rapport. Là où tu avais déjà rédigé (intro, ch. 2, étape 1 du
+%  ch. 3), ta prose est reprise telle quelle, seulement lissée. Le reste
+%  est rédigé à partir de tes trames et de tes chiffres réels. Tu
+%  restes maître : pioche, modifie, réécris dans les vrais fichiers.
+%
+%  Les tableaux et figures ne sont pas dupliqués ici : un repère
+%  % [tableau/figure X ici] indique leur place. Les formules sont
+%  recopiées quand la prose s'y appuie.
+%
+%  Chiffres : base 40 362 trades (11 stratégies, oracle inclus) pour les
+%  ch. 1-3. ATTENTION ch. 4 : chiffres de l'ancienne base (38 035),
+%  encore valides tant que les scripts ne sont pas relancés, mais à
+%  régénérer SANS l'oracle avant le rendu (cf. TODO).
+% =====================================================================
+
+
+% =====================================================================
+%  CHAPITRE 1 — INTRODUCTION
+% =====================================================================
+
+% ------------------ §1.1 But du mémoire (ta prose, lissée) -----------
+
+Lors de mon stage en entreprise, j'ai eu pour consigne de créer un agent
+d'intelligence artificielle capable de faire du trading, c'est-à-dire
+d'acheter et de revendre des actions en cherchant à tirer profit de leurs
+variations. J'ai alors décidé de donner à cet agent des capacités
+d'analyse statistique. Après avoir construit le nécessaire pour qu'il
+puisse passer des ordres et accéder aux données du marché, j'ai estimé
+qu'il devait être capable d'évaluer les stratégies de trading qu'il
+aurait établies — une stratégie étant une règle fixe qui décide quand
+acheter un titre et quand le revendre.
+
+Je présente dans ce rapport l'outil d'évaluation de stratégies que j'ai
+donné à mon agent.
+
+L'objectif de cet outil n'est pas de découvrir une stratégie rentable.
+Il est de construire un enchaînement de méthodes capable de déterminer,
+pour une stratégie quelconque qu'on lui soumet, si l'avantage qu'elle
+affiche est réel ou s'il relève du hasard d'échantillonnage ou du biais
+de marché. Autrement dit, la contribution revendiquée est
+méthodologique~: la chaîne de tests, sa justification et la vérification
+de ses conditions d'application.
+
+Les dix stratégies d'analyse technique utilisées dans ce rapport ne
+constituent donc pas l'objet d'étude, mais un banc d'essai. Elles
+fournissent des jeux de données réels permettant de montrer que l'outil
+discrimine correctement, qu'il sait rejeter ce qui ne tient pas et
+retenir ce qui résiste à l'analyse. Les résultats obtenus sont présentés
+à titre d'illustration du bon fonctionnement du protocole, et non comme
+des recommandations d'investissement. Pour s'assurer que l'outil ne
+rejette pas tout par excès de sévérité, on lui soumettra aussi un témoin
+dont l'avantage est réel par construction.
+
+% ------------------ §1.2 Les trois menaces (ta prose, lissée) --------
+
+La première difficulté tient à la dérive du marché. Le premier réflexe
+pour juger une stratégie est d'examiner si elle est rentable~: un gain
+positif la ferait « marcher ». Ce raisonnement est pourtant trompeur,
+car encore faut-il que ce gain dépasse ce qu'une entrée au hasard aurait
+rapporté. Ici les stratégies sont appliquées aux titres du S\&P~500,
+l'indice des cinq cents grandes capitalisations américaines, dont la
+tendance est haussière sur la période étudiée. Cette dérive haussière
+pose problème, car une stratégie peut réaliser des gains sans avoir
+capté le moindre signal. C'est pourquoi on ne mesurera pas les gains,
+mais l'avantage qu'apporte chaque stratégie par rapport au hasard.
+
+La deuxième difficulté provient du nombre de tests. Plus on teste de
+stratégies, plus le risque d'obtenir au moins un faux positif augmente.
+Ce problème sera traité au chapitre~\ref{chap:juger} à l'aide de la
+correction de Bonferroni.
+
+La troisième, sans doute la plus délicate, est la dépendance des
+données. De nombreuses méthodes statistiques exigent l'indépendance des
+observations~; or ici les trades sont dépendants sous plusieurs aspects,
+comme la période, le titre ou encore le secteur. Cette difficulté sera
+mesurée au chapitre~\ref{chap:donnees}, puis neutralisée au
+chapitre~\ref{chap:juger}.
+
+On est forcé de prendre en compte ces trois difficultés, sous peine d'un
+verdict trop optimiste~: c'est leur traitement conjoint qui fait de ce
+protocole un véritable outil de validation.
+
+% ------------------ §1.3 Démarche du mémoire (rédigé, était en trame)
+
+L'étude suit le fil d'une enquête unique, du diagnostic au verdict. Le
+chapitre~\ref{chap:donnees} présente d'abord la matière première, la
+base des quarante mille trades et la construction de l'avantage mesuré,
+puis dresse l'état des lieux de ce qui menace les tests, en mesurant les
+trois canaux par lesquels les observations se ressemblent. Le
+chapitre~\ref{chap:juger} constitue le c\oe ur du travail. On y juge les
+stratégies, du test de référence jusqu'aux corrections de la dépendance,
+en resserrant la prudence à chaque étape, avant de relire le verdict à
+la lumière du comportement du marché lui-même. Le
+chapitre~\ref{chap:contexte} change ensuite de question~: il ne s'agit
+plus de valider, mais de comparer les stratégies entre elles et de
+décrire les situations dans lesquelles elles se déclenchent. Le
+chapitre~\ref{chap:protocole} récapitule enfin l'outil sous la forme
+d'un protocole réutilisable, en assume les limites et trace les étapes
+suivantes, avant la conclusion. Le fil conducteur va ainsi du plus
+fragile, la donnée et ses dépendances, au plus solide, le verdict, puis
+l'outil qui permettra d'en rendre d'autres.
+
+
+% =====================================================================
+%  CHAPITRE 2 — LES DONNÉES ET LEUR STRUCTURE DE DÉPENDANCE
+% =====================================================================
+
+% ------------------ §2.1 La base des trades (ta prose, lissée) -------
+
+Tout au long de ce rapport, on appliquera les méthodes à notre base de
+données. Celle-ci a été obtenue en appliquant différentes stratégies à
+des données antérieures. Cette méthode se nomme le \emph{backtesting}~:
+elle consiste à rejouer le passé pour vérifier si une stratégie a repéré
+un signal de prédiction du marché.
+
+Ici, nous appliquons dix stratégies techniques classiques ainsi qu'une
+stratégie témoin, appelée oracle. La stratégie oracle utilise les
+données futures pour effectuer des trades uniquement gagnants, afin de
+vérifier que notre protocole laisse passer une stratégie dont le signal
+fonctionne réellement. Les dix autres stratégies, elles, effectuent
+leurs trades à une date fixée en utilisant uniquement les données
+précédant cette date.
+
+% [tableau tab:strategies ici — les onze stratégies]
+
+J'ai alors choisi d'appliquer ces stratégies aux cinq cent une grandes
+capitalisations américaines présentes dans le S\&P~500. Cet indice
+constitue un ensemble sur lequel on peut investir avec peu de risque~:
+même si le cours de chacune de ces actions peut chuter individuellement,
+l'indice lui-même reste relativement stable et suit une tendance
+haussière.
+
+Pour qu'une stratégie soit validée, il faut qu'elle obtienne de
+meilleurs résultats qu'une stratégie jouant au hasard, et que cela ne
+soit pas dû à notre échantillonnage. Or la tendance est ici haussière,
+ce qui nous ramène à la première difficulté de l'introduction~: comment
+évaluer une stratégie lorsque le marché monte de lui-même~?
+
+Pour répondre à cette question, on simule le hasard. À chaque trade
+réalisé, on associe deux cents trades fictifs de même exposition, sur le
+même titre, avec la même durée et le même sens, mais dont la date
+d'entrée est tirée au sort. La moyenne de leurs rendements définit le
+gain du hasard pour ce trade. On définit alors, pour chaque trade, son
+\edgevar{} comme le rendement effectivement obtenu par la stratégie,
+éventuellement négatif, diminué de ce gain du hasard~:
+\[
+  \edgevar = \text{gain de la stratégie} - \text{gain du hasard}.
+\]
+Un \edgevar{} positif signifie que la stratégie a fait mieux qu'une
+entrée au hasard de même exposition~: son \emph{timing} apporte une
+information que la seule dérive du marché n'explique pas.
+
+On obtient ainsi une base contenant, pour chaque stratégie, entre 978 et
+8\,513 trades effectués entre janvier~2010 et juillet~2026, pour un
+total de 40\,362 trades. Chaque ligne correspond à une position ouverte
+puis fermée par une stratégie sur un titre. On y associe le titre
+concerné, désigné par son \emph{ticker}, c'est-à-dire son code en
+bourse, la stratégie employée, le secteur d'activité, les dates d'entrée
+et de sortie, la durée de détention, le régime de marché et le contexte
+à l'entrée, le rendement obtenu et l'avantage \edgevar{} sur un tirage
+aléatoire équivalent.
+
+% [tableau tab:dico-trades ici — variables + exemple]
+
+% ------------------ §2.2 Les rendements sectoriels (ta prose, lissée)
+
+Pour étudier la dépendance des données, on a besoin de données par
+secteur. Le S\&P~500 compte onze secteurs d'activité. Sur chacun d'eux,
+on établit une courbe du rendement journalier, obtenu en moyennant
+chaque jour les rendements des titres du secteur. Ces données seront
+utilisées d'une part au canal~2 du
+paragraphe~\ref{sec:dep-canal2}, pour mettre en évidence le facteur
+marché, c'est-à-dire la part des mouvements commune à tous les
+secteurs, et d'autre part dans la conclusion du
+chapitre~\ref{chap:juger}, pour examiner si le marché est prévisible à
+partir de son propre passé.
+
+% ------------------ §2.3 chapeau (ta prose, lissée) ------------------
+
+Les tests que nous utiliserons au chapitre~\ref{chap:juger} ne
+fonctionnent que si les données sont indépendantes. Ici, les données
+sont dépendantes par le titre, par la date et par la durée. Cette
+situation porte un nom en théorie des sondages~: notre base n'est pas un
+tirage au hasard d'individus, mais un tirage par grappes, où chaque
+grappe est un titre. Le réflexe du sondeur impose alors de décrire ce
+plan d'échantillonnage avant d'estimer quoi que ce soit. C'est pourquoi
+on mesure les dépendances maintenant, avant les tests.
+
+% ------------------ Canal 1 — la dépendance de titre (ta prose, lissée)
+
+Deux trades d'un même titre sont liés par la gestion de la société ainsi
+que par son image à l'extérieur. Ils subissent les mêmes chocs propres à
+la société, ses résultats, ses décisions de direction, ses litiges,
+indépendamment du moment où ils sont ouverts. On appellera cet effet la
+dépendance de titre~: nos données constituent alors un tirage par
+grappes, où chaque grappe est un titre.
+
+On définit alors l'estimateur suivant~:
+\[
+  \hat\rho \;=\; \frac{\mathrm{MSB}-\mathrm{MSW}}
+                      {\mathrm{MSB} + (n_0 - 1)\,\mathrm{MSW}},
+\]
+où MSB (\emph{Mean Square Between}) est la variation entre les titres,
+donc inter-grappes, c'est-à-dire la moyenne des écarts d'\edgevar{} d'un
+titre à l'autre, et MSW (\emph{Mean Square Within}) la variation à
+l'intérieur d'un titre, donc intra-grappe, c'est-à-dire la moyenne des
+écarts d'\edgevar{} entre les trades d'un même titre. Deux cas se
+présentent. Si les trades d'un même titre ne se ressemblent pas plus que
+ceux de titres différents, la variation est la même à l'intérieur des
+titres et entre eux, et l'on obtient MSB~$\approx$~MSW. S'ils se
+ressemblent, c'est la dépendance de titre, la variation à l'intérieur
+d'un titre s'effondre tandis que la variation entre titres subsiste, et
+l'on obtient MSB~$>$~MSW.
+
+On pourrait se contenter du quotient de MSB par MSW, qui vaudrait un en
+cas d'indépendance. Mais un écart à un, qu'il soit de un dixième, de
+trois ou de cent, ne se rattache à aucune échelle, et l'on ne saurait
+dire s'il traduit une dépendance forte ou faible. Pour obtenir une
+réponse du type « treize pour cent du résultat est dû à une dépendance
+de grappe », on préfère la formule ci-dessus, qui ramène la mesure à une
+valeur comprise entre zéro et un.
+
+Le terme $n_0$ correspond à la taille moyenne des grappes, c'est-à-dire
+au nombre de trades par titre, corrigée de l'inégalité des tailles. Il
+pondère la variation intra-titre au dénominateur~: plus les grappes
+contiennent de trades, plus $n_0$ est grand, et plus il faut de
+contraste entre les titres pour conclure à une dépendance.
+
+Le tableau~\ref{tab:dep-mesures} donne un $\hat\rho$ quasi nul pour la
+plupart des stratégies, mais atteignant $0{,}134$ pour
+\texttt{rsi\_strict}. La dépendance par le titre est donc négligeable
+pour toutes les stratégies, excepté \texttt{rsi\_strict}. Un $\hat\rho$
+faible ne garantit toutefois pas l'indépendance des trades~: il n'écarte
+que ce premier canal, les deux suivants restant à examiner.
+
+% ------------------ Canal 2 — la dépendance de marché (ta prose, lissée)
+
+La deuxième dépendance que l'on va mesurer est la dépendance du moment.
+Des trades ouverts au même moment peuvent être liés parce qu'ils
+subissent la même journée de bourse~: à une même période, différentes
+actions changent de valeur conjointement, et les trades effectués sont
+alors liés par le marché.
+
+Cette dépendance ne s'observe pas directement sur les trades, mais sur
+le marché lui-même. Si les secteurs bougent ensemble, alors des trades
+ouverts au même moment, quel que soit leur secteur, subissent la même
+poussée. Pour la mesurer, on utilise donc les données introduites au
+paragraphe~\ref{sec:donnees-secteurs}, c'est-à-dire les rendements
+quotidiens par secteur. On calcule les corrélations des secteurs deux à
+deux, puis on en fait la moyenne, et l'on obtient une corrélation de
+$0{,}70$. Ce chiffre élevé signifie que les secteurs sont largement
+corrélés. Lorsqu'un secteur bouge, le marché a tendance à bouger dans le
+même sens, et inversement, lorsque le marché suit une tendance, la
+plupart des secteurs la suivent aussi.
+
+On utilise ensuite la méthode de l'ACP sur les onze secteurs, de façon à
+mettre en évidence les plus grandes corrélations
+(figure~\ref{fig:acp-marche}). Cette méthode calcule les axes qui
+captent la plus grande variance. En l'appliquant ici, on observe un
+premier axe qui capte 73~\% de la variance totale, le long duquel tous
+les secteurs progressent ensemble~: c'est le mouvement global du marché.
+Vient ensuite un deuxième axe, nettement moins important, qui sépare les
+secteurs cycliques, réagissant fortement au marché, des secteurs
+défensifs, qui ne bougent guère quelle que soit la conjoncture. On peut
+donner en exemple de secteur cyclique la technologie, qui dépend du
+pouvoir d'achat, on achète des biens technologiques quand on est aisé,
+moins en temps de crise, et comme secteur défensif les services aux
+collectivités, électricité, eau et gaz, dont la consommation reste
+constante, que le marché soit haussier ou en crise.
+
+% [figure fig:acp-marche ici]
+
+Sur l'histogramme de gauche, la première barre écrase toutes les
+autres~: elle capte à elle seule 73~\% de la variance, contre moins de
+8~\% pour la deuxième. Sur le nuage de droite, tous les secteurs se
+situent du même côté de l'axe horizontal, ce qui confirme qu'ils
+progressent ensemble, tandis que le second axe les répartit entre
+défensifs et cycliques.
+
+Cette cause commune n'est donc pas une hypothèse mais une mesure~: 73~\%
+des mouvements sont portés par une force unique. Deux trades ouverts au
+même moment subissent largement le même sort, ce qui les rend dépendants
+du marché.
+
+% ------------------ Canal 3 — la dépendance temporelle (ta prose, lissée)
+
+Dans la suite du rapport, nous aurons besoin d'agréger les trades par
+mois. Or les trades durent~: en moyenne 132~jours, avec une médiane de
+65~jours, et plus de 75~\% d'entre eux dépassent un mois. Un même trade,
+encore ouvert, est donc compté dans plusieurs mois consécutifs. Deux
+mois voisins partagent ainsi des trades communs et se ressemblent. Même
+agrégées par mois, les observations ne sont donc pas indépendantes, et
+c'est cette ressemblance d'un mois à l'autre qu'il faut mesurer.
+
+Pour cela, on utilise l'autocorrélation d'ordre un, notée
+$\hat\rho(1)$~: on décale la série mensuelle d'un mois et on corrèle la
+série avec elle-même ainsi décalée. Elle mesure à quel point un mois
+ressemble au précédent. On obtient les valeurs suivantes.
+
+% [tableau tab:dep-mesures ici — rho intra-titre + rho(1) mensuel]
+
+Le $\hat\rho(1)$ atteint $0{,}56$ pour \texttt{ma\_crossover}, sa valeur
+la plus forte, tandis qu'il reste faible pour \texttt{rsi\_strict}
+($0{,}03$). La dépendance temporelle est a priori forte pour les
+stratégies à trades longs, faible pour celles à trades courts.
+Attention~: ces valeurs élevées ne traduisent pas une prévisibilité du
+marché, mais le chevauchement mécanique des trades qui durent.
+
+% ------------------ Conclusion du §2.3 (ta prose, lissée) ------------
+
+Les trois canaux de dépendance sont désormais mesurés. Aucun n'est
+systématiquement élevé. La dépendance de titre reste souvent proche de
+zéro, et même l'autocorrélation temporelle s'efface pour les stratégies
+à trades courts. Mais chacun se manifeste fortement pour certaines
+stratégies, la dépendance de titre pour \texttt{rsi\_strict}, la
+dépendance de marché pour toutes, la dépendance temporelle pour
+\texttt{ma\_crossover}, et le chapitre~\ref{chap:juger} montrera qu'ils
+suffisent à renverser des verdicts. On peut maintenant juger les
+stratégies en sachant exactement ce qui menace les tests.
+
+
+% =====================================================================
+%  CHAPITRE 3 — JUGER LES STRATÉGIES : L'ESCALADE DE PRUDENCE
+% =====================================================================
+
+% ------------------ Chapeau du chapitre ------------------------------
+
+Ce chapitre traite la question suivante~: parmi onze stratégies
+d'analyse technique, lesquelles produisent un avantage \edgevar{}
+significativement positif~? On applique d'abord le test de référence
+sous ses hypothèses standard, puis on met à l'épreuve, une à une, ses
+conditions d'application, en s'appuyant sur la structure de dépendance
+mesurée au chapitre~\ref{chap:donnees}.
+
+% ------------------ Étape 1 — la question (ta prose) -----------------
+
+La première question posée à l'outil est donc~: l'avantage moyen affiché
+par une stratégie est-il réel, ou n'est-il qu'un accident
+d'échantillonnage~? On la formalise en confrontant la moyenne de
+l'\edgevar{} à la valeur zéro, ce qui conduit au test de Student
+présenté ci-dessous.
+
+% ------------------ Étape 1 — Student (ta prose, lissée) -------------
+
+Lorsque l'on obtient un edge moyen positif, on cherche à savoir si la
+stratégie constitue réellement une prédiction, ou si ce résultat est dû
+à l'aléa de l'échantillon. Il faut ici distinguer deux quantités~:
+l'edge moyen théorique \(\mu_{\edgevar}\), c'est-à-dire la vraie valeur,
+inconnue, qui gouverne la stratégie, et sa moyenne observée \(\bar e\),
+calculée sur notre échantillon de trades. On se demande alors si, à
+partir de la valeur observée \(\bar e\), on peut conclure que la vraie
+valeur \(\mu_{\edgevar}\) est positive.
+
+Le test de Student à un échantillon répond à cette question en
+confrontant \(\mu_{\edgevar}\) à une valeur de référence fixée à zéro,
+zéro correspondant à l'absence d'avantage sur le hasard. Sa mise en
+\oe uvre suppose deux conditions, à savoir que l'edge vérifie un critère
+de normalité et que les trades soient indépendants les uns des autres.
+La première sera assouplie par le théorème central limite, la seconde,
+plus délicate, sera examinée en section suivante. On oppose ainsi deux
+hypothèses~:
+\[
+  \begin{cases}
+    \Hzero : \mu_{\edgevar} = 0 & \text{(le vrai edge est nul~: pas mieux que le hasard),}\\[2pt]
+    \Hun : \mu_{\edgevar} > 0 & \text{(le vrai edge est positif~: avantage réel).}
+  \end{cases}
+\]
+Le test est unilatéral, car seul un avantage strictement positif nous
+intéresse.
+
+Pour trancher, on définit \(t\) comme le nombre d'erreurs-types
+nécessaires pour faire passer l'edge moyen de zéro à celui observé dans
+notre échantillon~:
+\[
+  t = \frac{\bar e}{s/\sqrt{n}} \sim t_{n-1} \quad\text{sous } \Hzero .
+\]
+Sous \Hzero{}, \(t\) suit une loi de Student à \(n-1\) degrés de
+liberté. On évalue alors la p-value, c'est-à-dire la probabilité
+d'obtenir un \(t\) au moins aussi grand que celui observé si \Hzero{}
+était vraie. Si cette p-value est très faible, le hasard n'est plus une
+explication crédible de l'edge moyen positif observé, et l'on conclut
+que l'edge théorique est positif~: la stratégie fait mieux que le
+hasard.
+
+On a dit que le test de Student demandait la normalité de l'edge. On
+vérifie cette condition d'abord avec le test de Shapiro--Wilk, puis à
+l'aide du théorème central limite. Le test de Shapiro--Wilk a en effet
+peu de chances de valider l'hypothèse~: la taille de l'échantillon
+déstabilise ce test, alors qu'elle renforce au contraire le théorème
+central limite.
+
+% ------------------ Étape 1 — Shapiro (ta prose, lissée) -------------
+
+Le test de Shapiro--Wilk est un test de normalité qui compare deux
+mesures de dispersion, d'une part les écarts à la moyenne, d'autre part
+l'ordre des valeurs. Ces deux mesures ne coïncident que si l'hypothèse
+de normalité est vraie. On oppose ainsi deux hypothèses~:
+\[
+  \begin{cases}
+    \Hzero \;(W \simeq 1) : \text{l'edge suit une loi normale,}\\[2pt]
+    \Hun \;(W \ll 1) : \text{l'edge ne suit pas une loi normale.}
+  \end{cases}
+\]
+On notera que, contrairement au test de Student, c'est ici \Hzero{} qui
+correspond à la propriété recherchée~: une p-value faible conduira donc
+à rejeter la normalité. On pose alors la statistique
+\(W = b^2/\mathrm{SCE}\) comme rapport de ces deux mesures. Lorsque
+\(W\) est proche de un, l'échantillon est compatible avec une loi
+normale. Pour trancher, on procède comme pour le test de Student~: on
+calcule la probabilité d'obtenir notre \(W\) si la loi était normale, et
+si cette probabilité est trop faible, on rejette l'hypothèse de
+normalité.
+
+Appliqué à nos données, le test rejette la normalité pour les dix
+stratégies, les valeurs de \(W\) et les p-values étant détaillées en
+annexe~\ref{tab:ann-shapiro}. La condition du test de Student n'est
+donc, en apparence, pas remplie.
+
+% ------------------ Étape 1 — TCL (ta prose, lissée) -----------------
+
+Le rejet de Shapiro--Wilk porte sur la non-normalité de l'edge
+individuel. Mais comme le test de Student ne dépend que de la moyenne de
+l'edge, on peut se rabattre sur le théorème central limite, qui garantit
+la quasi-normalité de la moyenne sur les grands échantillons, quelle que
+soit la loi de départ~:
+\[
+  \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
+  \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
+\]
+Cette justification suppose un effectif suffisant, et un outil générique
+devrait écarter les stratégies trop peu fournies. Ici, \(n\) est compris
+entre 978 et 8\,513 selon la stratégie, ce qui est largement suffisant.
+La condition réellement utile au test de Student est donc satisfaite,
+malgré le rejet de Shapiro--Wilk. On remarque de plus que la quantité
+ci-dessus est exactement celle du test de Student~: sous \Hzero{}, en
+remplaçant l'écart-type théorique \(\sigma\), inconnu, par son
+estimation \(s\), on retrouve la statistique
+\(t = \bar e/(s/\sqrt{n})\). Le théorème central limite justifie ainsi
+directement la forme et la validité du test.
+
+% ------------------ Étape 1 — Bonferroni (ta prose, lissée) ----------
+
+Pour appliquer le test de Student, il reste à fixer un seuil pour la
+p-value. Pour un test isolé, on prend habituellement \(0{,}05\)~: on
+estime que s'il n'y avait que cinq chances sur cent d'obtenir un tel
+résultat sous \Hzero{}, il est peu vraisemblable d'être tombé dessus par
+hasard, et l'on accepte alors le risque de rejeter \Hzero{}.
+
+Seulement, nous effectuons ici onze tests. Plaçons-nous dans le cas le
+plus défavorable, où aucune stratégie n'a d'avantage réel. Pour un test
+isolé, la probabilité de ne pas conclure à tort à un avantage est de
+\(0{,}95\). En supposant les tests indépendants, la probabilité de ne
+commettre aucune erreur sur les onze tests tombe à
+\(0{,}95^{11} \approx 0{,}57\). Le risque de commettre au moins un faux
+positif sur l'ensemble s'élève donc à \(1 - 0{,}95^{11} \approx
+0{,}43\), ce qui est inacceptable.
+
+Pour éviter cela, on raisonne en sens inverse~: on fixe le risque global
+à \(0{,}05\) et l'on en déduit le seuil de chaque test. On s'appuie sur
+l'inégalité de Boole, selon laquelle la probabilité qu'au moins un
+événement se produise est inférieure ou égale à la somme de leurs
+probabilités individuelles. Pour garantir un risque global inférieur à
+\(0{,}05\), il suffit donc que la somme des seuils individuels vaille
+\(0{,}05\). En les prenant tous égaux, on obtient la correction de
+Bonferroni~:
+\[
+  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{11} \approx 0{,}0045 .
+\]
+
+% [encadré conditions ici — ajouter le renvoi : « l'indépendance des
+%  trades est mise à l'épreuve en section suivante »]
+
+% ------------------ Étape 1 — Résultats (ta prose, lissée) -----------
+
+% [tableau tab:b1-etape1 ici]
+
+Outre l'oracle témoin, qui bat le hasard de très loin comme attendu,
+seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
+correction de Bonferroni.
+
+Il est utile de rappeler ce que ce test affirme au juste. Il répond
+uniquement à la question de savoir si l'edge moyen positif est dû au
+seul échantillonnage, auquel cas on conserve \Hzero{} et la stratégie
+n'est pas déclarée gagnante. Dans le cas inverse, on pourra affirmer que
+la stratégie a capturé un signal, mais pas qu'elle est gagnante, et cela
+pour deux raisons. D'une part, un edge positif ne signifie pas des gains
+positifs, mais simplement que l'on perd moins que le hasard. D'autre
+part, comme \(n\) est grand, la loi normale de la moyenne se resserre,
+et l'on fait ressortir comme significatives des stratégies dont la
+moyenne d'edge n'est que très faiblement positive, que les frais
+suffiraient à rendre perdantes.
+
+% [encadré limites ici — significativité vs ampleur]
+
+Ce verdict reste toutefois suspendu à une condition que nous n'avons pas
+encore vérifiée, l'indépendance des trades. C'est l'objet de la section
+suivante.
+
+% ------------------ Étape 1 bis — la question (version fluide) -------
+
+On a appliqué le test de Student en supposant les données indépendantes.
+Or, comme nous l'avons mesuré au chapitre~\ref{chap:donnees}, nos
+données sont dépendantes par le titre, par le marché et d'un mois à
+l'autre. Ces dépendances empruntent en réalité deux chemins seulement,
+que nous appellerons les deux portes. La première est la porte de
+l'action, celle des trades ouverts sur un même titre. La seconde est la
+porte de la période, celle des trades ouverts à une même époque, qu'ils
+subissent ensemble le mouvement du marché ou qu'ils se prolongent sur
+les mêmes mois. Ce sont les deux seules voies par lesquelles deux trades
+peuvent partager une cause commune.
+
+Le problème est que le test de Student traite les trades d'une stratégie
+comme autant d'informations distinctes, alors que ces informations se
+répètent en partie. L'erreur-type s'en trouve sous-estimée. Comme cette
+erreur-type sert à mesurer l'écart entre l'avantage observé et la valeur
+de référence, un dénominateur trop petit gonfle la statistique de
+Student et rend la p-value trop optimiste. Le risque de conclure à tort
+qu'une stratégie bat le hasard augmente d'autant.
+
+Nous cherchons donc à savoir si le verdict positif obtenu pour
+\texttt{rsi\_classic} et \texttt{rsi\_strict} résiste lorsque l'on
+abandonne l'hypothèse d'indépendance. Pour cela, nous corrigeons d'abord
+l'erreur-type au moyen de l'effet de plan, puis nous vérifions ce
+résultat par un rééchantillonnage qui ne suppose aucune forme
+particulière des données. Nous fermons ensuite chaque porte en
+regroupant les trades pour que chaque titre, puis chaque période, ne
+compte qu'une fois. Nous vérifions enfin que la porte de la période
+tient elle-même, en traitant la suite des avantages mensuels comme une
+série temporelle.
+
+% ------------------ Étape 1 bis — méthode 1 : l'effet de plan --------
+
+Nos trades ne forment pas un échantillon tiré au hasard parmi des
+observations indépendantes. Ils proviennent d'un ensemble de titres,
+chacun livrant plusieurs trades. La théorie des sondages appelle cela un
+tirage par grappes, où chaque grappe est ici un titre. Le
+chapitre~\ref{chap:donnees} a déjà mesuré, avec la corrélation
+intra-titre $\hat\rho$, à quel point les trades d'une même grappe se
+ressemblent. Il reste à en tenir compte dans le test.
+
+L'effet de plan, introduit par Kish, chiffre exactement ce que cette
+mise en grappes coûte à la précision. Il se calcule ainsi~:
+\[
+  \mathrm{DEFF} = 1 + (\bar m - 1)\,\hat\rho,
+  \qquad n_{\mathrm{eff}} = \frac{n}{\mathrm{DEFF}},
+  \qquad \widehat{\mathrm{se}}_{\mathrm{corr}}
+        = \frac{s}{\sqrt{n}}\sqrt{\mathrm{DEFF}},
+\]
+où $\bar m$ désigne le nombre moyen de trades par titre. La variance
+réelle de la moyenne vaut $\mathrm{DEFF}$ fois celle que l'on
+obtiendrait sous indépendance. Tout se passe donc comme si l'on ne
+disposait que de $n_{\mathrm{eff}}$ trades réellement informatifs au
+lieu de $n$. Lorsque la corrélation est nulle, l'effet de plan vaut un
+et rien ne change. Lorsqu'elle augmente, l'erreur-type est gonflée et le
+test devient plus exigeant. On reprend alors le test de Student de
+l'étape~1 avec cette erreur-type corrigée, en conservant le même seuil
+de Bonferroni.
+
+% ------------------ Étape 1 bis — méthode 2 : le bootstrap -----------
+
+Le test précédent s'appuie encore sur la loi de Student, donc sur une
+forme particulière des données. Pour nous en affranchir, nous confirmons
+le résultat par un rééchantillonnage, la méthode du bootstrap proposée
+par Efron~\cite{efron1979}. Le principe consiste à retirer au sort, un
+grand nombre de fois, un nouvel échantillon à partir de celui que l'on
+possède. Ici nous tirons des titres entiers, avec remise, et jamais des
+trades isolés. La structure de dépendance interne de chaque titre est
+ainsi transportée telle quelle dans chaque tirage. Après quatre mille
+répétitions, la proportion de tirages où l'avantage disparaît fournit
+une p-value qui ne suppose ni normalité, ni indépendance entre les
+trades d'un même titre. La seule hypothèse qui subsiste est
+l'indépendance entre titres différents.
+
+% ------------------ Étape 1 bis — méthode 3 : les deux portes --------
+
+Corriger l'erreur-type ne suffit pas. L'effet de plan conserve en effet
+la pondération du test initial, dans lequel un titre porteur de deux
+cents trades pèse deux cents fois plus qu'un titre n'en portant qu'un
+seul. Un avantage concentré sur quelques titres très actifs peut ainsi
+passer le test alors qu'il ne se retrouve pas ailleurs. Pour écarter ce
+défaut, nous changeons de logique et regroupons les trades avant de
+tester, de sorte que chaque unité ne compte qu'une fois.
+
+La première porte, celle de l'action, consiste à calculer d'abord
+l'avantage moyen de chaque titre, puis à appliquer le test de Student à
+ces quelque cinq cents moyennes. La seconde porte, celle de la période,
+calcule de la même manière l'avantage moyen de chaque mois d'entrée,
+puis teste ces quelque cent quatre-vingt-dix moyennes. Dans les deux
+cas, la dépendance à l'intérieur d'une grappe ne peut plus rien fausser,
+puisqu'un titre, ou un mois, ne pèse qu'une seule voix. Le théorème
+central limite s'applique alors à ces moyennes de grappes, dont le
+nombre reste élevé. Pour être validée, une stratégie doit franchir les
+deux portes, chacune au seuil de Bonferroni.
+
+% ------------------ Étape 1 bis — méthode 4 : la série mensuelle -----
+
+La porte de la période repose à son tour sur une hypothèse, celle de
+mois indépendants. Or nous avons vu au chapitre~\ref{chap:donnees} que
+les trades se prolongent souvent au-delà d'un mois, si bien que deux
+mois voisins partagent des positions encore ouvertes et se ressemblent.
+La suite des avantages mensuels est donc autocorrélée, et le test
+précédent pourrait rester trop optimiste. Pour lever ce dernier doute,
+nous traitons cette suite comme une série temporelle, en suivant le
+déroulement classique de ce type d'analyse.
+
+Avant tout, la série doit être stationnaire, c'est-à-dire garder les
+mêmes caractéristiques dans le temps. Nous le vérifions par deux tests
+dont les hypothèses de départ sont opposées, celui de Dickey et Fuller
+et celui dit KPSS. Lorsque les deux concordent, la conclusion ne dépend
+pas du test choisi. Nous examinons ensuite l'autocorrélation de la série
+pour déterminer combien de mois passés influencent le mois courant, ce
+qui fixe l'ordre d'un modèle autorégressif que nous estimons.
+
+Ce modèle fournit alors une variance de la moyenne qui tient compte de
+la persistance, appelée variance de long terme~:
+\[
+  \gamma_{\mathrm{lr}}
+     = \frac{\sigma^2_\eta}{\bigl(1-\sum_{i=1}^{p}\Phi_i\bigr)^{2}},
+  \qquad
+  \widehat{\mathrm{Var}}(\bar x) \approx \frac{\gamma_{\mathrm{lr}}}{T},
+  \qquad
+  \mathrm{DEFF}_t = \frac{\gamma_{\mathrm{lr}}}{\gamma(0)} .
+\]
+Cette variance additionne toutes les autocovariances de la série, là où
+la formule usuelle en $s^2/T$ suppose au contraire des mois sans lien.
+Plus la persistance est forte, plus la correction est importante. Nous
+reprenons enfin le test de Student avec cette variance corrigée, puis
+nous vérifions, par le test de Box et Pierce sur les résidus du modèle,
+que celui-ci a bien capté toute l'autocorrélation. Si les résidus se
+comportent comme un bruit sans mémoire, la correction est justifiée.
+
+% [encadré conditions ici — indépendance entre grappes, TCL sur les
+%  moyennes, stationnarité DF+KPSS, Box-Pierce]
+
+% ------------------ Étape 1 bis — Résultats : lecture 1b -------------
+
+% [tableau tab:b1-dep-deff ici]
+
+La corrélation intra-titre étant quasi nulle pour \texttt{rsi\_classic}
+et modérée pour \texttt{rsi\_strict}, la correction par l'effet de plan
+ne change presque rien~: les deux stratégies conservent leur verdict
+positif, et le bootstrap par grappes confirme ces p-values sans recourir
+à la loi de Student. À ce stade, la porte de l'action semble donc
+franchie. Ce test reste cependant pondéré par le nombre de trades, et ne
+dit pas si l'avantage est partagé par l'ensemble des titres ou concentré
+sur quelques titres très actifs. C'est ce que le test suivant va
+trancher.
+
+% ------------------ Étape 1 bis — Résultats : lecture 1c (le cœur) ---
+
+% [tableau tab:b1-dep-portes ici]
+
+La lecture de ce tableau constitue le résultat central du mémoire.
+L'oracle, notre témoin, franchit les deux portes de très loin, avec des
+p-values proches de zéro. L'outil sait donc dire oui lorsque l'avantage
+est réel~: son éventuelle sévérité ne condamne pas d'avance toutes les
+stratégies.
+
+Le sort de \texttt{rsi\_classic} est tout autre. La stratégie tombe aux
+deux portes, avec des p-values de $0{,}059$ et $0{,}039$, loin du seuil
+de $0{,}0045$. Le \(t\) de l'étape~1 valait pourtant $5{,}6$, mais ses
+7\,117 trades ne portaient pas 7\,117 informations indépendantes. Dès
+que chaque titre ne vote qu'une fois, l'avantage disparaît~: il était
+concentré sur les titres et les mois les plus tradés. Le verdict positif
+de l'étape~1 était donc un faux positif, que l'outil vient de démasquer
+en vérifiant ses propres conditions.
+
+Le cas de \texttt{rsi\_strict} est plus subtil. La stratégie franchit
+brillamment la porte de l'action, avec une p-value de
+$3{,}9\times10^{-4}$~: son avantage est partagé par de nombreux titres.
+Mais elle échoue à la porte de la période, avec une p-value de
+$0{,}26$~: présente sur 138~mois seulement, elle concentre son avantage
+sur quelques épisodes. Faute de régularité temporelle démontrable, son
+signal n'est pas exploitable tel quel.
+
+Au bilan, en dehors du témoin, plus aucune stratégie ne franchit les
+deux portes. L'outil discrimine~: il valide l'avantage construit pour
+être réel et rejette ceux qui ne tiennent que par la dépendance des
+données.
+
+% ------------------ Étape 1 bis — Résultats : lecture 1d -------------
+
+% [tableau tab:b1-dep-mensuel ici]
+
+Les moyennes mensuelles se révèlent bel et bien autocorrélées, jusqu'à
+$0{,}56$ pour \texttt{ma\_crossover}~: l'hypothèse de mois indépendants,
+sur laquelle reposait la porte de la période, était elle-même optimiste,
+la variance étant sous-estimée d'un facteur atteignant $6{,}4$. Toutes
+les séries sont stationnaires au vu des tests de Dickey--Fuller et KPSS,
+et les modèles autorégressifs sont validés par le test de Box--Pierce
+sur leurs résidus~: la correction est donc fondée. Après correction,
+aucun verdict ne bascule. \texttt{rsi\_classic} termine à $0{,}08$, loin
+du seuil. La porte de la période est fermée proprement. Signalons par
+honnêteté que les mois sans trade sont traités comme consécutifs, avec
+une couverture de 71~\% pour \texttt{rsi\_strict} et supérieure à 88~\%
+ailleurs, limite assumée de cette construction.
+
+% [encadré limites ici — Kish approché, perte de puissance assumée,
+%  mois sans trade, ordre AR plafonné]
+
+% ------------------ Étape 1 bis — positionnement littérature ---------
+
+Les outils de cette section ont été construits à partir des seuls
+concepts du cours, la théorie des sondages, l'analyse de la variance et
+les séries temporelles. Il se trouve qu'ils rejoignent les standards de
+l'économétrie financière, signe que la démarche converge vers la
+pratique établie. L'agrégation par période, qui calcule une statistique
+par mois avant de mener l'inférence sur la suite de ces statistiques,
+est exactement la démarche proposée par Fama et
+MacBeth~\cite{famamacbeth1973}, devenue un standard du domaine. La
+variance de long terme estimée au travers du modèle autorégressif
+poursuit le même objectif que les erreurs-types robustes à
+l'autocorrélation de Newey et West~\cite{neweywest1987}, dont elle est
+une version paramétrique, validée ici par le test de Box--Pierce. Enfin,
+le contrôle des faux positifs sur un très grand univers de stratégies
+relèverait du Reality Check de White~\cite{white2000}~; avec onze
+stratégies déclarées à l'avance, la correction de Bonferroni suffit et
+demeure le choix le plus prudent.
+
+Le verdict au standard corrigé est donc le suivant~: aucune des dix
+stratégies réelles ne démontre d'avantage. Le verdict de l'étape~1 ne
+tenait que par une condition non vérifiée. C'est le résultat central de
+ce mémoire~: l'outil de validation a démasqué son propre faux positif en
+testant ses conditions d'application. Un verdict négatif rendu
+proprement est la preuve que l'outil fonctionne.
+
+% ------------------ Lecture du verdict (le marché lui-même) ----------
+
+Le verdict est tombé, aucune stratégie ne démontre d'avantage. Avant de
+conclure, on peut se demander si ce résultat était prévisible, en
+interrogeant le marché lui-même avec les outils des séries temporelles.
+Le chapitre~\ref{chap:donnees} a montré que la dépendance simultanée est
+massive, le facteur marché portant 73~\% des mouvements. Reste à savoir
+s'il existe de la dépendance retardée, la seule qu'une stratégie puisse
+exploiter, puisqu'il faut un délai pour passer un ordre.
+
+On vérifie d'abord la stationnarité, condition de toute modélisation,
+par le test de Dickey--Fuller augmenté, appliqué au prix puis au
+rendement de l'indice de marché. Le prix ne rejette pas la racine
+unitaire, avec une p-value de $0{,}999$~: il se comporte comme une
+marche aléatoire, dont le niveau de demain est celui d'aujourd'hui plus
+un choc imprévisible. Le rendement, lui, est nettement stationnaire,
+avec une p-value de l'ordre de $10^{-26}$. On modélise donc le
+rendement, jamais le prix. Son autocorrélation est quasi nulle à tous
+les retards examinés, entre $-0{,}08$ et $+0{,}09$ sur les dix premiers
+jours. Un modèle ARIMA~\cite{boxjenkins1970} ajusté sur ce rendement ne
+trouve d'ailleurs rien à saisir, ses deux termes, autorégressif et
+moyenne mobile, se compensant presque exactement.
+
+Le rendement du marché est ainsi proche d'un bruit sans mémoire~: son
+propre passé ne prédit guère le lendemain. C'est ce que la littérature
+appelle l'efficience faible du marché. La boucle est alors bouclée. Le
+marché regorge de dépendance simultanée, celle qui fausse les tests et
+qu'aucune stratégie ne peut exploiter faute de délai, et manque
+précisément de dépendance retardée, la seule qui serait exploitable.
+L'échec des dix stratégies n'est pas un accident~: c'est la signature de
+cette asymétrie.
+
+% [encadré conditions ici — rendements stationnaires, jamais les prix]
+
+% ------------------ Synthèse du chapitre 3 ---------------------------
+
+Retraçons le chemin parcouru. Le test de référence déclarait deux
+stratégies gagnantes sur dix. La mise à l'épreuve de ses conditions
+d'application, par l'effet de plan, le bootstrap par grappes,
+l'agrégation en deux portes et la correction de la série mensuelle, a
+renversé ces deux verdicts. \texttt{rsi\_classic} était un faux positif
+né de la répétition d'une même information sur des milliers de trades.
+\texttt{rsi\_strict} possède un avantage réel à l'échelle des titres,
+mais trop épisodique dans le temps pour être retenu. La lecture du
+marché lui-même rend ce résultat cohérent~: un marché proche de
+l'efficience faible n'offre presque pas de dépendance retardée à
+exploiter. Le message central est ailleurs que dans les stratégies. Le
+protocole a fait exactement son travail, il a démasqué son propre faux
+positif en vérifiant ses conditions, tout en validant sans hésiter le
+témoin dont l'avantage était réel. Un verdict négatif rendu proprement,
+c'est l'outil qui fonctionne.
+
+
+% =====================================================================
+%  CHAPITRE 4 — LE CONTEXTE DES TRADES : COMPARER ET CARACTÉRISER
+% =====================================================================
+%  NB : chiffres de l'ancienne base — à régénérer SANS l'oracle (TODO).
+
+% ------------------ Chapeau du chapitre ------------------------------
+
+Le chapitre précédent a jugé chaque stratégie isolément, contre le
+hasard. Celui-ci change de question. Les stratégies diffèrent-elles
+entre elles~? Le succès dépend-il du contexte, du régime de marché, du
+secteur, de la situation d'entrée~? Les conclusions de ce chapitre sont
+comparatives et descriptives~: on n'y valide aucune stratégie, le
+verdict appartenant au chapitre~\ref{chap:juger}.
+
+% [encadré : exclusion de l'oracle, déjà rédigé dans le fichier]
+
+% ------------------ ANOVA (liaison + résultats) ----------------------
+
+Pour comparer les stratégies entre elles, on analyse la variance de
+l'\edgevar{}~: si les moyennes des dix stratégies étaient égales, la
+variation entre stratégies ne dépasserait pas la variation interne à
+chacune. La statistique \(F\) rapporte ces deux variations~:
+\[
+  F = \frac{\mathrm{SCE}_{\text{inter}}/(k-1)}
+           {\mathrm{SCE}_{\text{intra}}/(n-k)} \sim F_{k-1,\,n-k}.
+\]
+L'analyse à un facteur rejette massivement l'égalité des moyennes, avec
+\(F\approx 47\) et une p-value de l'ordre de $10^{-85}$. Le test de
+Tukey, fondé sur la loi du range studentisé et qui corrige de lui-même
+la multiplicité des paires, identifie dix-huit paires significatives sur
+quarante-cinq, \texttt{rsi\_strict} se détachant du lot. Une analyse à
+deux facteurs croisant la stratégie et le régime de marché révèle enfin
+une interaction très significative, de l'ordre de $5\times10^{-69}$~: la
+valeur d'une stratégie dépend du régime dans lequel elle opère. Ces
+p-values, calculées au niveau des trades, s'entendent sous la réserve
+d'indépendance du chapitre~\ref{chap:juger}~; les \(F\) colossaux
+restent interprétables comme ordres de grandeur.
+
+% ------------------ Khi-deux (liaison + résultats, ta base) ----------
+
+On se demande ensuite si le simple fait de gagner dépend du contexte. La
+variable \texttt{win}, qui vaut un pour un trade gagnant, est croisée
+avec le régime, le secteur et la stratégie dans des tableaux de
+contingence, sur lesquels on applique le test du khi-deux
+d'indépendance~:
+\[
+  \chi^2 = \sum_{i,j}\frac{(N_{ij}-E_{ij})^2}{E_{ij}},
+  \qquad E_{ij}=\frac{N_{i\cdot}N_{\cdot j}}{N}.
+\]
+
+% [tableau tab:b1-etape3 ici]
+
+Le taux de gain dépend fortement de la stratégie, faiblement du régime,
+et pas du secteur. À très grand \(n\), le khi-deux devient toutefois
+significatif même pour des liens négligeables~: la significativité ne
+dit rien de la force du lien, et ces contrastes se lisent comme des
+descriptions, non comme des validations.
+
+% ------------------ ACP du contexte d'entrée (lecture rédigée) -------
+
+Pour cartographier les situations d'entrée, on réalise une ACP normée
+sur les quatre variables quantitatives de contexte, la volatilité, le
+RSI, la distance à la moyenne mobile et la durée de détention. Les deux
+premiers axes résument environ deux tiers de la variance, le premier
+étant porté par le RSI et la distance à la moyenne mobile, autrement dit
+par l'état de survente du titre à l'entrée, le second par la durée de
+détention et la volatilité. La question intéressante est de savoir si
+les trades gagnants occupent une région particulière de ce plan. La
+réponse est négative~: les positions moyennes des gagnants et des
+perdants sont presque confondues, avec un écart standardisé inférieur à
+$0{,}2$. Le contexte d'entrée, à lui seul, ne sépare pas les gagnants
+des perdants, résultat instructif qui rejoint le verdict du
+chapitre~\ref{chap:juger}.
+
+% [figure etape4_acp ici]
+
+% ------------------ AFC et ACM (lectures rédigées) -------------------
+
+L'analyse factorielle des correspondances croise ensuite la stratégie
+avec la tranche de rendement obtenue, perte, gain modéré ou gain fort.
+Le premier axe, qui résume les trois quarts de l'inertie, oppose les
+stratégies à dominante perdante, comme \texttt{hs\_classic} ou
+\texttt{sr\_breakout}, aux stratégies dont les trades finissent plus
+souvent en gain, \texttt{rsi\_classic} et surtout \texttt{rsi\_strict},
+cette dernière se projetant nettement du côté des gains forts. L'analyse
+des correspondances multiples, menée sur la stratégie, le régime, le
+secteur et l'issue du trade, ne résume que faiblement l'information,
+comme il est habituel avec de nombreuses modalités, mais confirme la
+même géographie~: les modalités de secteur se massent au centre du plan,
+signe qu'elles ne structurent rien, tandis que les stratégies et le
+régime s'écartent, \texttt{rsi\_strict} voisinant avec le régime
+baissier, dont elle exploite les excès.
+
+% ------------------ Synthèse du chapitre 4 ---------------------------
+
+Les stratégies diffèrent donc fortement entre elles et leur valeur
+dépend du régime de marché, tandis que le secteur ne joue aucun rôle
+décelable. Mais aucun de ces contrastes ne remet en cause le verdict du
+chapitre~\ref{chap:juger}~: différer de son voisin n'est pas battre le
+hasard. Ces cartes du contexte préparent en revanche la perspective d'un
+avantage conditionnel, esquissée au chapitre~\ref{chap:protocole}.
+
+
+% =====================================================================
+%  CHAPITRE 5 — LE PROTOCOLE, SES LIMITES, SES SUITES
+% =====================================================================
+
+% ------------------ Le protocole récapitulé --------------------------
+
+Ce que le stage livre n'est pas une stratégie gagnante, mais une
+procédure de jugement, réutilisable telle quelle sur tout signal futur
+de l'agent, qu'il soit technique, informationnel ou relationnel. Le
+tableau~\ref{tab:protocole} récapitule cette procédure en six étages.
+Chaque étage répare une menace précise identifiée au fil du mémoire, de
+la dérive du marché à l'autocorrélation résiduelle, et le verdict n'est
+prononcé que si tous les étages concordent. C'est cette exigence
+conjointe qui fait la valeur de l'ensemble~: la défaillance d'une seule
+condition suffit, comme on l'a vu, à fabriquer un faux positif.
+
+% [tableau tab:protocole ici — les six étages]
+
+% ------------------ Limites assumées ---------------------------------
+
+Aucune des limites qui suivent n'invalide le verdict rendu. Chacune
+trace en revanche la frontière de ce que le protocole peut affirmer.
+Les résultats sont établis sur l'échantillon qui a servi aux calculs, et
+une validation hors échantillon reste nécessaire avant tout usage réel.
+Le jugement porte sur dix stratégies déclarées à l'avance, et un univers
+beaucoup plus vaste exigerait des outils dédiés au risque de fouille de
+données, comme le Reality Check de White~\cite{white2000}. Les frais et
+conditions d'exécution sont modélisés simplement. Enfin, la puissance
+élevée des grands échantillons impose de distinguer soigneusement la
+significativité statistique de la taille de l'effet. On peut ajouter que
+la base ne contient que les entreprises présentes dans l'indice sur la
+période~: les sociétés disparues en sont absentes, biais dit du
+survivant, atténué ici par la construction appariée de l'\edgevar{}, qui
+compare chaque trade au hasard sur le même titre.
+
+% ------------------ Perspectives -------------------------------------
+
+La première suite naturelle est la validation temporelle. Elle consiste
+à figer les règles sur une période d'apprentissage puis à juger sur la
+période suivante, en avançant pas à pas, ce que la littérature appelle
+le walk-forward. La validation croisée classique est ici interdite,
+puisqu'elle mélangerait le futur et le passé.
+
+La deuxième est l'avantage conditionnel. Les cartes du
+chapitre~\ref{chap:contexte} suggèrent que le succès dépend du régime de
+marché~; modéliser la probabilité de gain en fonction du contexte, par
+exemple par une régression logistique, en serait le prolongement direct.
+Cette voie a été écartée du présent mémoire par rigueur~: sur des
+dizaines de milliers de trades dépendants, les p-values des coefficients
+seraient trop optimistes, exactement le piège du
+chapitre~\ref{chap:juger}. Les outils adaptés, modèles à effets mixtes
+ou équations d'estimation généralisées, dépassent le cadre de ce
+travail et en constituent la prochaine étape. Une version outillée du
+protocole devrait aussi intégrer un garde-fou d'effectif, écartant en
+amont les stratégies trop peu fournies pour que le théorème central
+limite s'applique.
+
+La troisième concerne les autres signaux de l'agent. Celui-ci collecte
+également des signaux d'information, contrats publics, transactions de
+responsables politiques, annonces réglementaires, et des relations
+d'avance ou de retard entre titres. Des travaux exploratoires ont été
+engagés sur ces deux fronts. Le protocole du chapitre~\ref{chap:juger}
+est précisément l'outil qui permettra de les juger, hors du périmètre de
+ce mémoire.
+
+
+% =====================================================================
+%  CHAPITRE 6 — CONCLUSION
+% =====================================================================
+
+L'objectif fixé en introduction n'était pas de découvrir une stratégie
+gagnante, mais de construire un protocole capable de juger n'importe
+laquelle. Ce protocole est construit, éprouvé, et il a rendu son
+verdict~: aucune des dix stratégies d'analyse technique ne démontre
+d'avantage réel une fois ses conditions d'application vérifiées.
+
+Le résultat central mérite d'être rappelé. Le test standard déclarait
+deux stratégies gagnantes. La vérification de la seule condition
+d'indépendance a renversé les deux verdicts, l'un se révélant un faux
+positif né de la répétition d'une même information sur des milliers de
+trades, l'autre un avantage réel mais trop épisodique pour être retenu.
+Dans le même temps, le témoin construit pour être gagnant a été validé
+sans hésitation à chaque étage. Un outil de validation se juge à sa
+capacité d'attraper ses propres erreurs tout en reconnaissant le vrai~:
+la démonstration est faite.
+
+Une idée traverse l'ensemble de ce travail. La dépendance des données y
+a joué les deux rôles. Simultanée, portée par le facteur marché qui
+explique près des trois quarts des mouvements, elle était la nuisance
+qui faussait les tests, et il a fallu la mesurer puis la neutraliser
+pour juger proprement. Retardée, elle aurait été la seule ressource
+qu'une stratégie puisse exploiter, et le marché n'en contient presque
+pas, conformément à l'efficience faible. Neutraliser l'une, chercher
+l'autre~: c'est la même statistique, vue des deux côtés du même objet.
+
+Le protocole est désormais prêt à juger les prochains signaux de
+l'agent, en commençant par leur validation temporelle.

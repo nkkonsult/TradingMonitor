@@ -1,0 +1,571 @@
+% ---------------------------------------------------------------------
+%  Chapitre 3 — Juger les stratégies (version aperçu, rédigée)
+% ---------------------------------------------------------------------
+\chapter{Juger les stratégies~: l'escalade de prudence}
+\label{chap:juger}
+
+Ce chapitre traite la question suivante~: parmi onze stratégies
+d'analyse technique, lesquelles produisent un avantage \edgevar{}
+significativement positif~? On applique d'abord le test de référence
+sous ses hypothèses standard, puis on met à l'épreuve, une à une, ses
+conditions d'application, en s'appuyant sur la structure de dépendance
+mesurée au chapitre~\ref{chap:donnees}.
+
+% =====================================================================
+\section{Étape 1 --- chaque stratégie bat-elle le hasard ?}
+\label{sec:b1-etape1}
+
+\subsection{La question posée à l'outil}
+
+La première question posée à l'outil est donc~: l'avantage moyen affiché
+par une stratégie est-il réel, ou n'est-il qu'un accident
+d'échantillonnage~? On la formalise en confrontant la moyenne de
+l'\edgevar{} à la valeur zéro, ce qui conduit au test de Student
+présenté ci-dessous.
+
+\subsection{Les méthodes qui y répondent}
+
+\subsubsection*{Test de Student}
+
+Lorsque l'on obtient un edge moyen positif, on cherche à savoir si la
+stratégie constitue réellement une prédiction, ou si ce résultat est dû
+à l'aléa de l'échantillon. Il faut ici distinguer deux quantités~:
+l'edge moyen théorique \(\mu_{\edgevar}\), c'est-à-dire la vraie valeur,
+inconnue, qui gouverne la stratégie, et sa moyenne observée \(\bar e\),
+calculée sur notre échantillon de trades. On se demande alors si, à
+partir de la valeur observée \(\bar e\), on peut conclure que la vraie
+valeur \(\mu_{\edgevar}\) est positive.
+
+Le test de Student à un échantillon répond à cette question en
+confrontant \(\mu_{\edgevar}\) à une valeur de référence fixée à zéro,
+zéro correspondant à l'absence d'avantage sur le hasard. Sa mise en
+\oe uvre suppose deux conditions, à savoir que l'edge vérifie un critère
+de normalité et que les trades soient indépendants les uns des autres.
+La première sera assouplie par le théorème central limite, la seconde,
+plus délicate, sera examinée en section suivante. On oppose ainsi deux
+hypothèses~:
+\[
+  \begin{cases}
+    \Hzero : \mu_{\edgevar} = 0 & \text{(le vrai edge est nul~: pas mieux que le hasard),}\\[2pt]
+    \Hun : \mu_{\edgevar} > 0 & \text{(le vrai edge est positif~: avantage réel).}
+  \end{cases}
+\]
+Le test est unilatéral, car seul un avantage strictement positif nous
+intéresse.
+
+Pour trancher, on définit \(t\) comme le nombre d'erreurs-types
+nécessaires pour faire passer l'edge moyen de zéro à celui observé dans
+notre échantillon~:
+\[
+  t = \frac{\bar e}{s/\sqrt{n}} \sim t_{n-1} \quad\text{sous } \Hzero .
+\]
+Sous \Hzero{}, \(t\) suit une loi de Student à \(n-1\) degrés de
+liberté. On évalue alors la p-value, c'est-à-dire la probabilité
+d'obtenir un \(t\) au moins aussi grand que celui observé si \Hzero{}
+était vraie. Si cette p-value est très faible, le hasard n'est plus une
+explication crédible de l'edge moyen positif observé, et l'on conclut
+que l'edge théorique est positif~: la stratégie fait mieux que le
+hasard.
+
+On a dit que le test de Student demandait la normalité de l'edge. On
+vérifie cette condition d'abord avec le test de Shapiro--Wilk, puis à
+l'aide du théorème central limite. Le test de Shapiro--Wilk a en effet
+peu de chances de valider l'hypothèse~: la taille de l'échantillon
+déstabilise ce test, alors qu'elle renforce au contraire le théorème
+central limite.
+
+\subsubsection*{Test de normalité de Shapiro--Wilk}
+
+Le test de Shapiro--Wilk est un test de normalité qui compare deux
+mesures de dispersion, d'une part les écarts à la moyenne, d'autre part
+l'ordre des valeurs. Ces deux mesures ne coïncident que si l'hypothèse
+de normalité est vraie. On oppose ainsi deux hypothèses~:
+\[
+  \begin{cases}
+    \Hzero \;(W \simeq 1) : \text{l'edge suit une loi normale,}\\[2pt]
+    \Hun \;(W \ll 1) : \text{l'edge ne suit pas une loi normale.}
+  \end{cases}
+\]
+On notera que, contrairement au test de Student, c'est ici \Hzero{} qui
+correspond à la propriété recherchée~: une p-value faible conduira donc
+à rejeter la normalité. On pose alors la statistique
+\(W = b^2/\mathrm{SCE}\) comme rapport de ces deux mesures. Lorsque
+\(W\) est proche de un, l'échantillon est compatible avec une loi
+normale. Pour trancher, on procède comme pour le test de Student~: on
+calcule la probabilité d'obtenir notre \(W\) si la loi était normale, et
+si cette probabilité est trop faible, on rejette l'hypothèse de
+normalité.
+
+Appliqué à nos données, le test rejette la normalité pour les dix
+stratégies, les valeurs de \(W\) et les p-values étant détaillées en
+annexe~(tableau~\ref{tab:ann-shapiro}). La condition du test de Student
+n'est donc, en apparence, pas remplie.
+
+\subsubsection*{Théorème central limite}
+
+Le rejet de Shapiro--Wilk porte sur la non-normalité de l'edge
+individuel. Mais comme le test de Student ne dépend que de la moyenne de
+l'edge, on peut se rabattre sur le théorème central limite, qui garantit
+la quasi-normalité de la moyenne sur les grands échantillons, quelle que
+soit la loi de départ~:
+\[
+  \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
+  \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
+\]
+Cette justification suppose un effectif suffisant, et un outil générique
+devrait écarter les stratégies trop peu fournies. Ici, \(n\) est compris
+entre 978 et 8\,513 selon la stratégie, ce qui est largement suffisant.
+La condition réellement utile au test de Student est donc satisfaite,
+malgré le rejet de Shapiro--Wilk. On remarque de plus que la quantité
+ci-dessus est exactement celle du test de Student~: sous \Hzero{}, en
+remplaçant l'écart-type théorique \(\sigma\), inconnu, par son
+estimation \(s\), on retrouve la statistique
+\(t = \bar e/(s/\sqrt{n})\). Le théorème central limite justifie ainsi
+directement la forme et la validité du test.
+
+\subsubsection*{Correction de Bonferroni}
+
+Pour appliquer le test de Student, il reste à fixer un seuil pour la
+p-value. Pour un test isolé, on prend habituellement \(0{,}05\)~: on
+estime que s'il n'y avait que cinq chances sur cent d'obtenir un tel
+résultat sous \Hzero{}, il est peu vraisemblable d'être tombé dessus par
+hasard, et l'on accepte alors le risque de rejeter \Hzero{}.
+
+Seulement, nous effectuons ici onze tests. Plaçons-nous dans le cas le
+plus défavorable, où aucune stratégie n'a d'avantage réel. Pour un test
+isolé, la probabilité de ne pas conclure à tort à un avantage est de
+\(0{,}95\). En supposant les tests indépendants, la probabilité de ne
+commettre aucune erreur sur les onze tests tombe à
+\(0{,}95^{11} \approx 0{,}57\). Le risque de commettre au moins un faux
+positif sur l'ensemble s'élève donc à \(1 - 0{,}95^{11} \approx
+0{,}43\), ce qui est inacceptable.
+
+Pour éviter cela, on raisonne en sens inverse~: on fixe le risque global
+à \(0{,}05\) et l'on en déduit le seuil de chaque test. On s'appuie sur
+l'inégalité de Boole, selon laquelle la probabilité qu'au moins un
+événement se produise est inférieure ou égale à la somme de leurs
+probabilités individuelles. Pour garantir un risque global inférieur à
+\(0{,}05\), il suffit donc que la somme des seuils individuels vaille
+\(0{,}05\). En les prenant tous égaux, on obtient la correction de
+Bonferroni~:
+\[
+  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{11} \approx 0{,}0045 .
+\]
+
+\begin{conditions}
+Indépendance des trades (mise à l'épreuve en
+section~\ref{sec:b1-dependance})~; normalité de la moyenne assurée par
+le théorème central limite ($n$ compris entre 978 et 8\,513 selon la
+stratégie).
+\end{conditions}
+
+\subsection{Résultats}
+
+\begin{table}[H]
+\centering
+\caption{Test de l'avantage moyen par stratégie (seuil Bonferroni $\approx 0{,}0045$).}
+\label{tab:b1-etape1}
+\small
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
+\midrule
+\texttt{oracle} (témoin) & 2\,152 & $+0{,}2626$ & $5\times10^{-53}$    & bat le hasard \\
+\midrule
+\texttt{rsi\_classic} & 7\,117 & $+0{,}0123$ & $1{,}2\times10^{-8}$  & bat le hasard \\
+\texttt{rsi\_strict}  &   978  & $+0{,}1313$ & $5{,}5\times10^{-10}$ & bat le hasard \\
+\texttt{rsi\_trend}   & 2\,789 & $+0{,}0021$ & $0{,}25$             & non \\
+\texttt{db\_bottom}   & 8\,513 & $-0{,}0025$ & $0{,}98$             & non \\
+\texttt{ma\_crossover}& 5\,417 & $-0{,}0248$ & $\approx 1$          & non \\
+\multicolumn{5}{c}{\footnotesize (autres stratégies~: $p>0{,}45$, non significatives)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Outre l'oracle témoin, qui bat le hasard de très loin comme attendu,
+seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
+correction de Bonferroni.
+
+Il est utile de rappeler ce que ce test affirme au juste. Il répond
+uniquement à la question de savoir si l'edge moyen positif est dû au
+seul échantillonnage, auquel cas on conserve \Hzero{} et la stratégie
+n'est pas déclarée gagnante. Dans le cas inverse, on pourra affirmer que
+la stratégie a capturé un signal, mais pas qu'elle est gagnante, et cela
+pour deux raisons. D'une part, un edge positif ne signifie pas des gains
+positifs, mais simplement que l'on perd moins que le hasard. D'autre
+part, comme \(n\) est grand, la loi normale de la moyenne se resserre,
+et l'on fait ressortir comme significatives des stratégies dont la
+moyenne d'edge n'est que très faiblement positive, que les frais
+suffiraient à rendre perdantes.
+
+\begin{limites}
+À très grand $n$, un test de Student devient sensible au moindre écart~:
+une p-value très faible signale un edge statistiquement non nul, sans
+garantir qu'il soit économiquement exploitable (frais, exécution).
+L'ampleur de l'edge, et non sa seule significativité, devra donc être
+prise en compte.
+\end{limites}
+
+Ce verdict reste toutefois suspendu à une condition que nous n'avons pas
+encore vérifiée, l'indépendance des trades. C'est l'objet de la section
+suivante.
+
+% =====================================================================
+\section{Étape 1 bis --- le verdict survit-il à la dépendance des trades ?}
+\label{sec:b1-dependance}
+
+\subsection{La question posée à l'outil}
+
+On a appliqué le test de Student en supposant les données indépendantes.
+Or, comme nous l'avons mesuré au chapitre~\ref{chap:donnees}, nos
+données sont dépendantes par le titre, par le marché et d'un mois à
+l'autre. Ces dépendances empruntent en réalité deux chemins seulement,
+que nous appellerons les deux portes. La première est la porte de
+l'action, celle des trades ouverts sur un même titre. La seconde est la
+porte de la période, celle des trades ouverts à une même époque, qu'ils
+subissent ensemble le mouvement du marché ou qu'ils se prolongent sur
+les mêmes mois. Ce sont les deux seules voies par lesquelles deux trades
+peuvent partager une cause commune.
+
+Le problème est que le test de Student traite les trades d'une stratégie
+comme autant d'informations distinctes, alors que ces informations se
+répètent en partie. L'erreur-type s'en trouve sous-estimée. Comme cette
+erreur-type sert à mesurer l'écart entre l'avantage observé et la valeur
+de référence, un dénominateur trop petit gonfle la statistique de
+Student et rend la p-value trop optimiste. Le risque de conclure à tort
+qu'une stratégie bat le hasard augmente d'autant.
+
+Nous cherchons donc à savoir si le verdict positif obtenu pour
+\texttt{rsi\_classic} et \texttt{rsi\_strict} résiste lorsque l'on
+abandonne l'hypothèse d'indépendance. Pour cela, nous corrigeons d'abord
+l'erreur-type au moyen de l'effet de plan, puis nous vérifions ce
+résultat par un rééchantillonnage qui ne suppose aucune forme
+particulière des données. Nous fermons ensuite chaque porte en
+regroupant les trades pour que chaque titre, puis chaque période, ne
+compte qu'une fois. Nous vérifions enfin que la porte de la période
+tient elle-même, en traitant la suite des avantages mensuels comme une
+série temporelle.
+
+\subsection{Les méthodes qui y répondent}
+
+\subsubsection*{Corriger l'erreur-type par l'effet de plan}
+
+Nos trades ne forment pas un échantillon tiré au hasard parmi des
+observations indépendantes. Ils proviennent d'un ensemble de titres,
+chacun livrant plusieurs trades. La théorie des sondages appelle cela un
+tirage par grappes, où chaque grappe est ici un titre. Le
+chapitre~\ref{chap:donnees} a déjà mesuré, avec la corrélation
+intra-titre $\hat\rho$, à quel point les trades d'une même grappe se
+ressemblent. Il reste à en tenir compte dans le test.
+
+L'effet de plan, introduit par Kish, chiffre exactement ce que cette
+mise en grappes coûte à la précision. Il se calcule ainsi~:
+\[
+  \mathrm{DEFF} = 1 + (\bar m - 1)\,\hat\rho,
+  \qquad n_{\mathrm{eff}} = \frac{n}{\mathrm{DEFF}},
+  \qquad \widehat{\mathrm{se}}_{\mathrm{corr}}
+        = \frac{s}{\sqrt{n}}\sqrt{\mathrm{DEFF}},
+\]
+où $\bar m$ désigne le nombre moyen de trades par titre. La variance
+réelle de la moyenne vaut $\mathrm{DEFF}$ fois celle que l'on
+obtiendrait sous indépendance. Tout se passe donc comme si l'on ne
+disposait que de $n_{\mathrm{eff}}$ trades réellement informatifs au
+lieu de $n$. Lorsque la corrélation est nulle, l'effet de plan vaut un
+et rien ne change. Lorsqu'elle augmente, l'erreur-type est gonflée et le
+test devient plus exigeant. On reprend alors le test de Student de
+l'étape~1 avec cette erreur-type corrigée, en conservant le même seuil
+de Bonferroni.
+
+\subsubsection*{Vérifier sans hypothèse de forme}
+
+Le test précédent s'appuie encore sur la loi de Student, donc sur une
+forme particulière des données. Pour nous en affranchir, nous confirmons
+le résultat par un rééchantillonnage, la méthode du bootstrap proposée
+par Efron~\cite{efron1979}. Le principe consiste à retirer au sort, un
+grand nombre de fois, un nouvel échantillon à partir de celui que l'on
+possède. Ici nous tirons des titres entiers, avec remise, et jamais des
+trades isolés. La structure de dépendance interne de chaque titre est
+ainsi transportée telle quelle dans chaque tirage. Après quatre mille
+répétitions, la proportion de tirages où l'avantage disparaît fournit
+une p-value qui ne suppose ni normalité, ni indépendance entre les
+trades d'un même titre. La seule hypothèse qui subsiste est
+l'indépendance entre titres différents.
+
+\subsubsection*{Fermer chaque porte en donnant un vote à chaque unité}
+
+Corriger l'erreur-type ne suffit pas. L'effet de plan conserve en effet
+la pondération du test initial, dans lequel un titre porteur de deux
+cents trades pèse deux cents fois plus qu'un titre n'en portant qu'un
+seul. Un avantage concentré sur quelques titres très actifs peut ainsi
+passer le test alors qu'il ne se retrouve pas ailleurs. Pour écarter ce
+défaut, nous changeons de logique et regroupons les trades avant de
+tester, de sorte que chaque unité ne compte qu'une fois.
+
+La première porte, celle de l'action, consiste à calculer d'abord
+l'avantage moyen de chaque titre, puis à appliquer le test de Student à
+ces quelque cinq cents moyennes. La seconde porte, celle de la période,
+calcule de la même manière l'avantage moyen de chaque mois d'entrée,
+puis teste ces quelque cent quatre-vingt-dix moyennes. Dans les deux
+cas, la dépendance à l'intérieur d'une grappe ne peut plus rien fausser,
+puisqu'un titre, ou un mois, ne pèse qu'une seule voix. Le théorème
+central limite s'applique alors à ces moyennes de grappes, dont le
+nombre reste élevé. Pour être validée, une stratégie doit franchir les
+deux portes, chacune au seuil de Bonferroni.
+
+\subsubsection*{Vérifier que la porte de la période tient elle-même}
+
+La porte de la période repose à son tour sur une hypothèse, celle de
+mois indépendants. Or nous avons vu au chapitre~\ref{chap:donnees} que
+les trades se prolongent souvent au-delà d'un mois, si bien que deux
+mois voisins partagent des positions encore ouvertes et se ressemblent.
+La suite des avantages mensuels est donc autocorrélée, et le test
+précédent pourrait rester trop optimiste. Pour lever ce dernier doute,
+nous traitons cette suite comme une série temporelle, en suivant le
+déroulement classique de ce type d'analyse.
+
+Avant tout, la série doit être stationnaire, c'est-à-dire garder les
+mêmes caractéristiques dans le temps. Nous le vérifions par deux tests
+dont les hypothèses de départ sont opposées, celui de Dickey et Fuller
+et celui dit KPSS. Lorsque les deux concordent, la conclusion ne dépend
+pas du test choisi. Nous examinons ensuite l'autocorrélation de la série
+pour déterminer combien de mois passés influencent le mois courant, ce
+qui fixe l'ordre d'un modèle autorégressif que nous estimons.
+
+Ce modèle fournit alors une variance de la moyenne qui tient compte de
+la persistance, appelée variance de long terme~:
+\[
+  \gamma_{\mathrm{lr}}
+     = \frac{\sigma^2_\eta}{\bigl(1-\sum_{i=1}^{p}\Phi_i\bigr)^{2}},
+  \qquad
+  \widehat{\mathrm{Var}}(\bar x) \approx \frac{\gamma_{\mathrm{lr}}}{T},
+  \qquad
+  \mathrm{DEFF}_t = \frac{\gamma_{\mathrm{lr}}}{\gamma(0)} .
+\]
+Cette variance additionne toutes les autocovariances de la série, là où
+la formule usuelle en $s^2/T$ suppose au contraire des mois sans lien.
+Plus la persistance est forte, plus la correction est importante. Nous
+reprenons enfin le test de Student avec cette variance corrigée, puis
+nous vérifions, par le test de Box et Pierce sur les résidus du modèle,
+que celui-ci a bien capté toute l'autocorrélation. Si les résidus se
+comportent comme un bruit sans mémoire, la correction est justifiée.
+
+\begin{conditions}
+Indépendance entre grappes (titres, respectivement mois, ce dernier
+point étant précisément l'objet de la vérification par série
+temporelle)~; normalité des moyennes de grappes assurée par le théorème
+central limite ($k \approx 500$ titres, $T \approx 190$ mois)~;
+stationnarité des séries mensuelles vérifiée par Dickey--Fuller et
+KPSS~; adéquation des modèles autorégressifs validée par Box--Pierce sur
+les résidus.
+\end{conditions}
+
+\subsection{Résultats}
+
+\begin{table}[H]
+\centering
+\caption{Diagnostic de dépendance intra-titre et test corrigé (étape 1b).}
+\label{tab:b1-dep-deff}
+\small
+\begin{tabular}{@{}lrrrccc@{}}
+\toprule
+Stratégie & $\hat\rho$ & DEFF & $n_{\text{eff}}$ & $p$ naïve & $p$ corrigée & $p$ bootstrap \\
+\midrule
+\texttt{oracle} (témoin) & $0{,}015$ & $1{,}05$ & $2\,049$ & $\approx 0$ & $\approx 0$ & $<2{,}5\times10^{-4}$ \\
+\midrule
+\texttt{rsi\_classic} & $0{,}000$ & $1{,}00$ & $7\,117$ & $1{,}2\times10^{-8}$ & $1{,}2\times10^{-8}$ & $<2{,}5\times10^{-4}$ \\
+\texttt{rsi\_strict}  & $0{,}134$ & $1{,}15$ & $848$    & $5{,}5\times10^{-10}$ & $7\times10^{-9}$     & $<2{,}5\times10^{-4}$ \\
+\multicolumn{7}{c}{\footnotesize (autres stratégies~: verdict « non » inchangé, $\hat\rho \le 0{,}09$)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La corrélation intra-titre étant quasi nulle pour \texttt{rsi\_classic}
+et modérée pour \texttt{rsi\_strict}, la correction par l'effet de plan
+ne change presque rien~: les deux stratégies conservent leur verdict
+positif, et le bootstrap par grappes confirme ces p-values sans recourir
+à la loi de Student. À ce stade, la porte de l'action semble donc
+franchie. Ce test reste cependant pondéré par le nombre de trades, et ne
+dit pas si l'avantage est partagé par l'ensemble des titres ou concentré
+sur quelques titres très actifs. C'est ce que le test suivant va
+trancher.
+
+\begin{table}[H]
+\centering
+\caption{Le test des deux portes~: une unité réelle, un vote (étape 1c).}
+\label{tab:b1-dep-portes}
+\small
+\begin{tabular}{@{}lrrrrc@{}}
+\toprule
+ & \multicolumn{2}{c}{Porte action ($k$ titres)} & \multicolumn{2}{c}{Porte période ($k$ mois)} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
+\midrule
+\texttt{oracle} (témoin) & 482 & $\approx 0$          & 188 & $\approx 0$ & OUI \\
+\midrule
+\texttt{rsi\_classic}  & 501 & $0{,}059$            & 195 & $0{,}039$ & non \\
+\texttt{rsi\_strict}   & 456 & $3{,}9\times10^{-4}$ & 138 & $0{,}26$  & non \\
+\texttt{rsi\_trend}    & 495 & $0{,}22$             & 175 & $0{,}29$  & non \\
+\texttt{sr\_breakdown} & 457 & $0{,}37$             & 184 & $0{,}94$  & non \\
+\multicolumn{6}{c}{\footnotesize (six autres stratégies~: $p_A \ge 0{,}74$, toutes « non »)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+La lecture de ce tableau constitue le résultat central du mémoire.
+L'oracle, notre témoin, franchit les deux portes de très loin, avec des
+p-values proches de zéro. L'outil sait donc dire oui lorsque l'avantage
+est réel~: son éventuelle sévérité ne condamne pas d'avance toutes les
+stratégies.
+
+Le sort de \texttt{rsi\_classic} est tout autre. La stratégie tombe aux
+deux portes, avec des p-values de $0{,}059$ et $0{,}039$, loin du seuil
+de $0{,}0045$. Le \(t\) de l'étape~1 valait pourtant $5{,}6$, mais ses
+7\,117 trades ne portaient pas 7\,117 informations indépendantes. Dès
+que chaque titre ne vote qu'une fois, l'avantage disparaît~: il était
+concentré sur les titres et les mois les plus tradés. Le verdict positif
+de l'étape~1 était donc un faux positif, que l'outil vient de démasquer
+en vérifiant ses propres conditions.
+
+Le cas de \texttt{rsi\_strict} est plus subtil. La stratégie franchit
+brillamment la porte de l'action, avec une p-value de
+$3{,}9\times10^{-4}$~: son avantage est partagé par de nombreux titres.
+Mais elle échoue à la porte de la période, avec une p-value de
+$0{,}26$~: présente sur 138~mois seulement, elle concentre son avantage
+sur quelques épisodes. Faute de régularité temporelle démontrable, son
+signal n'est pas exploitable tel quel.
+
+Au bilan, en dehors du témoin, plus aucune stratégie ne franchit les
+deux portes. L'outil discrimine~: il valide l'avantage construit pour
+être réel et rejette ceux qui ne tiennent que par la dépendance des
+données.
+
+\begin{table}[H]
+\centering
+\caption{Série mensuelle des edges~: autocorrélation et test corrigé (étape 1d).}
+\label{tab:b1-dep-mensuel}
+\small
+\begin{tabular}{@{}lrrrrrc@{}}
+\toprule
+Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ (AR) & $\mathrm{DEFF}_t$ & $p$ corrigée & $p$ Box--Pierce \\
+\midrule
+\texttt{oracle} (témoin) & 188 & $0{,}03$ & 3 & $2{,}0$ & $2\times10^{-90}$ & $0{,}23$ \\
+\midrule
+\texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $6{,}4$ & $0{,}94$ & $0{,}14$ \\
+\texttt{dt\_top}       & 197 & $0{,}39$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
+\texttt{db\_bottom}    & 197 & $0{,}36$ & 1 & $2{,}1$ & $0{,}82$ & $0{,}90$ \\
+\texttt{hs\_inverse}   & 186 & $0{,}31$ & 1 & $1{,}9$ & $0{,}91$ & $0{,}93$ \\
+\texttt{rsi\_classic}  & 195 & $0{,}23$ & 1 & $1{,}6$ & $0{,}08$ & $0{,}93$ \\
+\texttt{rsi\_strict}   & 138 & $0{,}03$ & 2 & $1{,}5$ & $0{,}30$ & $0{,}96$ \\
+\multicolumn{7}{c}{\footnotesize (quatre autres stratégies~: $\mathrm{DEFF}_t \le 2{,}4$, aucune significative)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Les moyennes mensuelles se révèlent bel et bien autocorrélées, jusqu'à
+$0{,}56$ pour \texttt{ma\_crossover}~: l'hypothèse de mois indépendants,
+sur laquelle reposait la porte de la période, était elle-même optimiste,
+la variance étant sous-estimée d'un facteur atteignant $6{,}4$. Toutes
+les séries sont stationnaires au vu des tests de Dickey--Fuller et KPSS,
+et les modèles autorégressifs sont validés par le test de Box--Pierce
+sur leurs résidus~: la correction est donc fondée. Après correction,
+aucun verdict ne bascule. \texttt{rsi\_classic} termine à $0{,}08$, loin
+du seuil. La porte de la période est fermée proprement. Signalons par
+honnêteté que les mois sans trade sont traités comme consécutifs, avec
+une couverture de 71~\% pour \texttt{rsi\_strict} et supérieure à 88~\%
+ailleurs, limite assumée de cette construction.
+
+\begin{limites}
+L'effet de plan de Kish n'est qu'approché pour des grappes de tailles
+inégales~; l'agrégation équipondérée protège du faux positif au prix
+d'une perte de puissance (choix assumé~: la prudence prime pour un outil
+de validation)~; les mois sans trade sont traités comme consécutifs dans
+les séries mensuelles~; l'ordre des modèles autorégressifs est plafonné
+à~6.
+\end{limites}
+
+\subsection{Positionnement dans la littérature financière}
+\label{sec:b1-positionnement}
+
+Les outils de cette section ont été construits à partir des seuls
+concepts du cours, la théorie des sondages, l'analyse de la variance et
+les séries temporelles. Il se trouve qu'ils rejoignent les standards de
+l'économétrie financière, signe que la démarche converge vers la
+pratique établie. L'agrégation par période, qui calcule une statistique
+par mois avant de mener l'inférence sur la suite de ces statistiques,
+est exactement la démarche proposée par Fama et
+MacBeth~\cite{famamacbeth1973}, devenue un standard du domaine. La
+variance de long terme estimée au travers du modèle autorégressif
+poursuit le même objectif que les erreurs-types robustes à
+l'autocorrélation de Newey et West~\cite{neweywest1987}, dont elle est
+une version paramétrique, validée ici par le test de Box--Pierce. Enfin,
+le contrôle des faux positifs sur un très grand univers de stratégies
+relèverait du \emph{Reality Check} de White~\cite{white2000}~; avec onze
+stratégies déclarées à l'avance, la correction de Bonferroni suffit et
+demeure le choix le plus prudent.
+
+Le verdict au standard corrigé est donc le suivant~: aucune des dix
+stratégies réelles ne démontre d'avantage. Le verdict de l'étape~1 ne
+tenait que par une condition non vérifiée. C'est le résultat central de
+ce mémoire~: l'outil de validation a démasqué son propre faux positif en
+testant ses conditions d'application. Un verdict négatif rendu
+proprement est la preuve que l'outil fonctionne.
+
+% =====================================================================
+\section{Lecture du verdict --- le marché comme série temporelle}
+\label{sec:b1-lecture}
+
+Le verdict est tombé, aucune stratégie ne démontre d'avantage. Avant de
+conclure, on peut se demander si ce résultat était prévisible, en
+interrogeant le marché lui-même avec les outils des séries temporelles.
+Le chapitre~\ref{chap:donnees} a montré que la dépendance simultanée est
+massive, le facteur marché portant 73~\% des mouvements. Reste à savoir
+s'il existe de la dépendance retardée, la seule qu'une stratégie puisse
+exploiter, puisqu'il faut un délai pour passer un ordre.
+
+On vérifie d'abord la stationnarité, condition de toute modélisation,
+par le test de Dickey--Fuller augmenté, appliqué au prix puis au
+rendement de l'indice de marché. Le prix ne rejette pas la racine
+unitaire, avec une p-value de $0{,}999$~: il se comporte comme une
+marche aléatoire, dont le niveau de demain est celui d'aujourd'hui plus
+un choc imprévisible. Le rendement, lui, est nettement stationnaire,
+avec une p-value de l'ordre de $10^{-26}$. On modélise donc le
+rendement, jamais le prix. Son autocorrélation est quasi nulle à tous
+les retards examinés, entre $-0{,}08$ et $+0{,}09$ sur les dix premiers
+jours. Un modèle ARIMA~\cite{boxjenkins1970} ajusté sur ce rendement ne
+trouve d'ailleurs rien à saisir, ses deux termes, autorégressif et
+moyenne mobile, se compensant presque exactement.
+
+Le rendement du marché est ainsi proche d'un bruit sans mémoire~: son
+propre passé ne prédit guère le lendemain. C'est ce que la littérature
+appelle l'efficience faible du marché. La boucle est alors bouclée. Le
+marché regorge de dépendance simultanée, celle qui fausse les tests et
+qu'aucune stratégie ne peut exploiter faute de délai, et manque
+précisément de dépendance retardée, la seule qui serait exploitable.
+L'échec des dix stratégies n'est pas un accident~: c'est la signature de
+cette asymétrie.
+
+\begin{conditions}
+Travailler sur les rendements (stationnaires), jamais sur les prix
+bruts~; la stationnarité est vérifiée par le test de Dickey--Fuller
+avant toute modélisation.
+\end{conditions}
+
+% =====================================================================
+\section{Synthèse du chapitre}
+\label{sec:b1-synthese}
+
+Retraçons le chemin parcouru. Le test de référence déclarait deux
+stratégies gagnantes sur dix. La mise à l'épreuve de ses conditions
+d'application, par l'effet de plan, le bootstrap par grappes,
+l'agrégation en deux portes et la correction de la série mensuelle, a
+renversé ces deux verdicts. \texttt{rsi\_classic} était un faux positif
+né de la répétition d'une même information sur des milliers de trades.
+\texttt{rsi\_strict} possède un avantage réel à l'échelle des titres,
+mais trop épisodique dans le temps pour être retenu. La lecture du
+marché lui-même rend ce résultat cohérent~: un marché proche de
+l'efficience faible n'offre presque pas de dépendance retardée à
+exploiter. Le message central est ailleurs que dans les stratégies. Le
+protocole a fait exactement son travail, il a démasqué son propre faux
+positif en vérifiant ses conditions, tout en validant sans hésiter le
+témoin dont l'avantage était réel. Un verdict négatif rendu proprement,
+c'est l'outil qui fonctionne.

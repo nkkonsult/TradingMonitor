@@ -1,0 +1,147 @@
+% ---------------------------------------------------------------------
+%  Chapitre 1 — Introduction : but + planification de l'expérience
+%  (couvre les points « but du stage » et « planification » des consignes)
+% ---------------------------------------------------------------------
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\label{chap:intro}
+
+\section*{But du mémoire}
+\label{sec:but}
+
+% ANGLE DU MÉMOIRE (décidé) : ce n'est PAS une étude de stratégies de
+% trading, mais la construction d'un OUTIL DE VALIDATION statistique.
+% Les stratégies ne sont que des jeux de données de test.
+
+Lors de mon stage en entreprise j'ai eu la consigne de créer un agent IA capable de faire du trading.
+J'ai alors décidé de donner à mon agent des capacités d'analyse statistique.
+Après avoir créé le nécessaire pour qu'un agent puisse passer des ordres et
+avoir accès à différentes données du marché, j'ai estimé qu'il fallait qu'il soit capable d'évaluer
+les stratégies de trading qu'il aura établies.
+
+Je vais présenter dans ce rapport l'outil d'évaluation de stratégies que
+j'ai donné à mon agent.
+
+L'objectif de cet outil n'est pas de découvrir une stratégie de trading
+rentable. Il est de construire un enchaînement de méthodes capable de
+déterminer, pour une stratégie quelconque qu'on lui soumet, si l'avantage
+qu'elle affiche est réel ou s'il relève du hasard d'échantillonnage
+ou du biais de marché.
+
+Autrement dit, la contribution revendiquée est méthodologique~:
+la chaîne de tests, sa justification et la vérification de ses conditions
+d'application. 
+
+Les dix stratégies d'analyse technique utilisées dans ce
+rapport ne constituent pas l'objet d'étude mais un banc d'essai~:
+elles fournissent des jeux de données réels permettant de
+montrer que l'outil discrimine correctement — qu'il sait rejeter
+ce qui ne tient pas et retenir ce qui résiste à l'analyse. Les résultats
+obtenus sont donc présentés à titre d'illustration du bon
+fonctionnement du protocole, et non comme des recommandations
+d'investissement.
+
+Pour s'assurer que l'outil ne rejette pas tout par excès de sévérité,
+on lui soumettra aussi un témoin dont l'avantage est réel par construction.
+
+
+\section*{Les trois menaces qui pèsent sur le jugement}
+\label{sec:menaces}
+
+% [À RÉDIGER — le cœur de l'introduction]
+% Idées à développer avec TES mots (annonce les trois obstacles que le
+% protocole devra franchir ; chacun sera traité dans le rapport) :
+%  1. LA DÉRIVE DU MARCHÉ : sur la période, la quasi-totalité des titres
+%     montent -> un rendement positif ne prouve aucun talent. (Déjà
+%     amorcé en §\ref{sec:but} : réponse = l'edge apparié au hasard.)
+%  2. LA MULTIPLICITÉ : dix stratégies testées d'un coup -> multiplier
+%     les occasions d'un faux positif (~40 % de risque global à 5 %).
+%     Réponse = contrôle du risque global (Bonferroni).
+%  3. LA DÉPENDANCE : les trades ne sont pas des témoins indépendants
+%     (même titre, mêmes journées de bourse, chevauchements). C'est la
+%     menace la plus grave et la moins visible -> elle sera MESURÉE
+%     avant tout test (chap. 2) puis neutralisée pas à pas (chap. 3).
+%  - Finir sur l'idée : une validation qui ignore une seule de ces
+%    menaces produit des verdicts trop optimistes ; l'outil les traite
+%    toutes les trois, et c'est sa raison d'être.
+
+La première difficulté tient à la dérive du marché.
+Le premier réflexe pour juger une stratégie est d'examiner si elle
+est rentable : un gain positif la ferait « marcher ». Ce raisonnement
+est pourtant trompeur, car encore faut-il que ce gain dépasse ce
+qu'une entrée au hasard aurait rapporté.
+
+Ici les stratégies sont appliquées aux titres du S\&P~500,
+l'indice des 500 grandes capitalisations américaines,
+dont la tendance est haussière sur la période étudiée.
+Cette dérive haussière est un problème car une stratégie peut effectuer
+des gains sans pourtant n'avoir capté aucun signal.
+C'est pourquoi on calculera non pas les gains mais plutôt l'avantage
+qu'apporte chaque stratégie.
+
+La deuxième provient du nombre de tests. En effet,
+plus on teste de stratégies, plus le risque d'obtenir au moins un faux
+positif augmente. Ce problème sera traité au
+chapitre~\ref{sec:b1-etape1} à l'aide de la correction de Bonferroni.
+
+La troisième, sans doute la plus délicate, est la dépendance
+des données. De nombreuses méthodes statistiques
+imposent en condition l'indépendance des variables, or ici les trades sont
+dépendants sous différents aspects, comme la période, le titre et même le secteur~;
+cette difficulté sera mesurée au chapitre~\ref{chap:donnees}, puis neutralisée
+au chapitre~\ref{chap:juger}.
+
+On est forcé de prendre en compte ces trois difficultés, sous peine
+d'un verdict trop optimiste : c'est leur traitement conjoint qui fait de ce
+protocole un véritable outil de validation.
+
+\section*{Démarche du mémoire}
+\label{sec:planification}
+
+% [À RÉDIGER — en PROSE, 1 à 2 paragraphes, pas une liste à puces]
+% Idée directrice : UNE seule enquête, du diagnostic au verdict. Enchaîner
+% les 4 chapitres avec des transitions, dans TES mots. Squelette :
+%
+%  - Phrase d'ouverture (garde l'esprit) : ce mémoire suit une seule
+%    enquête, du diagnostic au verdict.
+%  - Ch. 2 (\ref{chap:donnees}) : on présente les données (les 40 362
+%    trades, l'edge apparié) PUIS on mesure la dépendance qui menace les
+%    tests -> on part du terrain et de ses pièges.
+%  - Ch. 3 (\ref{chap:juger}) : le CŒUR. On juge les stratégies, du test
+%    naïf au test corrigé (l'escalade de prudence), puis on lit le verdict
+%    à la lumière du marché lui-même.
+%  - Ch. 4 (\ref{chap:protocole}) : on récapitule l'outil en livrable,
+%    ses limites et les étapes suivantes.
+%  - Optionnel (1 phrase) : dire que le fil va du plus fragile (la donnée,
+%    la dépendance) au plus solide (le verdict, puis l'outil réutilisable).
+%
+% Astuce transitions : « d'abord… », « le cœur du travail… », « on change
+% alors de question… », « enfin… ». Utilise les \ref{} pour les numéros.
+
+Le mémoire suit le fil d'une enquête unique, du diagnostic au verdict, puis
+du verdict à l'outil. Il commence par le terrain et ses pièges. Le
+chapitre~\ref{chap:donnees} présente les données, les 45\,008 trades et
+l'\edgevar{} apparié au hasard, puis mesure la dépendance qui menace les
+tests~: on ne peut juger proprement qu'après avoir chiffré ce qui pourrait
+fausser le jugement.
+
+Le chapitre~\ref{chap:juger} constitue le cœur du travail. On y juge les
+stratégies par une escalade de prudence~: on applique d'abord le test de
+référence sous ses hypothèses standard, puis on met à l'épreuve, une à une,
+les conditions qu'il suppose, en neutralisant chacun des canaux de dépendance
+mesurés au chapitre précédent. Le verdict n'est prononcé qu'au terme de cette
+montée en exigence.
+
+Le chapitre~\ref{chap:protocole} prend alors du recul~: il récapitule la
+procédure comme un outil réutilisable, en assume les limites et trace les
+suites possibles. La conclusion referme l'enquête en répondant à la question
+posée ici.
+
+Le fil va ainsi du plus fragile, la donnée et sa dépendance, au plus solide,
+le verdict puis l'outil qui permettra de juger les signaux à venir.
+
+% NOTE (ne pas rédiger) : l'ancienne architecture « par blocs » (stratégies
+% / signaux d'information / relations inter-actifs / régression finale) a été
+% resserrée : le mémoire se concentre sur le jugement des stratégies ; les
+% signaux d'information et la régression sont renvoyés en perspectives
+% (chap.~\ref{chap:protocole}).

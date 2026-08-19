@@ -113,7 +113,7 @@ def main() -> None:
     out("          p_corr = p-value Student avec erreur-type corrigee (df = n_eff - 1).")
     out("          p_boot = bootstrap par grappes (tickers reechantillonnes entiers),")
     out("          aucune hypothese d'independance entre trades d'un meme titre.")
-    out("          verdict OUI = p_corr ET p_boot < seuil Bonferroni (0.005).")
+    out("          verdict OUI = p_corr ET p_boot < seuil Bonferroni (0.0045).")
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text("\n".join(lines), encoding="utf-8")

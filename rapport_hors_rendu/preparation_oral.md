@@ -31,8 +31,10 @@
 - **Cassures** (`sr_breakout`/`sr_breakdown`) : achat quand le cours franchit une
   résistance vers le haut, vente quand il casse un support vers le bas.
 - **`oracle`** (témoin) : triche en regardant le cours des 30 jours à venir,
-  n'entre que si ça monte d'au moins 25 %. Sert à prouver que l'outil sait valider
-  un vrai avantage (faux négatif impossible).
+  n'entre que si ça monte d'au moins **5 %** (v2), avec ~1 an de repos entre deux
+  entrées pour garder un volume comparable aux vraies stratégies. Sert à prouver
+  que l'outil sait valider un vrai avantage (faux négatif impossible).
+  (La v1 à +25 % a été abandonnée : voir la fiche méthodes, histoire des deux oracles.)
 
 **LA réponse-parade si le jury insiste sur une mécanique** :
 > « Le fonctionnement précis de chaque stratégie relève de l'analyse technique ;
@@ -124,6 +126,31 @@
 
 ---
 
+## Bloc 1 — Valeurs aberrantes / extrêmes (question posée à d'autres candidats)
+
+**Q : Vos données contiennent-elles des valeurs aberrantes ? Comment les avez-vous traitées ?**
+- R : D'abord distinguer deux notions. Une valeur **aberrante** est une erreur (saisie, mesure) : à corriger ou supprimer. Une valeur **extrême** est une vraie réalisation d'une distribution à queues lourdes : de l'information. Mes données contiennent des valeurs extrêmes, pas d'aberrantes : les edges sont calculés à partir de cours réels, bornés par construction (un titre ne peut pas perdre plus de 100 %, les durées sont bornées) ; en revanche les distributions sont très asymétriques et à queues lourdes — c'est structurel en finance, et c'est visible dans le W de Shapiro (0,50 pour `ma_crossover`, 0,59 pour l'oracle).
+- Je ne les ai **pas supprimées ni winsorisées**, et c'est un choix : un edge extrême est souvent LE moteur du gain d'une stratégie. L'écarter fausserait le jugement dans les deux sens. Le protocole est construit pour être **robuste aux extrêmes** plutôt que pour les nettoyer.
+- Piège : ne jamais dire « il n'y en a pas » ni « je les ai enlevées ». Dire : « je les ai gardées, et voici les quatre protections du protocole ».
+
+**Q : Quelles protections, concrètement ?**
+- R : Quatre, par étage. (1) Le test porte sur la **moyenne** : un point extrême tire ē mais gonfle aussi s au dénominateur — effet plutôt conservateur sur t. (2) Le **bootstrap** ne suppose aucune forme : les extrêmes sont dans les répliques, la cloche les intègre d'elle-même. (3) L'**agrégation équipondérée** retire aux extrêmes leur poids : un méga-trade ne pèse que dans SA grappe (son titre, son mois), qui n'a qu'une voix. (4) Une stratégie dont l'avantage ne tient qu'à quelques points extrêmes est **exactement ce que les deux portes détectent** — c'est le cas vécu de `rsi_strict` : avantage réel mais concentré sur quelques mois, rejeté pour ça.
+
+**Q : Un seul trade extrême peut-il faire basculer un verdict ?**
+- R : Sur le test naïf, avec n de l'ordre de 7 000, un trade pèse 1/n dans la moyenne et gonfle s : très improbable. Et si un petit groupe d'extrêmes portait l'avantage, l'agrégation le neutralise — l'unité de vote devient le titre ou le mois, plus le trade.
+
+**Q : Pourquoi ne pas tester la médiane, ou utiliser un test robuste ?**
+- R : Parce que le paramètre économiquement pertinent est la **moyenne** : le gain total d'une stratégie = somme des edges = n × moyenne. Une stratégie peut avoir une médiane négative et être rentable grâce à quelques grands gains (asymétrie positive) — un test sur la médiane la déclarerait perdante à tort. La moyenne est le seul paramètre qui agrège correctement les extrêmes AVEC le reste. (Wilcoxon : vu seulement en R, utilisé en vérification interne, non revendiqué — cohérent avec le reste du discours.)
+
+**Q : Les queues lourdes ne menacent-elles pas le TCL ?**
+- R : Le TCL exige une **variance finie** — garantie ici car les rendements d'un trade sont bornés. Les queues lourdes ralentissent la convergence, elles ne l'empêchent pas : c'est exactement pourquoi il faut n grand, et pourquoi une des perspectives est un garde-fou d'effectif. Ici n va de 978 à 8 513.
+- Bonus si on insiste : l'oracle est le cas le plus extrême (W = 0,59, distribution tronquée par construction — que des trades gagnants), et le protocole le juge sans difficulté.
+
+**Q : Comment détecteriez-vous des valeurs aberrantes si vous deviez le faire ?**
+- R : Boîte à moustaches / règle 1,5 × IQR, ou écart à la moyenne en unités d'écart-type. Mais en finance cette règle marquerait des centaines de points parfaitement légitimes : elle détecte les extrêmes, pas les erreurs. La vraie vérification d'aberrance, je l'ai faite en amont, au niveau des données sources : cours réels, edges bornés, aucune valeur impossible.
+
+---
+
 ## Bloc 1 — Étape 1 bis (dépendance : ICC, DEFF, deux portes, série mensuelle)
 
 **Q : Pourquoi la correction DEFF laisse-t-elle passer `rsi_classic` alors que l'agrégation le rejette ?**
@@ -147,6 +174,43 @@
 - R : Leurs H0 sont **opposées** : Dickey–Fuller pose H0 « racine unité » (p petit = stationnaire), KPSS pose H0 « stationnaire » (p grand = stationnaire). Quand les deux concordent, la conclusion ne dépend pas du choix de l'hypothèse nulle — beaucoup plus robuste qu'un test seul.
 - Piège : ne pas lire les deux p-values dans le même sens.
 
+**Q : Le test ADF retient 9 retards pour `rsi_trend`, mais le modèle AR est plafonné à 6 et n'en retient que 4. Contradiction ?**
+- R : Non, **deux « retards » différents**, produits par deux procédures aux objectifs opposés. (1) Les 9 retards de l'**ADF** sont un paramètre de *nuisance* : ils servent uniquement à nettoyer les résidus de la régression de Dickey–Fuller pour que son test sur φ soit valide. Ils ne mesurent aucun impact et sont jetés ensuite. (2) L'ordre p̂ = 4 vient du **PACF** et mesure la *mémoire réelle* de la série — c'est lui qui alimente la correction.
+- Vérification : Box–Pierce sur les résidus de l'AR(4) de `rsi_trend` donne p = 0,06 sur 15 décalages → le modèle à 4 mois a bien absorbé la mémoire. (C'est la valeur la plus basse du tableau, donc le cas le plus limite, mais elle passe.)
+- Piège : ne pas dire « on laisse passer 9 mois d'autocorrélation » — les 9 retards ne sont pas de l'autocorrélation mesurée, mais un correctif interne au test de stationnarité.
+
+**Q : Comment justifiez-vous le plafond de 6 mois pour la recherche de l'ordre ?**
+- R : Deux temps. (1) **Substantiel** : la dépendance vient du recouvrement des périodes de détention ; elle ne peut donc pas porter au-delà de la durée des trades, qui dépassent rarement 6 mois. Chercher plus loin = chercher un effet sans cause. (2) **Vérifié a posteriori** : c'est l'argument qui compte, car le premier n'est qu'une plausibilité. Si une mémoire subsistait au-delà de 6, le modèle ne l'aurait pas absorbée et elle apparaîtrait dans ses **résidus** — or Box–Pierce les inspecte sur **15** décalages. Le plafond n'est pas un pari, il est contrôlé.
+- Piège : ne pas justifier le plafond par « trop de coefficients ajoutent du bruit » — c'est l'arbitrage que fait déjà la règle de décision décalage par décalage (p-value), donc l'argument serait redondant.
+
+**Q : Pourquoi le critère d'Akaike pour choisir le nombre de retards de l'ADF ?**
+- R : Arbitrage entre deux erreurs : trop peu de retards → mémoire non absorbée, résidus autocorrélés, test faussé ; trop → chaque coefficient estimé sur les mêmes T mois ajoute du bruit. AIC = 2 ln σ̂ₖ + k/T (forme du cours de séries temporelles, § estimation ARMA, étape 5) : le 1ᵉʳ terme baisse quand le modèle colle mieux, le 2ᵉ monte avec k → on minimise la somme, donc un retard n'est gardé que s'il apporte plus qu'il ne coûte.
+- Sans pénalité, on prendrait toujours le modèle le plus riche — qui colle aussi au **bruit** (surapprentissage).
+- Si on demande « pourquoi AIC et pas BIC ? » : le BIC pénalise plus fort (ln T au lieu de 2) donc serait plus parcimonieux ; AIC est ce que prescrit le cours, et le plafond à 6 borne déjà la complexité du modèle retenu.
+- Référence : Akaike (1974), *IEEE Trans. Automatic Control*.
+
+**Q : Le test de Dickey–Fuller, c'est un test de Student sur une pente ?**
+- R : **Même forme, autre loi.** La statistique t_DF = (φ̂ − 1)/se(φ̂) a exactement la structure d'un Student (écart à la référence ÷ erreur-type) — les auteurs la nomment d'ailleurs *t-ratio*. Mais sous H0 la série n'est **pas** stationnaire (sa variance croît avec le temps), donc les conditions de la loi de Student tombent. Dickey et Fuller ont établi et tabulé la vraie loi : décalée vers les négatifs et asymétrique. Conséquence chiffrée : il faut dépasser ≈ −2,9 pour rejeter à 5 %, là où un Student rejetterait dès −1,65. C'est tout l'apport de leur article, et ce qui vaut son nom au test.
+
+**Q : Pourquoi φ < 1 ⟹ stationnaire ? (démonstration en une ligne)**
+- R : Dérouler la récurrence x_t = φ x_{t−1} + η_t donne x_t = η_t + φ η_{t−1} + φ² η_{t−2} + … : le mois courant est la somme de TOUS les chocs passés, chacun pesé par φ^(ancienneté). Si |φ| < 1, ces puissances → 0 : les chocs s'éteignent, la série revient vers sa moyenne. Si φ = 1, toutes les puissances valent 1 : chaque choc s'ajoute définitivement au niveau → dérive.
+
+**Q : « Racine unitaire » et « non stationnaire », c'est pareil ?**
+- R : Non, **asymétrie importante**. La racine unitaire (φ = 1) est UNE façon d'être non stationnaire — celle que teste DF. Le nom vient de l'écriture (1 − φB)x_t = η_t : le polynôme 1 − φz a pour racine z = 1/φ, qui vaut exactement 1 si φ = 1 (vocabulaire du cours : « P n'a aucune racine dans le disque unité »). Mais une tendance déterministe, une variance changeante ou une saisonnalité déformée sont aussi non stationnaires SANS racine unitaire. Racine unitaire ⟹ non stationnaire, l'inverse est faux.
+- Ce qui sauve le raccourci dans mon rapport : **KPSS teste la stationnarité au sens large** (il couvre tendance et dérive). Quand les deux tests concordent, on a bien conclu sur la stationnarité, pas seulement sur la racine unitaire. Argument de plus en faveur de la règle de concordance.
+
+**Q : Pourquoi un pré-test d'indépendance AVANT toute la machinerie AR ?**
+- R : Principe du chapitre : **on ne corrige que ce qui est mesuré** (même logique que le DEFF, appliqué seulement si ρ le justifie). Le raisonnement du recouvrement rend l'autocorrélation *plausible*, pas *certaine*, et elle varie d'une stratégie à l'autre. Box–Pierce sur la série brute (6 décalages, aucun modèle requis) tranche : si l'indépendance n'est pas rejetée, la condition du test 1c est remplie telle quelle → son verdict tient, ni AR ni stationnarité à exiger. Sinon seulement, la branche AR s'applique.
+- Bénéfice concret : cela évite d'exiger la stationnarité de séries qui n'ont besoin d'aucune correction (3 stratégies sur 11 sortent par cette branche).
+
+**Q : Quelle différence entre Box–Pierce et le canal 3 du chapitre 2 ?**
+- R : Le canal 3 **mesure** (ρ̂(1) = intensité, un seul décalage, sans seuil) ; Box–Pierce **tranche** (6 décalages simultanément, avec un seuil qui intègre T). Une même valeur ρ̂ = 0,15 est significative sur 500 mois et pas sur 100 — la mesure brute ne peut pas le dire. Et une dépendance peut être absente au décalage 1 mais présente aux décalages 2-3 : le canal 3 ne la verrait pas.
+- Exemple vécu : l'ancien oracle avait ρ̂(1) = 0,03 (apparemment rien) et pourtant Box–Pierce rejetait l'indépendance (p = 0,015) — sa dépendance était logée plus loin. À l'inverse `hs_classic` a ρ̂(1) = 0,15 mais p = 0,053 : pas significatif sur 172 mois.
+
+**Q : Que fait le protocole si les deux tests de stationnarité divergent ?**
+- R : Il **fait sortir la stratégie** avec un verdict « ? » et signale la raison ; l'examen revient à l'humain. Elle n'est ni validée ni rejetée — « non concluant » ≠ « défavorable ». Justification : « ne pas rejeter » n'a jamais valeur de preuve ; deux tests qui ne pointent pas dans la même direction ne prouvent rien, et transformer cette absence de preuve en rejet serait une faute de lecture.
+- Cas vécu à citer : l'oracle v1 (t = 122) mettait DF en échec — série trop tassée, pas de bras de levier pour estimer la pente → manque de puissance, pas dérive. Un protocole à un seul test l'aurait écarté silencieusement ; c'est KPSS qui rend l'anomalie visible. **Le témoin a servi à révéler une limite du protocole** — d'où l'oracle v2, à l'avantage plus modeste et donc plus réaliste.
+
 **Q : D'où sort la variance « de long terme » σ²η/(1−ΣΦ)² ?**
 - R : La variance de la moyenne d'une série autocorrélée fait intervenir TOUTES les autocovariances : Var(x̄) ≈ (1/T)·Σₕ γ(h) (somme sur tous les retards). Pour un AR(p), cette somme vaut exactement σ²η/(1−ΣΦᵢ)². Le s²/T classique n'en est que le cas particulier « tout γ(h≠0) = 0 », c'est-à-dire l'indépendance. Plus ΣΦ approche 1 (persistance forte), plus la correction explose.
 
@@ -155,6 +219,34 @@
 
 **Q : Pourquoi ne pas pondérer les moyennes de titres par leur nombre de trades ?**
 - R : Ce serait réintroduire le test naïf (les gros titres redomineraient). L'équipondération est le choix le plus prudent : « une unité réelle, un vote ». Pour un outil de VALIDATION, on préfère perdre de la puissance que laisser passer un faux positif.
+
+**Q : Pourquoi la distribution bootstrap est-elle une cloche ? Un tirage peut-il « dépasser le sommet » ?**
+- R : Lire les axes : horizontal = la VALEUR de la moyenne d'une réplique,
+  vertical = sa FRÉQUENCE sur les 4 000 tirages. Chaque tirage donne UN nombre,
+  un point sur l'axe horizontal. Le sommet n'est pas un maximum : c'est la
+  valeur la plus fréquente. Un tirage extrême tombe dans la queue — et la
+  courbe y est basse parce que c'est rare. La hauteur mesure la rareté, pas
+  une borne.
+- Pourquoi une cloche : chaque moyenne de réplique moyenne ~500 titres tirés
+  indépendamment → TCL appliqué ENTRE les grappes (l'unité indépendante est le
+  titre, plus le trade).
+- Le point clé : le bootstrap n'a PAS BESOIN de cette normalité. La p-value
+  est un comptage (proportion des moyennes ≤ 0), valide quelle que soit la
+  forme. C'est le sens exact de « aucune hypothèse de forme ».
+
+**Q : D'où vient la largeur de la cloche ? (la loterie des titres lourds)**
+- R : D'une réplique à l'autre, un titre lourd est tiré 0, 1 ou plusieurs
+  fois. Quand il manque (ou est sur-tiré), la moyenne de la réplique bouge
+  fortement — il emporte tous ses trades. Plus le résultat repose sur peu de
+  titres, plus les moyennes fluctuent → cloche plus LARGE (dire « large »,
+  pas « aplatie » : l'aire reste 1, c'est l'erreur-type qui grossit) → plus
+  de masse sous zéro → p-value plus grande. C'est ainsi que le bootstrap
+  matérialise la dépendance intra-titre.
+- NUANCE piège (dans le rapport) : cas pervers où un titre domine tellement
+  qu'il est présent et dominant dans presque toutes les répliques → les
+  moyennes se collent à SA moyenne → cloche trompeusement ÉTROITE autour d'une
+  valeur positive. D'où « une cloche étroite ne suffit pas » → c'est la porte
+  de l'action (équipondération) qui lève ce doute.
 
 **Q : Pourquoi le bootstrap par grappes préserve-t-il la dépendance ?**
 - R : On tire des tickers ENTIERS avec remise : l'intérieur de chaque grappe (et sa dépendance) voyage intact dans chaque réplique. On ne simule jamais l'indépendance entre trades — seule reste l'hypothèse d'indépendance entre titres.
@@ -223,6 +315,26 @@
 - Boucle à citer : le facteur marché mesuré par l'ACP du Bloc 3 EST la cause commune que le Bloc 1 a dû neutraliser. Et toute dépendance retardée transformée en stratégie devra repasser par l'outil de validation du Bloc 1. Les deux blocs sont les deux faces du même objet.
 
 
+
+**Q : Au final, qu'avez-vous à dire ? / Que retenez-vous de ce travail ? (LA réponse de clôture)**
+- R (≈ 40 secondes, à dire avec calme) : « Ce que je retiens : je ne livre pas une
+  stratégie, je livre un **juge**. Ses limites sont réelles — quand les corrections
+  s'empilent, le seuil de 5 % n'est plus garanti à la décimale près. Mais deux
+  choses le rendent utilisable. D'abord, chaque étage pris **isolément** est
+  contrôlé, et dans nos données les trois dépendances ne se cumulent jamais
+  fortement : les verdicts restent donc chiffrés. Ensuite, toutes les
+  approximations restantes penchent du **même côté, celui de la prudence** :
+  l'outil préfère écarter une stratégie honnête que valider une stratégie
+  illusoire. Pour un outil de validation, c'est le bon côté où se tromper — un
+  faux positif coûte de l'argent réel, un faux négatif ne coûte qu'une occasion.
+  Et le témoin montre que cette prudence ne rend pas l'outil aveugle : un
+  avantage réel franchit tous les étages. »
+- Pièges : ne PAS dire « on ne peut pas quantifier les risques » (trop absolu —
+  chaque test est contrôlé ; c'est l'empilement qui perd la garantie *exacte*
+  du seuil nominal, et seulement si les trois canaux étaient forts en même
+  temps, cas signalé et absent ici). Ne PAS dire « stratégies frauduleuses »
+  (la fraude suppose une intention) : dire stratégies **illusoires**, ou « dont
+  l'avantage était un artefact d'échantillonnage ou de dépendance ».
 
 **Q : Quelle est votre principale limite ?**
 - R : Résultats *in-sample*. Une validation *walk-forward* (hors échantillon, respectant l'ordre temporel) est nécessaire avant tout usage. Les k-fold classiques fuiteraient l'information du futur.

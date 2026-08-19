@@ -1,0 +1,35 @@
+% ---------------------------------------------------------------------
+%  Chapitre 6 — Conclusion : bilan + ouverture
+%  (les limites détaillées et les perspectives vivent au chap. 5 ;
+%   ici, on répond à la question du chap. 1 et on referme la boucle)
+% ---------------------------------------------------------------------
+\chapter{Conclusion}
+\label{chap:conclusion}
+
+L'objectif fixé au premier chapitre n'était pas de découvrir une stratégie
+gagnante, mais de construire un protocole capable d'en juger une quelconque.
+Ce protocole est désormais construit, éprouvé, et il a rendu son verdict.
+Aucune des dix stratégies d'analyse technique ne démontre d'avantage réel une
+fois les conditions d'application vérifiées, seul le témoin franchissant tous
+les étages.
+
+Le résultat central mérite d'être rappelé. Le test de référence déclarait deux
+stratégies gagnantes. La seule vérification de la condition d'indépendance a
+renversé les deux verdicts : l'une se révélait un faux positif né de la
+répétition d'une même information sur des milliers de trades, l'autre un
+avantage réel mais trop épisodique dans le temps pour être retenu. Dans le
+même temps, le témoin construit pour être gagnant a franchi chaque étage sans
+faiblir. Un outil de validation se juge à sa capacité d'attraper ses propres
+erreurs tout en reconnaissant le vrai : la démonstration est faite.
+
+Une idée traverse l'ensemble de ce travail. La dépendance des données y a joué
+deux rôles opposés. Simultanée, portée par le facteur marché qui explique près
+des trois quarts des mouvements, elle était la nuisance qui faussait les
+tests, et il a fallu la mesurer puis la neutraliser pour juger proprement.
+Retardée, elle aurait au contraire été la seule ressource qu'une stratégie
+puisse exploiter, et le marché n'en contient presque pas, conformément à
+l'efficience faible. Neutraliser l'une, chercher l'autre : c'est la même
+statistique, vue des deux côtés du même objet.
+
+Le protocole est ainsi prêt à juger les prochains signaux de l'agent, en
+commençant par leur validation temporelle.

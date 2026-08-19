@@ -1,0 +1,28 @@
+% ---------------------------------------------------------------------
+%  Annexes (10 pages MAX — PAS de code complet, cf. consignes)
+%  Le code source complet n'est PAS reproduit ici : il est référencé
+%  sur une page web (cf. \ref au dépôt dans le corps du texte).
+% ---------------------------------------------------------------------
+\chapter{Annexes}
+\label{chap:annexes}
+
+\section{Extraits de commandes (lignes principales)}
+\label{ann:code}
+% Les consignes autorisent les « lignes principales des commandes »,
+% jamais le programme complet. Exemples représentatifs ci-dessous.
+
+\begin{lstlisting}[caption={Test de l'avantage moyen (extrait).}]
+# Shapiro (normalité), Student 1-échantillon, seuil Bonferroni
+from scipy import stats
+w, p_shapiro = stats.shapiro(edge.sample(min(len(edge), 5000)))
+t, p_student = stats.ttest_1samp(edge, 0, alternative="greater")
+seuil = 0.05 / n_strategies      # Bonferroni
+\end{lstlisting}
+
+\begin{lstlisting}[caption={ANOVA à deux facteurs avec interaction (extrait).}]
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+modele = ols("edge ~ C(strategy) * C(regime)", data=df).fit()
+sm.stats.anova_lm(modele, typ=2)
+\end{lstlisting}
+

@@ -1,7 +1,7 @@
 ======================================================================================
 ETAPE 1 - LA STRATEGIE BAT-ELLE LE HASARD ?  (H0: edge moyen = 0  /  H1: > 0)
-Entree: trades.csv (40362 trades exploitables)
-Seuil Bonferroni (10 strategies): 0.0045
+Entree: trades.csv (45008 trades exploitables)
+Seuil Bonferroni (11 strategies): 0.0045
 ======================================================================================
 strategie            n   edge_moy W_shapiro   p_shapiro   p_student    p_wilcox verdict
 ------------------------------------------------------------------------------------------------
@@ -10,8 +10,8 @@ dt_top            7381    -0.0072    0.9501     3.2e-38           1        0.99 
 hs_classic        1065    -0.0053    0.8855     2.4e-27         0.9           1     non
 hs_inverse        1206    -0.0044    0.9632     6.4e-17        0.89        0.65     non
 ma_crossover      5417    -0.0248    0.4984     3.2e-80           1           1     non
-oracle            2152     0.2626    0.6843       5e-53           0           0     OUI
-rsi_classic       7117     0.0123    0.8640     1.6e-54     1.2e-08     2.4e-67     OUI
+oracle            6798     0.0658    0.5904     6.8e-76           0           0     OUI
+rsi_classic       7117     0.0123    0.8714     1.5e-53     1.2e-08     2.4e-67     OUI
 rsi_strict         978     0.1313    0.7168     1.1e-37     5.5e-10     4.3e-24     OUI
 rsi_trend         2789     0.0021    0.8831     1.2e-41        0.25     5.5e-15     non
 sr_breakdown      1377    -0.0002    0.7754       8e-40        0.54           1     non

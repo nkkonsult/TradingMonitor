@@ -1,0 +1,143 @@
+% ---------------------------------------------------------------------
+%  Chapitre 5 — Le protocole, ses limites, ses suites
+%  Rôle : livrer L'OUTIL (le produit du stage), assumer ses limites,
+%  et tracer les étapes suivantes (dont les chantiers retirés du
+%  périmètre : logistique sur grappes, signaux d'information, lead-lag).
+% ---------------------------------------------------------------------
+\chapter{Du jugement à l'outil : le protocole, ses limites, ses suites}
+\label{chap:protocole}
+
+\section{Le protocole récapitulé}
+\label{sec:protocole}
+
+Rappelons que le protocole ne fournit pas une stratégie gagnante, mais une
+procédure de jugement, réutilisable telle quelle sur tout signal futur de
+l'agent, qu'il soit technique, informationnel ou relationnel. Chaque étage
+répare une condition d'application précise, et le verdict n'est prononcé que
+si tous les étages concordent. Le tableau~\ref{tab:protocole} récapitule cette
+procédure en six étages.
+
+\begin{table}[H]
+\centering
+\caption{Le protocole de validation en six étages : chaque étage répare
+une menace identifiée, et le verdict exige de tous les franchir.}
+\label{tab:protocole}
+\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.34\linewidth}p{0.26\linewidth}@{}}
+\toprule
+Étage & Menace traitée & Outil \\
+\midrule
+1. \edgevar{} apparié au hasard & dérive du marché & Monte Carlo apparié \\
+2. Student unilatéral + TCL & variabilité d'échantillonnage & test de référence \\
+3. Seuil de Bonferroni & multiplicité (11 tests) & contrôle du risque global \\
+4. DEFF + bootstrap par grappes & dépendance intra-titre & sondages, rééchantillonnage \\
+5. Les deux portes (titre, mois) & pseudo-réplication & agrégation équipondérée \\
+6. Série mensuelle AR($p$) & autocorrélation résiduelle & variance de long terme \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Limites assumées}
+\label{sec:limites}
+
+Aucune de ces limites n'invalide le verdict rendu ; chacune trace en revanche
+la frontière de ce que le protocole peut affirmer. On les regroupe en limites
+techniques, propres à la construction des données, et en limites statistiques,
+propres aux méthodes elles-mêmes.
+
+\subsection*{Limites techniques}
+
+La première tient à la façon dont les stratégies ont été établies. Si l'on
+étudiait des stratégies dont les règles ont été optimisées sur les données
+mêmes qui servent ensuite à les juger, on tomberait dans le sur-apprentissage.
+Le risque est ici atténué, car les stratégies retenues sont des règles
+classiques à peu de paramètres, non ajustées sur l'échantillon ; il n'est pas
+pour autant nul, et une validation hors échantillon, où l'on fige les règles
+sur une période puis on juge sur la suivante, resterait nécessaire avant tout
+usage opérationnel.
+
+Par ailleurs, les frais et les conditions d'exécution n'ont été modélisés que
+de façon simplifiée ; les intégrer plus finement rapprocherait le test des
+conditions réelles.
+
+Enfin, la base ne contient que les sociétés présentes dans l'indice sur la
+période, les entreprises disparues en étant absentes. Ce biais du survivant
+est atténué par la construction appariée de l'\edgevar{}, qui compare chaque
+trade au hasard sur le même titre, mais il subsiste.
+
+Le S\&P~500 pose d'ailleurs deux difficultés voisines. Sa composition est
+prise telle qu'elle est aujourd'hui et appliquée à toute la période, alors
+qu'elle a changé au fil des années ; on juge donc les stratégies sur des
+titres dont on sait après coup qu'ils sont restés dans l'indice. Par ailleurs
+l'indice compte ici 501~lignes et non 500, quelques sociétés y étant cotées
+avec deux catégories d'actions. Ces deux points ne remettent pas en cause le
+verdict, mais ils rappellent que l'univers de test n'est pas neutre : ce sont
+les plus grandes capitalisations américaines, celles qui ont le mieux
+traversé la période.
+
+\subsection*{Limites statistiques}
+
+Le test de Student initial concède beaucoup d'incertitude, puisqu'il surestime
+la quantité d'information disponible en traitant les trades comme indépendants.
+Il a néanmoins suffi à écarter huit stratégies. Il suppose aussi un effectif
+assez grand pour invoquer le théorème central limite, condition d'autant plus
+importante qu'en finance les données ne suivent guère une loi normale.
+
+Le contrôle du risque global par la correction de Bonferroni est adapté à un
+nombre restreint de stratégies déclarées à l'avance. Sur un univers de milliers
+de variantes essayées, le contrôle de la fouille de données exigerait plutôt un
+outil dédié comme le \emph{Reality Check} de White~\cite{white2000}.
+
+Une limite plus subtile tient à l'empilement des corrections. Chaque méthode a
+été conçue pour une seule source de dépendance : le DEFF et le bootstrap pour
+la dépendance intra-titre, chaque porte pour sa propre dimension. Prises
+isolément, elles sont exactes ; utilisées ensemble sur des données où les
+dépendances coexistent, elles perdent la garantie de leur seuil nominal, et
+l'inférence de la correction mensuelle en particulier n'est plus exactement
+calibrée. Le protocole reste cependant fixe et applique toujours les mêmes
+étapes ; ce qui varie, c'est la lecture. Lorsqu'une dépendance se révèle
+négligeable sur un canal, le seuil nominal y demeure valide et la conclusion
+peut être chiffrée ; ce n'est que si les trois canaux se manifestaient
+fortement en même temps, leurs corrections se cumulant, que le risque global
+cesserait d'être chiffrable, et ce cas serait alors signalé. Comme la
+dépendance simultanée aux trois canaux reste faible dans nos données, on
+retient les verdicts obtenus.
+
+Il faut enfin rappeler que la puissance élevée des grands échantillons rend le
+moindre écart significatif : significativité et taille d'effet doivent être
+distinguées avec soin.
+
+Face à chacune de ces limites, le protocole ne tranche pas au forceps : il
+préfère écarter une stratégie en signalant la réserve plutôt que de conclure
+sur une base fragile.
+
+\section{Perspectives}
+\label{sec:perspectives}
+
+La première perspective est la création de nos propres stratégies. Elle
+suppose de séparer une zone d'apprentissage et une zone de test, en avançant
+période après période plutôt que par une validation croisée classique, qui
+mélangerait le futur et le passé. Le protocole devra être adapté en
+conséquence.
+
+Il faudra aussi lui ajouter un garde-fou d'effectif, écartant en amont les
+stratégies trop peu fournies pour que le théorème central limite s'applique,
+car ni le test de normalité ni le théorème central limite ne permettent alors
+de conclure.
+
+Une autre voie consiste à modéliser l'avantage en fonction du contexte, par
+exemple la probabilité de gain selon le régime de marché ou le secteur, ce qui
+prolongerait directement la piste des stratégies ciblées évoquée au
+chapitre~\ref{chap:juger}. Cette voie a été écartée du présent travail par
+rigueur : sur des dizaines de milliers de trades dépendants, les p-values des
+coefficients d'une régression seraient trop optimistes, exactement le piège du
+chapitre~\ref{chap:juger}. Les outils adaptés, modèles à effets mixtes ou
+équations d'estimation généralisées, dépassent le cadre de ce travail.
+
+L'objectif est enfin de fournir à l'agent un maximum d'information, y compris
+des signaux tournés vers l'avenir comme les projets de loi ou les signatures de
+contrats, ainsi que les relations d'avance et de retard entre titres, au sens
+de la causalité de Granger~\cite{granger1969}. Des travaux exploratoires ont
+été engagés sur ces fronts. Ce mémoire en constitue la fondation : il fournit
+l'outil qui permettra, tout du long, de vérifier les stratégies à venir.

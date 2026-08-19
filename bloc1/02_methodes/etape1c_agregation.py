@@ -13,7 +13,7 @@ SOLUTION PAR AGRÉGATION (une grappe = un seul vote) :
                            -> 1 observation par mois  -> Student sur ~190 moyennes.
                            (nécessite entry_date : base régénérée après 2026-07)
 
-Chaque test : H0 mu = 0 vs H1 mu > 0, seuil de Bonferroni 0.05/10.
+Chaque test : H0 mu = 0 vs H1 mu > 0, seuil de Bonferroni 0.05/11.
 Verdict final "OUI" seulement si les DEUX portes fermées confirment.
 
 Entree :  bloc1/01_donnees/trades.csv
@@ -29,6 +29,7 @@ from scipy import stats as st
 CSV = Path(__file__).resolve().parents[1] / "01_donnees" / "trades.csv"
 OUT = Path(__file__).resolve().parents[1] / "03_resultats" / "etape1c_agregation.txt"
 ALPHA = 0.05
+K_MIN = 30     # nb de grappes minimal pour invoquer le TCL sur les moyennes de grappes
 
 
 def test_unilateral(means) -> tuple[int, float, float, float]:
@@ -68,26 +69,36 @@ def main() -> None:
     if has_dates:
         df["mois"] = pd.to_datetime(df["entry_date"]).dt.to_period("M")
 
+    alertes_par_strat: dict[str, list[str]] = {}
+
     for kname in strategies:
         sub = df[df["strategy"] == kname]
+        alertes: list[str] = []
 
         # --- Test A : porte ACTION (1 titre = 1 vote) ----------------------
         means_a = sub.groupby("ticker")["edge"].mean()
         ka, ma, ta, pa = test_unilateral(means_a)
+        if ka < K_MIN:
+            alertes.append("porte action : %d titres < %d, TCL non invocable sur les moyennes par titre" % (ka, K_MIN))
 
         # --- Test B : porte PERIODE (1 mois d'entree = 1 vote) -------------
         if has_dates:
             means_b = sub.groupby("mois")["edge"].mean()
             kb, mb, tb, pb = test_unilateral(means_b)
+            if kb < K_MIN:
+                alertes.append("porte periode : %d mois < %d, TCL non invocable sur les moyennes mensuelles" % (kb, K_MIN))
+            # Trop peu de grappes : le verdict est ininterpretable, pas defavorable.
             ok = (pa < seuil) and (pb < seuil)
+            verdict = "?" if alertes else ("OUI" if ok else "non")
             out("%-14s %6d | %8d %10.4f %8.2f %10.2g | %7d %10.4f %8.2f %10.2g | %7s" %
-                (kname, len(sub), ka, ma, ta, pa, kb, mb, tb, pb,
-                 "OUI" if ok else "non"))
+                (kname, len(sub), ka, ma, ta, pa, kb, mb, tb, pb, verdict))
         else:
             ok = pa < seuil
+            verdict = "?" if alertes else ("OUI*" if ok else "non")
             out("%-14s %6d | %8d %10.4f %8.2f %10.2g | %7s %10s %8s %10s | %7s" %
-                (kname, len(sub), ka, ma, ta, pa, "-", "-", "-", "-",
-                 "OUI*" if ok else "non"))
+                (kname, len(sub), ka, ma, ta, pa, "-", "-", "-", "-", verdict))
+
+        alertes_par_strat[kname] = alertes
 
     out("-" * 118)
     out("Lecture : Test A = Student sur les moyennes PAR TITRE (ferme la porte 'action' :")
@@ -96,8 +107,24 @@ def main() -> None:
     out("          Test B = Student sur les moyennes PAR MOIS D'ENTREE (ferme la porte")
     out("          'periode' : les trades simultanes sont fondus en un seul vote).")
     out("          verdict OUI = p_A ET p_B < seuil Bonferroni." )
+    out("          verdict ?   = trop peu de grappes pour invoquer le TCL : verdict ininterpretable,")
+    out("                        et NON defavorable (voir le bloc d'alertes ci-dessous).")
     if not has_dates:
         out("          (*) dates absentes du CSV : verdict provisoire sur la seule porte action.")
+
+    # --- bloc d'alertes : conditions d'application non remplies ------------
+    signalees = {k: v for k, v in alertes_par_strat.items() if v}
+    out("")
+    if signalees:
+        out("!" * 118)
+        out("ALERTES - %d strategie(s) avec trop peu de grappes :" % len(signalees))
+        for kname, msgs in signalees.items():
+            for m in msgs:
+                out("  [%-14s] %s" % (kname, m))
+        out("Ces strategies ne sont ni validees ni rejetees : la normalite des moyennes de grappes n'est pas assuree.")
+        out("!" * 118)
+    else:
+        out("Aucune alerte : toutes les strategies ont assez de grappes (>= %d) pour invoquer le TCL." % K_MIN)
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text("\n".join(lines), encoding="utf-8")

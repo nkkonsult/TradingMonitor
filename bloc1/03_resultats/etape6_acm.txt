@@ -1,46 +1,47 @@
 ==========================================================================
 ETAPE 6 - ACM : strategie + regime + secteur + issue
-Entree: trades.csv (38035 trades, 26 modalites)
+Entree: trades.csv (45008 trades, 27 modalites)
 Variables : strategy, regime_entry, sector, issue
 ==========================================================================
 
-Inertie expliquee : axe1 = 6.5 %, axe2 = 5.5 % (cumul 12.0 %)
+Inertie expliquee : axe1 = 6.7 %, axe2 = 5.2 % (cumul 11.8 %)
 
 Coordonnees des modalites (axe1, axe2) :
-    strategy = db_bottom               (+0.350, -0.676)
-    strategy = dt_top                  (-0.575, +0.650)
-    strategy = hs_classic              (-1.200, +0.816)
-    strategy = hs_inverse              (-0.385, -0.137)
-    strategy = ma_crossover            (-0.480, -0.634)
-    strategy = rsi_classic             (+1.012, +0.298)
-    strategy = rsi_strict              (+1.817, +2.462)
-    strategy = rsi_trend               (+0.726, -0.824)
-    strategy = sr_breakdown            (-1.428, +1.869)
-    strategy = sr_breakout             (-1.448, -0.459)
-    regime_entry = baissier            (+0.325, +1.367)
-    regime_entry = haussier            (-0.136, -0.400)
-    regime_entry = indetermine         (+1.295, +1.249)
-    sector = Communication Services    (+0.090, +0.123)
-    sector = Consumer Discretionary    (+0.012, -0.201)
-    sector = Consumer Staples          (-0.093, -0.044)
-    sector = Energy                    (+0.086, +0.173)
-    sector = Financials                (-0.015, +0.058)
-    sector = Health Care               (+0.012, +0.127)
-    sector = Industrials               (+0.038, +0.007)
-    sector = Information Technology    (+0.095, -0.154)
-    sector = Materials                 (-0.050, -0.089)
-    sector = Real Estate               (-0.060, +0.127)
-    sector = Utilities                 (-0.190, +0.027)
-    issue = gagnant                    (+0.710, -0.156)
-    issue = perdant                    (-0.924, +0.203)
+    strategy = db_bottom               (-0.099, +0.654)
+    strategy = dt_top                  (+0.758, -0.667)
+    strategy = hs_classic              (+1.308, -0.714)
+    strategy = hs_inverse              (+0.541, +0.187)
+    strategy = ma_crossover            (+0.620, +0.665)
+    strategy = oracle                  (-1.296, +0.240)
+    strategy = rsi_classic             (-0.632, -0.496)
+    strategy = rsi_strict              (-1.242, -2.875)
+    strategy = rsi_trend               (-0.431, +0.672)
+    strategy = sr_breakdown            (+1.531, -1.863)
+    strategy = sr_breakout             (+1.462, +0.715)
+    regime_entry = baissier            (-0.208, -1.409)
+    regime_entry = haussier            (+0.110, +0.409)
+    regime_entry = indetermine         (-1.207, -1.011)
+    sector = Communication Services    (-0.034, -0.164)
+    sector = Consumer Discretionary    (-0.019, +0.127)
+    sector = Consumer Staples          (+0.084, +0.120)
+    sector = Energy                    (-0.068, -0.184)
+    sector = Financials                (+0.005, -0.068)
+    sector = Health Care               (+0.006, -0.098)
+    sector = Industrials               (-0.036, -0.035)
+    sector = Information Technology    (-0.086, +0.128)
+    sector = Materials                 (+0.033, +0.047)
+    sector = Real Estate               (+0.057, -0.092)
+    sector = Utilities                 (+0.162, +0.116)
+    issue = gagnant                    (-0.648, +0.091)
+    issue = perdant                    (+1.109, -0.156)
 
 Modalites les plus PROCHES de 'gagnant' (hors issue) :
-    strategy = rsi_classic              distance 0.545
-    sector = Information Technology     distance 0.615
-    strategy = db_bottom                distance 0.632
-    strategy = rsi_trend                distance 0.668
-    sector = Communication Services     distance 0.680
-    sector = Industrials                distance 0.692
+    sector = Information Technology     distance 0.564
+    strategy = rsi_classic              distance 0.588
+    strategy = rsi_trend                distance 0.620
+    sector = Industrials                distance 0.625
+    sector = Consumer Discretionary     distance 0.630
+    sector = Energy                     distance 0.642
 
 Lecture : proximite = co-occurrence. Les modalites listees apparaissent
           relativement plus souvent avec les trades gagnants.

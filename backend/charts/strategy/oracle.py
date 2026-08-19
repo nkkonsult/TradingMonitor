@@ -12,11 +12,17 @@ toutes les portes du protocole, c'est la preuve que l'outil sait aussi dire « o
 
 Choix de conception (discutés dans le rapport) :
   - oracle BRUITÉ, pas parfait : il ne vise pas le minimum absolu, il entre dès que
-    l'avenir proche est franchement positif -> edge fort mais pas caricatural ;
+    l'avenir proche est positif -> edge réel mais pas caricatural ;
+  - SEUIL MODESTE (v2) : avec un seuil de +25 %, le témoin ne tradait que les
+    rebonds extrêmes (2009, 2020) -> edge écrasant (t ~ 120) ET autocorrélation
+    mensuelle de régime. Un tel témoin sort du domaine des outils qu'il doit
+    calibrer (Dickey-Fuller sans puissance sur une série trop tassée). Un seuil
+    de +5 % répartit les entrées sur tous les régimes : le témoin ressemble à
+    une stratégie réaliste tout en gardant un avantage franchement positif ;
   - VOLUME MAÎTRISÉ : un espacement minimal `cooldown` entre deux entrées empêche
     l'oracle de trader tous les jours et le maintient dans le même ordre de grandeur
-    que les vraies stratégies (~1 500-2 500 trades), sinon il écraserait les
-    comparaisons du chapitre « contexte » (ANOVA, khi-deux).
+    que les vraies stratégies, sinon il écraserait les comparaisons du chapitre
+    « contexte » (ANOVA, khi-deux).
 
 Même contrat que les autres stratégies : detect_trades(df, ...) -> list[Trade].
 """
@@ -30,7 +36,7 @@ from ..trade import Trade
 # ordre de grandeur que les vraies stratégies (rsi_strict ~1 000, rsi_trend ~2 800) :
 # un oracle qui trade des dizaines de milliers de fois écraserait les comparaisons.
 HORIZON = 30     # nb de jours de bourse « vus » dans le futur (la triche)
-SEUIL = 0.25     # on n'entre que si le futur proche rapporte au moins +25 %
+SEUIL = 0.05     # on n'entre que si le futur proche rapporte au moins +5 % (v2, cf. ci-dessus)
 COOLDOWN = 250   # ~1 an de bourse de repos entre deux entrées (bride le volume)
 
 

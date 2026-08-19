@@ -1,0 +1,1067 @@
+% ---------------------------------------------------------------------
+%  Chapitre 3 — JUGER LES STRATÉGIES (le cœur du mémoire)
+%  Suit les 5 points des consignes pour CHAQUE méthode :
+%   théorie -> conditions d'application -> résultats -> limites
+%  Structure : étape 1 (test de référence, rédigée) -> étape 1 bis
+%  (l'escalade de prudence face à la dépendance) -> lecture du verdict
+%  (le marché comme série temporelle) -> synthèse.
+% ---------------------------------------------------------------------
+\chapter{Juger les stratégies malgré la dépendance~: une escalade de prudence}
+\label{chap:juger}
+\label{chap:bloc1} % ancien nom du label conservé pour d'éventuels renvois
+
+Ce chapitre traite une question simple à formuler et difficile à trancher.
+Parmi les dix stratégies d'analyse technique du banc d'essai, auxquelles
+s'ajoute le témoin, lesquelles produisent un avantage significativement
+positif~? Le test de référence est d'abord appliqué sous ses hypothèses
+habituelles, puis ses conditions d'application sont mises à l'épreuve une à
+une, en s'appuyant sur la structure de dépendance mesurée au
+chapitre~\ref{chap:donnees}.
+
+% =====================================================================
+\section{Étape 1 --- chaque stratégie bat-elle le hasard ?}
+\label{sec:b1-etape1}
+
+\subsection{La question posée à l'outil}
+
+La première question posée à l'outil est de savoir si l'avantage moyen
+affiché par une stratégie est réel, ou s'il n'est qu'un accident dû à
+l'échantillon dont nous disposons. On la formalise en confrontant la moyenne
+de l'\edgevar{} à la valeur zéro, ce qui conduit au test de Student présenté
+ci-dessous.
+
+\subsection{Les méthodes qui y répondent}
+
+% --- MÉTHODE 1 : le test principal -----------------------------------
+\subsubsection*{Test de Student}
+
+Lorsqu'une stratégie affiche un \edgevar{} moyen positif, on cherche à savoir
+si elle a réellement capté une information annonciatrice, ou si ce résultat
+tient au hasard de l'échantillon.
+
+Il faut ici distinguer deux quantités. L'\edgevar{} moyen théorique
+\(\mu_{\edgevar}\) est la vraie valeur, inconnue, qui gouverne la stratégie,
+tandis que la moyenne observée \(\bar e\) est celle que l'on calcule sur notre
+échantillon d'opérations, et qui est connue. La question se pose alors ainsi.
+À partir de la valeur observée \(\bar e\), peut-on conclure que la vraie
+valeur \(\mu_{\edgevar}\) est positive~?
+
+Le test de Student à un échantillon répond à cette question en confrontant
+\(\mu_{\edgevar}\) à une valeur de référence fixée à zéro, zéro signifiant
+ici l'absence de tout avantage sur le hasard. Sa mise en \oe uvre suppose deux
+conditions, à savoir que l'\edgevar{} vérifie un critère de normalité et que
+les opérations soient indépendantes les unes des autres. La première sera
+assouplie par le théorème central limite présenté plus loin, la seconde, plus
+délicate, sera examinée à la section suivante. On oppose ainsi deux
+hypothèses,
+\[
+  \begin{cases}
+    \Hzero : \mu_{\edgevar} = 0 & \text{(le vrai avantage est nul, pas mieux que le hasard),}\\[2pt]
+    \Hun : \mu_{\edgevar} > 0 & \text{(le vrai avantage est positif).}
+  \end{cases}
+\]
+Le test est unilatéral, car seul un avantage strictement positif nous
+intéresse.
+
+Pour trancher, on définit \(t\) comme le nombre d'erreurs-types nécessaires
+pour faire passer l'\edgevar{} moyen de zéro à la valeur obtenue dans notre
+échantillon,
+\[
+  t = \frac{\bar e}{s/\sqrt{n}} \sim t_{n-1} \quad\text{sous } \Hzero .
+\]
+
+Sous \Hzero{}, c'est-à-dire lorsque le vrai avantage est nul, \(t\) suit une
+loi de Student à \(n-1\) degrés de liberté. On évalue alors la p-value, qui
+est la probabilité d'obtenir un \(t\) au moins aussi grand que celui observé
+si \Hzero{} était vraie.
+
+Si cette p-value est très faible, le hasard cesse d'être une explication
+crédible de l'avantage moyen constaté. On conclut alors que l'\edgevar{}
+moyen théorique est positif, et donc que la stratégie fait mieux que le
+hasard.
+
+Il a été dit plus haut que le test de Student exige que l'\edgevar{} suive une
+loi normale. Cette condition sera examinée en deux temps, d'abord par le test
+de Shapiro et Wilk, puis à l'aide du théorème central limite. Le premier a peu
+de chances de valider l'hypothèse, car la taille considérable de notre
+échantillon le rend extrêmement sensible, alors que cette même taille renforce
+au contraire le second.
+
+% --- MÉTHODE 2 : la condition du test principal ----------------------
+\subsubsection*{Test de normalité de Shapiro et Wilk}
+
+Ce test de normalité compare deux mesures de dispersion, d'une part les
+écarts à la moyenne, d'autre part l'ordre des valeurs. Ces deux mesures ne
+coïncident que si l'hypothèse de normalité est vraie. On oppose ainsi deux
+hypothèses,
+\[
+  \begin{cases}
+    \Hzero \;(W \simeq 1) : \text{l'\edgevar{} suit une loi normale,}\\[2pt]
+    \Hun \;(W \ll 1) : \text{l'\edgevar{} ne suit pas une loi normale.}
+  \end{cases}
+\]
+Contrairement au test de Student, c'est ici \Hzero{} qui porte la propriété
+recherchée, à savoir la normalité, si bien qu'une p-value faible conduira à
+rejeter celle-ci.
+
+On pose alors la statistique \(W = b^2 / \mathrm{SCE}\) comme rapport de ces
+deux mesures. Lorsque \(W\) est proche de 1, l'échantillon est compatible avec
+une loi normale.
+
+Pour trancher, on procède comme pour le test de Student. On calcule la
+probabilité d'obtenir notre \(W\) observé si la loi était normale, et si cette
+probabilité est trop faible, l'hypothèse de normalité est rejetée.
+
+Appliqué à nos données, le test rejette la normalité pour les onze
+stratégies, comme le montre le tableau~\ref{tab:shapiro}. La condition du test
+de Student n'est donc, en apparence, pas remplie. On remarque que même les
+stratégies dont le \(W\) est proche de 1, comme \texttt{dt\_top} avec
+$W = 0{,}95$, sont rejetées. À grand effectif, le moindre écart à la normale
+suffit à produire une p-value négligeable, ce qui justifie de recourir au
+théorème central limite plutôt qu'à ce test pour valider l'emploi de Student.
+
+\begin{table}[H]
+\centering
+\caption{Statistique \(W\) et p-value de Shapiro--Wilk par stratégie
+(\edgevar{}~; sous-échantillon de 5\,000 opérations lorsque \(n > 5\,000\)).}
+\label{tab:shapiro}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Stratégie & $n$ & $W$ & $p$ (Shapiro) \\
+\midrule
+\texttt{oracle} (témoin) & 6\,798 & $0{,}590$ & $6{,}8\times10^{-76}$ \\
+\midrule
+\texttt{db\_bottom}    & 8\,513 & $0{,}911$ & $2{,}7\times10^{-47}$ \\
+\texttt{dt\_top}       & 7\,381 & $0{,}950$ & $3{,}2\times10^{-38}$ \\
+\texttt{hs\_classic}   & 1\,065 & $0{,}886$ & $2{,}4\times10^{-27}$ \\
+\texttt{hs\_inverse}   & 1\,206 & $0{,}963$ & $6{,}4\times10^{-17}$ \\
+\texttt{ma\_crossover} & 5\,417 & $0{,}498$ & $3{,}2\times10^{-80}$ \\
+\texttt{rsi\_classic}  & 7\,117 & $0{,}864$ & $1{,}6\times10^{-54}$ \\
+\texttt{rsi\_strict}   &   978  & $0{,}717$ & $1{,}1\times10^{-37}$ \\
+\texttt{rsi\_trend}    & 2\,789 & $0{,}883$ & $1{,}2\times10^{-41}$ \\
+\texttt{sr\_breakdown} & 1\,377 & $0{,}775$ & $8{,}0\times10^{-40}$ \\
+\texttt{sr\_breakout}  & 2\,367 & $0{,}843$ & $2{,}1\times10^{-43}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% --- LE TCL : ce qui débloque le test de Student ---------------------
+\subsubsection*{Théorème central limite}
+
+Le rejet prononcé par le test précédent porte sur la loi de l'\edgevar{} pris
+individuellement, opération par opération. Or le test de Student ne dépend
+que de la moyenne de ces \edgevar{}, et non de chacun d'eux. On peut donc se
+rabattre sur le théorème central limite, qui garantit la quasi-normalité de
+la moyenne sur les grands échantillons, quelle que soit la loi de départ,
+\[
+  \frac{\bar e - \mu_{\edgevar}}{\sigma/\sqrt{n}}
+  \;\xrightarrow[n \to \infty]{}\; \mathcal{N}(0,1) .
+\]
+Il faut insister sur ce point, car la nuance est décisive. Le théorème ne dit
+pas que les données sont normales, il dit que leur moyenne l'est. C'est
+précisément cette normalité de la moyenne dont le test de Student a besoin.
+
+Cette justification suppose évidemment un effectif suffisant, et un outil
+générique devrait écarter les stratégies trop peu fournies. Ici, \(n\) est
+compris entre 978 et 8\,513 selon la stratégie, ce qui est largement
+suffisant. La condition réellement utile au test de Student est donc
+satisfaite, malgré le rejet du test de normalité.
+
+On remarque de plus que la quantité ci-dessus est exactement celle du test de
+Student. Sous \Hzero{}, où \(\mu_{\edgevar} = 0\), et en remplaçant
+l'écart-type théorique \(\sigma\), inconnu, par son estimation \(s\), on
+retrouve la statistique \(t = \bar e / (s/\sqrt{n})\). Le théorème central
+limite justifie ainsi directement la forme et la validité du test.
+
+% --- MÉTHODE 3 : le garde-fou des tests multiples --------------------
+\subsubsection*{Correction de Bonferroni}
+
+Pour appliquer le test de Student, il faut fixer un seuil au-dessous duquel
+la p-value entraînera le rejet. Lorsqu'on mène un test isolé, on retient
+habituellement \(0{,}05\), considérant que s'il n'y avait que cinq chances sur
+cent d'obtenir un tel résultat sous \Hzero{}, il devient peu vraisemblable d'y
+être tombé par hasard. On accepte alors le risque de rejeter \Hzero{} à tort.
+
+Seulement, nous menons ici onze tests. Plaçons-nous dans le cas le plus
+défavorable, celui où aucune stratégie ne possède d'avantage réel, \Hzero{}
+étant vraie pour les onze. Pour un test isolé, la probabilité de ne pas
+conclure à tort à un avantage vaut alors \(0{,}95\). En supposant les tests
+indépendants, la probabilité de ne commettre aucune erreur sur l'ensemble
+tombe à \(0{,}95^{11} \approx 0{,}57\). Le risque de commettre au moins un
+faux positif s'élève donc à \(1 - 0{,}95^{11} \approx 0{,}43\), ce qui est
+inacceptable.
+
+Pour l'éviter, on raisonne en sens inverse, en fixant le risque global à
+\(0{,}05\) et en déduisant le seuil de chaque test. On s'appuie pour cela sur
+l'inégalité de Boole, selon laquelle la probabilité qu'au moins un événement
+se produise est inférieure ou égale à la somme de leurs probabilités
+individuelles. Pour garantir un risque global inférieur à \(0{,}05\), il
+suffit donc que la somme des seuils individuels vaille \(0{,}05\). En les
+prenant tous égaux, on obtient la correction de Bonferroni,
+\[
+  \alpha' = \frac{\alpha}{m} = \frac{0{,}05}{11} \approx 0{,}0045 .
+\]
+
+\subsection{Résultats}
+% Chiffres RÉELS extraits de bloc1/03_resultats/etape1_tests.txt
+\begin{table}[H]
+\centering
+\caption{Test de l'avantage moyen par stratégie (seuil Bonferroni $\approx 0{,}0045$).}
+\label{tab:b1-etape1}
+\small
+\begin{tabular}{@{}lrrrc@{}}
+\toprule
+Stratégie & $n$ & \edgevar{} moyen & $p$ (Student) & Verdict \\
+\midrule
+\texttt{oracle} (témoin) & 6\,798 & $+0{,}0658$ & $\approx 0$    & \textbf{bat le hasard} \\
+\midrule
+\texttt{rsi\_classic} & 7\,117 & $+0{,}0123$ & $1{,}2\times10^{-8}$  & \textbf{bat le hasard} \\
+\texttt{rsi\_strict}  &   978  & $+0{,}1313$ & $5{,}5\times10^{-10}$ & \textbf{bat le hasard} \\
+\texttt{rsi\_trend}   & 2\,789 & $+0{,}0021$ & $0{,}25$             & non \\
+\texttt{db\_bottom}   & 8\,513 & $-0{,}0025$ & $0{,}98$             & non \\
+\texttt{ma\_crossover}& 5\,417 & $-0{,}0248$ & $\approx 1$          & non \\
+\multicolumn{5}{c}{\footnotesize (autres stratégies~: $p>0{,}45$, non significatives)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Outre l'oracle témoin, qui bat le hasard de très loin comme on pouvait s'y
+attendre, seules \texttt{rsi\_classic} et \texttt{rsi\_strict} survivent à la
+correction de Bonferroni.
+
+Il est utile de rappeler ce que ce test établit exactement. Il répond
+uniquement à la question de savoir si l'\edgevar{} moyen positif s'explique
+par le seul échantillon, auquel cas on conserve \Hzero{} et la stratégie n'est
+pas retenue. Dans le cas contraire, on pourra affirmer que la stratégie a
+capté un signal, mais non qu'elle est gagnante, et ce pour deux raisons.
+
+D'une part, un \edgevar{} positif ne signifie pas des gains positifs, mais
+seulement que l'on perd moins que le hasard. D'autre part, le grand nombre
+d'observations écrase la largeur de la loi normale de la moyenne. On fait
+alors ressortir comme significatives des stratégies dont l'\edgevar{} moyen
+n'est que très faiblement positif, et que les frais de transaction
+suffiraient à rendre perdantes.
+
+
+
+
+% =====================================================================
+\section{Étape 1 bis --- le verdict survit-il à la dépendance ?}
+\label{sec:b1-dependance}
+
+\subsection{La question posée à l'outil}
+
+Le test de Student a été appliqué de façon naïve, en supposant les
+observations indépendantes. Or, comme nous l'avons mesuré au
+chapitre~\ref{chap:donnees}, nos données sont dépendantes par le titre, par le
+marché et d'un mois à l'autre.
+
+Ces dépendances n'empruntent en réalité que deux chemins, que nous appellerons
+les deux portes. La première est la porte de l'action, celle des opérations
+ouvertes sur un même titre. La seconde est la porte de la période, celle des
+opérations menées à une même époque, qu'elles subissent ensemble le mouvement
+du marché ou qu'elles se prolongent sur les mêmes mois. Ce sont les deux
+seules voies par lesquelles deux opérations peuvent partager une cause
+commune.
+
+Le problème est que le test de Student traite les opérations d'une stratégie
+comme autant d'informations distinctes, alors que ces informations se
+répètent en partie. L'erreur-type s'en trouve sous-estimée. Comme elle sert à
+mesurer l'écart entre l'avantage observé et la valeur de référence, un
+dénominateur trop petit gonfle la statistique et rend la p-value trop
+optimiste. Le risque de conclure à tort qu'une stratégie bat le hasard
+augmente d'autant.
+
+Nous cherchons donc à savoir si le verdict positif obtenu pour
+\texttt{rsi\_classic} et \texttt{rsi\_strict} résiste lorsque l'on abandonne
+l'hypothèse d'indépendance. La démarche suit quatre temps. Nous corrigeons
+d'abord l'erreur-type au moyen de l'effet de sondage, puis nous vérifions ce
+résultat par un rééchantillonnage qui ne suppose aucune forme particulière des
+données. Nous fermons ensuite chaque porte en regroupant les opérations, de
+sorte que chaque titre, puis chaque période, ne compte qu'une fois. Nous
+vérifions enfin que la porte de la période tient elle-même, en traitant la
+suite des avantages mensuels comme une série chronologique.
+
+Une règle de décision gouverne cette escalade, et il faut l'énoncer avant de
+la parcourir. Chaque étage traite une faille laissée ouverte par le
+précédent, et l'échec à un seul d'entre eux suffit à écarter une stratégie de
+façon définitive. Le succès, en revanche, n'accorde jamais de blanc-seing, il
+ouvre seulement le droit de passer à l'étage suivant. Le témoin, lui, doit les
+franchir tous, faute de quoi ce serait l'outil qui serait trop sévère, et non
+les stratégies qui seraient mauvaises.
+
+\subsection{Les méthodes qui y répondent}
+
+% --- MÉTHODE 1 : corriger la variance (cours de sondages) -------------
+\subsubsection*{Corriger l'erreur-type par l'effet de sondage}
+
+Comme nous l'avons vu au chapitre précédent, les titres forment des grappes
+dans nos données. Nous avons également mesuré la corrélation intra-titre
+$\hat\rho$, qui dit à quel point les opérations portant sur un même titre se
+ressemblent.
+
+Introduisons maintenant l'effet de sondage (\emph{design effect}), qui est le
+rapport entre la variance d'un plan de sondage et celle d'un plan de
+référence, ce dernier étant le sondage aléatoire simple, où chaque individu
+est tiré indépendamment des autres. Ici, ce sera donc le rapport entre la
+variance réelle, celle qui subit le regroupement des opérations par titre, et
+la variance qu'on obtiendrait sous indépendance,
+\[
+  \mathrm{DEFF}
+    = \frac{\mathrm{Var}(\hat\theta)}{\mathrm{Var}_{\mathrm{SAS}}(\hat\theta)} .
+\]
+
+Notre situation est celle d'un sondage à plusieurs degrés, et le cours de
+théorie des sondages établit qu'alors l'effet de sondage vaut
+\[
+  \mathrm{DEFF} = 1 + (\bar m - 1)\,\hat\rho ,
+\]
+où $\bar m$ désigne le nombre moyen d'opérations par titre et $\hat\rho$ la
+corrélation intra-titre mesurée au chapitre~\ref{chap:donnees}. La lecture de
+cette formule est éclairante. Si $\hat\rho$ est nul, l'effet de sondage vaut
+un et rien ne change. S'il est positif, l'effet dépasse un, et d'autant plus
+que les grappes sont grosses, car entasser des opérations qui se ressemblent
+dans un même titre aggrave la redondance.
+
+La variance réelle de la moyenne vaut donc $\mathrm{DEFF}$ fois celle que l'on
+obtiendrait sous indépendance. Tout se passe comme si nous ne disposions que
+de $n_{\mathrm{eff}}$ informations réellement distinctes,
+\[
+  n_{\mathrm{eff}} = \frac{n}{\mathrm{DEFF}} .
+\]
+
+Les largeurs d'intervalle de confiance se trouvent alors multipliées par
+$\sqrt{\mathrm{DEFF}}$ par rapport au plan de référence, ce qui donne
+l'erreur-type corrigée
+\[
+  \widehat{\mathrm{se}}_{\mathrm{corr}}
+        = \frac{s}{\sqrt{n}}\sqrt{\mathrm{DEFF}} .
+\]
+
+On reprend enfin le test de Student de l'étape 1 avec cette erreur-type
+corrigée, en conservant le même seuil de Bonferroni. Une seule quantité change
+donc, le dénominateur, mais il suffit à rendre le test plus exigeant.
+
+% --- MÉTHODE 2 : robustesse sans hypothèse de forme -------------------
+\subsubsection*{Vérifier sans hypothèse de forme}
+
+Le test précédent s'appuie encore sur la loi de Student, donc sur une forme
+supposée des données. La méthode qui suit s'en affranchit. Elle ne cherche pas
+à tester la dépendance intra-titre, mais à évaluer son effet sur l'\edgevar{}
+moyen.
+
+Plutôt que d'invoquer une loi théorique, on construit directement, à partir
+des grappes, la courbe de répartition de l'\edgevar{} moyen. L'idée est la
+suivante. Si la dépendance pèse lourd, cette courbe sera large et la
+probabilité de tomber sous zéro augmentera d'autant.
+
+Pour produire cette courbe, on définit comme précédemment chaque titre comme
+une grappe à l'intérieur de laquelle les données sont dépendantes. On effectue
+alors un grand nombre de tirages, ici 4\,000. À chaque tirage, on prélève avec
+remise autant de titres que la stratégie en a mobilisés, soit environ cinq
+cents. Un même titre peut sortir plusieurs fois, auquel cas on prend autant de
+fois l'ensemble des opérations qu'il contient. On calcule ensuite la moyenne
+des \edgevar{} de toutes les opérations ainsi rassemblées.
+
+Le point décisif tient à cette façon de tirer. En prélevant des titres
+entiers plutôt que des opérations isolées, on transporte intacte la structure
+de dépendance interne de chaque grappe. Tirer opération par opération
+mélangerait les titres et détruirait précisément ce que l'on cherche à
+mesurer.
+
+Après les 4\,000 tirages, on obtient une courbe dont la moyenne ne diffère pas
+de la moyenne initiale. Le tirage étant uniforme sur les titres, chaque
+opération a la même chance d'être reprise, si bien que la moyenne des tirages
+se recentre sur celle de départ. Ce n'est donc pas le centre qui nous
+intéresse, mais la largeur, car c'est elle qui traduit l'effet de la
+dépendance intra-titre sur la fiabilité de notre moyenne.
+
+Il faut préciser que l'on calcule la moyenne sur l'ensemble des opérations
+obtenues, ce qui conserve à chaque titre le poids que lui donne son nombre
+d'opérations, contrairement à la méthode de la porte présentée plus loin.
+C'est justement en gardant ce poids que l'on conserve l'information portée par
+la dépendance intra-titre.
+
+Lorsque la dépendance pèse lourd, la courbe s'élargit et déborde sous zéro. On
+compte alors le nombre de tirages passant sous zéro, que l'on divise par le
+nombre total de tirages. Cette proportion tient lieu de p-value, et si elle
+dépasse le seuil défini par la correction de Bonferroni, la stratégie est
+rejetée.
+
+Cette technique de rééchantillonnage est le \emph{bootstrap}, proposé par
+Efron~\cite{efron1979}, dans sa variante par grappes qui préserve la
+dépendance interne des blocs.
+
+Elle suppose néanmoins que les titres soient indépendants entre eux, ce qui
+n'est pas le cas ici en raison du facteur marché. Elle reste toutefois un
+premier filtre légitime. En ignorant cette dépendance, elle sous-estime la
+largeur de la courbe et se montre donc trop permissive, si bien qu'une
+stratégie échouant déjà à ce stade est écartée sans appel, tandis que les
+autres restent à départager.
+
+Une réserve importante subsiste pourtant. En conservant le poids de chaque
+titre, la méthode nous laisse vulnérables. Si la grande majorité des
+opérations provient d'un petit nombre de titres, ces titres seront présents
+dans presque tous les tirages, qui se ressembleront alors tous, et la courbe
+sera étroite pour une mauvaise raison. Une courbe étroite ne suffit donc pas à
+conclure que l'avantage est réel. Pour lever ce doute, il faut retirer aux
+gros titres le poids que leur donne leur nombre d'opérations, ce qui est
+l'objet de la méthode suivante.
+
+% --- MÉTHODE 3 : le test décisif -------------------------------------
+\subsubsection*{Fermer chaque porte en donnant un vote à chaque unité}
+
+Nous avons mesuré trois canaux de dépendance, qui empruntent deux portes. La
+première est celle de l'action, la seconde celle de la période, laquelle
+englobe à la fois la dépendance de marché et le chevauchement des opérations.
+
+On emploie ici la méthode de l'agrégation, qui consiste à calculer l'avantage
+moyen de chaque grappe, puis à appliquer le test de Student à ces moyennes,
+chaque grappe ne disposant que d'une seule voix quel que soit le nombre
+d'opérations qu'elle contient. Pour la porte de l'action, on agrège par titre.
+Pour la porte de la période, on agrège par mois, chaque opération étant
+rattachée à son mois d'entrée, celui où le signal s'est déclenché et où la
+décision a été prise. On évite ainsi que la fluctuation du marché sur une même
+période, ou le chevauchement des positions, ne soient comptés comme autant
+d'informations distinctes.
+
+Dans les deux cas, la dépendance à l'intérieur d'une grappe ne peut plus rien
+fausser, puisqu'un titre, ou un mois, ne pèse qu'une seule voix. En revanche,
+rattacher une opération à son seul mois d'entrée alors qu'elle peut rester
+ouverte plusieurs mois lie les mois voisins entre eux, et cette dépendance
+d'un mois à l'autre fera l'objet de la méthode suivante.
+
+Le théorème central limite s'applique encore à ces moyennes de grappes, dont
+le nombre reste élevé. Selon les stratégies, il subsiste de 431 à 501~titres
+pour la porte de l'action, et de 138 à 197~mois pour celle de la période, ce
+qui est amplement suffisant. Le protocole ayant vocation à juger les
+stratégies à venir, il signale toutefois le cas où une stratégie trop peu
+diffusée laisserait un nombre de grappes insuffisant pour invoquer le
+théorème. Le verdict serait alors tenu pour ininterprétable, et non pour
+défavorable. Pour être validée, une stratégie doit franchir les deux portes,
+chacune au seuil de Bonferroni.
+
+Cette technique fait perdre beaucoup d'information, et il faut l'assumer. Nous
+privilégions le risque de rejeter une bonne stratégie à celui d'en retenir une
+mauvaise, ce qui est le choix propre à un outil de validation.
+
+La dépendance intra-titre ayant déjà été traitée par l'effet de sondage et le
+rééchantillonnage, l'apport propre de cette méthode est ailleurs. Elle met en
+lumière les stratégies qui, comme nous l'avons expliqué à la fin de la méthode
+précédente, ne reposent que sur quelques titres, car l'agrégation supprime le
+poids que leur donnait leur nombre d'opérations.
+
+Les stratégies qui ne franchissent pas les portes sont écartées. Une stratégie
+rejetée parce que son avantage tient à quelques titres particuliers pourra
+toutefois être réétudiée, afin d'affiner la sélection des opérations. Il n'est
+pas exclu qu'une stratégie ne soit efficace que sur un secteur donné. Une
+telle réétude devra évidemment se garder du sur-apprentissage, qui consiste à
+repérer après coup, sur les données mêmes, une régularité que le hasard
+suffisait à produire.
+
+Une objection mérite d'être levée. La porte de l'action suppose les titres
+indépendants entre eux, ce qui est contestable puisque le marché explique une
+grande part de la variance et que deux titres travaillés au même moment
+subissent le même choc. Mais cette dépendance est de nature temporelle, deux
+titres n'étant liés que s'ils sont travaillés à la même période, et c'est
+précisément ce dont la porte de la période se charge. Les deux portes se
+complètent donc, chacune prenant en charge une source, ce qui justifie de les
+poser toutes les deux.
+
+Elles ne sont pourtant pas fermées simultanément. Nous conduisons deux tests
+séparés plutôt qu'une agrégation croisée par titre et par mois, laquelle
+produirait des grappes bien plus petites et rouvrirait à moitié chacune des
+deux portes. L'exigence conjointe est d'ailleurs plus sévère, puisqu'une
+stratégie doit survivre à chaque source de dépendance prise isolément et
+traitée dans le pire des cas. Seule échapperait une dépendance propre à
+l'intersection, un effet qui n'existerait que pour un titre donné pendant un
+mois donné, et l'on voit mal comment un tel effet porterait à lui seul un
+avantage. Le traitement simultané des deux dimensions existe, sous le nom de
+double regroupement (\emph{double clustering}) de Petersen~\cite{petersen2009},
+mais il sort du cadre des méthodes simples retenues ici. Nous y revenons en
+section~\ref{sec:limites}.
+
+Ce principe d'une statistique par grappe, puis d'une inférence sur la suite de
+ces statistiques, appliqué à la porte de la période, est exactement la démarche
+de Fama et MacBeth~\cite{famamacbeth1973}, standard de l'économétrie financière.
+
+
+
+% --- MÉTHODE 4 : la porte « mois » est-elle vraiment fermée ? ---------
+\subsubsection*{Vérifier que la porte de la période tient elle-même}
+
+Comme nous l'avons mesuré au deuxième canal du chapitre~\ref{chap:donnees}, le
+marché explique 73~\% de la variance, et lorsqu'un événement survient, tout le
+marché réagit de façon semblable. L'agrégation mensuelle regroupe ainsi les
+opérations déclenchées par un même contexte, et rattacher chacune à son seul
+mois d'entrée garantit qu'aucune ne pèse dans deux grappes à la fois.
+
+Ce rattachement règle le double comptage, mais non le recouvrement des
+périodes de détention. Nous avons vu que les opérations se prolongent souvent
+au-delà d'un mois. Une position ouverte en janvier et close en avril est rangée
+dans janvier, alors que son résultat dépend de ce qui s'est passé jusqu'en
+avril. La grappe de janvier porte donc de l'information sur les mois suivants,
+information que la grappe de février porte également. Aucune opération n'est
+comptée deux fois, et pourtant deux mois voisins partagent les mêmes conditions
+de marché. Avec 73~\% de la variance expliquée par ces conditions communes, ce
+recouvrement suffit à les faire se ressembler.
+
+La suite des avantages mensuels est donc autocorrélée, et le test de Student
+appliqué aux moyennes mensuelles pourrait rester trop optimiste. On voudrait
+alors reprendre la méthode de l'effet de sondage pour corriger l'erreur-type.
+Mais nos données sont ici chronologiques, et la dépendance y est ordonnée, un
+mois étant davantage lié au précédent qu'à celui d'il y a cinq mois, là où les
+opérations d'un même titre étaient interchangeables. Un coefficient unique ne
+peut donc pas la décrire, et il nous faut une autre méthode.
+
+Nous voulons calculer, pour un mois~$t$, l'impact moyen des mois qui le
+précèdent, en remontant jusqu'à six mois en arrière. Pour cela, la suite des
+avantages mensuels sera traitée comme une série chronologique. On supposera
+qu'aucun effet de saison n'intervient, et surtout que le lien entre deux mois
+ne dépend que de leur écart et non de leur date, le mois de janvier se
+comportant comme les autres mois de l'année.
+
+On mesure alors l'impact propre de chaque décalage par l'autocorrélation
+partielle, qui retranche l'influence des mois intermédiaires. Un mois peut en
+effet sembler lié à celui d'il y a deux mois par le seul fait qu'ils sont tous
+deux liés au mois qui les sépare. Cette autocorrélation partielle s'annule
+au-delà du dernier mois qui compte vraiment, ce qui nous donne le nombre de
+mois à retenir, puis le poids de chacun. On corrigera ensuite l'erreur-type du
+test mensuel, comme nous l'avions fait avec l'effet de sondage.
+
+La méthode se déroule en trois temps, chacun porté par un outil. On établit
+d'abord s'il existe réellement une dépendance, par le test de Box et Pierce.
+On examine ensuite si l'on peut la modéliser, ce qui suppose la stationnarité,
+vérifiée par les tests de Dickey et Fuller puis de Kwiatkowski et ses
+coauteurs, l'ordre étant donné par l'autocorrélation partielle et les poids
+par les équations de Yule et Walker. On détermine enfin de combien corriger,
+au moyen de la variance de long terme. Les tests de conditions qui jalonnent
+ce parcours sont menés au seuil usuel de 5~\%, le seuil de Bonferroni restant
+réservé au verdict final.
+
+% --- Le pré-test : y a-t-il quelque chose à corriger ? ----------------
+\subsubsection*{Test d'indépendance de Box et Pierce}
+
+Avant de corriger, encore faut-il qu'il y ait quelque chose à corriger. Le
+raisonnement du recouvrement rend l'autocorrélation plausible, il ne la rend
+pas certaine, et elle peut différer d'une stratégie à l'autre. Le protocole
+commence donc par poser directement la question à chaque série, celle de
+savoir si les mois sont indépendants. Le test de Box et
+Pierce~\cite{boxpierce1970} y répond sur la série brute. Sa statistique cumule
+les six premières autocorrélations, mises au carré pour que les positives et
+les négatives ne se compensent pas, puis rapportées à la longueur de la
+série,
+\[
+  S_{\mathrm{BP}} \;=\; T \sum_{h=1}^{6} \hat\rho(h)^2 ,
+\]
+où \(T\) est le nombre de mois de la série et \(\hat\rho(h)\)
+l'autocorrélation d'ordre \(h\), c'est-à-dire la corrélation entre la série
+et elle-même décalée de \(h\) mois. On oppose alors~:
+\[
+  \begin{cases}
+    \Hzero \;(S_{\mathrm{BP}} \text{ petit}) : \text{les mois sont indépendants,}\\[2pt]
+    \Hun \;(S_{\mathrm{BP}} \text{ grand}) : \text{au moins un décalage porte une autocorrélation.}
+  \end{cases}
+\]
+C'est \Hzero{} qui porte ici la propriété recherchée.
+
+Sous \Hzero{}, chaque $\hat\rho(h)$ n'est que du bruit d'échantillonnage
+d'ordre $1/\sqrt{T}$, et la somme $S_{\mathrm{BP}}$ suit alors une loi du
+khi-deux à six degrés de liberté. On calcule donc la p-value de notre
+$S_{\mathrm{BP}}$ observé, et si elle est trop faible, l'indépendance cesse
+d'être une explication crédible.
+
+Si l'indépendance n'est pas rejetée, la condition du test par agrégation
+mensuelle est remplie telle quelle. Son verdict tient et aucune correction
+n'est requise, car on ne corrige que ce qui a été mesuré, exactement comme
+pour l'effet de sondage. Si elle est rejetée, l'autocorrélation est réelle et
+la suite de la méthode s'applique.
+
+Cette correction suppose que tous les mois soient pareillement exposés à ceux
+qui les précèdent. Or cette affirmation n'est vraie que si la série est
+stationnaire, c'est-à-dire si ses caractéristiques statistiques ne changent
+pas au fil du temps. Deux tests seront donc menés pour vérifier la
+stationnarité de la série de chaque stratégie concernée.
+
+Si une série ne l'était pas, on sortirait du domaine de validité de la
+méthode. Le protocole la signale et s'abstient de conclure plutôt que de
+produire un verdict fondé sur un impact moyen qui n'aurait pas de sens. Aucune
+de nos stratégies n'est dans ce cas, mais la situation peut se présenter pour
+une stratégie à venir.
+
+% --- Stationnarité, versant 1 -----------------------------------------
+\subsubsection*{Test de stationnarité de Dickey et Fuller augmenté}
+
+Ce test, comme le suivant, se calcule directement sur la série. Il consiste à
+estimer, par une simple régression du mois courant sur le mois précédent, un
+coefficient que nous noterons \(\phi\), selon
+\(x_t = \phi\, x_{t-1} + \eta_t\).
+En remplaçant \(x_{t-1}\) par sa propre expression, puis en recommençant, on
+voit ce que devient un choc au fil du temps,
+\[
+  x_t = \eta_t + \phi\,\eta_{t-1} + \phi^2\,\eta_{t-2} + \phi^3\,\eta_{t-3} + \cdots
+\]
+Le mois courant est donc la somme de tous les chocs passés, chacun pondéré par
+\(\phi\) élevé à son ancienneté. Si \(\phi\) est inférieur à 1, ces puissances
+tendent vers zéro, l'impact d'un mois sur ceux qui suivent décroît, et la série
+oublie ses chocs pour revenir vers sa moyenne, ce qui la rend stationnaire. Si
+\(\phi\) vaut 1, toutes les puissances valent 1, chaque choc s'ajoute
+définitivement au niveau, et la série dérive sans repère, donc sans être
+stationnaire. On oppose ainsi
+
+\[
+  \begin{cases}
+    \Hzero \;(\phi = 1) : \text{les chocs s'accumulent, la série n'est pas stationnaire,}\\[2pt]
+    \Hun \;(\phi < 1) : \text{les chocs s'estompent, la série est stationnaire.}
+  \end{cases}
+\]
+
+Le test est unilatéral, car un \(\phi\) supérieur à 1 décrirait une série
+explosive, cas sans objet ici. C'est donc le rejet qui conclut à la
+stationnarité.
+
+Comme pour le test de Student, la statistique compte le nombre d'erreurs-types
+qui séparent le \(\hat\phi\) estimé de la valeur 1,
+
+\[
+  t_{\mathrm{DF}} = \frac{\hat\phi - 1}{\widehat{\mathrm{se}}(\hat\phi)},
+\]
+
+
+où \(\hat\phi\) est le coefficient estimé par la régression et
+\(\widehat{\mathrm{se}}(\hat\phi)\) son erreur-type, c'est-à-dire
+l'incertitude qui entoure cette estimation. Plus \(t_{\mathrm{DF}}\) est
+négatif, plus \(\hat\phi\) s'écarte de 1 vers le bas et plus \Hzero{} devient
+implausible.
+
+Cette statistique, que les auteurs eux-mêmes nomment rapport de Student, n'en
+suit pourtant pas la loi~\cite{dickeyfuller1979}. La raison tient à \Hzero{},
+sous laquelle la série n'est justement pas stationnaire, sa variance croît avec
+le temps, et les conditions qui donnent la loi de Student ne sont plus réunies.
+Sa loi est alors celle que Dickey et Fuller ont établie et tabulée, et qui
+porte leur nom. La lecture reste ensuite la même, la p-value étant confrontée
+au seuil et le rejet prononcé si elle est trop faible.
+
+Ce test suppose que les résidus de la régression ne soient plus autocorrélés.
+On emploie pour cela sa version dite augmentée, qui ajoute des mois passés
+supplémentaires dans la régression jusqu'à les nettoyer. Reste à savoir
+combien en retenir, car trop peu laisserait la mémoire non absorbée, tandis
+que chaque coefficient supplémentaire, estimé sur les mêmes données, ajoute du
+bruit. C'est le critère d'information d'Akaike~\cite{akaike1974} qui arbitre,
+\[
+  \mathrm{AIC}_k = 2\ln \hat\sigma_k + \frac{k}{T},
+\]
+où \(\hat\sigma_k\) mesure l'erreur résiduelle du modèle à \(k\) retards. Le
+premier terme diminue quand le modèle colle mieux aux données, tandis que le
+second augmente avec le nombre de coefficients. On retient le \(k\) qui
+minimise la somme, de sorte qu'un retard n'est conservé que s'il apporte plus
+qu'il ne coûte. Sur nos séries, ce nombre va de zéro à neuf selon les
+stratégies, et la condition se trouve ainsi prise en charge par le test
+lui-même.
+
+% --- Stationnarité, versant 2 -----------------------------------------
+\subsubsection*{Test de stationnarité KPSS}
+
+À l'inverse, le test de Kwiatkowski et ses coauteurs, désigné dans la
+littérature par le sigle KPSS~\cite{kpss1992}, cumule les écarts à la moyenne
+au fil du temps. Si la série oscille autour d'un niveau fixe, ces cumuls se
+compensent et restent bornés, tandis qu'ils s'emballent dès que la série
+dérive. Ses hypothèses sont inversées par rapport au test précédent,
+\[
+  \begin{cases}
+    \Hzero \;(\text{cumuls bornés}) : \text{la série est stationnaire,}\\[2pt]
+    \Hun \;(\text{cumuls qui s'emballent}) : \text{la série n'est pas stationnaire.}
+  \end{cases}
+\]
+Comme pour le test de normalité vu plus haut, c'est ici \Hzero{} qui porte la
+propriété recherchée, si bien que c'est l'absence de rejet qui conclut à la
+stationnarité.
+
+Sa statistique somme les carrés de ces cumuls, rapportés à la longueur de la
+série et à sa variance de long terme, de sorte qu'elle reste petite quand les
+cumuls sont bornés et explose quand ils dérivent. Sa loi sous \Hzero{} est là
+aussi tabulée par les auteurs. On rejette donc la stationnarité quand la
+statistique dépasse la valeur critique, c'est-à-dire quand la p-value passe
+sous le seuil.
+
+Ce test demande enfin de préciser autour de quoi la stationnarité est jugée.
+Nous la testons autour d'une constante et non d'une tendance, car rien ne
+laisse attendre qu'un avantage dérive régulièrement au fil des années.
+
+% --- La règle de décision sur la stationnarité ------------------------
+\subsubsection*{Concordance des deux tests}
+
+Les deux hypothèses nulles étant opposées, chacun des tests protège l'autre de
+sa propre faiblesse. Ne pas rejeter n'a en effet jamais valeur de preuve, et un
+test seul ne distingue pas une série réellement stationnaire d'une série sur
+laquelle il manque simplement de puissance. Nous ne conclurons donc que
+lorsque les deux concordent, et s'ils divergent, le diagnostic sera tenu pour
+non concluant plutôt que pour défavorable.
+
+Ces deux tests ne demandent aucun modèle, et il faut bien l'entendre ainsi. Le
+\(\phi\) de Dickey et Fuller ne sert qu'à trancher sur la racine unitaire et
+n'est pas conservé. Les impacts que nous recherchons sont d'une autre nature,
+et la stationnarité, maintenant acquise, nous donne le droit de les estimer.
+
+% --- L'ordre du modèle : combien de mois comptent ---------------------
+\subsubsection*{Autocorrélation partielle et choix de l'ordre}
+
+On mesure l'impact propre de chaque décalage \(h\) par l'autocorrélation
+partielle \(\hat\tau(h)\). Reste à décider quels décalages comptent vraiment.
+On procède décalage par décalage, en opposant
+\[
+  \begin{cases}
+    \Hzero \;\bigl(\tau(h) = 0\bigr) : \text{le mois } t-h \text{ n'a pas d'impact propre,}\\[2pt]
+    \Hun \;\bigl(\tau(h) \neq 0\bigr) : \text{il en a un.}
+  \end{cases}
+\]
+Sous \Hzero{}, \(\hat\tau(h)\) n'est que du bruit d'échantillonnage,
+approximativement normal et d'écart-type \(1/\sqrt{T}\), si bien que la
+statistique \(\sqrt{T}\,\hat\tau(h)\) suit une loi normale centrée réduite. On
+en tire, comme pour les tests précédents, la p-value de notre \(\hat\tau(h)\)
+observé, et si elle passe sous le seuil de 5~\%, l'absence d'impact cesse
+d'être une explication crédible et le décalage est retenu. Cela revient à
+comparer \(\bigl|\hat\tau(h)\bigr|\) à \(q_{0{,}975}/\sqrt{T}\), avec
+\(q_{0{,}975} \approx 1{,}96\), ce qui définit la bande de significativité que
+l'on trace sur les corrélogrammes.
+
+L'ordre retenu \(\hat p\) est le dernier décalage significatif. Si des
+décalages intermédiaires ne le sont pas, ils sont conservés malgré tout, car
+on préfère surestimer la mémoire plutôt que la tronquer.
+
+La recherche est plafonnée à six mois. Ce plafond tient au mécanisme même de
+la dépendance, qui vient du recouvrement des périodes de détention et ne peut
+donc porter plus loin que la durée des positions, lesquelles dépassent
+rarement six mois. Chercher au-delà reviendrait à chercher un effet sans
+cause.
+
+Cet argument reste toutefois une plausibilité et non une preuve. Nous n'en
+resterons donc pas là, puisque la validation du modèle, présentée plus bas,
+vérifiera qu'aucune mémoire ne subsiste au-delà de ce plafond.
+
+% --- L'estimation des poids -------------------------------------------
+\subsubsection*{Équations de Yule-Walker}
+
+L'ordre étant connu, on écrit le modèle autorégressif sur la série centrée, le
+mois courant s'exprimant comme une somme pondérée des \(\hat p\) mois
+précédents, augmentée d'un bruit,
+\[
+  x_t = \Phi_1\, x_{t-1} + \cdots + \Phi_{\hat p}\, x_{t-\hat p} + \eta_t ,
+\]
+où \(x_t\) est l'avantage moyen du mois \(t\) (écarté de la moyenne de la
+série), \(\Phi_i\) le poids du mois \(t-i\) — l'impact propre que nous
+cherchions —, et \(\eta_t\) le bruit, c'est-à-dire la part du mois courant
+qu'aucun mois passé n'explique.
+Ces poids ne se lisent pas directement dans les données. Les autocorrélations,
+en revanche, se mesurent sans difficulté, puisqu'il suffit de comparer la série
+à elle-même décalée. Les équations de Yule et Walker font le lien entre les
+deux. On les obtient en multipliant le modèle par \(x_{t-h}\), le mois situé
+\(h\) crans en arrière, puis en prenant l'espérance. Le bruit \(\eta_t\)
+disparaît alors, étant indépendant de tout ce qui précède, et il reste, pour
+chaque \(h = 1, \ldots, \hat p\),
+\[
+  \rho(h) = \Phi_1\,\rho(h-1) + \Phi_2\,\rho(h-2) + \cdots + \Phi_{\hat p}\,\rho(h-\hat p),
+\]
+avec \(\rho(0) = 1\) et \(\rho(-k) = \rho(k)\), une série étant liée à
+elle-même de la même façon dans les deux sens. Chaque autocorrélation
+s'exprime ainsi en fonction des poids recherchés. Comme il y a autant
+d'équations que de poids inconnus, on y reporte les autocorrélations mesurées,
+on résout, et l'on remonte aux poids. Le cas d'un seul mois de mémoire est
+éclairant, car le système se réduit alors à \(\rho(1) = \Phi_1\), le poids
+étant exactement l'autocorrélation mesurée.
+
+Une équation supplémentaire, celle du décalage nul, donne l'amplitude du
+bruit,
+\[
+  \sigma^2_\eta = \gamma(0)\Bigl(1 - \sum_{i=1}^{\hat p} \Phi_i\,\rho(i)\Bigr),
+\]
+soit la variance de la série moins la part qu'expliquent les mois passés,
+autrement dit ce qui reste imprévisible.
+
+Ce système n'a de sens que si la série est stationnaire. Parler de
+l'autocorrélation à deux mois d'écart suppose en effet qu'il en existe une
+seule valeur, la même en 2010 qu'en 2020. Sans cette garantie, il en faudrait
+une par époque, et le système n'aurait plus de solution unique.
+
+C'est la somme de ces poids qui nous intéresse, car elle mesure la persistance
+totale de la série et dira de combien l'erreur-type du test mensuel doit être
+corrigée.
+
+% --- La correction et le verdict --------------------------------------
+\subsubsection*{Variance de long terme et test de Student corrigé}
+
+Le modèle fournit alors une variance de la moyenne qui tient compte de la
+persistance, appelée variance de long terme,
+\[
+  \gamma_{\mathrm{lr}}
+     = \frac{\sigma^2_\eta}{\bigl(1-\sum_{i=1}^{\hat p}\Phi_i\bigr)^{2}},
+  \qquad
+  \widehat{\mathrm{Var}}(\bar x) \approx \frac{\gamma_{\mathrm{lr}}}{T},
+  \qquad
+  \mathrm{DEFF}_t = \frac{\gamma_{\mathrm{lr}}}{\gamma(0)},
+\]
+où \(\sigma^2_\eta\) et les \(\Phi_i\) sont le bruit et les poids estimés
+ci-dessus, \(T\) le nombre de mois et \(\gamma(0)\) la variance de la série.
+Cette variance de long terme additionne toutes les autocovariances, là où la
+formule usuelle en \(s^2/T\) suppose au contraire des mois sans lien. Si les
+poids sont nuls, le dénominateur vaut 1 et l'on retrouve la formule usuelle,
+tandis qu'une persistance forte rend la correction d'autant plus importante.
+
+Le rapport \(\mathrm{DEFF}_t\) est l'exact analogue temporel de l'effet de
+sondage de la première méthode. C'est un facteur qui dit combien de fois la
+variance de la moyenne est sous-estimée lorsqu'on ignore la dépendance, cette
+fois sur l'axe du temps, et obtenu par un modèle puisque la dépendance y est
+ordonnée.
+
+Le test de Student de la porte de la période est alors repris tel quel, avec
+deux changements. L'erreur-type devient \(\sqrt{\gamma_{\mathrm{lr}}/T}\), et
+le nombre de degrés de liberté est ramené à la taille effective
+\(T_{\mathrm{eff}} = T/\mathrm{DEFF}_t\), comme pour l'effet de sondage. La
+statistique diminue mécaniquement, si bien qu'une stratégie peut
+franchir la porte de la période et échouer ici. Le verdict se lit au même
+seuil de Bonferroni que les étapes précédentes.
+
+% --- La validation finale ---------------------------------------------
+\subsubsection*{Validation du modèle~: Box et Pierce sur les résidus}
+
+Reste à vérifier que le modèle a bien capté toute l'autocorrélation, sans quoi
+la correction serait fondée sur une mémoire mal décrite. On dispose pour cela
+des résidus \(\hat\eta_t\), c'est-à-dire de ce que le modèle n'explique pas,
+soit pour chaque mois la valeur observée diminuée de celle que les mois
+précédents laissaient attendre. Le raisonnement est alors le même qu'au début
+de la méthode, mais appliqué à ce qui reste. Si le modèle a bien absorbé toute
+la mémoire, les résidus n'en contiennent plus et sont indépendants d'un mois à
+l'autre. On leur pose donc exactement la question posée à la série brute, avec
+le même test,
+\[
+  \begin{cases}
+    \Hzero \;\bigl(S_{\mathrm{BP}} \text{ petit}\bigr) : \text{les résidus sont indépendants, le modèle a tout absorbé,}\\[2pt]
+    \Hun \;\bigl(S_{\mathrm{BP}} \text{ grand}\bigr) : \text{il subsiste de la mémoire, le modèle est inadéquat.}
+  \end{cases}
+\]
+La démarche est donc circulaire au bon sens du terme, le premier test
+demandant s'il y a de la mémoire et celui-ci s'il en reste. Deux différences
+seulement les séparent. L'inspection porte sur quinze décalages et non plus
+six, comme le recommande la pratique usuelle~\cite{boxpierce1970} qui situe ce
+nombre entre quinze et vingt, de sorte que le plafond de six mois n'a rien pu
+laisser échapper. Par ailleurs, comme \(\hat p\) coefficients ont été estimés
+sur ces mêmes données, ce qui rend les résidus artificiellement un peu plus
+propres, on retranche le nombre de paramètres du modèle, et la statistique
+suit sous \Hzero{} une loi du khi-deux à \(15 - \hat p\) degrés de liberté.
+
+Ne pas rejeter valide donc la correction. Un rejet signalerait au contraire un
+ordre trop faible ou une forme inadaptée, et le protocole s'abstiendrait alors
+de conclure, comme pour la stationnarité.
+
+Au terme de cette méthode, la condition d'indépendance entre mois, que la
+porte de la période supposait sans la vérifier, a donc été soit établie, soit
+prise en charge par une correction elle-même contrôlée. Rappelons que les
+conditions ne s'appliquent qu'à la branche qui les appelle. Une stratégie dont
+l'indépendance mensuelle n'est pas rejetée conserve le verdict de la porte de
+la période sans qu'on ait à exiger d'elle ni stationnarité ni modèle,
+puisqu'aucune correction ne lui est appliquée.
+
+\subsection{Résultats}
+
+Nous avons vu précédemment que seules trois stratégies franchissaient le
+premier filtre, celui du test de Student naïf qui supposait l'indépendance.
+Examinons maintenant les résultats du protocole sur ces stratégies.
+
+% --- 1b : diagnostic + correction DEFF (les deux « survivantes ») -----
+\begin{table}[H]
+\centering
+\caption{Diagnostic de dépendance intra-titre et test corrigé (étape 1b).}
+\label{tab:b1-dep-deff}
+\small
+\begin{tabular}{@{}lrrrccc@{}}
+\toprule
+Stratégie & $\hat\rho$ & DEFF & $n_{\text{eff}}$ & $p$ naïve & $p$ corrigée & $p$ bootstrap \\
+\midrule
+\texttt{oracle} (témoin) & $0{,}053$ & $1{,}67$ & $4\,076$ & $\approx 0$ & $\approx 0$ & $<2{,}5\times10^{-4}$ \\
+\midrule
+\texttt{rsi\_classic} & $0{,}000$ & $1{,}00$ & $7\,117$ & $1{,}2\times10^{-8}$ & $1{,}2\times10^{-8}$ & $<2{,}5\times10^{-4}$ \\
+\texttt{rsi\_strict}  & $0{,}134$ & $1{,}15$ & $848$    & $5{,}5\times10^{-10}$ & $7\times10^{-9}$     & $<2{,}5\times10^{-4}$ \\
+\multicolumn{7}{c}{\footnotesize (autres stratégies~: verdict « non » inchangé, $\hat\rho \le 0{,}09$)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+Le $\hat\rho$ intra-titre mesuré au chapitre~\ref{chap:donnees} était quasi nul
+pour l'ensemble des stratégies, à l'exception de \texttt{rsi\_strict} avec
+$0{,}134$. La correction par l'effet de sondage, qui gonfle la variance en
+proportion de cette dépendance, ne change donc presque rien.
+\texttt{rsi\_classic} et \texttt{rsi\_strict} franchissent toutes deux cette
+première étape, et le rééchantillonnage par grappes, qui ne fait aucune
+hypothèse sur la forme de la dépendance, confirme ce verdict.
+
+Le protocole se poursuit donc sur ces trois stratégies.
+
+% --- 1c : les deux portes (TABLEAU CENTRAL de la section) --------------
+\begin{table}[H]
+\centering
+\caption{Le test des deux portes~: une unité réelle, un vote (étape 1c).}
+\label{tab:b1-dep-portes}
+\small
+\begin{tabular}{@{}lrrrrc@{}}
+\toprule
+ & \multicolumn{2}{c}{Porte action ($k$ titres)} & \multicolumn{2}{c}{Porte période ($k$ mois)} & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
+\midrule
+\texttt{oracle} (témoin) & 501 & $\approx 0$          & 193 & $\approx 0$ & \textbf{OUI} \\
+\midrule
+\texttt{rsi\_classic}  & 501 & $0{,}059$            & 195 & $0{,}039$ & non \\
+\texttt{rsi\_strict}   & 456 & $3{,}9\times10^{-4}$ & 138 & $0{,}26$  & non \\
+\texttt{rsi\_trend}    & 495 & $0{,}22$             & 175 & $0{,}29$  & non \\
+\texttt{sr\_breakdown} & 457 & $0{,}37$             & 184 & $0{,}94$  & non \\
+\multicolumn{6}{c}{\footnotesize (six autres stratégies~: $p_A \ge 0{,}74$, toutes « non »)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+Ce tableau change la lecture du chapitre. L'oracle franchit les deux portes de
+très loin, ses deux p-values étant pratiquement nulles. Son avantage, construit
+pour être réel, se retrouve aussi bien titre par titre que mois par mois.
+C'est le résultat attendu, mais il n'en est pas moins important, car il montre
+que l'outil ne rejette pas tout par excès de prudence et qu'il sait reconnaître
+un avantage lorsqu'il est effectivement présent.
+
+\texttt{rsi\_classic}, en revanche, tombe aux deux portes, avec
+$p_A = 0{,}059$ et $p_B = 0{,}039$, loin du seuil de Bonferroni fixé à
+$0{,}0045$. Les 7\,117 opérations de cette stratégie ne constituaient pas
+7\,117 témoignages indépendants, mais un nombre bien plus restreint de titres
+et de mois, chacun compté plusieurs fois. Dès que chaque titre, puis chaque
+mois, ne dispose plus que d'une seule voix, l'avantage s'efface.
+
+\texttt{rsi\_strict} présente un comportement différent. Elle franchit
+brillamment la porte de l'action, avec $p_A = 3{,}9\times10^{-4}$, ce qui
+montre que son avantage est bien partagé par un grand nombre de titres, mais
+elle échoue à la porte de la période avec $p_B = 0{,}26$. Son avantage est
+donc réel titre par titre, mais épisodique dans le temps, sans régularité
+démontrable d'un mois à l'autre. En l'état, il n'est pas exploitable.
+
+Le protocole écarte ces deux stratégies, tout en signalant qu'elles présentent
+des résultats remarquables sur certains titres ou certains mois. Peut-être
+existe-t-il un facteur qui expliquerait ces résultats, mais l'établir
+demanderait une étude spécifique, qui devrait se garder du sur-apprentissage.
+En l'état, on ne peut pas les laisser passer.
+
+En dehors du témoin, plus aucune stratégie ne franchit les deux portes. Cela
+n'a rien d'étonnant, puisque nous opérons sur les cinq cents plus grandes
+capitalisations américaines, dont la forte tendance à croître exige un
+résultat extrême pour dépasser le seuil de l'improbable.
+
+
+
+% --- 1d : la porte « mois » corrigée de l'autocorrélation -------------
+\begin{table}[H]
+\centering
+\caption{Série mensuelle des edges~: autocorrélation et test corrigé (étape 1d).}
+\label{tab:b1-dep-mensuel}
+\small
+\begin{tabular}{@{}lrrrrrc@{}}
+\toprule
+Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ (AR) & $\mathrm{DEFF}_t$ & $p$ corrigée & $p$ Box--Pierce \\
+\midrule
+\texttt{oracle} (témoin) & 193 & $0{,}18$ & 0 & $1{,}0$ & $9{,}4\times10^{-85}$ & $0{,}16$ \\
+\midrule
+\texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $6{,}4$ & $0{,}94$ & $0{,}14$ \\
+\texttt{dt\_top}       & 197 & $0{,}38$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
+\texttt{db\_bottom}    & 197 & $0{,}36$ & 1 & $2{,}1$ & $0{,}82$ & $0{,}90$ \\
+\texttt{hs\_inverse}   & 186 & $0{,}31$ & 1 & $1{,}9$ & $0{,}91$ & $0{,}93$ \\
+\texttt{rsi\_classic}  & 195 & $0{,}23$ & 1 & $1{,}6$ & $0{,}08$ & $0{,}93$ \\
+\texttt{rsi\_strict}   & 138 & $0{,}03$ & 0 & $1{,}0$ & $0{,}26$ & $0{,}28$ \\
+\multicolumn{7}{c}{\footnotesize (quatre autres stratégies~: $\mathrm{DEFF}_t \le 2{,}4$, aucune significative)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+Cette dernière étape ne concerne que les stratégies encore en lice, celles qui
+auraient franchi les deux portes. Pour chacune, on se demande d'abord si les
+mois voisins sont réellement liés. Le test de Box et Pierce, appliqué à la
+série brute, tranche entre une série sans mémoire, qui conserve alors le
+verdict de la porte de la période sans correction, et une série autocorrélée,
+qui en appelle une.
+
+Le tableau montre que la moitié des séries seulement sont autocorrélées et
+suivent la branche corrigée, l'autocorrélation d'ordre un atteignant $0{,}56$
+pour \texttt{ma\_crossover}. Les autres, dont l'oracle et \texttt{rsi\_strict},
+ne rejettent pas l'indépendance des mois, et leur verdict tient donc tel quel.
+
+Pour les séries autocorrélées, la correction n'est légitime que sous
+stationnarité. Le croisement des deux tests l'assure ici pour toutes, le test
+de Dickey et Fuller rejetant la racine unitaire avec $p \le 0{,}005$, tandis
+que le KPSS ne rejette pas la stationnarité. Après correction, aucun verdict
+ne bascule. La variance mensuelle était bien sous-estimée, d'un facteur allant
+jusqu'à $6{,}4$ pour \texttt{ma\_crossover}, mais aucune stratégie ne devient
+significative pour autant. Comme attendu, l'oracle franchit lui aussi cette
+dernière étape.
+
+Une réserve doit être signalée. Les mois durant lesquels une stratégie n'a
+produit aucune opération sont traités comme consécutifs, ce qui revient à
+ignorer les trous de la série. La couverture dépasse 88~\% pour presque toutes
+les stratégies, mais tombe à 71~\% pour \texttt{rsi\_strict}, dont la série
+est donc la plus concernée par cette approximation.
+
+
+
+\subsection{Positionnement dans la littérature financière}
+\label{sec:b1-positionnement}
+Les outils de ce chapitre ont été construits à partir des seuls concepts vus
+en cours, qu'il s'agisse de la théorie des sondages, de l'analyse de la
+variance ou des séries chronologiques. Or ils coïncident avec les standards de
+l'économétrie financière, ce qui indique que la démarche rejoint d'elle-même
+la pratique établie.
+
+L'agrégation par mois, qui calcule une statistique par période avant de mener
+l'inférence sur la suite de ces périodes, est exactement la démarche de Fama
+et MacBeth~\cite{famamacbeth1973}, devenue un standard du domaine.
+
+La variance de long terme estimée à partir du modèle autorégressif poursuit
+quant à elle le même objectif que les erreurs-types robustes à
+l'autocorrélation de Newey et West~\cite{neweywest1987}, dont elle constitue
+une version paramétrique, validée ici par le test de Box et Pierce.
+
+AUCUNE des onze stratégies, hormis le témoin, ne
+démontre d'avantage réel. Le verdict de l'étape~1 ne tenait que par
+une condition non vérifiée. L'outil a donc écarté toutes les stratégies
+dont il ne peut affirmer l'avantage sans que cela puisse relever de la chance.
+% ------------------------------------------------------------------
+% TODO (mécanique, hors rédaction — à faire par le chat sur demande) :
+
+
+% =====================================================================
+\section{Synthèse du chapitre}
+\label{sec:b1-synthese}
+Ce chapitre a procédé par une escalade de prudence. Nous sommes partis du test
+de Student, le point de départ le plus simple pour une telle analyse. Malgré
+ses hypothèses simplificatrices, il suffisait déjà à écarter huit des onze
+stratégies étudiées.
+
+Il a ensuite fallu prendre en compte la dépendance, restée jusque-là hors du
+champ du test. En reprenant les résultats du chapitre~\ref{chap:donnees}, qui
+avait mis en évidence trois canaux se ramenant à deux portes, la dépendance
+entre les opérations d'un même titre d'une part, celle liée au moment d'autre
+part, nous avons accepté de perdre beaucoup d'information en agrégeant par
+titre puis par mois.
+
+Cette agrégation aurait suffi s'il n'était pas resté, en outre, la dépendance
+entre mois voisins. Une dernière correction s'est donc imposée, qui a
+elle-même exigé de vérifier la stationnarité des séries.
+
+Deux résultats méritent d'être retenus. \texttt{rsi\_classic} apparaissait
+gagnante au test initial, mais son avantage s'est révélé n'être qu'un artefact
+de comptage, ses milliers d'opérations ne portant qu'un nombre bien plus
+restreint d'informations réellement distinctes. \texttt{rsi\_strict}, elle,
+possède un avantage authentiquement partagé entre les titres, mais trop
+irrégulier dans le temps pour être retenu. Au terme de l'escalade, plus aucune
+stratégie ne subsiste en dehors du témoin.
+
+C'est précisément là que se joue la démonstration. Un outil de validation ne
+se juge pas à sa capacité de produire des verdicts favorables, mais à celle de
+démasquer ses propres erreurs tout en reconnaissant ce qui est vrai. Le témoin
+a franchi chaque étage, les stratégies réelles y ont échoué l'une après
+l'autre, et le faux positif du test initial a été mis au jour par la
+vérification de ses propres conditions. Un verdict négatif rendu proprement
+vaut ici démonstration que l'outil fonctionne.
+
+Le chapitre suivant expose les limites de ce protocole, qui pourra
+certainement être perfectionné avec le temps.

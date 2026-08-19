@@ -1,0 +1,148 @@
+bonjour messoierus,
+Voici le plan de mes mes explication. DAns un premier temps assez rapidement je vais expliquer le context et les données que l'on va utiliser. 
+Puis j'ai decider d'aborder le sujet non pas sous la forme les problemes puis les solutions masi plutot sur 
+la forme d'une discussion entre un stastiticien et un amateur. On verra finalement cette discution les differentes 
+limites que le statisticien aura etablit.
+
+Pour le context, il s'agit de cultutre general donc je n'ai pas prit la peine de le detailler dans mon rapport. 
+Le projet sur lequel j'ai travaillé abait ppiur objectif de créer un agent ia qui puisse faire des operations boursiere. 
+Ce qu'on appel communement faire du trading.
+Alors un agent ia est tout simplement une inteligence artificielle auquel on a donné des consignes ainsi que des capacités d'action.
+Dans notre cas on souhaite donner a notre agent les informations qu'il a besoin pour faire du trading et les consignes qu'il devra respecter.
+Qu'estce que le trading?
+Le trading est tres complexe de pars ses multitudes de variables masi reste simple dans l'idée premiere.
+Partosn du debut c'est a dire le marché boursier. Comme son nom l'indique il s'agit d'un marché, dans lequel toutes sorte de choses 
+sont en vente. (evidemment qu'il y'a un reglementation) On peut y acheter des matieres premiere comme l'or le blé ... des monnaies des criptomonnaie
+des pars d'entreprise des obligation. Comme dans tout marché les prix fluctue en fonction du temps et il y'a different marché.
+Allons directement au but ici notre objectif consiste a pouvoir predire la variation des prix pour effectuer des operation qui permettront 
+defectuer des gains.
+Pour cela il faut créer une strategies de trading qui seulement a partir des données accessible au moment de la prise de decision 
+nous permettent de predire l'evolution du marché.
+Donc pour que notre agent IA puisse faire du trading il va devoir créer une strategies a parir des données auquel on lui donnera acces.
+C'est maintenant qu'on arrive au sujet de ce rapport voici le protocole que j'ai créer dans le cadre de mon stage pour pourvoir 
+evaluer si la strategie a belle et bien un pouvoir de prediction du marché.
+
+C'est fini pour la mise en contexte passons alors au jeux de données que l'on va utiliser pour appliquer notre protocole.
+Comme nous avons pas encore créé de strategies jusqu'a present nous avons choisi 10 stratégies basique trouvé rapidement sur internet.
+On peut s'epencher plus sur le sujet mais ce n'est pas le but de ce rapport. 
+Le but n'etant pas de créer une stratégie mais plutot d'avoir un filtre qui permet de dire si la strategies est predictive.
+On a aussi choisi d'effectuer nos test sur le S&P500 qui est un groupe des 501 plus grandes capitalisation americaines.
+La aussi il y'a a discuter mais ce n'est tjrs pas le but de ce rappoort.
+Nous avons appliquées les stratégies de trading sur une periode de 20.. jusqu'a 20..
+
+---------------------------
+Evidemment à l'avenir nos stratégies seront créer a partir de données qu'il faudra alors exclur lors des tests, mais ici les startégies 
+sont basique et releve plus de l'intuition que de l'etude des données.
+--------------------------
+
+On a aussi choisi de créer une stratégies oracle qui prend des decisions meme avec les donnéess du futur pour montrer que le protocole est 
+capable de laisser passer des strategies.
+
+
+Maintenant que le decors est placer on peut commencer le dialogue.
+
+GAIN POSITIF
+La première chose qui vient a l'esprit et c'est d'ailleurs l'erreur que l'on retrouve beaucoup dans les sugestion en ligne que l'on peut 
+qualifier d'arnaque. "On voit que sur cette période on effectuer des gains"
+Tout de suite notre maitrise des statistique nous met en garde car attention peut etre que tu a eu du bol oubien tout profit provient du 
+choix des titres sur lesquel tu effectue tes transaction.
+Pour montrer que ta strategies est corrcte il faudrait que ta stratégies batte le hasard.
+
+EDGE POSITIF
+Tres bien alors on a prendre le meme nombre de trades avec la meme durée mais en les effectuant a des dates tiées au hasard. On 
+applique 200 fois est on compare la moyenne avec le gains de notre strategies.
+Mais meme comme cela il y'a tjrs un risuqe que tu ai eu un coup de bal et que ta strategies soit un tirage particulierement chanceux.
+
+STUDENT
+Ok alors on va effectuer un test de student et on verra si notre tirage est plausible. Si c'est moins de 5 chance sur 100 alors on considerera 
+que c'etait improbable et donc certainement que il y'a rellement e la prediction.
+PArfais mais pour cela il faut que tes données soit normal et independante
+
+Deplus comme on effectue nos test sur plusieurs stratégie il faut adapter la valeur de p-value que l'on a ccepte.
+Pour cela on utilise la correction de bonferonni 
+(Claude il faudra m'expliquer pourquoi on utilise pass bonferonni lors de chacun des test que l'on, utilise tout au long du protocole)
+
+NORMALITE
+on a fait un shapiro wilk mais ce n'est pas normal.
+Pas grave il suffit que nos edge moyen suivent une loi normal et commme on a beaucoup de données on peut l'utiliser.
+---------------------------------------------
+Il faudra faire attention que nos données soient en quantité suffisante pour le TCL
+--------------------------------------------
+
+
+INDEPENDANTE
+Les données que tu utilise ne sont pas independantes tu a trois facteurs de dépendance.
+Premierement les trades d'un meme titre sont dependant. D'une pars de pars la gestion interne de l'entreprise oubien meme par les possesseurs
+de ces actions.
+Deuxiemeùtnune dependance de marché. puisque deux trades qui ont etait decidé au meme instant on certainement un lien de par les evenement
+a cette instant.
+Troisieùenet la dépendancce temporelle c'est a dire que un trade sur plusieur mois va peut etre chevaucher un autre trade.
+(claude explique moi si il s'agit d'un chevauchement sur la meme action oubien entre deux action et donc aussi les difference avec la dependance 2)
+
+Pour la dependance en titre j'ai trois methode 
+1-On remarque que en fait les titre sont des grappes et que donc on est en train de faire un tirage pars grappe.
+Pour cela on utilise la methode du DEFF pour pouvoir corriger l'erreur dans le  test de student
+2-On peut aussi une autre methode qui est trs interessante c'est la methode du bootstrap.
+cette methode consiste a faire un tirage de grappe avec remise et a chaque fois que 'on tire une grappe on prend tout les trades de cette grappe.
+On effectue alors un graphique qui ressemble a une normal qui a une moyenne que 'on attendait inchangé mais on obtient ainsi lareur qui nous
+permet d'evaluer la dependance et de corriger 
+(claude dis moi comment on corrige)
+3- cette methode on va aussi l'utiliser pour les autres dependadnce mais il y'aura es difference car la situatio  l'exigera
+On prend tout les trade d'un titre et on effectue la moyen et on donne un seule vote a chauqe titre.
+cette methode d'agrégation  nous fais perdre beaucoup d'information cest un choix que l'on assume.
+En revanche cela va pouvoir mettre en valeur les strategies qui on beaucoup de trades sur quelque titre car en effet si il y'a un changement 
+de verdict on pourra conclure que la balance a basculé car certains titre ont perdu leurs poids. On perd certe des strategies mais on 
+gagne une information.
+(claude rapple moi pourquoi il n'ya pas de dependance sentre les titre? comme la dependance mensuelle)
+
+Pour la dependance de marché et temporelle on utilise la troisieme methode que nous avon svu juste avnat.
+Sauf quue cette fois ci on agrege par mois. C'est un choix qui se justifie par le fait que les trades sont a l'echelle mensuelle
+(si on evalue des strategies qui font des operation plus courte alors on adaptera le protocol).
+Cependant meme apres cette agregation ils est toujours possible d'avoir une dependance inter mensuelle.
+
+On va alors effectuer un test de BOx and pierce.
+Ce test consiste a prendre directment sur la serie brut (claude rappele moi c'est quoi une seruie brut), les correlation direct entre 
+les mois et les moi qui le suivent (rho  estsymetrique) ensuite on monte au carré et on additionne pour avoir une idée des correlation intermensuelle.
+Si le resultat est élevé (calude dis moi quelle seuil on doit mettre) alors on ser obliger de faire une correction.
+On a choisi  de faire sur 6mois car la majortité des operation dure moins et a la fin des test on verre si il reste de l'information dans 
+les residus.
+
+Pour les strategies qui auront un verdict de dépendance on souhaiterait faire une correction mais celle ci nécessite que tout les mois soient
+identiquement dependant aux mois qui l'entoure. (claude dis moi si c'est bien suffisant la stationnarité sachant qu'il y'a peut etre une tendance)
+Pour cela on effectura deux test de stationnarité. 
+
+Le prmeier test est celui de dickey fuller et consiste a faire une régression simple pour determiner l'effet des chocs d'un mois sur le suivant
+et on obtient une serie geometrique. Donc si phi est inferieur a 1 alors l'effet s'estompe et on a donc bien une stationnaité.
+De la meme facon que pour student on a juste a calculer la p-value sur une loi de dickeu fuller. 
+
+Le second test il sufffit de cumuler les ecarts a la moyenne et de voir s'il se compense ou pas.
+On remarque que dans le prmeier test on etablit la non stationnarite et le test essayer de la rejeter, tandis que le second supose la 
+stationnarité et essaie de la rejeter.
+On a utiliser ceci pour palier au manque de puissance de l'un par l'autre.
+---------------------------------------------------
+Il peut arriver que les test diverge alors on rejetera par crainte de non stationnarité(claude estce qu'il existe d'autre methode qui permettrer
+d'avoir a coup sur le bon resultat?)
+---------------------------------------------------
+
+Donc les strategies qui passeront ces filtre pourront etre corriger.
+Pour la correction on va proceder enplusieurs etape.
+Tout d'abord on va calculer l'impact direct d'un mois sur tout les suivants. 
+Pour decider quelles décalage compte vraiment on supposera a chauqe fois que ce n'est que du bruit et donc sqrt1/T * tau
+doit suivre une loi normal centré reduite et donc comme pour student on rejetera l'H0 si on est en dessous des 5%.
+Comme pour box and pierce on s'arrete a 6 mois et on montrera ensuite que on a bien capter tout le signal.
+On prefere surestimer la mémoire et donc on prendra comme ordre la valeur du dernier decalage.
+
+Ensuite on cherche a connaitre le poid sde chaque mois sur les mois avenir.
+Pour cela on ecrit simple la formule qui associe pour un nouvez&au mois la
+somme des impaccts des mois precedetns plus un bruit intrinseque au mois etudié.
+Le poids de chaque mois n'est pas immediatement accessible tandis que les autocorrelation oui car il suffit de décalé la serie par rapport a 
+elle meme.
+Ensuite on obtient les equation de YULE Walker en multipliant l'eqaution initial pas xt+h pour h allant de 1 a 6 et on prend l'esperance pour
+faire disparaitre le bruit qui est indep.
+On a donc p equation a p inconnue il ne rest plus qu'a resoudre pour avoir les poids.
+Une équation supplémentaire, celle du décalage nul, donne l’amplitude du bruit (claude il va falloir m'expliquer)
+
+On prend alors la somme des poids pour obtenir la variance 
+
+
+

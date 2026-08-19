@@ -33,6 +33,9 @@
 \usepackage{float}
 \usepackage{caption}
 \captionsetup{font=small,labelfont=bf}
+\usepackage{subcaption}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 
 % --- Couleurs & encadrés ---------------------------------------------
 \usepackage{xcolor}
@@ -40,8 +43,7 @@
 \definecolor{grisclair}{RGB}{242,242,242}
 \usepackage[most]{tcolorbox}
 
-% Encadré « conditions d'application » (consigne : vérifier les
-% conditions d'application des méthodes)
+% Encadré « conditions d'application »
 \newtcolorbox{conditions}[1][]{
   colback=grisclair, colframe=bleuunistra, boxrule=0.5pt,
   fonttitle=\bfseries, title=Conditions d'application, #1}
@@ -51,7 +53,7 @@
   colback=white, colframe=black!55, boxrule=0.5pt,
   fonttitle=\bfseries\itshape, title=Limites de validité, #1}
 
-% --- Code (lignes principales seulement, cf. consignes) --------------
+% --- Code -------------------------------------------------------------
 \usepackage{listings}
 \lstset{
   inputencoding=utf8,
@@ -87,12 +89,25 @@
 \addtolength{\topmargin}{-1.6pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\leftmark}
-\fancyhead[R]{\small\thepage}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+
+% Les pages de debut de chapitre utilisent le style « plain » : on lui donne
+% la meme pagination en bas, pour que le numero soit toujours au meme endroit.
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\small\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
 
 % --- Raccourcis maison -----------------------------------------------
 \newcommand{\edgevar}{\textit{edge}}
 \newcommand{\Hzero}{\ensuremath{H_0}}
 \newcommand{\Hun}{\ensuremath{H_1}}
 \DeclareMathOperator{\Var}{Var}
+
+% lmodern n'a pas de fonte « gras étendu + petites capitales » (bx/sc),
+% demandée par certains titres : on la redirige vers les petites capitales
+% normales pour supprimer le warning « Font shape bx/sc undefined ».
+\AtBeginDocument{\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub*lmr/m/sc}{}}

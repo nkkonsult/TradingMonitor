@@ -1,0 +1,130 @@
+% ---------------------------------------------------------------------
+%  Introduction (non numérotée) : but + planification de l'expérience
+%  (couvre les points « but du stage » et « planification » des consignes)
+% ---------------------------------------------------------------------
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+\label{chap:intro}
+
+\section*{Une note sur le vocabulaire}
+\label{sec:vocabulaire}
+
+Le domaine financier emploie un vocabulaire largement anglophone, y compris
+dans les travaux rédigés en français. Ces termes sont ici traduits de façon
+systématique, le mot anglais consacré étant rappelé entre parenthèses lors de
+sa première apparition. Font exception les noms propres de méthodes
+statistiques, qui restent sous la forme sous laquelle la littérature les
+désigne, ainsi qu'une variable centrale de ce travail, l'\edgevar{}, dont le
+nom est conservé pour éviter toute ambiguïté avec le sens courant du mot
+français correspondant.
+
+\section*{But du mémoire}
+\label{sec:but}
+
+% ANGLE DU MÉMOIRE (décidé) : ce n'est PAS une étude de stratégies de
+% trading, mais la construction d'un OUTIL DE VALIDATION statistique.
+% Les stratégies ne sont que des jeux de données de test.
+
+Lors de mon stage en entreprise, j'ai reçu pour consigne de créer un agent
+d'intelligence artificielle capable d'intervenir en bourse. Un tel agent
+achète et revend des titres, c'est-à-dire des parts de propriété de sociétés
+cotées, en suivant des règles de décision qu'on lui fournit. J'ai choisi de
+doter cet agent de capacités d'analyse statistique. Après avoir construit ce
+qui lui permettait de passer des ordres d'achat et de vente, et d'accéder aux
+données du marché, il m'a semblé qu'il lui manquait l'essentiel, à savoir la
+capacité d'évaluer lui-même les règles de décision qu'il emploie.
+
+Ce rapport présente l'outil d'évaluation que je lui ai donné.
+
+L'objectif de cet outil n'est pas de découvrir une règle de décision
+rentable. Il est de construire un enchaînement de méthodes capable de
+déterminer, pour une stratégie quelconque qu'on lui soumet, si l'avantage
+qu'elle affiche est réel, ou s'il relève du hasard de l'échantillon ou de la
+tendance générale du marché. Une stratégie désigne ici une règle fixée à
+l'avance, qui indique à quel moment acheter un titre et à quel moment le
+revendre.
+
+La contribution revendiquée est donc méthodologique. Elle porte sur la chaîne
+de tests elle-même, sur sa justification et sur la vérification de ses
+conditions d'application.
+
+Les dix stratégies d'analyse technique employées dans ce rapport ne
+constituent pas l'objet d'étude, mais un banc d'essai. L'analyse technique
+regroupe les méthodes qui cherchent à anticiper l'évolution d'un cours à
+partir de la seule lecture de son historique de prix, sans considération pour
+la santé économique de l'entreprise. Ces stratégies fournissent des jeux de
+données réels, qui permettent de montrer que l'outil discrimine correctement,
+c'est-à-dire qu'il sait rejeter ce qui ne tient pas et retenir ce qui résiste
+à l'analyse. Les résultats obtenus sont donc présentés à titre d'illustration
+du bon fonctionnement du protocole, et non comme des recommandations
+d'investissement.
+
+Pour s'assurer que l'outil ne rejette pas tout par excès de sévérité, on lui
+soumet également un témoin, une stratégie dont l'avantage est réel par
+construction.
+
+\section*{Les trois menaces qui pèsent sur le jugement}
+\label{sec:menaces}
+
+Trois difficultés se dressent devant quiconque veut juger une stratégie sur
+des données de marché. Aucune n'est propre à ce travail, mais chacune suffit
+à fausser un verdict, et c'est leur traitement conjoint qui fait l'intérêt du
+protocole.
+
+La première tient à la dérive du marché. Le premier réflexe pour juger une
+stratégie consiste à examiner si elle rapporte, un gain positif semblant
+suffire à la déclarer efficace. Ce raisonnement est pourtant trompeur, car
+encore faut-il que ce gain dépasse ce qu'une entrée au hasard aurait
+rapporté.
+
+Les stratégies sont ici appliquées aux titres du S\&P~500, l'indice qui
+regroupe les plus grandes capitalisations américaines, c'est-à-dire les
+sociétés dont la valeur totale en bourse est la plus élevée. Or cet indice
+progresse sur toute la période étudiée. Cette dérive haussière pose un
+problème, puisqu'une stratégie peut réaliser des gains sans avoir capté le
+moindre signal, simplement portée par la montée générale. C'est pourquoi on
+mesurera non pas le gain brut, mais l'avantage propre qu'apporte chaque
+stratégie par rapport au hasard.
+
+La deuxième difficulté provient du nombre de tests. Plus on examine de
+stratégies, plus le risque d'en voir au moins une paraître gagnante par pur
+hasard augmente. Cette difficulté sera traitée au
+chapitre~\ref{chap:juger} par la correction de Bonferroni.
+
+La troisième, sans doute la plus délicate, est la dépendance des données. De
+nombreuses méthodes statistiques exigent que les observations soient
+indépendantes les unes des autres, chacune apportant une information neuve.
+Or les opérations réalisées par une stratégie se ressemblent sous plusieurs
+aspects, qu'il s'agisse de la période durant laquelle elles se déroulent, du
+titre sur lequel elles portent ou du secteur d'activité de celui-ci. Cette
+difficulté sera mesurée au chapitre~\ref{chap:donnees}, puis neutralisée pas
+à pas au chapitre~\ref{chap:juger}.
+
+Ignorer une seule de ces trois menaces conduit mécaniquement à un verdict
+trop optimiste. Les traiter ensemble est précisément ce qui distingue un
+outil de validation d'un simple calcul de rentabilité.
+
+\section*{Démarche du mémoire}
+\label{sec:planification}
+
+Le mémoire suit le fil d'une enquête unique, du diagnostic au verdict, puis
+du verdict à l'outil. Il commence par le terrain et ses pièges. Le
+chapitre~\ref{chap:donnees} présente les données, soit 45\,008 opérations
+et la mesure de l'avantage qui leur est associée, puis chiffre la dépendance
+qui menace les tests. On ne peut en effet juger proprement qu'après avoir
+mesuré ce qui pourrait fausser le jugement.
+
+Le chapitre~\ref{chap:juger} constitue le cœur du travail. On y juge les
+stratégies par une escalade de prudence. Le test de référence est d'abord
+appliqué sous ses hypothèses habituelles, puis les conditions qu'il suppose
+sont mises à l'épreuve une à une, en neutralisant chacun des canaux de
+dépendance mesurés au chapitre précédent. Le verdict n'est prononcé qu'au
+terme de cette montée en exigence.
+
+Le chapitre~\ref{chap:protocole} prend alors du recul. Il récapitule la
+procédure sous la forme d'un outil réutilisable, en assume les limites et
+trace les suites possibles. La conclusion referme l'enquête en répondant à la
+question posée ici.
+
+Le fil va ainsi du plus fragile, la donnée et sa dépendance, au plus solide,
+le verdict puis l'outil qui permettra de juger les signaux à venir.

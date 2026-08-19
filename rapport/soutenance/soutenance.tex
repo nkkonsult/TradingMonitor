@@ -1,0 +1,1178 @@
+% ======================================================================
+%  Soutenance M1 — Joseph MANELA — 19 août 2026, 9h
+%  Compilation : pdflatex soutenance  (x2)
+%  Un seul PDF : diapos principales (1-22) + annexes questions (23+)
+% ======================================================================
+\documentclass[10pt]{beamer}
+
+% --- Langue & fontes --------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+
+% --- Maths & tableaux -------------------------------------------------
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Charte (couleur du mémoire) --------------------------------------
+\definecolor{bleuunistra}{RGB}{0,61,110}
+\definecolor{grisclair}{RGB}{242,242,242}
+\definecolor{vertok}{RGB}{0,110,60}
+\definecolor{rougeko}{RGB}{160,30,30}
+
+\usetheme{default}
+\usecolortheme{seahorse}
+\setbeamercolor{structure}{fg=bleuunistra}
+\setbeamercolor{frametitle}{bg=bleuunistra, fg=white}
+\setbeamercolor{title}{fg=bleuunistra}
+\setbeamercolor{block title}{bg=bleuunistra!15, fg=bleuunistra}
+\setbeamercolor{block body}{bg=bleuunistra!5, fg=black}
+\setbeamercolor{alerted text}{fg=rougeko}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \hfill\scriptsize\insertframenumber/\inserttotalframenumber\hspace{2mm}\vspace{2mm}}
+\setbeamertemplate{itemize item}{\color{bleuunistra}$\blacktriangleright$}
+\setbeamertemplate{itemize subitem}{\color{bleuunistra}--}
+
+\newcommand{\edge}{\textit{edge}}
+\newcommand{\oui}{\textcolor{vertok}{\textbf{OUI}}}
+\newcommand{\non}{\textcolor{rougeko}{non}}
+
+\title{Juger une stratégie de bourse :\\
+  un protocole statistique de validation\\ sur données dépendantes}
+\author[J. Manela]{Joseph MANELA\\[2mm]
+  {\small Encadrant : Nicolas Poulin}}
+\institute{Master Mathématiques et applications --- Parcours Statistique\\
+  Université de Strasbourg}
+\date{19 août 2026}
+
+\begin{document}
+
+% ======================================================================
+%  1. TITRE
+% ======================================================================
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ======================================================================
+%  2. PLAN
+% ======================================================================
+\begin{frame}{Plan}
+  \begin{enumerate}\setlength{\itemsep}{5mm}\large
+    \item Le contexte
+    \item Les données : 11 stratégies, dont un témoin
+    \item L'escalade de prudence, en trois actes
+    \item Verdict, limites, perspectives
+  \end{enumerate}
+\end{frame}
+
+% ======================================================================
+%  3. CONTEXTE
+% ======================================================================
+\begin{frame}{Le contexte : de l'agent au protocole}
+  \vspace{2mm}
+  \begin{center}
+  \resizebox{\linewidth}{!}{%
+  \begin{tikzpicture}[
+      box/.style={draw=bleuunistra, thick, rounded corners, align=center,
+                  minimum height=10mm, fill=bleuunistra!5, font=\small},
+      fl/.style={-{Stealth}, thick, bleuunistra}]
+    \node[box] (agent) {Agent IA};
+    \node[box, right=10mm of agent] (strat) {Stratégie de trading};
+    \node[box, right=10mm of strat, fill=bleuunistra!20, thick]
+      (proto) {\textbf{PROTOCOLE}\\ \scriptsize (ce mémoire)};
+    \node[box, right=10mm of proto] (verdict) {avantage réel ?\\ oui / non / ?};
+    \draw[fl] (agent) -- node[above,font=\scriptsize]{crée} (strat);
+    \draw[fl] (strat) -- node[above,font=\scriptsize]{soumise} (proto);
+    \draw[fl] (proto) -- (verdict);
+  \end{tikzpicture}}
+  \end{center}
+  \vspace{6mm}
+  \begin{itemize}
+    \item Avant de trader : \structure{vrai pouvoir de prédiction, ou accident ?}
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  3bis. MARCHE / STRATEGIE / TRADE
+% ======================================================================
+\begin{frame}{Qu'est-ce qu'une stratégie de trading ?}
+  \vspace{2mm}
+  \begin{center}
+  \begin{tikzpicture}[xscale=1.55,yscale=1.35]
+    \draw[-{Stealth}] (0,0) -- (6.6,0) node[below left,font=\scriptsize]{temps};
+    \draw[-{Stealth}] (0,0) -- (0,2.2) node[right,font=\scriptsize]{prix};
+    \draw[thick,bleuunistra] plot[smooth,tension=0.8] coordinates
+      {(0.2,1.0) (0.8,1.3) (1.4,0.9) (2.0,0.6) (2.6,0.95) (3.2,0.8)
+       (3.8,1.25) (4.4,1.6) (5.0,1.4) (5.6,1.7) (6.2,1.5)};
+    \filldraw[vertok] (2.0,0.6) circle (1.8pt)
+      node[below left=1mm and 0mm,font=\scriptsize\bfseries,vertok]{achat};
+    \filldraw[rougeko] (4.4,1.6) circle (1.8pt)
+      node[above=2mm,font=\scriptsize\bfseries,rougeko]{vente};
+    \draw[dashed,gray] (2.0,0.55) -- (2.0,0);
+    \draw[dashed,gray] (4.4,1.55) -- (4.4,0);
+    \draw[{Stealth}-{Stealth},gray] (2.0,0.22) --
+      node[above=0.5mm,font=\scriptsize,gray]{détention} (4.4,0.22);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{3mm}
+  \begin{itemize}\setlength{\itemsep}{3mm}
+    \item le \textbf{marché} : des titres dont le prix fluctue en continu
+    \item un \textbf{trade} : acheter, détenir, revendre $\to$ un rendement
+    \item une \textbf{stratégie} : la règle qui décide \structure{quand} entrer
+      et sortir --- avec les seules données \textbf{passées}
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  4. DONNEES
+% ======================================================================
+\begin{frame}{Le banc d'essai : 11 stratégies, 45\,008 trades}
+  \begin{columns}[T]
+    \begin{column}{0.54\textwidth}
+      \scriptsize
+      \begin{tabular}{@{}ll@{}}
+        \toprule
+        Stratégie & Fondée sur \\
+        \midrule
+        \texttt{rsi\_classic/strict/trend} & indicateur RSI \\
+        \texttt{ma\_crossover} & moyennes mobiles \\
+        \texttt{db\_bottom}, \texttt{dt\_top} & double creux / sommet \\
+        \texttt{hs\_classic/inverse} & épaule-tête-épaule \\
+        \texttt{sr\_breakout/breakdown} & cassures \\
+        \midrule
+        \texttt{oracle} (témoin) & \alert{connaît le futur} \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      \small
+      \begin{itemize}\setlength{\itemsep}{2mm}
+        \item S\&P~500 : 501 titres
+        \item 2010 $\to$ 2026
+        \item unité $=$ le trade
+        \item 978 à 8\,513 par stratégie
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{5mm}
+  \begin{itemize}\setlength{\itemsep}{3mm}
+    \item 10 règles classiques, \textbf{passé seulement}
+    \item l'oracle triche (30 jours d'avance) : avantage \textbf{réel par
+      construction}
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  5. PIEGE 1 : GAIN BRUT -> EDGE
+% ======================================================================
+\begin{frame}{Acte I --- « J'ai gagné, donc ça marche »}
+  \begin{center}
+    \structure{Marché haussier : $\sim97\,\%$ des titres montent.}\\
+    Un gain positif ne prouve rien --- il faut battre \emph{le hasard}.
+  \end{center}
+  \vspace{4mm}
+  Pour chaque trade : 200 trades fictifs \textbf{appariés}
+  (même titre, durée, sens --- date tirée au sort)
+  \[
+    \edge \;=\; \underbrace{\text{rendement de la stratégie}}_{\texttt{return\_net}}
+      \;-\; \underbrace{\text{rendement moyen du hasard}}_{\texttt{rand\_return}}
+  \]
+\end{frame}
+
+% ======================================================================
+%  6. STUDENT
+% ======================================================================
+\begin{frame}{Le test de référence : Student unilatéral}
+  $\bar e$ : \edge{} moyen \textbf{observé} (connu)\\[1mm]
+  $\mu$ : \edge{} moyen \textbf{théorique} (inconnu --- c'est lui qu'on juge)
+  \vspace{3mm}
+  \[
+    \begin{cases}
+      H_0 : \mu = 0\\
+      H_1 : \mu > 0
+    \end{cases}
+    \qquad\quad
+    t = \frac{\bar e}{s/\sqrt{n}} \;\underset{H_0}{\sim}\; t_{n-1}
+  \]
+  \vspace{2mm}
+  \begin{itemize}\setlength{\itemsep}{3mm}
+    \item $t$ $=$ nombre d'\textbf{erreurs-types} entre $\bar e$ et zéro
+    \item p-value faible $\Rightarrow$ le hasard n'est plus crédible
+    \item chez nous : \edge{} moyens de $-0{,}025$ à $+0{,}131$ ---
+      significatifs ?
+  \end{itemize}
+  \vspace{4mm}
+  \begin{block}{Deux conditions}
+    \textbf{normalité} $\to$ TCL \qquad\qquad
+    \textbf{indépendance} $\to$ actes II et III
+  \end{block}
+\end{frame}
+
+% ======================================================================
+%  7. NORMALITE : SHAPIRO -> TCL
+% ======================================================================
+\begin{frame}{Normalité : Shapiro--Wilk rejette\ldots\ le TCL répond}
+  \begin{columns}[T]
+    \begin{column}{0.42\textwidth}
+      \footnotesize
+      \begin{tabular}{@{}lrr@{}}
+        \toprule
+        Stratégie & $W$ & $p$ \\
+        \midrule
+        \texttt{ma\_crossover} & $0{,}50$ & $10^{-80}$ \\
+        \texttt{oracle}        & $0{,}59$ & $10^{-76}$ \\
+        \texttt{rsi\_classic}  & $0{,}87$ & $10^{-53}$ \\
+        \texttt{dt\_top}       & $\alert{0{,}95}$ & $10^{-38}$ \\
+        \bottomrule
+      \end{tabular}
+      \vspace{2mm}
+
+      {\footnotesize $W = \dfrac{b^2}{\mathrm{SCE}} \simeq 1$ sous $H_0$
+      (normalité)}
+      \vspace{1.5mm}
+
+      {\scriptsize $\mathrm{SCE}=\sum_i(x_i-\bar x)^2$ : dispersion
+      observée\\[0.5mm]
+      $b^2$ : dispersion attendue si les valeurs triées suivaient une
+      normale}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \small
+      $t$ ne dépend que de la \textbf{moyenne}. Or :
+      \[
+        \frac{\bar e - \mu}{\sigma/\sqrt{n}}
+        \;\xrightarrow[n\to\infty]{}\; \mathcal N(0,1)
+      \]
+      \begin{itemize}
+        \item quelle que soit la loi de départ
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+%  8. BONFERRONI
+% ======================================================================
+\begin{frame}{Onze tests, pas un : la correction de Bonferroni}
+  \[
+    \mathrm P(\text{au moins un faux positif})
+      = 1 - 0{,}95^{11} \approx \alert{0{,}43}
+  \]
+  \vspace{2mm}
+  \begin{block}{On inverse : risque global fixé à 5\,\% (inégalité de Boole)}
+    \[
+      \mathrm P\Bigl(\bigcup_i A_i\Bigr) \leq \sum_i \mathrm P(A_i)
+      \qquad\Longrightarrow\qquad
+      \alpha' = \frac{0{,}05}{11} \approx \mathbf{0{,}0045}
+    \]
+  \end{block}
+\end{frame}
+
+% ======================================================================
+%  9. VERDICT ETAPE 1
+% ======================================================================
+\begin{frame}{Premier verdict (Student naïf)}
+  \begin{center}
+  \small
+  \begin{tabular}{@{}lrrrc@{}}
+    \toprule
+    Stratégie & $n$ & \edge{} moyen & $p$ & Verdict \\
+    \midrule
+    \texttt{oracle} (témoin) & 6\,798 & $+0{,}0658$ & $\approx 0$ & \oui \\
+    \midrule
+    \texttt{rsi\_classic} & 7\,117 & $+0{,}0123$ & $1{,}2\times10^{-8}$  & \oui \\
+    \texttt{rsi\_strict}  &   978  & $+0{,}1313$ & $5{,}5\times10^{-10}$ & \oui \\
+    \texttt{rsi\_trend}   & 2\,789 & $+0{,}0021$ & $0{,}25$ & \non \\
+    \texttt{db\_bottom}   & 8\,513 & $-0{,}0025$ & $0{,}98$ & \non \\
+    \texttt{ma\_crossover}& 5\,417 & $-0{,}0248$ & $\approx 1$ & \non \\
+    \multicolumn{5}{c}{\scriptsize autres : $p > 0{,}45$, \non} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{4mm}
+  \begin{center}
+    Huit écartées, \structure{deux survivantes} $+$ le témoin.\\[2mm]
+    \alert{Mais l'indépendance des trades n'a jamais été vérifiée.}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+%  10. TROIS CANAUX
+% ======================================================================
+\begin{frame}{Acte II --- canal 1 : la dépendance de titre}
+  \begin{columns}[T]
+    \begin{column}{0.60\textwidth}
+      \small
+      Deux trades d'une même action subissent les mêmes chocs
+      $\to$ les titres forment des \textbf{grappes}.
+      \[
+        \hat\rho = \frac{\mathrm{MSB}-\mathrm{MSW}}
+                        {\mathrm{MSB}+(n_0-1)\,\mathrm{MSW}}
+      \]
+      \begin{itemize}\setlength{\itemsep}{2.5mm}
+        \item MSB : variation \textbf{entre} les titres
+        \item MSW : variation \textbf{dans} un titre
+        \item trades d'un titre semblables $\Rightarrow$ MSW s'effondre
+          $\Rightarrow$ $\hat\rho$ monte
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \scriptsize
+      \begin{tabular}{@{}lr@{}}
+        \toprule
+        & $\hat\rho$ \\
+        \midrule
+        \texttt{oracle}        & $0{,}053$ \\
+        \midrule
+        \texttt{db\_bottom}    & $0{,}000$ \\
+        \texttt{dt\_top}       & $0{,}000$ \\
+        \texttt{hs\_classic}   & $0{,}087$ \\
+        \texttt{hs\_inverse}   & $0{,}001$ \\
+        \texttt{ma\_crossover} & $0{,}003$ \\
+        \texttt{rsi\_classic}  & $0{,}000$ \\
+        \texttt{rsi\_strict}   & $\alert{0{,}134}$ \\
+        \texttt{rsi\_trend}    & $0{,}010$ \\
+        \texttt{sr\_breakdown} & $0{,}051$ \\
+        \texttt{sr\_breakout}  & $0{,}004$ \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+%  10bis. ACP DU MARCHE
+% ======================================================================
+\begin{frame}{Canal 2 : la dépendance de marché}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \centering
+      \begin{tikzpicture}
+      \begin{axis}[
+        width=\linewidth, height=5.2cm,
+        ybar, bar width=5pt,
+        xlabel={Composante}, ylabel={Variance expliquée (\%)},
+        xlabel style={font=\scriptsize}, ylabel style={font=\scriptsize},
+        tick label style={font=\tiny},
+        xmin=0.3, xmax=11.7, ymin=0, ymax=80,
+        xtick={1,2,3,4,5,6,7,8,9,10,11},
+        ytick={0,20,40,60,80},
+        ymajorgrids=true, grid style={dotted,gray!40},
+        axis lines=left,
+      ]
+      \addplot[fill=bleuunistra!75, draw=bleuunistra] coordinates {
+        (1,73.0) (2,7.9) (3,5.1) (4,3.0) (5,2.3) (6,2.1)
+        (7,1.9) (8,1.5) (9,1.3) (10,1.2) (11,0.6)
+      };
+      \end{axis}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.51\textwidth}
+      \centering
+      \begin{tikzpicture}
+      \begin{axis}[
+        width=\linewidth, height=5.2cm,
+        xlabel={Axe 1 (73~\%)}, ylabel={Axe 2 (7,9~\%)},
+        xlabel style={font=\scriptsize}, ylabel style={font=\scriptsize},
+        tick label style={font=\tiny},
+        xmin=0, xmax=0.42, ymin=-0.42, ymax=0.80,
+        xtick={0,0.1,0.2,0.3,0.4},
+        ytick={-0.4,-0.2,0,0.2,0.4,0.6,0.8},
+        grid=both, grid style={dotted,gray!40},
+        axis lines=left,
+      ]
+      \addplot[only marks, mark=*, bleuunistra, mark size=1.6pt] coordinates {
+        (0.277,0.433) (0.307,0.023) (0.299,0.316) (0.244,0.674)
+      };
+      \addplot[only marks, mark=triangle*, black!65, mark size=2.1pt] coordinates {
+        (0.310,-0.183) (0.321,-0.185) (0.255,-0.227) (0.328,-0.109)
+        (0.335,-0.129) (0.304,-0.303) (0.321,-0.128)
+      };
+      \draw[dashed,gray!70] (axis cs:0,0) -- (axis cs:0.42,0);
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.244,0.674) {Serv.\,coll.~};
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.277,0.433) {Cons.\,base~};
+      \node[font=\tiny,anchor=west,black!75] at (axis cs:0.299,0.316) {~Immobilier};
+      \node[font=\tiny,anchor=west,black!75] at (axis cs:0.307,0.023) {~Santé};
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.328,-0.109) {Finance~};
+      \node[font=\tiny,anchor=west,black!75] at (axis cs:0.335,-0.129) {~Industrie};
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.321,-0.128) {Matér.~};
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.310,-0.183) {Com.~};
+      \node[font=\tiny,anchor=west,black!75] at (axis cs:0.321,-0.185) {~Cons.\,disc.};
+      \node[font=\tiny,anchor=east,black!75] at (axis cs:0.255,-0.227) {Énergie~};
+      \node[font=\tiny,anchor=west,black!75] at (axis cs:0.304,-0.303) {~Techno.};
+      \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vspace{3mm}
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item corrélation moyenne entre les onze secteurs : $0{,}70$
+    \item un axe capte \alert{$73\,\%$} de la variance : le marché bouge d'un
+      bloc
+    \item axe 2 : défensifs ($\bullet$) contre cycliques
+      ($\blacktriangle$)
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  10ter. CANAL 3
+% ======================================================================
+\begin{frame}{Canal 3 : la dépendance temporelle}
+  \begin{columns}[T]
+    \begin{column}{0.60\textwidth}
+      \small
+      Les trades \emph{durent} ($78\,\% > 1$ mois) : les détentions se
+      recouvrent, les mois voisins se ressemblent.
+      \[
+        \hat\rho(1) = \frac{\sum_t (x_t-\bar x)(x_{t+1}-\bar x)}
+                           {\sum_t (x_t-\bar x)^2}
+      \]
+      \begin{itemize}\setlength{\itemsep}{2.5mm}
+        \item $x_t$ : \edge{} moyen des trades entrés le mois $t$
+        \item fort pour les trades longs, faible pour les courts
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      \scriptsize
+      \begin{tabular}{@{}lr@{}}
+        \toprule
+        & $\hat\rho(1)$ \\
+        \midrule
+        \texttt{oracle}        & $0{,}18$ \\
+        \midrule
+        \texttt{db\_bottom}    & $0{,}36$ \\
+        \texttt{dt\_top}       & $0{,}38$ \\
+        \texttt{hs\_classic}   & $0{,}15$ \\
+        \texttt{hs\_inverse}   & $0{,}31$ \\
+        \texttt{ma\_crossover} & $\alert{0{,}56}$ \\
+        \texttt{rsi\_classic}  & $0{,}23$ \\
+        \texttt{rsi\_strict}   & $0{,}03$ \\
+        \texttt{rsi\_trend}    & $0{,}20$ \\
+        \texttt{sr\_breakdown} & $0{,}11$ \\
+        \texttt{sr\_breakout}  & $0{,}05$ \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ======================================================================
+%  11. DEFF + BOOTSTRAP
+% ======================================================================
+\begin{frame}{Porte de l'action (1/2) : l'effet de sondage (DEFF)}
+  \textbf{Définition} : le rapport entre la variance réelle de la moyenne
+  (trades groupés par titres) et celle d'un sondage aléatoire simple.
+  \[
+    \mathrm{DEFF}
+      = \frac{\mathrm{Var}(\bar x)_{\text{grappes}}}
+             {\mathrm{Var}_{\mathrm{SAS}}(\bar x)}
+      = 1 + (\bar m - 1)\,\hat\rho
+  \]
+  \[
+    n_{\mathrm{eff}} = \frac{n}{\mathrm{DEFF}}
+    \qquad\quad
+    \widehat{\mathrm{se}}_{\mathrm{corr}} = \frac{s}{\sqrt n}\sqrt{\mathrm{DEFF}}
+  \]
+  {\footnotesize $\bar m$ : nombre moyen de trades par titre}
+  \vspace{3mm}
+  \begin{center}
+  \footnotesize
+  \begin{tabular}{@{}lrrc@{}}
+    \toprule
+    & $\hat\rho$ & DEFF & $p$ corrigée \\
+    \midrule
+    \texttt{oracle}       & $0{,}053$ & $1{,}67$ & $\approx 0$ \\
+    \texttt{rsi\_classic} & $0{,}000$ & $1{,}00$ & $1{,}2\times10^{-8}$ \\
+    \texttt{rsi\_strict}  & $0{,}134$ & $1{,}15$ & $7\times10^{-9}$ \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+%  11bis. BOOTSTRAP
+% ======================================================================
+\begin{frame}{Porte de l'action (2/2) : le bootstrap par grappes}
+  \begin{center}
+  \resizebox{0.95\linewidth}{!}{%
+  \begin{tikzpicture}[
+      grap/.style={draw=bleuunistra, rounded corners, fill=bleuunistra!5,
+                   font=\scriptsize, minimum width=17mm, minimum height=6mm},
+      fl/.style={-{Stealth}, thick, bleuunistra}]
+    \node[grap] (a) {titre A};
+    \node[grap, below=1.5mm of a] (b) {titre B};
+    \node[grap, below=1.5mm of b] (c) {titre C};
+    \node[below=0mm of c, font=\scriptsize] (dots) {$\vdots$};
+    \draw[fl] (1.6,-0.75) -- node[above,font=\scriptsize,align=center]
+      {tirage avec remise\\ de titres \textbf{entiers}\\ $\times\,4\,000$}
+      (4.2,-0.75);
+    \begin{scope}[shift={(6.9,-1.75)}]
+      \fill[rougeko!25] plot[domain=-2.4:-1.5,samples=25]
+        (\x,{2.0*exp(-\x*\x/1.1)}) -- (-1.5,0) -- (-2.4,0) -- cycle;
+      \draw[thick,bleuunistra] plot[domain=-2.5:2.5,samples=60]
+        (\x,{2.0*exp(-\x*\x/1.1)});
+      \draw[-{Stealth}] (-2.7,0) -- (2.8,0);
+      \draw[dashed,rougeko] (-1.5,0) -- (-1.5,1.1)
+        node[above,font=\scriptsize,rougeko] {$0$};
+      \draw[dashed,gray] (0,0) -- (0,2.05);
+      \node[above,font=\scriptsize,gray] at (0,2.05) {$\bar e$};
+      \node[font=\scriptsize,rougeko,anchor=north,align=center]
+        at (-1.8,-0.15) {p-value $=$ part des\\ tirages $\le 0$};
+    \end{scope}
+  \end{tikzpicture}}
+  \end{center}
+  \vspace{2mm}
+  \begin{itemize}\setlength{\itemsep}{2.5mm}
+    \item un titre tiré emporte \textbf{tous ses trades} : la dépendance
+      interne voyage intacte dans chaque réplique
+    \item aucune hypothèse de forme ; chez nous :
+      $p < 2{,}5\times10^{-4}$ pour les trois
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  12. LES DEUX PORTES (methode)
+% ======================================================================
+\begin{frame}{Les deux portes : une unité réelle, un vote}
+  \vspace{2mm}
+  \begin{center}
+  \begin{tikzpicture}[
+      box/.style={draw=bleuunistra, thick, rounded corners, align=center,
+                  minimum height=9mm, fill=bleuunistra!5, font=\scriptsize},
+      fl/.style={-{Stealth}, thick, bleuunistra}]
+    \node[box] (trades) {45\,008 trades\\ (dépendants)};
+    \node[box, above right=2mm and 14mm of trades] (titres)
+      {\textbf{Porte action}\\ \edge{} moyen \emph{par titre} : 431--501 votes};
+    \node[box, below right=2mm and 14mm of trades] (mois)
+      {\textbf{Porte période}\\ \edge{} moyen \emph{par mois} : 138--197 votes};
+    \node[box, below right=2mm and 14mm of titres, fill=bleuunistra!20]
+      (et) {\textbf{ET}\\ seuil Bonferroni\\ à chaque porte};
+    \draw[fl] (trades) -- (titres);
+    \draw[fl] (trades) -- (mois);
+    \draw[fl] (titres) -- (et);
+    \draw[fl] (mois) -- (et);
+  \end{tikzpicture}
+  \end{center}
+  \vspace{4mm}
+  \begin{center}
+  \small
+  \begin{tabular}{@{}lrrrrc@{}}
+    \toprule
+    & \multicolumn{2}{c}{Porte action} & \multicolumn{2}{c}{Porte période} & \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+    Stratégie & $k$ & $p_A$ & $k$ & $p_B$ & Verdict \\
+    \midrule
+    \texttt{oracle} (témoin) & 501 & $\approx 0$ & 193 & $\approx 0$ & \oui \\
+    \midrule
+    \texttt{rsi\_classic} & 501 & $\alert{0{,}059}$ & 195 & $\alert{0{,}039}$ & \non \\
+    \texttt{rsi\_strict}  & 456 & $3{,}9\times10^{-4}$ & 138 & $\alert{0{,}26}$ & \non \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{2mm}
+  \begin{itemize}
+    \item perte d'information assumée : faux négatif plutôt que faux positif
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  14. ACTE III : LA CHAINE
+% ======================================================================
+\begin{frame}{Acte III --- la porte de la période tient-elle ?}
+  Les mois voisins restent liés (recouvrement) : la suite des \edge{} mensuels
+  est une \textbf{série temporelle}.
+  \vspace{3mm}
+  \begin{center}
+  \begin{tikzpicture}[
+      box/.style={draw=bleuunistra, thick, rounded corners, align=center,
+                  minimum height=9mm, minimum width=30mm, fill=bleuunistra!5,
+                  font=\scriptsize},
+      fl/.style={-{Stealth}, thick, bleuunistra}]
+    \node[box] (bp) {\textbf{1. Box--Pierce}\\ dépendance ?};
+    \node[box, right=8mm of bp] (st) {\textbf{2. DF $+$ KPSS}\\ stationnarité ?};
+    \node[box, right=8mm of st] (pacf) {\textbf{3. PACF}\\ ordre $\hat p$};
+    \node[box, below=6mm of pacf] (yw) {\textbf{4. Yule--Walker}\\ poids $\Phi_i$};
+    \node[box, left=8mm of yw] (glr) {\textbf{5. Variance long terme}\\ Student corrigé};
+    \node[box, left=8mm of glr] (res) {\textbf{6. Box--Pierce résidus}\\ tout absorbé ?};
+    \draw[fl] (bp) -- (st);
+    \draw[fl] (st) -- (pacf);
+    \draw[fl] (pacf) -- (yw);
+    \draw[fl] (yw) -- (glr);
+    \draw[fl] (glr) -- (res);
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+%  15. BOX-PIERCE
+% ======================================================================
+\begin{frame}{1. Box--Pierce : les mois sont-ils indépendants ?}
+  \[
+    S_{\mathrm{BP}} = T\sum_{h=1}^{6}\hat\rho(h)^2
+    \;\underset{H_0}{\sim}\; \chi^2(6)
+  \]
+  \vspace{3mm}
+  \begin{itemize}\setlength{\itemsep}{4mm}
+    \item sous $H_0$, chaque $\hat\rho(h)$ $=$ bruit d'ordre $1/\sqrt T$ :
+      $\sqrt T\,\hat\rho(h)\to\mathcal N(0,1)$
+    \item \textbf{6} décalages $=$ durée maximale des trades
+      {\footnotesize (plafond vérifié en fin de chaîne)}
+  \end{itemize}
+  \vspace{5mm}
+  \begin{block}{Chez nous}
+    La moitié des séries autocorrélées $\to$ correction.\\
+    Les autres (dont \texttt{oracle}, \texttt{rsi\_strict}) : verdict conservé
+    tel quel.
+  \end{block}
+\end{frame}
+
+% ======================================================================
+%  16. DF + KPSS
+% ======================================================================
+\begin{frame}{2. Stationnarité : deux tests aux $H_0$ opposées}
+  \begin{columns}[T]
+    \begin{column}{0.52\textwidth}
+      \small
+      \textbf{Dickey--Fuller} \hfill {\footnotesize $H_0 : \phi=1$}
+      \[
+        x_t = \phi\,x_{t-1}+\eta_t
+        \qquad
+        t_{\mathrm{DF}} = \frac{\hat\phi - 1}{\widehat{\mathrm{se}}(\hat\phi)}
+      \]
+      \begin{itemize}\setlength{\itemsep}{1mm}
+        \item $|\phi|<1$ : les chocs s'éteignent
+        \item $\phi=1$ : ils s'accumulent (dérive)
+        \item forme de Student, \alert{pas sa loi} :\\
+          seuil $\approx-2{,}9$ (loi tabulée DF)
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      \textbf{KPSS} \hfill {\footnotesize $H_0$ : stationnaire}
+      \[
+        S_t=\textstyle\sum_{s\le t}(x_s-\bar x)
+      \]
+      \begin{itemize}\setlength{\itemsep}{1mm}
+        \item cumuls bornés $=$ stable
+        \item cumuls qui s'emballent $=$ dérive
+        \item couvre l'angle mort de DF
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{5mm}
+  \begin{block}{Concordance exigée}
+    DF \textbf{rejette} \emph{et} KPSS \textbf{ne rejette pas} $\to$ stationnaire.
+    Sinon : « ? ».\\
+    Chez nous : concordance partout.
+  \end{block}
+\end{frame}
+
+% ======================================================================
+%  17. AR(p) : PACF -> YULE-WALKER -> VARIANCE LT
+% ======================================================================
+\begin{frame}{3--5. Modéliser la mémoire, corriger la variance}
+  \textbf{Ordre} --- PACF : impact \emph{propre} de chaque décalage
+  \hfill {\footnotesize $\sqrt T\,\hat\tau(h)\sim\mathcal N(0,1)$, plafond 6}
+  \vspace{3mm}
+
+  \textbf{Poids} --- Yule--Walker : on multiplie le modèle AR par $x_{t-h}$,
+  espérance :
+  \[
+    \rho(h) = \Phi_1\rho(h-1)+\cdots+\Phi_{\hat p}\,\rho(h-\hat p)
+    \qquad
+    \sigma^2_\eta = \gamma(0)\bigl(1-\textstyle\sum_i\Phi_i\rho(i)\bigr)
+  \]
+  \vspace{1mm}
+
+  \textbf{Correction} --- toutes les autocovariances, pas seulement la
+  diagonale :
+  \[
+    \gamma_{\mathrm{lr}} = \frac{\sigma^2_\eta}{\bigl(1-\sum_i \Phi_i\bigr)^2}
+    \qquad
+    \widehat{\mathrm{Var}}(\bar x)\approx\frac{\gamma_{\mathrm{lr}}}{T}
+    \qquad
+    \mathrm{DEFF}_t = \frac{\gamma_{\mathrm{lr}}}{\gamma(0)}
+  \]
+  \vspace{3mm}
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item $\Phi=0$ : on retrouve $s^2/T$ --- l'analogue temporel du DEFF
+    \item chez nous : $\hat p \le 3$, corrections jusqu'à $\times 6{,}4$
+      $\to$ diapo suivante
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  18. RESULTATS SERIE MENSUELLE
+% ======================================================================
+\begin{frame}{6. Validation et résultats de l'acte III}
+  \begin{center}
+  \footnotesize
+  \begin{tabular}{@{}lrrrrrc@{}}
+    \toprule
+    Stratégie & $T$ & $\hat\rho(1)$ & $\hat p$ & $\mathrm{DEFF}_t$ &
+      $p$ corrigée & $p$ BP résidus \\
+    \midrule
+    \texttt{oracle}        & 193 & $0{,}18$ & 0 & $1{,}0$ & $9{,}4\times10^{-85}$ & $0{,}16$ \\
+    \midrule
+    \texttt{ma\_crossover} & 188 & $0{,}56$ & 3 & $\alert{6{,}4}$ & $0{,}94$ & $0{,}14$ \\
+    \texttt{dt\_top}       & 197 & $0{,}38$ & 1 & $2{,}2$ & $0{,}97$ & $0{,}69$ \\
+    \texttt{rsi\_classic}  & 195 & $0{,}23$ & 1 & $1{,}6$ & $0{,}08$ & $0{,}93$ \\
+    \texttt{rsi\_strict}   & 138 & $0{,}03$ & 0 & $1{,}0$ & $0{,}26$ & $0{,}28$ \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{4mm}
+  \begin{itemize}\setlength{\itemsep}{3mm}
+    \item résidus : aucun rejet $\to$ correction légitime
+    \item variance sous-estimée jusqu'à $\times\alert{6{,}4}$\ldots\
+      \textbf{aucun verdict ne bascule}
+  \end{itemize}
+  \vspace{2mm}
+  \begin{block}{}
+    Fin de l'escalade : il ne reste que \structure{le témoin}.
+  \end{block}
+\end{frame}
+
+% ======================================================================
+%  19. EFFICIENCE
+% ======================================================================
+\begin{frame}{Aucune ne passe : est-ce normal ? Le marché répond}
+  Rendements quotidiens du marché, 4\,132 jours :
+  \vspace{2mm}
+  \begin{center}
+  \small
+  \begin{tabular}{@{}lr@{}}
+    \toprule
+    Box--Pierce & $S_{\mathrm{BP}} = 93{,}7$, \quad $p \approx 0$ \\
+    $\hat\rho(1)$ & $-0{,}08$ \\
+    Part du lendemain expliquée & $0{,}6\,\%$ \\
+    Gain de la stratégie « rebond » & $0{,}007\,\%$/jour, \alert{$<$ frais} \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{5mm}
+  \begin{itemize}\setlength{\itemsep}{4mm}
+    \item significatif, mais rien d'\textbf{exploitable} : efficience
+      \emph{faible} (Fama)
+    \item même leçon qu'à l'acte I : \structure{significativité $\neq$ taille
+      d'effet}
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  20. PROTOCOLE RECAPITULE
+% ======================================================================
+\begin{frame}{Le livrable : un protocole en six étages}
+  \begin{center}
+  \small
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Étage & Menace traitée & Outil \\
+    \midrule
+    1. \edge{} apparié & dérive du marché & Monte Carlo apparié \\
+    2. Student $+$ TCL & aléa d'échantillonnage & test de référence \\
+    3. Bonferroni & multiplicité (11 tests) & risque global \\
+    4. DEFF $+$ bootstrap & dépendance intra-titre & sondages, rééchant. \\
+    5. Deux portes & pseudo-réplication & agrégation équipondérée \\
+    6. Série AR($p$) & autocorrélation résiduelle & variance de long terme \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{5mm}
+  \begin{itemize}\setlength{\itemsep}{3mm}
+    \item réutilisable sur \textbf{tout signal futur} de l'agent
+    \item condition invérifiable $\Rightarrow$ « ? » : s'abstenir et signaler
+    \item converge avec les standards de l'économétrie financière
+      {\footnotesize (Fama--MacBeth, Newey--West)}
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  21. LIMITES & PERSPECTIVES
+% ======================================================================
+\begin{frame}{Limites assumées, suites prévues}
+  \textbf{Limites}
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item résultats \emph{in-sample} $\to$ validation hors échantillon,
+      période après période
+    \item biais du survivant ; frais simplifiés
+    \item corrections empilées : garantie exacte du seuil perdue si les trois
+      canaux étaient forts \emph{en même temps} {\footnotesize (signalé ---
+      absent ici)}
+  \end{itemize}
+  \vspace{5mm}
+  \textbf{Perspectives}
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item créer nos propres stratégies (apprentissage / test séparés)
+    \item garde-fou d'effectif ; \edge{} modélisé selon le contexte
+    \item signaux tournés vers l'avenir ; avance--retard (Granger)
+  \end{itemize}
+\end{frame}
+
+% ======================================================================
+%  22. CONCLUSION
+% ======================================================================
+\begin{frame}{Conclusion}
+  \vspace{2mm}
+  \begin{itemize}\setlength{\itemsep}{5mm}
+    \item Le test de référence déclarait \textbf{deux} gagnantes ; la seule
+      vérification de l'\textbf{indépendance} a renversé les deux verdicts
+    \item Le \structure{témoin}, construit pour gagner, a franchi chaque étage
+  \end{itemize}
+  \vspace{5mm}
+  \begin{block}{}
+    Un outil de validation se juge à sa capacité d'attraper ses propres
+    erreurs \emph{tout en reconnaissant le vrai} : la démonstration est faite.
+  \end{block}
+  \vspace{5mm}
+  \begin{center}
+    \structure{Merci de votre attention.}
+  \end{center}
+\end{frame}
+
+% ======================================================================
+%  ANNEXES — à dégainer pendant les questions
+% ======================================================================
+\appendix
+
+\begin{frame}{Annexes}
+  \small
+  \begin{columns}[T]
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}\setlength{\itemsep}{1mm}
+        \item[A1.] Dérivation du DEFF
+        \item[A2.] ICC : la formule de $n_0$
+        \item[A3.] Shapiro--Wilk : la statistique $W$
+        \item[A4.] Student : loi exacte, $n-1$ ddl
+        \item[A5.] Bonferroni : exact vs Boole
+        \item[A6.] DF : pourquoi pas la loi de Student ; AIC
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}\setlength{\itemsep}{1mm}
+        \item[A7.] $\hat\rho$ : bruit en $1/\sqrt T$
+        \item[A8.] PACF : définition formelle
+        \item[A9.] Yule--Walker : dérivation
+        \item[A10.] Variance de long terme : preuve
+        \item[A11.] Les deux oracles (v1 $\to$ v2)
+        \item[A12.] Valeurs extrêmes : traitement
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- A1 ---------------------------------------------------------------
+\begin{frame}{A1. Dérivation du DEFF}
+  $n$ trades, $k$ titres de $m$ trades ($n = km$).
+  Hypothèses : $\mathrm{Var}(x_i)=\sigma^2$ ;
+  $\mathrm{Cov}(x_i,x_j)=\rho\sigma^2$ si même titre, $0$ sinon.
+  \begin{align*}
+    \mathrm{Var}\Bigl(\sum_i x_i\Bigr)
+      &= \sum_i \mathrm{Var}(x_i) + \sum_i\sum_{j\neq i}\mathrm{Cov}(x_i,x_j)\\
+      &= n\sigma^2 + n(m-1)\rho\sigma^2
+      \qquad\text{\scriptsize (chaque trade : $m-1$ partenaires de grappe)}\\[1mm]
+    \mathrm{Var}(\bar x)
+      &= \frac{\sigma^2}{n}\,\bigl[\,1+(m-1)\rho\,\bigr]
+      = \frac{\sigma^2}{n}\cdot\mathrm{DEFF}
+  \end{align*}
+  \begin{block}{Contrôles de cohérence}
+    $\rho=0 \Rightarrow \mathrm{DEFF}=1$ (indépendance).\quad
+    $\rho=1 \Rightarrow \mathrm{DEFF}=m \Rightarrow
+      \mathrm{Var}(\bar x)=\sigma^2/k$ : il ne reste que $k$ informations
+      (une par titre).\quad
+    $m=1 \Rightarrow \mathrm{DEFF}=1$.\\
+    Grappes inégales : $m \to \bar m$.
+  \end{block}
+\end{frame}
+
+% --- A2 ---------------------------------------------------------------
+\begin{frame}{A2. ICC : le terme $n_0$}
+  \[
+    \hat\rho = \frac{\mathrm{MSB}-\mathrm{MSW}}
+                    {\mathrm{MSB}+(n_0-1)\mathrm{MSW}}
+    \qquad
+    n_0 = \frac{1}{k-1}\Bigl(N - \frac{\sum_i n_i^2}{N}\Bigr)
+  \]
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item $k$ titres, $N$ trades, $n_i$ trades du titre $i$
+    \item $n_0$ = taille moyenne des grappes \textbf{ajustée} de leur
+      inégalité : le terme $\sum n_i^2/N$ pénalise le déséquilibre
+      (50 trades sur un titre, 3 sur un autre)
+    \item grappes égales de taille $n$ : $n_0 = n$ ; un trade par titre :
+      $n_0=1$, le terme intra disparaît
+    \item rôle : plus les grappes sont grosses, plus il faut de contraste
+      inter-titres pour un même $\hat\rho$ --- normalise la mesure entre 0 et 1
+  \end{itemize}
+\end{frame}
+
+% --- A3 ---------------------------------------------------------------
+\begin{frame}{A3. Shapiro--Wilk : la statistique $W$}
+  \[
+    W = \frac{b^2}{\mathrm{SCE}}, \qquad W \le 1
+  \]
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item $\mathrm{SCE} = \sum_i (x_i - \bar x)^2$ : dispersion classique
+    \item $b^2$ : dispersion \emph{attendue si les valeurs triées suivaient
+      une normale} (combinaison des statistiques d'ordre et de leurs
+      espérances sous normalité)
+    \item les deux ne coïncident que sous normalité $\to$ $W \simeq 1$ ;
+      c'est la version chiffrée de la droite de Henry (QQ-plot)
+    \item $H_0$ ($W\simeq1$) : normalité --- p-value faible $\Rightarrow$
+      \textbf{rejet de la normalité} (sens inverse de Student !)
+  \end{itemize}
+  \begin{block}{Pourquoi il sur-rejette à grand $n$}
+    Sous $H_0$, la distribution de $W$ se resserre vers 1 quand $n$ croît :
+    le moindre écart devient significatif. Chez nous, $W$ de $0{,}50$ à
+    $0{,}95$ --- \emph{tous} rejetés. D'où le recours au TCL.
+  \end{block}
+\end{frame}
+
+% --- A4 ---------------------------------------------------------------
+\begin{frame}{A4. Student : loi exacte et degrés de liberté}
+  Si l'on connaissait $\sigma$ : $(\bar e - \mu)/(\sigma/\sqrt n)
+  \sim \mathcal N(0,1)$ exactement (données normales).\\[2mm]
+  $\sigma$ inconnu $\to$ remplacé par $s$, \emph{estimé sur le même
+  échantillon} :
+  \[
+    t = \frac{\bar e-\mu}{s/\sqrt n}
+    \;=\; \frac{\mathcal N(0,1)}{\sqrt{\chi^2_{n-1}/(n-1)}}
+    \;\sim\; t_{n-1}
+  \]
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item rapport de deux variables aléatoires $\to$ queues plus épaisses
+      que la normale : l'incertitude sur $s$ est absorbée par la loi
+    \item $n-1$ : un degré consommé pour estimer $\bar e$ --- le même $n-1$
+      que la correction de Bessel dans
+      $s^2=\frac{1}{n-1}\sum(e_i-\bar e)^2$
+    \item dès $n \gtrsim 100$ : Student $\approx$ normale (chez nous,
+      $n \ge 978$)
+  \end{itemize}
+\end{frame}
+
+% --- A5 ---------------------------------------------------------------
+\begin{frame}{A5. Bonferroni : calcul exact vs borne de Boole}
+  \textbf{Exact (tests indépendants), par le complémentaire :}
+  \[
+    \mathrm P(\text{au moins un FP})
+    = 1 - \mathrm P(\text{aucun FP})
+    = 1 - (1-\alpha)^{11}
+    = 1 - 0{,}95^{11} \approx 0{,}43
+  \]
+  {\small On multiplie $0{,}95$ par lui-même (puissance) --- l'addition
+  $11\times0{,}05=0{,}55$ ne serait qu'un majorant (et dépasserait 1 avec
+  plus de tests).}
+  \vspace{2mm}
+
+  \textbf{Boole (sans hypothèse d'indépendance) :}
+  \[
+    \mathrm P\Bigl(\bigcup_i A_i\Bigr) \le \sum_i \mathrm P(A_i)
+    \quad\Longrightarrow\quad
+    \sum_i \alpha' = 0{,}05 \;\text{ garantit le risque global}
+  \]
+  \begin{itemize}
+    \item $\alpha$ est conditionnel \emph{par définition} :
+      $\alpha = \mathrm P(\text{rejeter } H_0 \mid H_0 \text{ vraie})$ ---
+      le calcul se place dans le pire cas ($H_0$ partout)
+    \item Vérification : $1-(1-0{,}0045)^{11}\approx0{,}049<0{,}05$
+      (légèrement conservateur : possibles faux négatifs)
+  \end{itemize}
+\end{frame}
+
+% --- A6 ---------------------------------------------------------------
+\begin{frame}{A6. DF : pourquoi pas la loi de Student ; l'AIC}
+  \textbf{La régression} : couples $(x_{t-1}, x_t)$, moindres carrés :
+  \[
+    \hat\phi = \frac{\sum x_{t-1}x_t}{\sum x_{t-1}^2}
+    \qquad
+    \widehat{\mathrm{se}}(\hat\phi)=\frac{\hat\sigma_\eta}{\sqrt{\sum x_{t-1}^2}}
+  \]
+  {\scriptsize En pratique on régresse la différence :
+  $\Delta x_t = \delta x_{t-1}+\eta_t$, $\delta=\phi-1$, test $\delta=0$
+  contre $\delta<0$ --- équivalent.}
+  \vspace{1mm}
+
+  \textbf{Pourquoi pas Student} : la loi du $t$ de régression suppose un
+  régresseur \emph{stationnaire}. Sous $H_0$ ($\phi=1$), $x_{t-1}$ est une
+  marche aléatoire, sa variance croît avec $t$ : les conditions s'effondrent.
+  Loi tabulée par Dickey \& Fuller, décalée vers les négatifs :
+  rejet à 5\,\% vers $-2{,}9$, contre $-1{,}65$ pour une normale.
+  \vspace{1mm}
+
+  \textbf{Version augmentée} : on ajoute $\Delta x_{t-1},\ldots,\Delta x_{t-k}$
+  pour blanchir les résidus ; $k$ choisi par
+  \[
+    \mathrm{AIC}_k = 2\ln\hat\sigma_k + \frac{k}{T}
+  \]
+  {\small ajustement contre complexité (chez nous : $k$ de 0 à 9). Ces retards
+  sont un \emph{correctif interne} au test --- rien à voir avec l'ordre
+  $\hat p$ du modèle AR, qui vient de la PACF.}
+\end{frame}
+
+% --- A7 ---------------------------------------------------------------
+\begin{frame}{A7. Pourquoi $\hat\rho(h)$ est un bruit en $1/\sqrt T$ sous $H_0$}
+  \[
+    \hat\rho(h) = \frac{\sum_{t=1}^{T-h}(x_t-\bar x)(x_{t+h}-\bar x)}
+                       {\sum_{t=1}^{T}(x_t-\bar x)^2}
+  \]
+  \begin{itemize}\setlength{\itemsep}{2mm}
+    \item sous $H_0$ (indépendance), chaque produit
+      $(x_t-\bar x)(x_{t+h}-\bar x)$ a une \textbf{espérance nulle}
+      (facteurs indépendants et centrés)
+    \item mais sur $T$ fini, les produits positifs et négatifs ne se
+      compensent qu'imparfaitement --- même phénomène qu'une moyenne
+      d'échantillon jamais exactement égale à $\mu$
+    \item TCL sur cette somme de termes non corrélés :
+      $\mathrm{Var}(\hat\rho(h))\approx 1/T$, donc
+      $\sqrt T\,\hat\rho(h)\to\mathcal N(0,1)$
+    \item d'où $T\hat\rho(h)^2 \sim \chi^2(1)$, et par indépendance
+      asymptotique entre décalages :
+      $S_{\mathrm{BP}} = T\sum_{h=1}^{6}\hat\rho(h)^2 \sim \chi^2(6)$
+  \end{itemize}
+  \begin{block}{Ordre de grandeur}
+    $T=195$ mois $\Rightarrow$ bruit typique $1/\sqrt{195}\approx0{,}07$ :
+    des $\hat\rho$ de $\pm0{,}07$ sont attendus \emph{sans} dépendance.
+  \end{block}
+\end{frame}
+
+% --- A8 ---------------------------------------------------------------
+\begin{frame}{A8. PACF : définition formelle}
+  \textbf{Le problème} : l'effet de chaîne. AR(1) de poids $0{,}6$ :
+  $\rho(2)=0{,}36\neq0$ alors que $t-2$ n'a \emph{aucun} effet direct
+  (le lien transite par $t-1$).
+  \vspace{1mm}
+
+  \textbf{Définition} : $\hat\tau(h)$ = corrélation entre $x_t$ et $x_{t-h}$
+  \emph{une fois retirée l'influence linéaire des intermédiaires} :
+  \begin{enumerate}
+    \item régresser $x_t$ sur $(x_{t-1},\ldots,x_{t-h+1})$ $\to$ résidu $u_t$
+    \item régresser $x_{t-h}$ sur les mêmes $\to$ résidu $v_t$
+    \item $\hat\tau(h) = \mathrm{corr}(u_t, v_t)$
+  \end{enumerate}
+  {\small Équivalence : $\hat\tau(h)$ = dernier coefficient d'un AR($h$)
+  ajusté sur la série.}
+  \begin{block}{Pourquoi elle identifie l'ordre}
+    Pour un AR($p$) : $\tau(h)=0$ pour tout $h>p$ (coupure nette), alors que
+    $\rho(h)$ décroît sans s'annuler. Décision : sous $H_0$,
+    $\sqrt T\hat\tau(h)\sim\mathcal N(0,1)$ $\to$ bande $\pm1{,}96/\sqrt T$ ;
+    on garde le dernier décalage significatif (plafond 6, intermédiaires
+    conservés --- surestimer la mémoire plutôt que la tronquer).
+  \end{block}
+\end{frame}
+
+% --- A9 ---------------------------------------------------------------
+\begin{frame}{A9. Yule--Walker : la dérivation}
+  Série stationnaire \textbf{centrée} : $\gamma(h) = \mathrm{Cov}(x_t,x_{t-h})
+  = \mathbb E[x_t x_{t-h}]$ --- l'espérance d'un produit de variables
+  centrées \emph{est} leur covariance.\\[2mm]
+  Modèle : $x_t = \Phi_1 x_{t-1}+\cdots+\Phi_p x_{t-p} + \eta_t$.
+  On multiplie par $x_{t-h}$ ($h\ge1$), on prend l'espérance :
+  \[
+    \underbrace{\mathbb E[x_t x_{t-h}]}_{\gamma(h)}
+    = \sum_i \Phi_i\,\gamma(h-i)
+    + \underbrace{\mathbb E[\eta_t x_{t-h}]}_{=\,0\ (\eta_t \perp \text{passé})}
+    \;\Longrightarrow\;
+    \rho(h) = \sum_i \Phi_i\,\rho(h-i)
+  \]
+  {\small $p$ équations ($h=1,\ldots,p$), $p$ inconnues ; $\rho(0)=1$,
+  $\rho(-k)=\rho(k)$. Cas $p=1$ : $\Phi_1=\rho(1)$.}
+  \begin{block}{Décalage nul $\to$ le bruit}
+    Avec $x_t$ lui-même, le bruit ne disparaît plus
+    ($\mathbb E[\eta_t x_t]=\sigma^2_\eta$) :
+    \[
+      \gamma(0) = \sum_i\Phi_i\gamma(i) + \sigma^2_\eta
+      \;\Longrightarrow\;
+      \sigma^2_\eta = \gamma(0)\Bigl(1-\sum_i\Phi_i\rho(i)\Bigr)
+    \]
+    = variance totale moins la part expliquée par le passé.
+  \end{block}
+\end{frame}
+
+% --- A10 --------------------------------------------------------------
+\begin{frame}{A10. Variance de long terme : la preuve en trois pas}
+  \textbf{1. Pourquoi $s^2/T$ est faux :}
+  \[
+    \mathrm{Var}(\bar x) = \frac{1}{T^2}\sum_t\sum_s \mathrm{Cov}(x_t,x_s)
+    \;\approx\; \frac{1}{T}\sum_{h=-\infty}^{+\infty}\gamma(h)
+    = \frac{\gamma_{\mathrm{lr}}}{T}
+  \]
+  {\small $s^2/T$ ne garde que la diagonale $\gamma(0)$ et jette tous les
+  $\gamma(h)$ croisés.}
+  \vspace{1mm}
+
+  \textbf{2. Pour un AR($p$)} --- effet cumulé d'un choc : $+1$ aujourd'hui,
+  $\sum\Phi$ demain, $(\sum\Phi)^2$ après\ldots\ son poids total :
+  \[
+    1+\Bigl(\sum\Phi\Bigr)+\Bigl(\sum\Phi\Bigr)^2+\cdots
+    = \frac{1}{1-\sum\Phi}
+    \;\Longrightarrow\;
+    \gamma_{\mathrm{lr}} = \frac{\sigma^2_\eta}{(1-\sum_i\Phi_i)^2}
+  \]
+  \textbf{3. Vérification exacte sur l'AR(1)} :
+  $\gamma(h)=\phi^{|h|}\gamma(0)$, $\gamma(0)=\sigma^2_\eta/(1-\phi^2)$ :
+  \[
+    \sum_h \gamma(h) = \gamma(0)\,\frac{1+\phi}{1-\phi}
+    = \frac{\sigma^2_\eta}{(1-\phi)^2} \;\checkmark
+  \]
+  {\small Cohérence : $\Phi=0 \Rightarrow \gamma_{\mathrm{lr}}=\gamma(0)$,
+  on retrouve $s^2/T$ ; $\sum\Phi \to 1$ : la correction explose.}
+\end{frame}
+
+% --- A11 --------------------------------------------------------------
+\begin{frame}{A11. Les deux oracles (v1 $\to$ v2)}
+  \textbf{Oracle v1} --- seuil $+25\,\%$ sur 30 jours :
+  \begin{itemize}\setlength{\itemsep}{0.5mm}
+    \item ne tradait que les rebonds extrêmes (2009, 2020) $\to$
+      $t \approx 120$, série mensuelle « tassée », presque plate hors bouffées
+    \item or DF a besoin de variabilité dans $x_{t-1}$ ($\hat\phi$ et se reposent sur
+      $\sum x_{t-1}^2$) : erreur-type énorme, \textbf{aucune puissance} $\to$ DF ne rejette
+      pas, KPSS dit stationnaire $\to$ divergence, verdict « ? »
+  \end{itemize}
+  \begin{block}{L'erreur de conception}
+    Un témoin trop parfait produit une série dégénérée, \emph{hors du domaine
+    de puissance} des outils qu'il doit calibrer. Un protocole à un seul test
+    l'aurait écarté \textbf{en silence} ; la règle de concordance a rendu
+    l'anomalie visible.
+  \end{block}
+  \textbf{Oracle v2} --- seuil $+5\,\%$, $\sim$1 an de repos entre entrées :
+  \begin{itemize}\setlength{\itemsep}{0.5mm}
+    \item entrées réparties sur tous les régimes, volume comparable aux
+      vraies stratégies : témoin \textbf{réaliste}, avantage toujours net
+    \item franchit les six étages --- et le témoin aura servi deux fois :
+      contrôler le faux négatif \emph{et} réviser le protocole
+  \end{itemize}
+\end{frame}
+
+% --- A12 --------------------------------------------------------------
+\begin{frame}{A12. Valeurs extrêmes : gardées, et voici pourquoi}
+  \textbf{Distinction} : valeur \emph{aberrante} = erreur de mesure (à
+  corriger) $\neq$ valeur \emph{extrême} = vraie réalisation d'une queue
+  lourde (de l'information).\\
+  {\small Ici : pas d'aberrantes (cours réels, rendements bornés) mais des
+  extrêmes massives --- visibles dans le $W$ de Shapiro ($0{,}50$ à $0{,}95$).}
+  \vspace{1mm}
+  \begin{block}{Ni supprimées, ni winsorisées --- quatre protections}
+    \begin{enumerate}
+      \item le test porte sur la \textbf{moyenne} : un extrême gonfle aussi
+        $s$ au dénominateur (effet conservateur)
+      \item le \textbf{bootstrap} les intègre sans hypothèse de forme
+      \item l'\textbf{agrégation} leur retire leur poids : un méga-trade ne
+        vote que dans sa grappe
+      \item un avantage porté par quelques extrêmes est \emph{exactement} ce
+        que les deux portes détectent (cas \texttt{rsi\_strict})
+    \end{enumerate}
+  \end{block}
+  \textbf{Pourquoi pas la médiane ?} Le gain total $= n\times$ moyenne :
+  une stratégie à médiane négative peut être rentable par quelques grands
+  gains --- la médiane la déclarerait perdante à tort. La moyenne est le seul
+  paramètre qui agrège les extrêmes \emph{avec} le reste.
+\end{frame}
+
+\end{document}
